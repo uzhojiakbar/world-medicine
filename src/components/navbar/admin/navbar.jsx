@@ -95,7 +95,7 @@ const AdminNavbar = () => {
             <Link
               className={({ isActive }) => (isActive ? "active" : "")}
               key={v.id || v.title}
-              to={v.path}
+              to={`/admin/${v.path}`}
             >
               {v.title}
             </Link>
