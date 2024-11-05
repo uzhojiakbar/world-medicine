@@ -1,0 +1,38 @@
+export const navbarData = [
+  {
+    id: 1,
+    title: "Аналитика",
+    path: "/analiktika",
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 2,
+    title: "Настройка условий",
+    path: "/nastroyka-usloviya",
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 3,
+    title: "Рецепт",
+    path: "/retsept",
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 4,
+    title: "Депозит",
+    path: "/depozit",
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+];
