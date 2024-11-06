@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ProfileBarButton,
   GoToProfileButton,
@@ -7,11 +7,12 @@ import {
   Logo,
   NavContainer,
   ProfieBtn,
+  BurgerMenu,
 } from "./style";
 
 // *IMG
 import LogoMain from "../../../assets/logo-Banner.svg";
-import { navbarData } from "../../../utils/navbar";
+import { NavbarBurgerMenu, navbarData } from "../../../utils/navbar";
 
 import useCustomNavigate from "../../../hooks/useCustomNavigate";
 import { Dropdown } from "antd";
@@ -23,32 +24,29 @@ import {
 
 const AdminNavbar = () => {
   const nav = useCustomNavigate();
+
+  // Dropdown menu for profile options
   const items = [
     {
       key: "1",
       label: (
         <GoToProfileButton
-          onClick={() => handleSettingsClick(1)}
+          onClick={() => console.log("Profile clicked")}
           style={{ cursor: "pointer" }}
         >
-          <div className="name">
-            {/* {} */}
-            "Admin username"
-          </div>
+          <div className="name">Admin username</div>
           <div className="name-desc">Hisobni ochish</div>
         </GoToProfileButton>
       ),
-      disabled: false,
     },
     {
       type: "divider",
     },
-
     {
       key: "2",
       label: (
         <ProfileBarButton
-          onClick={() => console.log(0, "/contact")}
+          onClick={() => console.log("Help clicked")}
           style={{ cursor: "pointer" }}
         >
           <HeartFilled />
@@ -60,7 +58,7 @@ const AdminNavbar = () => {
       key: "3",
       label: (
         <ProfileBarButton
-          onClick={() => console.log("Sozlamalar")}
+          onClick={() => console.log("Settings clicked")}
           style={{ cursor: "pointer" }}
         >
           <SettingOutlined />
@@ -75,8 +73,7 @@ const AdminNavbar = () => {
       key: "4",
       label: (
         <ProfileBarButton
-          type="logOut"
-          onClick={() => console.log("log out")}
+          onClick={() => console.log("Logout clicked")}
           style={{ cursor: "pointer" }}
         >
           <LogoutOutlined />
@@ -85,6 +82,10 @@ const AdminNavbar = () => {
       ),
     },
   ];
+
+  const [open, setOpen] = useState(false);
+
+  const isOpen = () => setOpen(!open);
 
   return (
     <NavContainer>
@@ -101,17 +102,19 @@ const AdminNavbar = () => {
             </Link>
           );
         })}
-        <Dropdown
-          menu={{
-            items,
-          }}
-          trigger={["click"]}
-        >
+        <Dropdown menu={{ items }} trigger={["click"]}>
           <ProfieBtn>
             <i className="fa-solid fa-user"></i>
           </ProfieBtn>
         </Dropdown>
       </Links>
+
+      {/* Burger menu dropdown */}
+      <Dropdown menu={{ items: NavbarBurgerMenu }} trigger={["click"]}>
+        <BurgerMenu>
+          <i className="fa-solid fa-bars"></i>
+        </BurgerMenu>
+      </Dropdown>
     </NavContainer>
   );
 };

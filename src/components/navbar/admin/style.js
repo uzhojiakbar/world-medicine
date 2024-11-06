@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../../utils/media";
 
 const NavContainer = styled.div`
   width: 100%;
@@ -15,17 +16,34 @@ const Links = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
+
+  user-select: none;
+  ${media.mobileL} {
+    display: none;
+  }
 `;
 
 const Logo = styled.img`
   cursor: pointer;
   user-select: none;
+  ${media.tablet} {
+    width: 150px;
+  }
 `;
 
 const Link = styled(NavLink)`
   text-decoration: none;
   color: var(--black);
   font-size: 18px;
+  font-family: "Vela Sans GX";
+
+  ${media.tabletMax} {
+    font-size: 16px;
+  }
+
+  ${media.tablet} {
+    font-size: 14px;
+  }
 
   &:hover {
     color: var(--text-hover);
@@ -79,6 +97,16 @@ const ProfileBarButton = styled.div`
   color: ${({ type }) => (type === "logOut" ? "red" : "black")};
 `;
 
+// BURGER MENU
+
+const BurgerMenu = styled.div`
+  display: none;
+  ${media.mobileL} {
+    display: flex;
+    font-size: 22px;
+  }
+`;
+
 export {
   NavContainer,
   Logo,
@@ -87,4 +115,5 @@ export {
   ProfieBtn,
   GoToProfileButton,
   ProfileBarButton,
+  BurgerMenu,
 };

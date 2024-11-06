@@ -8,6 +8,8 @@ export const InfoCardWrapper = styled.div`
   border: 1px solid #fafafa;
   width: ${({ width }) => (width ? width : "25%")};
 
+  font-family: "Vela Sans GX", sans-serif;
+
   display: flex;
   flex-direction: column;
   gap: 10px;

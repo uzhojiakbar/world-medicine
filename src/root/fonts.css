@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "Vela Sans GX";
+
+  src: url("../assets/fonts/velaSans/ExtraBold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Vela Sans GX Regular";
+
+  src: url("../assets/fonts/velaSans/Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Vela Sans GX Regular", sans-serif;
+}

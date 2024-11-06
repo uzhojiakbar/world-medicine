@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Analiktika from "../pages/analiktika/analiktika";
 
 export const navbarData = [
@@ -40,5 +41,40 @@ export const navbarData = [
     visible: true,
     onlyAdmin: false,
     icon: false,
+  },
+];
+
+export const NavbarBurgerMenu = [
+  {
+    key: 1,
+    label: (
+      <Link to={`/admin/analiktika`}>
+        <div>Аналитика</div>
+      </Link>
+    ),
+  },
+  {
+    key: 2,
+    label: (
+      <Link to={`/admin/nastroyka-usloviya`}>
+        <div>Настройка условий</div>
+      </Link>
+    ),
+  },
+  {
+    key: 3,
+    label: (
+      <Link to={`/admin/retsept`}>
+        <div>Рецепт</div>
+      </Link>
+    ),
+  },
+  {
+    key: 4,
+    label: (
+      <Link to={`/admin/depozit`}>
+        <div>Депозит</div>
+      </Link>
+    ),
   },
 ];

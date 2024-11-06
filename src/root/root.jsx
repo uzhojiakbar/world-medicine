@@ -1,7 +1,8 @@
 import React from "react";
 import { MainContainer } from "./style";
-import AdminPage from "../pages/admin/admin";
+
 import Router from "../router/router";
+import "./fonts.css";
 
 const Root = () => {
   return (

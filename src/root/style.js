@@ -10,9 +10,12 @@ export const MainContainer = styled.div`
 export const Title = styled.div`
   font-size: 36px;
   font-weight: 800;
+
+  font-family: "Vela Sans GX", sans-serif;
 `;
 
 export const TitleSmall = styled.div`
   font-size: 24px;
   font-weight: 700;
+  font-family: "Vela Sans GX", sans-serif;
 `;
