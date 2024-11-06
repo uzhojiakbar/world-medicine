@@ -6,7 +6,7 @@ const InfoCard = ({ children, title, width }) => {
   return (
     <InfoCardWrapper width={width}>
       <TitleSmall>{title || "Header"}</TitleSmall>
-      {children}
+      <div className="child-flex">{children}</div>
     </InfoCardWrapper>
   );
 };

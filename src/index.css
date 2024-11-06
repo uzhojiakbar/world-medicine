@@ -6,9 +6,9 @@
 
   /* *TEXT */
   --text-hover: #0025a2;
+  --text-black: #000;
 
   /* *OTH. */
-  --black: #000;
 }
 
 body {
