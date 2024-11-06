@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Analiktika__Cards, AnaliktikaCon } from "./style";
 import { Title } from "../../root/style";
 import InfoCard from "../../components/infoCard/infoCard";
-import PrimarySelect from "../../components/Select/Select";
+import PrimarySelect from "../../components/Generic/Select/Select";
 import { Viloyatlar, Tumanlar, MestaRabot } from "../../mock/data";
+import Input from "../../components/Generic/Input/Input";
+import DateRangePicker from "../../components/Generic/DataRangePicker/DataRangePicker";
 
 const Analiktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
   const [selectedTuman, setSelectedTuman] = useState("");
   const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
+  const [nameSurname, setNameSurname] = useState("");
 
   const handleViloyatChange = (value) => {
     setSelectedViloyat(value);
@@ -29,7 +32,7 @@ const Analiktika = () => {
     <AnaliktikaCon>
       <Title>Аналитика</Title>
       <Analiktika__Cards>
-        <InfoCard width={"50%"} title={"Регион"}>
+        <InfoCard title={"Регион"}>
           <PrimarySelect
             def={"область"}
             options={Viloyatlar}
@@ -46,11 +49,14 @@ const Analiktika = () => {
             onValueChange={handleMestaRabotChange}
           />
         </InfoCard>
-        <InfoCard width={"25%"} title={"Ф.И.О. врача"}>
-          {/* Other Content */}
+
+        <InfoCard title={"Ф.И.О. врача"}>
+          <Input placeholder={"Ф.И.О. врача"} />
         </InfoCard>
-        <InfoCard width={"25%"} title={"Дата"}>
-          {/* Other Content */}
+
+        <InfoCard title={"Дата"}>
+          {/* Foydalanuvchining sana diapazonini tanlash */}
+          <DateRangePicker />
         </InfoCard>
       </Analiktika__Cards>
     </AnaliktikaCon>
