@@ -6,6 +6,7 @@ import PrimarySelect from "../../components/Generic/Select/Select";
 import { Viloyatlar, Tumanlar, MestaRabot } from "../../mock/data";
 import Input from "../../components/Generic/Input/Input";
 import DateRangePicker from "../../components/Generic/DataRangePicker/DataRangePicker";
+import Information from "../../components/Information/Information";
 
 const Analiktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -58,6 +59,9 @@ const Analiktika = () => {
           {/* Foydalanuvchining sana diapazonini tanlash */}
           <DateRangePicker />
         </InfoCard>
+      </Analiktika__Cards>
+      <Analiktika__Cards>
+        <Information />
       </Analiktika__Cards>
     </AnaliktikaCon>
   );

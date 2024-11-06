@@ -11,17 +11,15 @@ const AnaliktikaCon = styled.div`
 
 const Analiktika__Cards = styled.div`
   display: grid;
-  grid-template-columns: 2fr repeat(2, 1fr); /* Defaultda 3 ustun */
+  grid-template-columns: 2fr repeat(2, 1fr);
   gap: 10px;
 
-  /* Tablet va kichik ekranlar uchun */
   @media (max-width: 1024px) {
-    grid-template-columns: 1fr; /* Bitta ustun */
+    grid-template-columns: 1fr;
   }
 
-  /* Telefonlar uchun */
   @media (max-width: 600px) {
-    grid-template-columns: 1fr; /* Bitta ustun */
+    grid-template-columns: 1fr;
   }
 `;
 
