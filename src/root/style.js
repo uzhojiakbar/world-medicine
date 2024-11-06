@@ -18,4 +18,13 @@ export const TitleSmall = styled.div`
   font-size: 24px;
   font-weight: 700;
   font-family: "Vela Sans GX", sans-serif;
+
+  display: flex;
+  justify-content: space-between;
+
+  > .rightBtn {
+    cursor: pointer;
+    padding: 0 5px;
+    color: #0025a2;
+  }
 `;

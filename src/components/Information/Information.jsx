@@ -4,7 +4,7 @@ import StaticButton from "../Generic/StaticButton/StaticButton";
 import { information } from "../../mock/information";
 
 const Information = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
 
   return (
     <CardContainer>

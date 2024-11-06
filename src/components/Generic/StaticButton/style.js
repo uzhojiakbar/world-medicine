@@ -21,8 +21,7 @@ const Card = styled.div`
   color: ${(props) => (props.active == "true" ? "#fff" : "#000")};
   font-family: "Vela Sans GX", sans-serif;
 
-  background-color: ${(props) =>
-    props.active == "true" ? "#0026ca" : "#f5f5f5"};
+  background-color: ${(props) => (props.active == "true" ? "#0026ca" : "#fff")};
   border-radius: 8px;
 
   cursor: pointer;

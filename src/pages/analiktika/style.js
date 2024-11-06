@@ -11,8 +11,16 @@ const AnaliktikaCon = styled.div`
 
 const Analiktika__Cards = styled.div`
   display: grid;
-  grid-template-columns: 2fr repeat(2, 1fr);
+  grid-template-columns: ${({ type }) =>
+    type === "type-1"
+      ? "2fr repeat(2, 1fr)"
+      : type === "type-3"
+      ? "1.3fr 1fr"
+      : "1fr 1fr"};
   gap: 10px;
+
+  background-color: ${({ type }) =>
+    type === "type-3" ? "white" : "var(--bg-color)"};
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;

@@ -7,6 +7,8 @@ export const InputWrapper = styled(Input)`
   border-radius: 10px;
   display: inline-block;
   height: 40px;
+  border: none !important;
+
   width: 100%;
   font-size: 16px;
 

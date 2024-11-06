@@ -7,6 +7,8 @@ export const RangePickerCon = styled(RangePicker)`
   background-color: var(--bg-color);
 
   border-radius: 10px;
+  border: none !important;
+
   height: 40px;
   width: 100%;
   font-size: 16px;

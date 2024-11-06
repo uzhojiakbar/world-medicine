@@ -18,6 +18,8 @@ export const SelectContainer = styled(Select)`
   .ant-select-selector {
     font-family: "Vela Sans GX", sans-serif;
     font-weight: 800;
+    border: none !important;
+
     text-transform: capitalize;
 
     color: var(--black);
