@@ -67,7 +67,8 @@ const SalesChart = () => {
         ],
         borderColor: "#1E40AF",
         backgroundColor: "rgba(30, 64, 175, 0.1)",
-        tension: 0.1,
+        tension: 0.4,
+        pointRadius: 0, // Nuqtalarni yo'q qilish
       },
     ],
   };

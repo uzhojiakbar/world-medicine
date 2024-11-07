@@ -8,6 +8,7 @@ const Router = () => {
 
   return (
     <Routes>
+      <Route path="/" element={<Navigate to={"/admin/analiktika"} />} />
       <Route
         path="/admin"
         element={isAdmin ? <AdminPage /> : <Navigate to="/" />}
