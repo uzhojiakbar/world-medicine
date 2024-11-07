@@ -27,7 +27,7 @@ ChartJS.register(
 const CardContainer = styled.div`
   background-color: var(--bg-color);
   border-radius: 12px;
-  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+  padding: 10px;
 `;
 
 const TitleText = styled.h2`
@@ -36,6 +36,10 @@ const TitleText = styled.h2`
   font-weight: 600;
   color: #1e1e1e;
   margin-bottom: 20px;
+`;
+
+const CHartLine = styled.div`
+  height: 300px;
 `;
 
 const SalesChart = () => {
@@ -116,9 +120,9 @@ const SalesChart = () => {
   return (
     <CardContainer>
       <TitleText>Статистика продажи препаратов</TitleText>
-      <div style={{ width: "100%", height: "300px" }}>
+      <CHartLine>
         <Line data={data} options={options} />
-      </div>
+      </CHartLine>
     </CardContainer>
   );
 };

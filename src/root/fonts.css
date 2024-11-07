@@ -19,3 +19,30 @@
   box-sizing: border-box;
   font-family: "Vela Sans GX Regular", sans-serif;
 }
+
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: auto;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  margin-right: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 50px;
+  /* text-transform: ; */
+  margin-right: 2px;
+}

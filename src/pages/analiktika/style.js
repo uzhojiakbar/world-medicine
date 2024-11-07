@@ -15,7 +15,7 @@ const Analiktika__Cards = styled.div`
     type === "type-1"
       ? "2fr repeat(2, 1fr)"
       : type === "type-3"
-      ? "1.3fr 1fr"
+      ? "1.2fr 0.8fr"
       : "1fr 1fr"};
   gap: 10px;
 
