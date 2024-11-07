@@ -7,16 +7,16 @@ export const information = [
   {
     id: 2,
     title: "Количество препаратов",
-    count: 754,
+    count: 172,
   },
   {
     id: 3,
     title: "Отправленных смс",
-    count: 754,
+    count: 355,
   },
   {
     id: 4,
     title: "Количество рецептов",
-    count: 754,
+    count: 900,
   },
 ];

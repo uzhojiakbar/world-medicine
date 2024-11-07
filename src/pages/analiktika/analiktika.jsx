@@ -16,6 +16,7 @@ const Analiktika = () => {
   const [selectedTuman, setSelectedTuman] = useState("");
   const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
   const [nameSurname, setNameSurname] = useState("");
+  const [active, setActive] = useState(1);
 
   const handleViloyatChange = (value) => {
     setSelectedViloyat(value);
@@ -63,7 +64,7 @@ const Analiktika = () => {
         </InfoCard>
       </Analiktika__Cards>
       <Analiktika__Cards type="type-2">
-        <Information />
+        <Information active={active} setActive={setActive} />
         <InfoCard
           title={"Все препараты"}
           rightBtn="Все"
@@ -75,7 +76,7 @@ const Analiktika = () => {
         </InfoCard>
       </Analiktika__Cards>
       <Analiktika__Cards type="type-3">
-        <ChartBlock />
+        <ChartBlock active={active} />
         <PieDiagram />
       </Analiktika__Cards>
     </AnaliktikaCon>

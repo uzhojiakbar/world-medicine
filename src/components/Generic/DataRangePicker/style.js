@@ -16,6 +16,7 @@ export const DisplayText = styled.div`
   font-size: 16px;
   font-family: "Vela Sans GX", sans-serif;
   color: #1e1e1e;
+  font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
