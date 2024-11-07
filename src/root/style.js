@@ -5,6 +5,8 @@ export const MainContainer = styled.div`
   min-width: 400px;
   width: 100vw;
   margin: 0 auto;
+
+  padding: 20px;
 `;
 
 export const Title = styled.div`

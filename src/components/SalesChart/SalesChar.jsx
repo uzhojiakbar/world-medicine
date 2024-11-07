@@ -30,7 +30,7 @@ const CardContainer = styled.div`
   padding: 10px;
 `;
 
-const TitleText = styled.h2`
+export const TitleText = styled.h2`
   font-size: 24px;
   font-family: "Vela Sans GX", sans-serif;
   font-weight: 600;
@@ -62,7 +62,7 @@ const SalesChart = () => {
       {
         label: "Sales",
         data: [
-          45151, 20000, 42000.1, 12000, 40880, 45489, 65485, 39459, 56894,
+          45151, 21000, 42000.1, 12000, 40880, 45489, 65485, 39459, 56894,
           34567, 48154, 45412,
         ],
         borderColor: "#1E40AF",

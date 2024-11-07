@@ -8,8 +8,8 @@ import Input from "../../components/Generic/Input/Input";
 import DateRangePicker from "../../components/Generic/DataRangePicker/DataRangePicker";
 import Information from "../../components/Information/Information";
 import DrugsAnalictic from "../../components/DrugsAnalictic/DrugsAnalictic";
-import SalesChart from "../../components/SalesChart/SalesChar";
 import ChartBlock from "../../components/ChartBlock/ChartBlock";
+import PieDiagram from "../../components/PieDiagram/PieDiagram";
 
 const Analiktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -76,6 +76,7 @@ const Analiktika = () => {
       </Analiktika__Cards>
       <Analiktika__Cards type="type-3">
         <ChartBlock />
+        <PieDiagram />
       </Analiktika__Cards>
     </AnaliktikaCon>
   );

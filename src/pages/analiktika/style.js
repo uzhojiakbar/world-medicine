@@ -5,8 +5,6 @@ const AnaliktikaCon = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-
-  padding: 20px;
 `;
 
 const Analiktika__Cards = styled.div`
