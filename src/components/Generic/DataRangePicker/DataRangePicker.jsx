@@ -1,23 +1,86 @@
 import React, { useState } from "react";
 import { DatePicker } from "antd";
-import { RangePickerCon } from "./style";
-
-const { RangePicker } = DatePicker;
+import {
+  DateContainer,
+  DisplayText,
+  StyledDatePicker,
+  PickerWrapper,
+} from "./style";
+import dayjs from "dayjs";
 
 const DateRangePicker = () => {
-  const [dates, setDates] = useState([null, null]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlarini boshqarish
 
-  const handleDateChange = (value) => {
-    setDates(value);
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    setOpenPicker(null); // Boshlanish sanasi tanlangandan keyin kalendar yopiladi
   };
 
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+    setOpenPicker(null); // Tugash sanasi tanlangandan so'ng kalendar yopiladi
+  };
+
+  // Default ko'rinish uchun qisqa formatlangan sanalar yoki ochroq matn
+  const formattedStartDate = startDate ? (
+    dayjs(startDate).format("DD.MM.YY")
+  ) : openPicker === "start" ? (
+    "" // Start date ochilganda matn bo'sh bo'ladi
+  ) : (
+    <span className="placeholder">Дата начала</span>
+  );
+
+  const formattedEndDate = endDate ? (
+    dayjs(endDate).format("DD.MM.YY")
+  ) : openPicker === "end" ? (
+    "" // End date ochilganda matn bo'sh bo'ladi
+  ) : (
+    <span className="placeholder">Дата окончания</span>
+  );
+
   return (
-    <RangePickerCon
-      value={dates}
-      onChange={handleDateChange}
-      format="DD.MM.YYYY"
-      style={{ width: "100%" }}
-    />
+    <DateContainer>
+      {/* Default holatda ko'rinish: "С {startDate} по {endDate}" */}
+
+      {!openPicker ? (
+        <DisplayText>
+          <span> С </span>
+          <span onClick={() => setOpenPicker("start")}>
+            {formattedStartDate}
+          </span>
+          <span> по </span>
+          <span onClick={() => setOpenPicker("end")}>{formattedEndDate}</span>
+        </DisplayText>
+      ) : (
+        ""
+      )}
+
+      {/* Start Date Picker */}
+      {openPicker === "start" && (
+        <StyledDatePicker
+          open
+          value={startDate}
+          onChange={handleStartDateChange}
+          onOpenChange={(open) => !open && setOpenPicker(null)}
+          format="DD.MM.YYYY"
+          placeholder="Дата начала"
+        />
+      )}
+
+      {/* End Date Picker */}
+      {openPicker === "end" && (
+        <StyledDatePicker
+          open
+          value={endDate}
+          onChange={handleEndDateChange}
+          onOpenChange={(open) => !open && setOpenPicker(null)}
+          format="DD.MM.YYYY"
+          placeholder="Дата окончания"
+        />
+      )}
+    </DateContainer>
   );
 };
 

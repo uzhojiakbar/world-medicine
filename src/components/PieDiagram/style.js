@@ -1,10 +1,12 @@
 // style.js
 import { Doughnut } from "react-chartjs-2";
 import styled from "styled-components";
+import { media } from "../../utils/media";
 
 const PieContainer = styled.div`
   height: 100%;
   width: 100%;
+  max-width: 100% !important;
 
   display: flex;
   align-items: center;
@@ -12,6 +14,13 @@ const PieContainer = styled.div`
 
   padding: 20px;
   background-color: white;
+
+  ${media.mobileL} {
+    max-width: 100% !important;
+  }
+  ${media.mobileMM} {
+    max-width: 100% !important;
+  }
 `;
 
 const Container = styled.div`
@@ -38,6 +47,10 @@ const Container = styled.div`
 
     > .pie-main {
       position: relative;
+    }
+
+    ${media.mobileMM} {
+      flex-direction: column;
     }
   }
 `;

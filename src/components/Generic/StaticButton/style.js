@@ -1,11 +1,19 @@
 import styled from "styled-components";
+import { media } from "../../../utils/media";
 
 // Umumiy konteyner komponenti
 const CardContainer = styled.div`
   display: grid;
   flex-wrap: wrap;
   grid-template-columns: repeat(2, 1fr);
+  word-wrap: break-word;
+  width: 100%;
+
   gap: 10px;
+
+  ${media.mobileL} {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 // Umumiy karta (box) komponenti
@@ -20,6 +28,7 @@ const Card = styled.div`
 
   color: ${(props) => (props.active == "true" ? "#fff" : "#000")};
   font-family: "Vela Sans GX", sans-serif;
+  word-wrap: break-word;
 
   background-color: ${(props) => (props.active == "true" ? "#0026ca" : "#fff")};
   border-radius: 8px;
@@ -38,12 +47,22 @@ const CardTitle = styled.div`
   font-size: 14px;
   font-weight: bold;
   text-align: center;
+  word-wrap: break-word;
+
+  ${media.mobileL} {
+    font-size: 14px;
+  }
 `;
 
 const CardValue = styled.div`
   font-size: 24px;
   font-weight: bold;
   margin-top: 5px;
+  word-wrap: break-word;
+
+  ${media.mobileL} {
+    font-size: 22px;
+  }
 `;
 
 export { CardContainer, Card, CardTitle, CardValue };

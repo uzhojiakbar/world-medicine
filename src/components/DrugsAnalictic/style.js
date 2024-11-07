@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../utils/media";
 
 export const DrugsContainer = styled.div`
   display: grid;
@@ -9,6 +10,10 @@ export const DrugsContainer = styled.div`
   width: 100%;
 
   background-color: white;
+
+  ${media.mobileL} {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 export const DrugsItem = styled.div`
   display: flex;

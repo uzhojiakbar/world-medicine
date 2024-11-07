@@ -28,6 +28,7 @@ const CardContainer = styled.div`
   background-color: var(--bg-color);
   border-radius: 12px;
   padding: 10px;
+  width: 100%; /* Parent divning kengligini o'rnatish */
 `;
 
 export const TitleText = styled.h2`
@@ -40,6 +41,8 @@ export const TitleText = styled.h2`
 
 const CHartLine = styled.div`
   height: 300px;
+  width: 100%;
+  max-width: 100%; /* Mobilda tashqariga chiqmasligi uchun cheklash */
 `;
 
 const SalesChart = () => {
@@ -122,7 +125,11 @@ const SalesChart = () => {
     <CardContainer>
       <TitleText>Статистика продажи препаратов</TitleText>
       <CHartLine>
-        <Line data={data} options={options} />
+        <Line
+          style={{ maxWidth: "100%", minWidth: "100%" }}
+          data={data}
+          options={options}
+        />
       </CHartLine>
     </CardContainer>
   );

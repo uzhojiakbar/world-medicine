@@ -5,6 +5,7 @@ const AnaliktikaCon = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 `;
 
 const Analiktika__Cards = styled.div`
@@ -26,6 +27,10 @@ const Analiktika__Cards = styled.div`
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
+  }
+
+  ${media.mobileMM} {
+    width: 100%;
   }
 `;
 
