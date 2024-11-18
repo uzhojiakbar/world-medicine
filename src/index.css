@@ -29,7 +29,7 @@ body {
   --b: 8px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--main-color);
+  background: var(--primery-color);
   -webkit-mask: repeating-conic-gradient(
       #0000 0deg,
       #000 1deg 70deg,

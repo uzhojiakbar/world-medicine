@@ -3,10 +3,10 @@ import { Navigate } from "react-router-dom";
 import { getCookie } from "../../hooks/useCookie";
 
 const NotAuth = ({ children, toHome = 0 }) => {
-  const login = getCookie("login");
-  const token = getCookie("access");
+  const role = getCookie("role");
+  const token = getCookie("token");
 
-  if (!login || !token) {
+  if (!role || !token) {
     return <Navigate to={`/login`} />;
   }
 

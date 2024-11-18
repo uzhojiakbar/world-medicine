@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Form, Input, Button } from "antd";
+import { useSignIn } from "../../hooks/useLogin";
+import { setCookie } from "../../hooks/useCookie";
+import { useNavigate } from "react-router-dom";
 
 const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   background: #f0f2f5;
-
   width: 100vw;
   height: 100vh;
 `;
@@ -23,25 +24,40 @@ const LoginFormWrapper = styled.div`
 `;
 
 const Login = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+  const signIn = useSignIn();
+  const [loading, setLoading] = useState(false);
+  const nav = useNavigate();
 
-  const onFinishFailed = (errorInfo) => {
-    console.error("Failed:", errorInfo);
+  const handleSubmit = (values) => {
+    const username = values.username;
+    const password = values.password;
+
+    setLoading(true);
+
+    const onSuccess = (user) => {
+      setTimeout(() => {
+        setCookie("role", user?.role);
+        setCookie("token", user?.token);
+        setCookie("name", user?.name);
+        setLoading(false);
+        nav("/");
+      }, 1000);
+    };
+
+    const onError = () => {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    };
+
+    signIn(username, password, onSuccess, onError);
   };
 
   return (
     <LoginContainer>
       <LoginFormWrapper>
         <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Login</h2>
-        <Form
-          name="login"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
-        >
+        <Form name="login" onFinish={handleSubmit} layout="vertical">
           <Form.Item
             label="Username"
             name="username"
@@ -59,12 +75,17 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              Log In
+            <Button type="primary" htmlType="submit" block disabled={loading}>
+              {loading ? "Logging in..." : "Log In"}
             </Button>
           </Form.Item>
         </Form>
       </LoginFormWrapper>
+      {loading && (
+        <div className="loaderWindow">
+          <div className="loader"></div>
+        </div>
+      )}
     </LoginContainer>
   );
 };

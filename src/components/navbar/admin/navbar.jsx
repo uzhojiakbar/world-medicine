@@ -21,9 +21,19 @@ import {
   LogoutOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import useLogout from "../../../hooks/useLogOut";
 
 const AdminNavbar = () => {
   const nav = useCustomNavigate();
+
+  const logout = useLogout();
+
+  const handleLogout = () => {
+    logout(() => {
+      console.log("User logged out successfully");
+      nav("/");
+    });
+  };
 
   // Dropdown menu for profile options
   const items = [
@@ -72,10 +82,7 @@ const AdminNavbar = () => {
     {
       key: "4",
       label: (
-        <ProfileBarButton
-          onClick={() => console.log("Logout clicked")}
-          style={{ cursor: "pointer" }}
-        >
+        <ProfileBarButton onClick={handleLogout} style={{ cursor: "pointer" }}>
           <LogoutOutlined />
           <div>Hisobdan chiqish</div>
         </ProfileBarButton>

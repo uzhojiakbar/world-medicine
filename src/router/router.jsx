@@ -6,7 +6,7 @@ import NotAuth from "../components/Navigate/notAuth";
 import Login from "../pages/login/login";
 
 const Router = () => {
-  const isAdmin = false;
+  const isAdmin = true;
 
   return (
     <Routes>
