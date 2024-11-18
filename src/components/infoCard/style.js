@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const InfoCardWrapper = styled.div`
   background-color: white;
-  padding: 15px 10px;
+  padding: ${({ padding }) => (padding ? padding : "15px 10px")};
   border-radius: 20px;
   border: 1px solid #fafafa;
   width: 100%;

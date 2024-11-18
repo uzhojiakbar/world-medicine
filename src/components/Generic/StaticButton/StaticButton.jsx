@@ -1,11 +1,13 @@
 import React from "react";
 import { Card, CardTitle, CardValue } from "./style";
 
-const StaticButton = ({ onClick, active, title, value }) => {
+const StaticButton = ({ admin = 0, onClick, active, title, value }) => {
   return (
-    <Card onClick={onClick} active={active.toString()}>
+    <Card admin={admin} onClick={onClick} active={active.toString()}>
       <CardTitle>{title}</CardTitle>
-      <CardValue>{value}</CardValue>
+      <CardValue className="value" admin={admin}>
+        {value}
+      </CardValue>
     </Card>
   );
 };

@@ -30,15 +30,34 @@ const Card = styled.div`
   font-family: "Vela Sans GX", sans-serif;
   word-wrap: break-word;
 
-  background-color: ${(props) => (props.active == "true" ? "#0026ca" : "#fff")};
+  background-color: ${(props) =>
+    props.active == "true"
+      ? props.admin
+        ? "var(--admin-primery-color)"
+        : "#0026ca"
+      : "#fff"};
   border-radius: 8px;
 
   cursor: pointer;
 
+  > .value {
+    color: ${(props) =>
+      !(props.active == "true")
+        ? props.admin
+          ? "var(--admin-primery-color)"
+          : "#0026ca"
+        : "#fff"};
+  }
+
   &:hover {
-    background-color: #0026ca;
+    background-color: ${(props) =>
+      props.admin ? "var(--admin-primery-color)" : "#0026ca"};
     opacity: 0.9;
     color: white;
+
+    > .value {
+      color: white;
+    }
   }
 `;
 

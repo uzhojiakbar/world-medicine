@@ -45,7 +45,7 @@ const CHartLine = styled.div`
   max-width: 100%; /* Mobilda tashqariga chiqmasligi uchun cheklash */
 `;
 
-const SalesChart = ({ active = 1 }) => {
+const SalesChart = ({ admin = 0, active = 1 }) => {
   const numsFull = {
     1: [
       31555, 56216, 11294, 15027, 12974, 64116, 18768, 46218, 15762, 66912,
@@ -92,7 +92,7 @@ const SalesChart = ({ active = 1 }) => {
         //   45151, 21000, 42000.1, 12000, 40880, 45489, 65485, 39459, 56894,
         //   34567, 48154, 45412,
         // ],
-        borderColor: "#1E40AF",
+        borderColor: admin ? "#216bf4" : "#1E40AF",
         backgroundColor: "rgba(30, 64, 175, 0.1)",
         tension: 0.4,
         pointRadius: 0, // Nuqtalarni yo'q qilish

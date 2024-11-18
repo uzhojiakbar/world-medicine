@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Analiktika from "../pages/analiktika/analiktika";
+import AdminAnaliktika from "../pages/analiktika/admin/adminAnaliktika";
 
 export const navbarData = [
   {
@@ -84,7 +85,7 @@ export const NavbarDataAdmin = [
     id: 1,
     title: "Аналитика",
     path: "analiktika",
-    element: <h1>Analictika</h1>,
+    element: <AdminAnaliktika />,
     child: [],
     visible: true,
     onlyAdmin: false,

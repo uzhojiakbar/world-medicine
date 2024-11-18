@@ -2,10 +2,10 @@ import React from "react";
 import SalesChart from "../SalesChart/SalesChar";
 import { ChartBlockCon } from "./style";
 
-const ChartBlock = ({ active }) => {
+const ChartBlock = ({ admin = 0, active }) => {
   return (
     <ChartBlockCon>
-      <SalesChart active={active} />
+      <SalesChart admin={admin} active={active} />
     </ChartBlockCon>
   );
 };
