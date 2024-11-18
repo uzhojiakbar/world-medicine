@@ -10,6 +10,7 @@ export const InfoCardWrapper = styled.div`
   font-family: "Vela Sans GX", sans-serif;
 
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   gap: 10px;
 

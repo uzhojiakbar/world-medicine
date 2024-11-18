@@ -5,8 +5,7 @@ export const SelectContainer = styled(Select)`
   border-radius: 10px;
   display: inline-block;
   height: 40px;
-  max-width: 220px;
-  width: 33%;
+  width: 100%;
 
   font-family: "Vela Sans GX";
 

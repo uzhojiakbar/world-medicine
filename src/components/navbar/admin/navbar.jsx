@@ -22,6 +22,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import useLogout from "../../../hooks/useLogOut";
+import { getCookie } from "../../../hooks/useCookie";
 
 const AdminNavbar = () => {
   const nav = useCustomNavigate();
@@ -103,7 +104,11 @@ const AdminNavbar = () => {
             <Link
               className={({ isActive }) => (isActive ? "active" : "")}
               key={v.id || v.title}
-              to={`/admin/${v.path}`}
+              to={
+                getCookie("role") === "admin"
+                  ? `/admin/${v.path}`
+                  : `/menager/${v.path}`
+              }
             >
               {v.title}
             </Link>

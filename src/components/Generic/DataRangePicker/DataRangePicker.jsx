@@ -8,7 +8,7 @@ import {
 } from "./style";
 import dayjs from "dayjs";
 
-const DateRangePicker = () => {
+const DateRangePicker = ({ width }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlarini boshqarish
@@ -45,7 +45,7 @@ const DateRangePicker = () => {
       {/* Default holatda ko'rinish: "С {startDate} по {endDate}" */}
 
       {!openPicker ? (
-        <DisplayText>
+        <DisplayText width={width}>
           <span> С </span>
           <span onClick={() => setOpenPicker("start")}>
             {formattedStartDate}

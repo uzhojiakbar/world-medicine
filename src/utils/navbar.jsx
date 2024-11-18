@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Analiktika from "../pages/analiktika/analiktika";
 import AdminAnaliktika from "../pages/analiktika/admin/adminAnaliktika";
+import SettingsConditionAdmin from "../pages/setingsCondition/admin/index";
 
 export const navbarData = [
   {
@@ -95,7 +96,7 @@ export const NavbarDataAdmin = [
     id: 2,
     title: "Настройка условий",
     path: "nastroyka-usloviya",
-    element: <h1>Настройка условий</h1>,
+    element: <SettingsConditionAdmin />,
     child: [],
     visible: true,
     onlyAdmin: false,
