@@ -2,13 +2,22 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AdminPage from "../pages/admin/admin";
 import { navbarData } from "../utils/navbar";
+import NotAuth from "../components/Navigate/notAuth";
+import Login from "../pages/login/login";
 
 const Router = () => {
-  const isAdmin = true;
+  const isAdmin = false;
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to={"/admin/analiktika"} />} />
+      <Route
+        path="/"
+        element={
+          <NotAuth>
+            <Navigate to={"/admin/analiktika"} />
+          </NotAuth>
+        }
+      />
       <Route
         path="/admin"
         element={isAdmin ? <AdminPage /> : <Navigate to="/" />}
@@ -18,7 +27,8 @@ const Router = () => {
         })}
         <Route path="*" element={<h1>Not Found</h1>} />
       </Route>
-      <Route
+      <Route path="/login" element={<Login />} />
+      {/* <Route
         path="/"
         element={
           <>
@@ -26,7 +36,7 @@ const Router = () => {
             <h1>Home page</h1>
           </>
         }
-      />
+      /> */}
     </Routes>
   );
 };
