@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
-export const AdminPageContainer = styled.div`
+export const MenagerPageContainer = styled.div`
   padding: 0 20px;
 `;

@@ -1,9 +1,9 @@
 import React from "react";
-import { MenagerPageContainer } from "../menager/style";
 import AdminNavbar from "../../components/navbar/admin/navbar";
 import { Outlet } from "react-router-dom";
+import { MenagerPageContainer } from "./style";
 
-const AdminPage = () => {
+const MenagerPage = () => {
   return (
     <MenagerPageContainer>
       <AdminNavbar />
@@ -12,4 +12,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default MenagerPage;

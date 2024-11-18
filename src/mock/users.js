@@ -15,4 +15,12 @@ export const users = [
     role: "main-admin",
     token: "asdiasdasdoasndo",
   },
+  {
+    id: 13211232213,
+    name: "Test menager",
+    login: "menager",
+    password: "menager",
+    role: "menager",
+    token: "asdasdasdasd",
+  },
 ];
