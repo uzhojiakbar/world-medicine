@@ -5,6 +5,51 @@ export const MainContainer = styled.div`
   min-width: 400px;
   width: 100vw;
   margin: 0 auto;
+
+  /* Ant Design Select component uchun umumiy uslublar */
+  .ant-select {
+    font-family: "Vela Sans GX", sans-serif !important;
+    font-weight: 600 !important;
+  }
+
+  .ant-select-selector {
+    font-family: "Vela Sans GX", sans-serif !important;
+    font-weight: 800 !important;
+    border: none !important;
+    text-transform: capitalize;
+    color: var(--black) !important; /* Text rangi */
+    background-color: var(--bg-color) !important; /* Tanlanmagan fon rangi */
+    display: flex;
+    align-items: center; /* Vertikal markazlash */
+    height: 100%; /* Selectning to‘liq balandligi */
+  }
+
+  .ant-select-arrow {
+    font-size: 12px !important;
+    color: var(--text-black) !important;
+  }
+
+  .ant-select-dropdown {
+    font-family: "Vela Sans GX", sans-serif !important;
+    font-weight: 600 !important;
+  }
+
+  .ant-select-item {
+    font-family: "Vela Sans GX", sans-serif !important;
+    font-weight: 600 !important;
+  }
+
+  .ant-select-item-option-selected {
+    font-family: "Vela Sans GX", sans-serif !important;
+    font-weight: 800 !important;
+    background-color: var(--bg-color-selected) !important; /* Tanlangan fon */
+  }
+
+  .ant-select-item-option-active {
+    font-family: "Vela Sans GX", sans-serif !important;
+    font-weight: 600 !important;
+    background-color: var(--bg-hover) !important; /* Hover fon rangi */
+  }
 `;
 
 export const Title = styled.div`
