@@ -7,12 +7,16 @@ import DateRangePicker from "../../../components/Generic/DataRangePicker/DataRan
 import Button from "../../../components/Generic/Button/Button";
 import IconPlus from "../../../assets/svg/IconPlus";
 import { Viloyatlar, Tumanlar, MestaRabot } from "../../../mock/data";
+import { contractData } from "../../../mock/contractData";
+import Edit from "../../../assets/svg/Edit";
+import Pauza from "../../../assets/svg/Pauza";
 
 const SettingsConditionAdmin = () => {
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedWorkPlace, setSelectedWorkPlace] = useState("");
   const [nameSurname, setNameSurname] = useState("");
+  const [filteredData, setFilteredData] = useState(contractData);
 
   const handleRegionChange = (value) => {
     setSelectedRegion(value);
@@ -27,6 +31,21 @@ const SettingsConditionAdmin = () => {
 
   const handleWorkPlaceChange = (value) => {
     setSelectedWorkPlace(value);
+  };
+
+  const handleFilter = () => {
+    // Filtrlash
+    const filtered = contractData.filter((row) => {
+      return (
+        (selectedRegion === "" || row.region === selectedRegion) && // Region bo'yicha
+        (selectedDistrict === "" || row.district === selectedDistrict) && // Tuman bo'yicha
+        (selectedWorkPlace === "" ||
+          row.workplace.includes(selectedWorkPlace)) && // Ish joyi bo'yicha
+        (nameSurname === "" ||
+          row.name.toLowerCase().includes(nameSurname.toLowerCase())) // Ism bo'yicha
+      );
+    });
+    setFilteredData(filtered); // Filtrlangan ma'lumotlarni saqlash
   };
 
   return (
@@ -55,11 +74,10 @@ const SettingsConditionAdmin = () => {
               options={MestaRabot[selectedDistrict] || []}
               onValueChange={handleWorkPlaceChange}
             />
-            <Input
-              onChange={(e) => setNameSurname(e.target.value)}
-              placeholder={"Ф.И.О."}
-            />
+            <Input onChange={setNameSurname} placeholder={"Ф.И.О."} />
             <DateRangePicker />
+            <Button onClick={handleFilter}>Применить фильтр</Button>{" "}
+            {/* Filtrni qo'llash tugmasi */}
           </SettingsCards.Filter>
         </SettingsCards>
 
@@ -70,30 +88,37 @@ const SettingsConditionAdmin = () => {
               <thead>
                 <tr>
                   <th>№</th>
-                  <th>Ф.И.О.</th>
+                  <th className="idfixed">Ф.И.О.</th>
                   <th>Место работы</th>
                   <th>Дата создания</th>
                   <th>Статус</th>
                   <th>Выполнено (KPI)</th>
+                  <th>Редактировать</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Иванов Дмитрий Евгеньевич</td>
-                  <td>Ташкент, Городская больница</td>
-                  <td>20.12.2024</td>
-                  <td style={{ color: "green" }}>Активен</td>
-                  <td>12%</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Григорьев Алексей Иванов</td>
-                  <td>Ташкент, Медицинский центр</td>
-                  <td>21.12.2024</td>
-                  <td style={{ color: "red" }}>Действителен</td>
-                  <td>10%</td>
-                </tr>
+                {filteredData.map((row) => (
+                  <tr key={row.id}>
+                    <td>№{row.id}</td>
+                    <td className="idfixed">{row.name}</td>
+                    <td>{row.workplace}</td>
+                    <td>Создан {row.createdDate}</td>
+                    <td>
+                      <div className={`status ${row.statusClass}`}>
+                        {row.status}
+                      </div>
+                    </td>
+                    <td>{row.kpi}</td>
+                    <td>
+                      <button>
+                        <Edit />
+                      </button>
+                      <button>
+                        <Pauza />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </ResponsiveTable>

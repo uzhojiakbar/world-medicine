@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../utils/media";
 
 export const MainContainer = styled.div`
   max-width: 1920px;
@@ -61,6 +62,10 @@ export const Title = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${media.mobileL} {
+    font-size: 28px;
+  }
 `;
 
 export const TitleSmall = styled.div`

@@ -17,9 +17,9 @@ export const users = [
   },
   {
     id: 13211232213,
-    name: "Test menager",
-    login: "menager",
-    password: "menager",
+    name: "Test manager",
+    login: "mng",
+    password: "mng",
     role: "menager",
     token: "asdasdasdasd",
   },

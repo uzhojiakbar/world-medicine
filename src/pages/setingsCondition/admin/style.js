@@ -69,28 +69,86 @@ const ResponsiveTable = styled.div`
 
   th,
   td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
+    padding: 12px; /* Ichki bo‘shliq */
+    text-align: left; /* Matn hizalash */
+    font-family: "Vela Sans GX", sans-serif;
   }
 
   th {
-    background-color: #f4f4f4;
+    background-color: white; /* Header fon rangi */
+    color: #333; /* Header matn rangi */
+    font-weight: 700; /* Qalin matn */
+
+    color: #00000033;
+    font-family: "Vela Sans GX", sans-serif;
+    font-weight: 600;
+  }
+
+  td {
+    background-color: #f7f8fc; /* Jadval uyalarining default foni */
+    color: #333; /* Default matn rangi */
+  }
+
+  td {
+    padding: 17px !important;
+
+    > button {
+      border: none;
+      outline: none;
+    }
+  }
+
+  .idfixed {
+    position: sticky;
+    left: 0;
+  }
+  /* Status uchun maxsus rang */
+  .status {
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff; /* Matn oq rang */
+    text-align: center;
+
+    width: 200px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .status.active {
+    background-color: #84ffbd; /* Yashil fon */
+    color: #000;
+  }
+
+  .status.inactive {
+    background-color: #fb3748; /* Qizil fon */
+  }
+  .status.nemoder {
+    background-color: #ffdb43; /* Qizil fon */
+    color: #000;
+  }
+
+  /* Har bir satrga hover effekti */
+  tr:hover {
+    background-color: #f9f9f9; /* Hover effekti */
   }
 
   @media (max-width: 768px) {
     th,
     td {
-      font-size: 14px;
-      padding: 6px;
+      font-size: 14px; /* Kichik ekran uchun matn o‘lchami */
+      padding: 10px;
     }
   }
 
   @media (max-width: 480px) {
     th,
     td {
-      font-size: 12px;
-      padding: 4px;
+      font-size: 12px; /* Mobil uchun matn o‘lchami */
+      padding: 8px;
     }
   }
 `;
