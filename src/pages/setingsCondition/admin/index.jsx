@@ -11,6 +11,7 @@ import { Viloyatlar, Tumanlar, MestaRabot } from "../../../mock/data";
 import { contractData } from "../../../mock/contractData";
 import Edit from "../../../assets/svg/Edit";
 import Pauza from "../../../assets/svg/Pauza";
+import { useNavigate } from "react-router-dom";
 
 const SettingsConditionAdmin = () => {
   const [selectedRegion, setSelectedRegion] = useState("");
@@ -66,11 +67,15 @@ const SettingsConditionAdmin = () => {
     setIsEditOpen(false); // Modalni yopish
   };
 
+  const nav = useNavigate();
+
   return (
     <SettingsContainer>
       <Title>
         <span>Настройка условий</span>
-        <Button icon={<IconPlus />}>Создать договор</Button>
+        <Button onClick={() => nav("../create-contract")} icon={<IconPlus />}>
+          Создать договор
+        </Button>
       </Title>
       <SettingsCards.Con>
         {/* Filters */}

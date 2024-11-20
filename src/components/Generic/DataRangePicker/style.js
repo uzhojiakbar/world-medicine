@@ -20,6 +20,7 @@ export const DisplayText = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: var(--bg-color);
   border-radius: 10px;
   padding: 0 10px;

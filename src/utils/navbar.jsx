@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Analiktika from "../pages/analiktika/analiktika";
 import AdminAnaliktika from "../pages/analiktika/admin/adminAnaliktika";
 import SettingsConditionAdmin from "../pages/setingsCondition/admin/index";
+import AdminCreateContract from "../pages/createContract/admin/adminCreateContract";
 
 export const navbarData = [
   {
@@ -117,6 +118,16 @@ export const NavbarDataAdmin = [
     title: "Депозит",
     path: "depozit",
     element: <h1>Депозит</h1>,
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 4,
+    title: "Создать договор",
+    path: "create-contract",
+    element: <AdminCreateContract />,
     child: [],
     visible: true,
     onlyAdmin: false,

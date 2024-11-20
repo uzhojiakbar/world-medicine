@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { DatePicker } from "antd";
-import {
-  DateContainer,
-  DisplayText,
-  StyledDatePicker,
-  PickerWrapper,
-} from "./style";
+import { DateContainer, DisplayText, StyledDatePicker } from "./style";
 import dayjs from "dayjs";
+import CalendarIcon from "../../../assets/svg/CalendarIcon";
 
-const DateRangePicker = () => {
+// icon = <CalendarIcon />,
+// suffixIcon={icon} // Custom ikonka
+
+const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlarini boshqarish
@@ -46,12 +44,15 @@ const DateRangePicker = () => {
 
       {!openPicker ? (
         <DisplayText>
-          <span> С </span>
-          <span onClick={() => setOpenPicker("start")}>
-            {formattedStartDate}
-          </span>
-          <span> по </span>
-          <span onClick={() => setOpenPicker("end")}>{formattedEndDate}</span>
+          <div>
+            <span> С </span>
+            <span onClick={() => setOpenPicker("start")}>
+              {formattedStartDate}
+            </span>
+            <span> по </span>
+            <span onClick={() => setOpenPicker("end")}>{formattedEndDate}</span>
+          </div>
+          <div onClick={() => setOpenPicker("start")}>{icon}</div>
         </DisplayText>
       ) : (
         ""

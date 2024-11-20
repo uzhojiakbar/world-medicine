@@ -1,13 +1,14 @@
 import React from "react";
 import { SelectContainer } from "./style";
 
-const PrimarySelect = ({ def, options, onValueChange }) => {
+const PrimarySelect = ({ def, borderRadius, options, onValueChange }) => {
   const handleValueChange = (value) => {
     if (onValueChange) onValueChange(value); // Callbackni chaqirish
   };
 
   return (
     <SelectContainer
+      borderRadius={borderRadius}
       placeholder={def || "Выберите"} // Placeholder yoki default qiymat
       defaultValue={def || (options?.length > 0 ? options[0].value : undefined)}
       onChange={handleValueChange}
