@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Modal } from "antd"; // Ant Design Modal
 import { SettingsContainer, SettingsCards, ResponsiveTable } from "./style";
 import { Title, TitleSmall } from "../../../root/style";
 import PrimarySelect from "../../../components/Generic/Select/Select";
@@ -18,6 +19,10 @@ const SettingsConditionAdmin = () => {
   const [nameSurname, setNameSurname] = useState("");
   const [filteredData, setFilteredData] = useState(contractData);
 
+  // Modal uchun state
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [currentRow, setCurrentRow] = useState(null);
+
   const handleRegionChange = (value) => {
     setSelectedRegion(value);
     setSelectedDistrict("");
@@ -34,18 +39,31 @@ const SettingsConditionAdmin = () => {
   };
 
   const handleFilter = () => {
-    // Filtrlash
     const filtered = contractData.filter((row) => {
       return (
-        (selectedRegion === "" || row.region === selectedRegion) && // Region bo'yicha
-        (selectedDistrict === "" || row.district === selectedDistrict) && // Tuman bo'yicha
+        (selectedRegion === "" || row.region === selectedRegion) &&
+        (selectedDistrict === "" || row.district === selectedDistrict) &&
         (selectedWorkPlace === "" ||
-          row.workplace.includes(selectedWorkPlace)) && // Ish joyi bo'yicha
+          row.workplace.includes(selectedWorkPlace)) &&
         (nameSurname === "" ||
-          row.name.toLowerCase().includes(nameSurname.toLowerCase())) // Ism bo'yicha
+          row.name.toLowerCase().includes(nameSurname.toLowerCase()))
       );
     });
-    setFilteredData(filtered); // Filtrlangan ma'lumotlarni saqlash
+    setFilteredData(filtered);
+  };
+
+  const handleEdit = (row) => {
+    setCurrentRow(row);
+    setIsEditOpen(true); // Modalni ochish
+  };
+
+  const handleSave = () => {
+    setFilteredData((prevData) =>
+      prevData.map((row) =>
+        row.id === currentRow.id ? { ...row, ...currentRow } : row
+      )
+    );
+    setIsEditOpen(false); // Modalni yopish
   };
 
   return (
@@ -76,8 +94,9 @@ const SettingsConditionAdmin = () => {
             />
             <Input onChange={setNameSurname} placeholder={"Ф.И.О."} />
             <DateRangePicker />
-            <Button onClick={handleFilter}>Применить фильтр</Button>{" "}
-            {/* Filtrni qo'llash tugmasi */}
+            <Button MobilehiddenText={1} onClick={handleFilter}>
+              Применить фильтр
+            </Button>
           </SettingsCards.Filter>
         </SettingsCards>
 
@@ -97,33 +116,85 @@ const SettingsConditionAdmin = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row) => (
-                  <tr key={row.id}>
-                    <td>№{row.id}</td>
-                    <td className="idfixed">{row.name}</td>
-                    <td>{row.workplace}</td>
-                    <td>Создан {row.createdDate}</td>
-                    <td>
-                      <div className={`status ${row.statusClass}`}>
-                        {row.status}
-                      </div>
-                    </td>
-                    <td>{row.kpi}</td>
-                    <td>
-                      <button>
-                        <Edit />
-                      </button>
-                      <button>
-                        <Pauza />
-                      </button>
+                {filteredData.length > 0 ? (
+                  filteredData.map((row) => (
+                    <tr key={row.id}>
+                      <td>№{row.id}</td>
+                      <td className="idfixed">{row.name}</td>
+                      <td>{row.workplace}</td>
+                      <td>Создан {row.createdDate}</td>
+                      <td>
+                        <div className={`status ${row.statusClass}`}>
+                          {row.status}
+                        </div>
+                      </td>
+                      <td>{row.kpi}</td>
+                      <td className="buttons">
+                        <button onClick={() => handleEdit(row)}>
+                          <Edit />
+                        </button>
+                        <button>
+                          <Pauza />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" style={{ textAlign: "center" }}>
+                      Нет данных для отображения
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </ResponsiveTable>
         </SettingsCards>
       </SettingsCards.Con>
+
+      {/* Edit Modal */}
+      {isEditOpen && (
+        <Modal
+          title="Редактировать договор"
+          visible={isEditOpen}
+          onOk={handleSave}
+          onCancel={() => setIsEditOpen(false)}
+        >
+          <div>
+            <Input
+              value={currentRow?.name}
+              onChange={(e) =>
+                setCurrentRow({ ...currentRow, name: e.target.value })
+              }
+              placeholder="Ф.И.О."
+            />
+            <DateRangePicker
+              value={currentRow?.createdDate}
+              onChange={(date) =>
+                setCurrentRow({ ...currentRow, createdDate: date })
+              }
+            />
+            <PrimarySelect
+              def={currentRow?.status}
+              options={[
+                { value: "Выписан", label: "Выписан" },
+                { value: "На модерации", label: "На модерации" },
+                { value: "Отказано", label: "Отказано" },
+              ]}
+              onValueChange={(value) =>
+                setCurrentRow({ ...currentRow, status: value })
+              }
+            />
+            <Input
+              value={currentRow?.kpi}
+              onChange={(e) =>
+                setCurrentRow({ ...currentRow, kpi: e.target.value })
+              }
+              placeholder="KPI"
+            />
+          </div>
+        </Modal>
+      )}
     </SettingsContainer>
   );
 };

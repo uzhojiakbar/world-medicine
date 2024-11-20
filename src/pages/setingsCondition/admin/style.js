@@ -69,28 +69,26 @@ const ResponsiveTable = styled.div`
 
   th,
   td {
-    padding: 12px; /* Ichki bo‘shliq */
     text-align: left; /* Matn hizalash */
     font-family: "Vela Sans GX", sans-serif;
   }
 
   th {
     background-color: white; /* Header fon rangi */
-    color: #333; /* Header matn rangi */
     font-weight: 700; /* Qalin matn */
 
     color: #00000033;
     font-family: "Vela Sans GX", sans-serif;
     font-weight: 600;
+
+    padding: 18px 12px; /* Yuqoridan va pastdan */
   }
 
   td {
-    background-color: #f7f8fc; /* Jadval uyalarining default foni */
     color: #333; /* Default matn rangi */
-  }
-
-  td {
     padding: 17px !important;
+
+    background-color: #f7f8fc; /* Jadval uyalarining default foni */
 
     > button {
       border: none;
@@ -131,15 +129,46 @@ const ResponsiveTable = styled.div`
     color: #000;
   }
 
-  /* Har bir satrga hover effekti */
+  tr {
+    background-color: #f7f8fc; /* Jadval uyalarining default foni */
+    padding: 18px 12px;
+  }
   tr:hover {
-    background-color: #f9f9f9; /* Hover effekti */
+    td {
+      background-color: #f1f1f1; /* Hover effekti */
+    }
+  }
+
+  tbody tr {
+    border-bottom: 10px solid white;
+  }
+
+  thead tr th {
+    text-align: left !important;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 10px;
+
+    > button {
+      background-color: white;
+      padding: 5px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f7f8fc; /* Jadval uyalarining default foni */
+      }
+    }
   }
 
   @media (max-width: 768px) {
     th,
     td {
-      font-size: 14px; /* Kichik ekran uchun matn o‘lchami */
+      font-size: 14px;
       padding: 10px;
     }
   }
@@ -147,7 +176,7 @@ const ResponsiveTable = styled.div`
   @media (max-width: 480px) {
     th,
     td {
-      font-size: 12px; /* Mobil uchun matn o‘lchami */
+      font-size: 12px;
       padding: 8px;
     }
   }

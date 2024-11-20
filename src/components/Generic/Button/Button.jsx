@@ -12,7 +12,6 @@ const ButtonStyled = styled.button`
   padding: 10px 20px;
 
   background-color: #007bff; /* Primary rang */
-  color: #fff; /* Oq rangli text */
 
   border: none;
   border-radius: 12px; /* Dumaloq burchaklar */
@@ -21,6 +20,8 @@ const ButtonStyled = styled.button`
 
   cursor: pointer;
   transition: background-color 0.3s;
+
+  color: #fff; /* Oq rangli text */
 
   &:hover {
     background-color: #0056b3; /* Hover effekti */
@@ -38,15 +39,27 @@ const ButtonStyled = styled.button`
     > .child {
       display: none;
     }
+
+    > .hidden {
+      display: flex !important;
+    }
   }
 `;
 
 // Button Component
-const Button = ({ children, icon, onClick, disabled }) => {
+const Button = ({
+  children,
+  MobilehiddenText = 0,
+  icon,
+  onClick,
+  disabled,
+}) => {
   return (
     <ButtonStyled onClick={onClick} disabled={disabled}>
       {icon && <span>{icon}</span>} {/* Icon ko‘rsatish */}
-      <span className="child">{children}</span>
+      <span className={`child ${MobilehiddenText ? "hidden" : ""}`}>
+        {children}
+      </span>
     </ButtonStyled>
   );
 };

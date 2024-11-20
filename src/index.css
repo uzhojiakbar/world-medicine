@@ -70,3 +70,9 @@ body {
     transform: rotate(0.5turn);
   }
 }
+
+/* text */
+
+.txtcenter {
+  text-align: center !important;
+}
