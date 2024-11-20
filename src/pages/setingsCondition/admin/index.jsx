@@ -102,6 +102,7 @@ const SettingsConditionAdmin = () => {
 
         {/* Responsive Table */}
         <SettingsCards>
+          <TitleSmall>Список договоров</TitleSmall>
           <ResponsiveTable>
             <table>
               <thead>
