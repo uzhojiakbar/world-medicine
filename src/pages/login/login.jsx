@@ -54,7 +54,7 @@ const Login = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
     >
       <LoginWrapper
         initial={{ scale: 0.8 }}
@@ -67,7 +67,7 @@ const Login = () => {
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
             >
               <img
                 src={LogoImg}
@@ -86,7 +86,7 @@ const Login = () => {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
             >
               <Language imgIcon={Global} />
             </motion.div>
@@ -98,7 +98,7 @@ const Login = () => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             Добро пожаловать в World Medicine
           </motion.p>
@@ -114,7 +114,7 @@ const Login = () => {
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
               >
                 <Form.Item
                   label="Логин, почта или номер телефона"
@@ -135,7 +135,7 @@ const Login = () => {
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.5 }}
+                transition={{ delay: 0.6, duration: 0.3 }}
               >
                 <Form.Item>
                   <Button

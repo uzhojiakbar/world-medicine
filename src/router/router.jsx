@@ -10,25 +10,22 @@ const MenagerPage = lazy(() => import("../pages/menager/menager"));
 const AdminPage = lazy(() => import("../pages/admin/admin"));
 const Login = lazy(() => import("../pages/login/login"));
 
-const Router = () => {
-  const renderAdminRoutes = () =>
-    NavbarDataAdmin.map(({ id, path, element }) => (
-      <Route key={id} path={path} element={element} />
-    ));
+// Loader fallback
+const Loader = () => (
+  <div className="loaderWindow">
+    <div className="loader"></div>
+  </div>
+);
 
-  const renderMenagerRoutes = () =>
-    navbarData.map(({ id, path, element }) => (
-      <Route key={id} path={path} element={element} />
+const Router = () => {
+  // Function to generate routes dynamically
+  const renderRoutes = (routes, Wrapper) =>
+    routes.map(({ id, path, element }) => (
+      <Route key={id} path={path} element={<Wrapper>{element}</Wrapper>} />
     ));
 
   return (
-    <Suspense
-      fallback={
-        <div className="loaderWindow">
-          <div className="loader"></div>
-        </div>
-      }
-    >
+    <Suspense fallback={<Loader />}>
       <Routes>
         {/* Root Route */}
         <Route
@@ -36,10 +33,10 @@ const Router = () => {
           element={
             <NotAuth>
               <OnlyMenager>
-                <Navigate to="/menager/analiktika" />
+                <Navigate to="/menager/analiktika" replace />
               </OnlyMenager>
               <OnlyAdmin>
-                <Navigate to="/admin" />
+                <Navigate to="/admin" replace />
               </OnlyAdmin>
             </NotAuth>
           }
@@ -47,27 +44,27 @@ const Router = () => {
 
         {/* Admin Routes */}
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
             <OnlyAdmin>
               <AdminPage />
             </OnlyAdmin>
           }
         >
-          {renderAdminRoutes()}
+          {renderRoutes(NavbarDataAdmin, OnlyAdmin)}
           <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
 
         {/* Menager Routes */}
         <Route
-          path="/menager"
+          path="/menager/*"
           element={
             <OnlyMenager>
               <MenagerPage />
             </OnlyMenager>
           }
         >
-          {renderMenagerRoutes()}
+          {renderRoutes(navbarData, OnlyMenager)}
           <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
 
