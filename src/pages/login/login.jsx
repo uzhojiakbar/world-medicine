@@ -90,18 +90,14 @@ const Login = () => {
               />
             </motion.div>
           </LogoContainer>
-          <motion.div
-            initial={{ x: "-100vw" }}
-            animate={{ x: 0 }}
-            transition={{ type: "spring", stiffness: 50, damping: 20 }}
-          ></motion.div>
+
           <LanguageContainer>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.3 }}
             >
-              <Language imgIcon={Global} onChange={setLanguage} />
+              <Language noText="true" imgIcon={Global} onChange={setLanguage} />
             </motion.div>
           </LanguageContainer>
         </ImageSection>
@@ -113,18 +109,7 @@ const Login = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <TopTitle>
-              {translate("welcome")}{" "}
-              <LanguageContainer className="select">
-                <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3, duration: 0.3 }}
-                >
-                  <Language imgIcon={Global} onChange={setLanguage} />
-                </motion.div>
-              </LanguageContainer>
-            </TopTitle>
+            <TopTitle>{translate("welcome")} </TopTitle>
           </motion.p>
 
           <FormSectionBottom>

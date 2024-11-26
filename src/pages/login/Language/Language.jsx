@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-import { Select } from "antd";
+import { Dropdown, Menu } from "antd";
 import styled from "styled-components";
 
-const { Option } = Select;
-
-// Styled rasm konteyneri
 const LanguageIcon = styled.img`
   width: 20px;
   height: 20px;
-  margin-right: 8px;
+  margin-right: ${(props) => (props.noText ? "0" : "8px")};
   vertical-align: middle;
 `;
 
-const Language = ({ imgIcon, onChange = () => {} }) => {
+const Language = ({ imgIcon, noText = false, onChange = () => {} }) => {
   const [language, setLanguage] = useState(
     localStorage.getItem("lang") || "ru"
-  ); // Til uchun boshqaruvchi holat
+  );
 
   const languages = [
     { value: "ru", label: "Русский", icon: imgIcon },
@@ -25,23 +22,43 @@ const Language = ({ imgIcon, onChange = () => {} }) => {
 
   const handleLanguageChange = (value) => {
     setLanguage(value); // Holatni yangilash
+    localStorage.setItem("lang", value); // Tanlangan tilni saqlash
     onChange(value); // OnChange funksiyasini chaqirish
   };
 
-  return (
-    <Select
-      value={language} // Tanlangan tilni ko‘rsatish
-      style={{ width: 160 }}
-      onChange={handleLanguageChange} // Til o‘zgarishini boshqarish
-      dropdownRender={(menu) => <div>{menu}</div>}
-    >
+  const selectedLanguage = languages.find((lang) => lang.value === language);
+
+  const menu = (
+    <Menu>
       {languages.map((lang) => (
-        <Option key={lang.value} value={lang.value}>
-          <LanguageIcon src={lang.icon} alt={`${lang.label} icon`} />
+        <Menu.Item
+          key={lang.value}
+          onClick={() => handleLanguageChange(lang.value)}
+        >
+          {!noText && (
+            <LanguageIcon
+              src={lang.icon}
+              alt={`${lang.label} icon`}
+              noText={noText}
+            />
+          )}
           {lang.label}
-        </Option>
+        </Menu.Item>
       ))}
-    </Select>
+    </Menu>
+  );
+
+  return (
+    <Dropdown overlay={menu} trigger={["click"]}>
+      <div style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+        <LanguageIcon
+          src={selectedLanguage?.icon}
+          alt={`${selectedLanguage?.label} icon`}
+          noText={noText}
+        />
+        {!noText && selectedLanguage?.label}
+      </div>
+    </Dropdown>
   );
 };
 

@@ -58,11 +58,8 @@ const ImageSection = styled.div`
   border-radius: 40px;
 
   @media (max-width: 1024px) {
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    display: none;
+    backdrop-filter: blur(20px);
+    border-radius: 0;
   }
 `;
 
@@ -80,6 +77,7 @@ const FormSection = styled.div`
     padding: 40px; /* Tablet uchun padding */
     justify-content: flex-end;
     gap: 40px;
+    border-radius: 0;
   }
 
   @media (max-width: 768px) {
@@ -157,16 +155,27 @@ const LogoContainer = styled.div`
     width: 180px;
     height: auto;
   }
+
+  @media (max-width: 1024px) {
+    top: 10px;
+    left: 10px;
+
+    img {
+      width: 150px; /* Tablet uchun kichikroq logo */
+    }
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 120px; /* Mobil uchun kichik logo */
+    }
+  }
 `;
 
 const LanguageContainer = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
-
-  @media (max-width: 1024px) {
-    position: static;
-  }
 `;
 
 const ButtonWrapper = styled.div`
