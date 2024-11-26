@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 import LoginImg from "../../assets/LoginImg.svg";
+import LoginBg from "../../assets/loginBg.png";
 
 // Styled Components
 const LoginContainer = styled(motion.div)`
@@ -12,7 +13,7 @@ const LoginContainer = styled(motion.div)`
   min-height: 100vh;
 
   min-width: 320px;
-  background: linear-gradient(135deg, #e3f2fd, #f0f4c3);
+  background: url(${LoginBg}) center center / cover no-repeat;
   margin: 0 auto;
   padding: 20px;
 `;
@@ -24,7 +25,6 @@ const LoginWrapper = styled(motion.div)`
   max-width: 1200px;
   height: 600px;
   border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
 
