@@ -1,9 +1,10 @@
 import React from "react";
 import { InputWrapper } from "./style";
 
-const Input = ({ placeholder, onChange = () => {} }) => {
+const Input = ({ placeholder, type, onChange = () => {} }) => {
   return (
     <InputWrapper
+      type={type}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder || ""}
     />

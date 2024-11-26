@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome to World Medicine",
+  "login": "Login to your account",
+  "username": "Username, email, or phone number",
+  "password": "Password",
+  "placeholder_username": "Type here",
+  "placeholder_password": "123456",
+  "forgot_password": "Forgot password?",
+  "back": "Back",
+  "login_button": "Login"
+}

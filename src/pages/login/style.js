@@ -15,10 +15,6 @@ const LoginContainer = styled(motion.div)`
   background: linear-gradient(135deg, #e3f2fd, #f0f4c3);
   margin: 0 auto;
   padding: 20px;
-
-  @media (max-width: 768px) {
-    padding: 10px;
-  }
 `;
 
 const LoginWrapper = styled(motion.div)`
@@ -27,7 +23,6 @@ const LoginWrapper = styled(motion.div)`
   width: 1200px;
   max-width: 1200px;
   height: 600px;
-  background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -35,13 +30,19 @@ const LoginWrapper = styled(motion.div)`
 
   @media (max-width: 1024px) {
     width: 90%;
-    height: auto;
+    min-height: 600px;
+
     flex-direction: column; /* Tablet va mobil uchun ustma-ust joylashadi */
   }
 
   @media (max-width: 768px) {
     width: 100%;
     border-radius: 12px;
+    min-height: 800px;
+  }
+
+  @media (max-width: 600px) {
+    min-height: 800px;
   }
 `;
 
@@ -54,29 +55,71 @@ const ImageSection = styled.div`
   justify-content: flex-start;
   position: relative;
 
+  border-radius: 40px;
+
   @media (max-width: 1024px) {
-    height: 250px; /* Tablet uchun balandlik */
+    display: none;
   }
 
   @media (max-width: 768px) {
-    height: 0; /* Mobil uchun balandlik */
     display: none;
   }
 `;
 
 const FormSection = styled.div`
   flex: 1;
-  padding: 50px;
   display: flex;
   flex-direction: column;
+  background: #ffffff;
+
+  border-radius: 40px;
   justify-content: space-between;
+  padding: 30px;
 
   @media (max-width: 1024px) {
     padding: 40px; /* Tablet uchun padding */
+    justify-content: flex-end;
+    gap: 40px;
   }
 
   @media (max-width: 768px) {
-    padding: 20px; /* Mobil uchun kichikroq padding */
+    padding: 20px 20px;
+    padding-top: 40px;
+
+    width: 100%;
+    height: 100%;
+    justify-content: space-evenly;
+  }
+`;
+
+const TopTitle = styled.div`
+  font-family: "Vela Sans GX";
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 55px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+
+  .select {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    .select {
+      display: inline-block;
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 26px;
+    line-height: 55px;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 24px;
   }
 `;
 
@@ -92,8 +135,8 @@ const Title = styled.h2`
   color: #333;
   margin-bottom: 30px;
 
-  font-family: "Vela Sans GX";
-  font-weight: 500;
+  font-family: "Vela Sans GX Regular";
+  font-weight: 400;
 
   @media (max-width: 1024px) {
     font-size: 24px; /* Tablet uchun shrift kichraytiriladi */
@@ -114,21 +157,6 @@ const LogoContainer = styled.div`
     width: 180px;
     height: auto;
   }
-
-  @media (max-width: 1024px) {
-    top: 10px;
-    left: 10px;
-
-    img {
-      width: 150px; /* Tablet uchun kichikroq logo */
-    }
-  }
-
-  @media (max-width: 768px) {
-    img {
-      width: 120px; /* Mobil uchun kichik logo */
-    }
-  }
 `;
 
 const LanguageContainer = styled.div`
@@ -137,13 +165,21 @@ const LanguageContainer = styled.div`
   right: 20px;
 
   @media (max-width: 1024px) {
-    top: 10px;
-    right: 10px;
+    position: static;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  height: 60px;
 
   @media (max-width: 768px) {
-    top: 5px;
-    right: 5px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    height: 130px;
   }
 `;
 
@@ -156,4 +192,6 @@ export {
   LogoContainer,
   LanguageContainer,
   FormSectionBottom,
+  TopTitle,
+  ButtonWrapper,
 };
