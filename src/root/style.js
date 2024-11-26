@@ -3,9 +3,10 @@ import { media } from "../utils/media";
 
 export const MainContainer = styled.div`
   max-width: 1920px;
-  min-width: 400px;
+  min-width: 320px;
   width: 100vw;
   margin: 0 auto;
+  min-height: 100vh;
 
   /* Ant Design Select component uchun umumiy uslublar */
   .ant-select {
