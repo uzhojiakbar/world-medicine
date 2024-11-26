@@ -1,0 +1,11 @@
+{
+  "welcome": "World Medicine ga Hush Kelibsiz!",
+  "login": "Hisobga kirish",
+  "username": "Login, E-Pochta yoki telefon raqami",
+  "password": "Parol",
+  "placeholder_username": "Bu yerga yozing",
+  "placeholder_password": "123456",
+  "forgot_password": "Parolni esingizdan chiqardingmi?",
+  "back": "Orqaga",
+  "login_button": "Kirish"
+}

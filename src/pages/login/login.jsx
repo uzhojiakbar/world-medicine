@@ -121,7 +121,7 @@ const Login = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3, duration: 0.3 }}
                 >
-                  <Language imgIcon={Global} />
+                  <Language imgIcon={Global} onChange={setLanguage} />
                 </motion.div>
               </LanguageContainer>
             </TopTitle>

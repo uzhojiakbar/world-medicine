@@ -12,8 +12,10 @@ const LanguageIcon = styled.img`
   vertical-align: middle;
 `;
 
-const Language = ({ imgIcon }) => {
-  const [language, setLanguage] = useState("ru");
+const Language = ({ imgIcon, onChange = () => {} }) => {
+  const [language, setLanguage] = useState(
+    localStorage.getItem("lang") || "ru"
+  ); // Til uchun boshqaruvchi holat
 
   const languages = [
     { value: "ru", label: "Русский", icon: imgIcon },
@@ -21,18 +23,16 @@ const Language = ({ imgIcon }) => {
     { value: "uz", label: "O'zbek", icon: imgIcon },
   ];
 
-  const handleChange = (value) => {
-    setLanguage(value);
-    console.log("Selected language:", value);
+  const handleLanguageChange = (value) => {
+    setLanguage(value); // Holatni yangilash
+    onChange(value); // OnChange funksiyasini chaqirish
   };
-
-  const selectedLanguage = languages.find((lang) => lang.value === language);
 
   return (
     <Select
-      defaultValue={language}
+      value={language} // Tanlangan tilni ko‘rsatish
       style={{ width: 160 }}
-      onChange={handleChange}
+      onChange={handleLanguageChange} // Til o‘zgarishini boshqarish
       dropdownRender={(menu) => <div>{menu}</div>}
     >
       {languages.map((lang) => (
