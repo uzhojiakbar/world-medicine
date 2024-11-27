@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Dropdown, Menu } from "antd";
+import { Dropdown } from "antd";
 import styled from "styled-components";
 
 const LanguageIcon = styled.img`
   width: 20px;
   height: 20px;
-  margin-right: ${(props) => (props.noText ? "0" : "8px")};
+  margin-right: ${(props) => (props.notext ? "0" : "8px")};
   vertical-align: middle;
 `;
 
-const Language = ({ imgIcon, noText = false, onChange = () => {} }) => {
+const Language = ({ imgIcon, notext = false, onChange = () => {} }) => {
   const [language, setLanguage] = useState(
     localStorage.getItem("lang") || "ru"
   );
@@ -28,35 +28,34 @@ const Language = ({ imgIcon, noText = false, onChange = () => {} }) => {
 
   const selectedLanguage = languages.find((lang) => lang.value === language);
 
-  const menu = (
-    <Menu>
-      {languages.map((lang) => (
-        <Menu.Item
-          key={lang.value}
-          onClick={() => handleLanguageChange(lang.value)}
-        >
-          {!noText && (
-            <LanguageIcon
-              src={lang.icon}
-              alt={`${lang.label} icon`}
-              noText={noText}
-            />
-          )}
-          {lang.label}
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  const items = languages.map((lang) => ({
+    key: lang.value,
+    label: (
+      <div
+        onClick={() => handleLanguageChange(lang.value)}
+        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+      >
+        {!notext && (
+          <LanguageIcon
+            src={lang.icon}
+            alt={`${lang.label} icon`}
+            notext={notext}
+          />
+        )}
+        {lang.label}
+      </div>
+    ),
+  }));
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]}>
+    <Dropdown menu={{ items }} trigger={["click"]}>
       <div style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
         <LanguageIcon
           src={selectedLanguage?.icon}
           alt={`${selectedLanguage?.label} icon`}
-          noText={noText}
+          notext={notext}
         />
-        {!noText && selectedLanguage?.label}
+        {!notext && selectedLanguage?.label}
       </div>
     </Dropdown>
   );

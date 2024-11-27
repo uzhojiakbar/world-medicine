@@ -13,7 +13,22 @@ const LoginContainer = styled(motion.div)`
   min-height: 100vh;
 
   min-width: 320px;
+
   background: url(${LoginBg}) center center / cover no-repeat;
+  /* background: linear-gradient(
+    180deg,
+    rgba(240, 244, 247, 1) 0%,
+    rgba(241, 245, 249, 1) 10%,
+    rgba(238, 244, 248, 1) 20%,
+    rgba(235, 242, 247, 1) 30%,
+    rgba(231, 239, 247, 1) 40%,
+    rgba(227, 236, 247, 1) 50%,
+    rgba(222, 232, 248, 1) 60%,
+    rgba(214, 225, 248, 1) 70%,
+    rgba(205, 216, 248, 1) 80%,
+    rgba(196, 206, 248, 1) 100%
+  ); */
+
   margin: 0 auto;
   padding: 20px;
 `;
@@ -22,6 +37,8 @@ const LoginWrapper = styled(motion.div)`
   display: flex;
   flex-direction: row;
   width: 1200px;
+  /* display: none; */
+
   max-width: 1200px;
   height: 600px;
   border-radius: 20px;
@@ -180,16 +197,23 @@ const LanguageContainer = styled.div`
 
 const ButtonWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: ${({ grid }) => (grid == "yeah" ? "1fr" : "1fr 1fr")};
+  width: 100%;
+  text-align: left;
   gap: 20px;
 
   height: 60px;
+  margin-top: 20px;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 10px;
-    height: 130px;
+    height: ${({ grid }) => (grid == "yeah" ? "60px" : "130px")};
   }
+`;
+
+const Description = styled.div`
+  font-size: 20px;
 `;
 
 export {
@@ -203,4 +227,5 @@ export {
   FormSectionBottom,
   TopTitle,
   ButtonWrapper,
+  Description,
 };

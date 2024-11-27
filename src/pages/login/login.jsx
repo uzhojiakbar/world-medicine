@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Form } from "antd";
 import { useSignIn } from "../../hooks/useLogin.jsx";
 import { setCookie } from "../../hooks/useCookie.jsx";
@@ -19,6 +19,7 @@ import {
   FormSectionBottom,
   TopTitle,
   ButtonWrapper,
+  Description,
 } from "./style.js";
 
 import Input from "../../components/Generic/Input/Input.jsx";
@@ -30,45 +31,107 @@ import { useLanguage } from "../../context/LanguageContext"; // Tarjima uchun ko
 const Login = () => {
   const signIn = useSignIn();
   const [loading, setLoading] = useState(false);
+  const [isSucces, setSucces] = useState();
   const nav = useNavigate();
+
+  const Back = () => {
+    nav("/");
+  };
 
   const { translate, setLanguage } = useLanguage(); // Tarjima funksiyasi
 
+  // const handleSubmit = (e = {}) => {
+  //   console.log(e);
+
+  //   if (formRef.current) {
+  //     const values = formRef.current.getFieldsValue(); // Form qiymatlarini olish
+  //     const username = values.username;
+  //     const password = values.parol;
+
+  //     console.log("Username:", username);
+  //     console.log("Password:", password);
+  //     console.log("Password:", values);
+
+  //     setLoading(true);
+
+  //     const onSuccess = (user) => {
+  //       setTimeout(() => {
+  //         setCookie("role", user?.role);
+  //         setCookie("token", user?.token);
+  //         setCookie("name", user?.name);
+  //         setLoading(false);
+  //         nav("/");
+  //       }, 1000);
+  //     };
+
+  //     const onError = () => {
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //       }, 1000);
+  //     };
+
+  //     signIn(username, password, onSuccess, onError);
+  //   }
+  // };
+
   const handleSubmit = (values) => {
-    const username = values.username;
-    const password = values.password;
+    setSucces(1);
+    // let username = values.username; // Formdagi `username`
+    // const password = values.password; // Formdagi `password`
 
-    console.log(username);
-    console.log(password);
+    // // `isNumber`ni aniqlash
+    // let isNumber = false;
 
-    setLoading(true);
+    // // Agar username raqam bo'lsa va "+" bilan boshlangan bo'lsa
+    // if (/^\+?\d+$/.test(username)) {
+    //   // "+" ni olib tashlaymiz, agar mavjud bo'lsa
+    //   username = username.startsWith("+") ? username.slice(1) : username;
+    //   isNumber = true;
+    // }
 
-    const onSuccess = (user) => {
-      setTimeout(() => {
-        setCookie("role", user?.role);
-        setCookie("token", user?.token);
-        setCookie("name", user?.name);
-        setLoading(false);
-        nav("/");
-      }, 1000);
-    };
+    // setLoading(true);
 
-    const onError = () => {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    };
+    // const onSuccess = (user) => {
+    //   console.log(user);
 
-    signIn(username, password, onSuccess, onError);
+    //   Cookies.set("role", user?.role);
+    //   Cookies.set("token", user?.token);
+    //   Cookies.set("name", user?.name);
+    //   setLoading(false);
+    //   nav("/");
+    // };
+
+    // const onError = () => {
+    //   setLoading(false);
+    // };
+
+    // // `signIn`ga `isNumber`ni ham qo'shamiz
+    // if (isNumber) {
+    //   signIn(username, password, isNumber, onSuccess, onError); // Foydalanuvchini login qilish
+    // } else {
+    //   signIn(username, password, isNumber, onSuccess, onError); // Foydalanuvchini login qilish
+    // }
   };
 
-  return (
+  const handleStart = () => {
+    // nav("/");
+    setSucces(false);
+  };
+
+  return !isSucces ? (
     <LoginContainer
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
+      {loading ? (
+        <div className="loaderWindow">
+          <div className="loader"></div>
+        </div>
+      ) : (
+        ""
+      )}
       <LoginWrapper
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
@@ -97,25 +160,32 @@ const Login = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.3 }}
             >
-              <Language noText="true" imgIcon={Global} onChange={setLanguage} />
+              <Language
+                notext={true.toString()}
+                imgIcon={Global}
+                onChange={setLanguage}
+              />
             </motion.div>
           </LanguageContainer>
         </ImageSection>
 
         {/* Right Section */}
         <FormSection>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
             <TopTitle>{translate("welcome")} </TopTitle>
-          </motion.p>
+          </motion.div>
 
           <FormSectionBottom>
             <Title>{translate("login")}</Title>
-            <Form name="login" onFinish={handleSubmit} layout="vertical">
-              {/* Inputlar uchun motion */}
+            <Form
+              name="login"
+              onFinish={handleSubmit} // Tasdiqlanganda handleSubmit chaqiriladi
+              layout="vertical"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -123,7 +193,7 @@ const Login = () => {
               >
                 <Form.Item
                   label={translate("username")}
-                  name="username"
+                  name="username" // Form qiymati uchun `name`
                   rules={[
                     {
                       required: true,
@@ -136,7 +206,7 @@ const Login = () => {
 
                 <Form.Item
                   label={translate("password")}
-                  name="password"
+                  name="password" // Form qiymati uchun `name`
                   rules={[
                     {
                       required: true,
@@ -148,43 +218,132 @@ const Login = () => {
                     type="password"
                     placeholder={translate("placeholder_password")}
                   />
-                  <a style={{ color: "#00000080" }} href="?forget-password">
-                    {translate("forgot_password")}
-                  </a>
                 </Form.Item>
-              </motion.div>
-            </Form>
 
-            <ButtonWrapper>
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.3 }}
-              >
-                <CricleButton
-                  icon={<ArrowLeftOutlined />}
-                  onClick={() => {}}
-                  outline={true}
-                  disabled={loading}
-                >
-                  {translate("back")}
-                </CricleButton>
+                <a style={{ color: "#00000080" }} href="?forget-password">
+                  {translate("forgot_password")}
+                </a>
               </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.3 }}
-              >
-                <CricleButton
-                  icon={<ArrowRightOutlined />}
-                  iconRight="true"
-                  rmSectionBotck={() => {}}
-                  disabled={loading}
+
+              <ButtonWrapper>
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.3 }}
                 >
-                  {translate("login_button")}
-                </CricleButton>
-              </motion.div>
-            </ButtonWrapper>
+                  <CricleButton
+                    icon={<ArrowLeftOutlined />}
+                    outline={true.toString()}
+                    disabled={loading}
+                  >
+                    {translate("back")}
+                  </CricleButton>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.3 }}
+                >
+                  <CricleButton
+                    icon={<ArrowRightOutlined />}
+                    iconRight="true"
+                    disabled={loading}
+                  >
+                    {translate("login_button")}
+                  </CricleButton>
+                </motion.div>
+              </ButtonWrapper>
+            </Form>
+          </FormSectionBottom>
+        </FormSection>
+      </LoginWrapper>
+    </LoginContainer>
+  ) : (
+    <LoginContainer
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {loading ? (
+        <div className="loaderWindow">
+          <div className="loader"></div>
+        </div>
+      ) : (
+        ""
+      )}
+      <LoginWrapper
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      >
+        {/* Left Section */}
+        <ImageSection>
+          <LogoContainer>
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+            >
+              <img
+                src={LogoImg}
+                alt="World Medicine Logo"
+                width="120"
+                height="40"
+              />
+            </motion.div>
+          </LogoContainer>
+
+          <LanguageContainer>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+            >
+              <Language
+                notext={true.toString()}
+                imgIcon={Global}
+                onChange={setLanguage}
+              />
+            </motion.div>
+          </LanguageContainer>
+        </ImageSection>
+
+        {/* Right Section */}
+        <FormSection>
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <TopTitle>{translate("login_success")} </TopTitle>
+            <Description>{translate("login_success_desc")}</Description>
+          </motion.div>
+
+          <FormSectionBottom>
+            <Form
+              name="login"
+              onFinish={handleSubmit} // Tasdiqlanganda handleSubmit chaqiriladi
+              layout="vertical"
+            >
+              <ButtonWrapper grid={"yeah"}>
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  <CricleButton
+                    textAlign={"left".toString()}
+                    icon={<ArrowRightOutlined />}
+                    onClick={handleStart}
+                    iconRight="true"
+                    disabled={loading}
+                  >
+                    {translate("login_success_button")}
+                  </CricleButton>
+                </motion.div>
+              </ButtonWrapper>
+            </Form>
           </FormSectionBottom>
         </FormSection>
       </LoginWrapper>

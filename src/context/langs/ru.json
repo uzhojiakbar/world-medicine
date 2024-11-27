@@ -7,5 +7,8 @@
   "placeholder_password": "123456",
   "forgot_password": "Забыли пароль?",
   "back": "Назад",
-  "login_button": "Войти"
+  "login_button": "Войти",
+  "login_success": "Рады знакомству!",
+  "login_success_desc": "Добро пожаловать в World Medicine",
+  "login_success_button": "Начать работу"
 }

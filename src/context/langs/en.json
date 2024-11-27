@@ -7,5 +7,6 @@
   "placeholder_password": "123456",
   "forgot_password": "Forgot password?",
   "back": "Back",
-  "login_button": "Login"
+  "login_button": "Login",
+  "incorrectUsernameOrpassword": "Incorrect username or password"
 }
