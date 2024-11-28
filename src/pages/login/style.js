@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import LoginImg from "../../assets/LoginImg.svg";
 import LoginBg from "../../assets/loginBg.png";
-import { Form, Input } from "antd";
+import { Input } from "antd";
 
 // Styled Components
 const LoginContainer = styled(motion.div)`
@@ -215,21 +215,40 @@ const ButtonWrapper = styled.div`
 
 const Description = styled.div`
   font-size: 16px;
+
+  color: ${({ type }) => (type === "long" ? "gray" : "gray")};
+  width: ${({ width }) => (width ? width : "300px")};
 `;
 
 const SMSInputWrapper = styled(Input.Group)`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 8px;
+
+  @media (max-width: 620px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const SMSInput = styled(Input)`
-  text-align: center;
+  text-align: center !important;
   font-size: 1.2em;
+  min-width: 80px;
+  min-height: 50px;
+  background-color: var(--bg-color);
+
+  font-size: 16px;
+
+  font-family: "Vela Sans GX";
+
+  border: none !important;
 
   &::placeholder {
-    color: red !important;
+    color: gray !important;
+    font-family: "Vela Sans GX Regular";
+
+    text-align: center;
   }
 `;
 

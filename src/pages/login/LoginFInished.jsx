@@ -25,12 +25,10 @@ import Input from "../../components/Generic/Input/Input.jsx";
 import CricleButton from "../../components/Generic/Button/CircleButton.jsx";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLanguage } from "../../context/LanguageContext"; // Tarjima uchun kontekst
-import LoginFInished from "./LoginFInished.jsx";
 
-const Login = () => {
+const LoginFInished = ({ isSucces = true, setSucces = () => {} }) => {
   const signIn = useSignIn();
   const [loading, setLoading] = useState(false);
-  const [isSucces, setSucces] = useState("1");
   const nav = useNavigate();
 
   const Back = () => {
@@ -41,9 +39,6 @@ const Login = () => {
     }
   };
 
-  const { translate, setLanguage } = useLanguage(); // Tarjima funksiyasi
-
-  // const handleSubmit = (e = {}) => {
   //   console.log(e);
 
   //   if (formRef.current) {
@@ -116,7 +111,8 @@ const Login = () => {
     // }
   };
 
-  return isSucces == "1" ? (
+  const { translate, setLanguage } = useLanguage(); // Tarjima funksiyasi
+  return (
     <LoginContainer
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -170,85 +166,34 @@ const Login = () => {
         {/* Right Section */}
         <FormSection>
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <TopTitle>{translate("welcome")} </TopTitle>
+            <TopTitle>{translate("login_success")} </TopTitle>
+            <Description>{translate("login_success_desc")}</Description>
           </motion.div>
 
           <FormSectionBottom>
-            <Title>{translate("login")}</Title>
             <Form
               name="login"
               onFinish={handleSubmit} // Tasdiqlanganda handleSubmit chaqiriladi
               layout="vertical"
             >
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.3 }}
-              >
-                <Form.Item
-                  label={translate("username")}
-                  name="username" // Form qiymati uchun `name`
-                  rules={[
-                    {
-                      required: true,
-                      message: translate("placeholder_username"),
-                    },
-                  ]}
-                >
-                  <Input placeholder={translate("placeholder_username")} />
-                </Form.Item>
-
-                <Form.Item
-                  label={translate("password")}
-                  name="password" // Form qiymati uchun `name`
-                  rules={[
-                    {
-                      required: true,
-                      message: translate("placeholder_password"),
-                    },
-                  ]}
-                >
-                  <Input
-                    type="password"
-                    placeholder={translate("placeholder_password")}
-                  />
-                </Form.Item>
-
-                <a style={{ color: "#00000080" }} href="/forget-password">
-                  {translate("forgot_password")}
-                </a>
-              </motion.div>
-
-              <ButtonWrapper>
+              <ButtonWrapper grid={"yeah"}>
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.3 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
                 >
                   <CricleButton
-                    icon={<ArrowLeftOutlined />}
-                    outline={true.toString()}
-                    disabled={loading}
-                    onClick={Back}
-                  >
-                    {translate("back")}
-                  </CricleButton>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.3 }}
-                >
-                  <CricleButton
+                    textAlign={"left".toString()}
                     icon={<ArrowRightOutlined />}
+                    onClick={Back}
                     iconRight="true"
                     disabled={loading}
                   >
-                    {translate("login_button")}
+                    {translate("login_success_button")}
                   </CricleButton>
                 </motion.div>
               </ButtonWrapper>
@@ -257,13 +202,7 @@ const Login = () => {
         </FormSection>
       </LoginWrapper>
     </LoginContainer>
-  ) : (
-    <LoginFInished isSucces={isSucces} setSucces={setSucces} />
   );
 };
 
-export default Login;
-
-// isSucces == "2" ? (
-//   <CompleteSetup setSucess={setSucces} Back={Back} Complete={Complete} />
-// ) :
+export default LoginFInished;

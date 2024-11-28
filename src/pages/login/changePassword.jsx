@@ -5,7 +5,6 @@ import {
   FormSection,
   FormSectionBottom,
   ImageSection,
-  LanguageContainer,
   LoginContainer,
   LoginWrapper,
   LogoContainer,
@@ -23,15 +22,13 @@ import Input2 from "../../components/Generic/Input/Input";
 import ButtonWithout from "../../components/Generic/ButtonWithout/index.jsx";
 import CricleButton from "../../components/Generic/Button/CircleButton.jsx";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import ChangePassword from "./changePassword.jsx";
-import { useNavigate } from "react-router-dom";
 
-const ForgetPassword = () => {
-  const [isSucces, setSucces] = useState("1");
+const ChangePassword = ({ isSucces, setSucces }) => {
   const [loading, setLoading] = useState(false);
   const [smsCode, setSmsCode] = useState(["", "", "", "", "", ""]);
   const [countdown, setCountdown] = useState(120); // Vaqtni ikki minutdan boshlaymiz
   const [isCodeSent, setIsCodeSent] = useState(false); // SMS kodi yuborilganini tekshirish
+  const [number, setNumber] = useState("+998978222427"); // SMS kodi yuborilganini tekshirish
 
   useEffect(() => {
     let timer;
@@ -47,8 +44,6 @@ const ForgetPassword = () => {
     return () => clearInterval(timer);
   }, [countdown, isCodeSent]);
 
-  console.log(isCodeSent);
-
   const handleSmsChange = (index, value) => {
     const newSmsCode = [...smsCode];
     newSmsCode[index] = value;
@@ -62,18 +57,15 @@ const ForgetPassword = () => {
       if (nextInput) nextInput.focus();
     }
   };
-  const nav = useNavigate();
 
   const { translate, setLanguage } = useLanguage(); // Tarjima funksiyasi
 
   const handleSubmit = () => {
-    if (smsCode.every((code) => code !== "")) {
-      setSucces("2");
-      setIsCodeSent(false);
-      setCountdown(120);
-    } else {
-      message.error("SMS code ni kiriting!");
-    }
+    setSucces("1");
+  };
+
+  const handleBack = () => {
+    setSucces("1");
   };
 
   const handleSendCode = () => {
@@ -81,11 +73,7 @@ const ForgetPassword = () => {
     setCountdown(120); // Vaqtni 2 minutdan qayta boshlash
   };
 
-  const handelBack = () => {
-    nav("/");
-  };
-
-  return isSucces === "1" ? (
+  return (
     <LoginContainer
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -119,19 +107,6 @@ const ForgetPassword = () => {
               />
             </motion.div>
           </LogoContainer>
-          <LanguageContainer>
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.3 }}
-            >
-              <Language
-                notext={true.toString()}
-                imgIcon={Global}
-                onChange={setLanguage}
-              />
-            </motion.div>
-          </LanguageContainer>
         </ImageSection>
         <FormSection>
           <motion.div
@@ -139,9 +114,13 @@ const ForgetPassword = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <TopTitle>{translate("reset_account")} </TopTitle>
+            <TopTitle>Завершите настройку </TopTitle>
           </motion.div>
 
+          <Description width={"100%"}>
+            Вы были зарегистрированы администратором. Пожалуйста, смените
+            временный пароль на ваш собственный.
+          </Description>
           <FormSectionBottom>
             <Form
               name="login"
@@ -154,8 +133,8 @@ const ForgetPassword = () => {
                 transition={{ delay: 0.3, duration: 0.3 }}
               >
                 <Form.Item
-                  label={translate("username")}
-                  name="username" // Form qiymati uchun `name`
+                  label={"Придумайте новый пароль"}
+                  name="phoneNumber" // Form qiymati uchun `name`
                   rules={[
                     {
                       required: true,
@@ -172,50 +151,42 @@ const ForgetPassword = () => {
                 </Form.Item>
 
                 {/* SMS Kiritish */}
-                <Form.Item label="СМС код">
-                  <SMSInputWrapper>
-                    {smsCode.map((digit, index) => (
-                      <SMSInput
-                        key={index}
-                        name={`sms-${index}`}
-                        maxLength={1}
-                        value={digit}
-                        placeholder="-"
-                        required
-                        disabled={!isCodeSent} // Bu yerda 0 ni `false` ga o'zgartirdim
-                        inputMode="numeric" // Mobil qurilmalarda raqamli klaviaturani faollashtiramiz
-                        onChange={(e) => handleSmsChange(index, e.target.value)}
-                      />
-                    ))}
-                  </SMSInputWrapper>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
+              >
+                <Form.Item
+                  label={"Подтвердите пароль"}
+                  name="re_password" // Form qiymati uchun `name`
+                  rules={[
+                    {
+                      required: true,
+                      message: translate("placeholder_username"),
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error(translate("password_mismatch"))
+                        );
+                      },
+                    }),
+                  ]}
+                  labelCol={{ span: 24 }} // Labelni to'liq kenglikka o'rnatish
+                  wrapperCol={{ span: 24 }} // Inputni to'liq kenglikka o'rnatish
+                >
+                  <Input2
+                    disabled={isCodeSent}
+                    placeholder={translate("placeholder_username")}
+                  />
                 </Form.Item>
 
-                <Description type={"long"}>
-                  Вам должен прийти 4-х значный смс код подтверждения
-                </Description>
+                {/* SMS Kiritish */}
               </motion.div>
-
-              {/* SMS Kod yuborish tugmasi */}
-              {!isCodeSent && (
-                <ButtonWithout onClick={handleSendCode}>
-                  Отправить код
-                </ButtonWithout>
-              )}
-
-              {/* Vaqtni hisoblash va Orqaga yurish */}
-              {isCodeSent && countdown > 0 && (
-                <ButtonWithout
-                  onClick={() =>
-                    message.error(
-                      `${Math.floor(countdown / 60)}:${
-                        countdown % 60
-                      } daqiqa kuting`
-                    )
-                  }
-                >
-                  {Math.floor(countdown / 60)} : {countdown % 60}
-                </ButtonWithout>
-              )}
 
               <ButtonWrapper>
                 <motion.div
@@ -227,7 +198,7 @@ const ForgetPassword = () => {
                     icon={<ArrowLeftOutlined />}
                     outline={true.toString()}
                     disabled={loading}
-                    onClick={handelBack}
+                    onClick={handleBack}
                   >
                     {translate("back")}
                   </CricleButton>
@@ -239,9 +210,10 @@ const ForgetPassword = () => {
                   transition={{ delay: 0.6, duration: 0.3 }}
                 >
                   <CricleButton
-                    htmlType="submit" // Enter tugmasi bosilganda formni yuboradi
                     icon={<ArrowRightOutlined />}
                     iconRight="true"
+                    htmlType="submit"
+                    onClick={() => console.log("2")}
                     disabled={loading}
                   >
                     {translate("login_button")}
@@ -253,11 +225,7 @@ const ForgetPassword = () => {
         </FormSection>
       </LoginWrapper>
     </LoginContainer>
-  ) : isSucces === "2" ? (
-    <ChangePassword setSucces={setSucces} />
-  ) : (
-    ""
   );
 };
 
-export default ForgetPassword;
+export default ChangePassword;

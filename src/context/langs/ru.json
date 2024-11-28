@@ -1,7 +1,7 @@
 {
   "welcome": "Добро пожаловать в World Medicine",
   "login": "Вход в аккаунт",
-  "username": "Логин, почта или номер телефона",
+  "username": "Логин или номер телефона",
   "password": "Пароль",
   "placeholder_username": "Пишите сюда",
   "placeholder_password": "123456",

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { media } from "../../../utils/media";
+import { html } from "framer-motion/client";
 
 // Generic Button Styling
 const ButtonStyled = styled.button`
@@ -64,9 +65,15 @@ const CricleButton = ({
   disabled,
   iconRight = false,
   outline = 0,
+  htmlType, // Enter tugmasi bosilganda formni yuboradi
 }) => {
   return (
-    <ButtonStyled outline={outline} onClick={onClick} disabled={disabled}>
+    <ButtonStyled
+      outline={outline}
+      onClick={onClick}
+      disabled={disabled}
+      type={htmlType ? htmlType : "button"}
+    >
       {icon && !iconRight && <span>{icon}</span>} {/* Icon ko‘rsatish */}
       <span className={`child ${MobilehiddenText ? "hidden" : ""}`}>
         {children}
