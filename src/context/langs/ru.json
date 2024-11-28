@@ -10,5 +10,6 @@
   "login_button": "Войти",
   "login_success": "Рады знакомству!",
   "login_success_desc": "Добро пожаловать в World Medicine",
-  "login_success_button": "Начать работу"
+  "login_success_button": "Начать работу",
+  "reset_account": "Восстановление аккаунта"
 }

@@ -9,6 +9,7 @@ import OnlyMenager from "../components/Navigate/onlyMenager";
 const MenagerPage = lazy(() => import("../pages/menager/menager"));
 const AdminPage = lazy(() => import("../pages/admin/admin"));
 const Login = lazy(() => import("../pages/login/login"));
+const CompleteSetup = lazy(() => import("../pages/login/ForgetPassword"));
 
 // Loader fallback
 const Loader = () => (
@@ -70,6 +71,7 @@ const Router = () => {
 
         {/* Login Route */}
         <Route path="/login" element={<Login />} />
+        <Route path="/forget-password" element={<CompleteSetup />} />
 
         {/* Catch-All Route */}
         <Route path="*" element={<h1>Not Found</h1>} />

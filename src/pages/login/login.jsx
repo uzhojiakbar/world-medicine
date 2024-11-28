@@ -1,13 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Form } from "antd";
 import { useSignIn } from "../../hooks/useLogin.jsx";
-import { setCookie } from "../../hooks/useCookie.jsx";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import Global from "../../assets/Global.svg";
 import LogoImg from "../../assets/logo-Banner.svg";
-import Language from "./Language/Language.jsx"; // Language dropdown komponenti
+import Language from "../../components/Language/Language.jsx"; // Language dropdown komponenti
 import {
   LoginContainer,
   LoginWrapper,
@@ -23,7 +22,6 @@ import {
 } from "./style.js";
 
 import Input from "../../components/Generic/Input/Input.jsx";
-import Button from "../../components/Generic/Button/Button";
 import CricleButton from "../../components/Generic/Button/CircleButton.jsx";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLanguage } from "../../context/LanguageContext"; // Tarjima uchun kontekst
@@ -31,11 +29,15 @@ import { useLanguage } from "../../context/LanguageContext"; // Tarjima uchun ko
 const Login = () => {
   const signIn = useSignIn();
   const [loading, setLoading] = useState(false);
-  const [isSucces, setSucces] = useState();
+  const [isSucces, setSucces] = useState("1");
   const nav = useNavigate();
 
   const Back = () => {
-    nav("/");
+    if (isSucces == "1") {
+      setSucces("2");
+    } else if (isSucces == "2") {
+      setSucces("1");
+    }
   };
 
   const { translate, setLanguage } = useLanguage(); // Tarjima funksiyasi
@@ -75,7 +77,7 @@ const Login = () => {
   // };
 
   const handleSubmit = (values) => {
-    setSucces(1);
+    setSucces("2");
     // let username = values.username; // Formdagi `username`
     // const password = values.password; // Formdagi `password`
 
@@ -113,12 +115,7 @@ const Login = () => {
     // }
   };
 
-  const handleStart = () => {
-    // nav("/");
-    setSucces(false);
-  };
-
-  return !isSucces ? (
+  return isSucces == "1" ? (
     <LoginContainer
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -220,7 +217,7 @@ const Login = () => {
                   />
                 </Form.Item>
 
-                <a style={{ color: "#00000080" }} href="?forget-password">
+                <a style={{ color: "#00000080" }} href="/forget-password">
                   {translate("forgot_password")}
                 </a>
               </motion.div>
@@ -235,6 +232,7 @@ const Login = () => {
                     icon={<ArrowLeftOutlined />}
                     outline={true.toString()}
                     disabled={loading}
+                    onClick={Back}
                   >
                     {translate("back")}
                   </CricleButton>
@@ -335,7 +333,7 @@ const Login = () => {
                   <CricleButton
                     textAlign={"left".toString()}
                     icon={<ArrowRightOutlined />}
-                    onClick={handleStart}
+                    onClick={Back}
                     iconRight="true"
                     disabled={loading}
                   >
@@ -352,3 +350,7 @@ const Login = () => {
 };
 
 export default Login;
+
+// isSucces == "2" ? (
+//   <CompleteSetup setSucess={setSucces} Back={Back} Complete={Complete} />
+// ) :

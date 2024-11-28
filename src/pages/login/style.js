@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 import LoginImg from "../../assets/LoginImg.svg";
 import LoginBg from "../../assets/loginBg.png";
+import { Form, Input } from "antd";
 
 // Styled Components
 const LoginContainer = styled(motion.div)`
@@ -213,7 +214,23 @@ const ButtonWrapper = styled.div`
 `;
 
 const Description = styled.div`
-  font-size: 20px;
+  font-size: 16px;
+`;
+
+const SMSInputWrapper = styled(Input.Group)`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+`;
+
+const SMSInput = styled(Input)`
+  text-align: center;
+  font-size: 1.2em;
+
+  &::placeholder {
+    color: red !important;
+  }
 `;
 
 export {
@@ -228,4 +245,6 @@ export {
   TopTitle,
   ButtonWrapper,
   Description,
+  SMSInputWrapper,
+  SMSInput,
 };
