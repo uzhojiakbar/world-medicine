@@ -27,6 +27,8 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLanguage } from "../../context/LanguageContext"; // Tarjima uchun kontekst
 import LoginFInished from "./LoginFInished.jsx";
 
+import Cookies from "js-cookie";
+
 const Login = () => {
   const signIn = useSignIn();
   const [loading, setLoading] = useState(false);
@@ -78,43 +80,43 @@ const Login = () => {
   // };
 
   const handleSubmit = (values) => {
-    setSucces("2");
-    // let username = values.username; // Formdagi `username`
-    // const password = values.password; // Formdagi `password`
+    console.log(values);
 
-    // // `isNumber`ni aniqlash
-    // let isNumber = false;
+    const username = values.username; // Formdagi `username`
+    const password = values.password; // Formdagi `password`
+    const isNumber = true;
 
-    // // Agar username raqam bo'lsa va "+" bilan boshlangan bo'lsa
-    // if (/^\+?\d+$/.test(username)) {
-    //   // "+" ni olib tashlaymiz, agar mavjud bo'lsa
-    //   username = username.startsWith("+") ? username.slice(1) : username;
-    //   isNumber = true;
-    // }
+    console.log(username);
+    console.log(password);
+    console.log(isNumber);
 
-    // setLoading(true);
+    setLoading(true);
 
-    // const onSuccess = (user) => {
-    //   console.log(user);
+    const onSuccess = (user) => {
+      console.log(user);
 
-    //   Cookies.set("role", user?.role);
-    //   Cookies.set("token", user?.token);
-    //   Cookies.set("name", user?.name);
-    //   setLoading(false);
-    //   nav("/");
-    // };
+      Cookies.set("access_token", user?.access_token);
+      Cookies.set("refresh_token", user?.refresh_token);
+      setLoading(false);
+      setSucces("2");
+    };
 
-    // const onError = () => {
-    //   setLoading(false);
-    // };
+    const onError = () => {
+      setLoading(false);
+    };
 
     // // `signIn`ga `isNumber`ni ham qo'shamiz
-    // if (isNumber) {
-    //   signIn(username, password, isNumber, onSuccess, onError); // Foydalanuvchini login qilish
-    // } else {
-    //   signIn(username, password, isNumber, onSuccess, onError); // Foydalanuvchini login qilish
-    // }
+    signIn(username, password, isNumber, onSuccess, onError);
   };
+
+  // Formda onFinish ni quyidagicha chaqiring
+  <Form
+    name="login"
+    onFinish={handleSubmit} // `handleSubmit`ni chaqiring
+    layout="vertical"
+  >
+    {/* Form elementlari */}
+  </Form>;
 
   return isSucces == "1" ? (
     <LoginContainer
@@ -247,6 +249,7 @@ const Login = () => {
                     icon={<ArrowRightOutlined />}
                     iconRight="true"
                     disabled={loading}
+                    htmlType={"submit"}
                   >
                     {translate("login_button")}
                   </CricleButton>

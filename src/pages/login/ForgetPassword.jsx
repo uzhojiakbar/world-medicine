@@ -166,6 +166,7 @@ const ForgetPassword = () => {
                   wrapperCol={{ span: 24 }} // Inputni to'liq kenglikka o'rnatish
                 >
                   <Input2
+                    type="number"
                     disabled={isCodeSent}
                     placeholder={translate("placeholder_username")}
                   />

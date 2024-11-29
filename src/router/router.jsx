@@ -1,17 +1,16 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { navbarData, NavbarDataAdmin } from "../utils/navbar";
+import { NavbarDataAdmin } from "../utils/navbar";
 import NotAuth from "../components/Navigate/notAuth";
 import OnlyAdmin from "../components/Navigate/onlyAdmin";
-import OnlyMenager from "../components/Navigate/onlyMenager";
+import { useAuth } from "../context/AuthContext/AuthContext"; // Import AuthContext for global state
 
 // Lazy loaded pages
-const MenagerPage = lazy(() => import("../pages/menager/menager"));
 const AdminPage = lazy(() => import("../pages/admin/admin"));
 const Login = lazy(() => import("../pages/login/login"));
 const CompleteSetup = lazy(() => import("../pages/login/ForgetPassword"));
 
-// Loader fallback
+// Loader fallback component
 const Loader = () => (
   <div className="loaderWindow">
     <div className="loader"></div>
@@ -19,11 +18,7 @@ const Loader = () => (
 );
 
 const Router = () => {
-  // Function to generate routes dynamically
-  const renderRoutes = (routes, Wrapper) =>
-    routes.map(({ id, path, element }) => (
-      <Route key={id} path={path} element={<Wrapper>{element}</Wrapper>} />
-    ));
+  const { role, token } = useAuth(); // Fetch global role and token from context
 
   return (
     <Suspense fallback={<Loader />}>
@@ -33,12 +28,11 @@ const Router = () => {
           path="/"
           element={
             <NotAuth>
-              <OnlyMenager>
-                <Navigate to="/menager/analiktika" replace />
-              </OnlyMenager>
-              <OnlyAdmin>
+              {role === "CHIEF" ? (
                 <Navigate to="/admin" replace />
-              </OnlyAdmin>
+              ) : (
+                <Navigate to="/login" replace />
+              )}
             </NotAuth>
           }
         />
@@ -52,25 +46,20 @@ const Router = () => {
             </OnlyAdmin>
           }
         >
-          {renderRoutes(NavbarDataAdmin, OnlyAdmin)}
-          <Route path="*" element={<h1>Not Found</h1>} />
-        </Route>
-
-        {/* Menager Routes */}
-        <Route
-          path="/menager/*"
-          element={
-            <OnlyMenager>
-              <MenagerPage />
-            </OnlyMenager>
-          }
-        >
-          {renderRoutes(navbarData, OnlyMenager)}
-          <Route path="*" element={<h1>Not Found</h1>} />
+          {NavbarDataAdmin.map(({ id, path, element }) => (
+            <Route
+              key={id}
+              path={path}
+              element={<OnlyAdmin>{element}</OnlyAdmin>}
+            />
+          ))}
+          <Route path="*" element={<h1>ADMIN: Not Found Page</h1>} />
         </Route>
 
         {/* Login Route */}
         <Route path="/login" element={<Login />} />
+
+        {/* Forget Password Route */}
         <Route path="/forget-password" element={<CompleteSetup />} />
 
         {/* Catch-All Route */}

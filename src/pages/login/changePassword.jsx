@@ -61,7 +61,7 @@ const ChangePassword = ({ isSucces, setSucces }) => {
   const { translate, setLanguage } = useLanguage(); // Tarjima funksiyasi
 
   const handleSubmit = () => {
-    setSucces("1");
+    setSucces("3");
   };
 
   const handleBack = () => {
@@ -167,7 +167,7 @@ const ChangePassword = ({ isSucces, setSucces }) => {
                     },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
+                        if (!value || getFieldValue("phoneNumber") === value) {
                           return Promise.resolve();
                         }
                         return Promise.reject(
@@ -213,7 +213,7 @@ const ChangePassword = ({ isSucces, setSucces }) => {
                     icon={<ArrowRightOutlined />}
                     iconRight="true"
                     htmlType="submit"
-                    onClick={() => console.log("2")}
+                    onClick={() => onsubmit}
                     disabled={loading}
                   >
                     {translate("login_button")}

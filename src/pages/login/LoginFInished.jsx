@@ -39,6 +39,11 @@ const LoginFInished = ({ isSucces = true, setSucces = () => {} }) => {
     }
   };
 
+  const Go = () => {
+    nav("/");
+    document.location.reload();
+  };
+
   //   console.log(e);
 
   //   if (formRef.current) {
@@ -189,7 +194,7 @@ const LoginFInished = ({ isSucces = true, setSucces = () => {} }) => {
                   <CricleButton
                     textAlign={"left".toString()}
                     icon={<ArrowRightOutlined />}
-                    onClick={Back}
+                    onClick={Go}
                     iconRight="true"
                     disabled={loading}
                   >

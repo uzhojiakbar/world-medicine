@@ -4,7 +4,7 @@ import { getCookie } from "../../hooks/useCookie";
 
 const OnlyMenager = ({ children, toHome = 0 }) => {
   const role = getCookie("role");
-  const token = getCookie("token");
+  const token = getCookie("access_token");
 
   if (!role || !token) {
     return <Navigate to={`/login`} />;

@@ -18,17 +18,31 @@ export const useSignIn = () => {
   return async (username, password, isNumber, onSuccess, onError) => {
     try {
       // API so'rovi uchun payloadni tayyorlash
-      const reqData = isNumber
-        ? { number: username, isNumber, password }
-        : { email: username, isNumber, password };
+      const reqData = {
+        number: username,
+        email: "",
+        isNumber: isNumber,
+        password,
+      };
 
       // API so'rovi
       const response = await Instance.post("/v1/auth/login", reqData);
-      const user = response.data;
+
+      // Javobni console.log bilan tekshirish
+      console.log("API Response:", response);
+      console.log("Response Data:", response.data);
+
+      // Tokenlarni ajratib olish (javobni to'g'ri tuzish)
+      const accessToken = response.data?.accessToken;
+      const refreshToken = response.data?.refreshToken;
+
+      const { access_token, refresh_token } = response.data;
+
+      console.log(response.data);
 
       // Muvaffaqiyatli javobni qayta ishlash
-      notify("ok", `${user.name}, добро пожаловать!`);
-      onSuccess(user);
+      notify("ok", `${response.data.name}, добро пожаловать!`);
+      onSuccess(response.data);
     } catch (error) {
       // Xatolikni qayta ishlash
       onError(error);

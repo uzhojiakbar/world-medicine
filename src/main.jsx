@@ -5,14 +5,17 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { LanguageProvider } from "./context/LanguageContext";
+import { AuthProvider } from "./context/AuthContext/AuthContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <LanguageProvider>
-      <BrowserRouter>
-        <Root />
-        <Toaster />
-      </BrowserRouter>
-    </LanguageProvider>
+    <AuthProvider>
+      <LanguageProvider>
+        <BrowserRouter>
+          <Root />
+          <Toaster />
+        </BrowserRouter>
+      </LanguageProvider>
+    </AuthProvider>
   </StrictMode>
 );

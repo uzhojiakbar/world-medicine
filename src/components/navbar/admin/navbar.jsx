@@ -105,7 +105,7 @@ const AdminNavbar = () => {
               className={({ isActive }) => (isActive ? "active" : "")}
               key={v.id || v.title}
               to={
-                getCookie("role") === "admin"
+                getCookie("role") === "CHIEF"
                   ? `/admin/${v.path}`
                   : `/menager/${v.path}`
               }

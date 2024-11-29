@@ -1,13 +1,14 @@
 import { delCookie } from "./useCookie";
 import getNotify from "./useNotify";
+import Cookies from "js-cookie";
 
 const { notify } = getNotify();
 
 const useLogout = () => {
   return (onSuccess) => {
-    delCookie("name");
-    delCookie("role");
-    delCookie("token");
+    Cookies.remove("refresh_token");
+    Cookies.remove("access_token");
+    Cookies.remove("role");
 
     if (onSuccess) {
       onSuccess(); // Callback ishlaydi
