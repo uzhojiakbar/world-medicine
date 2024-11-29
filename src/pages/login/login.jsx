@@ -37,7 +37,7 @@ const Login = () => {
 
   const Back = () => {
     if (isSucces == "1") {
-      setSucces("2");
+      nav("/");
     } else if (isSucces == "2") {
       setSucces("1");
     }

@@ -10,6 +10,7 @@ import Information from "../../components/Information/Information";
 import DrugsAnalictic from "../../components/DrugsAnalictic/DrugsAnalictic";
 import ChartBlock from "../../components/ChartBlock/ChartBlock";
 import PieDiagram from "../../components/PieDiagram/PieDiagram";
+import { useLanguage } from "../../context/LanguageContext";
 
 const Analiktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");

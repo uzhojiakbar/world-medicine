@@ -12,5 +12,9 @@
   "login_success": "Рады знакомству!",
   "login_success_desc": "Добро пожаловать в World Medicine",
   "login_success_button": "Начать работу",
-  "reset_account": "Восстановление аккаунта"
+  "reset_account": "Восстановление аккаунта",
+  "quick_access": "Быстрый доступ",
+  "navbar_admin_analiktika": "Аналитика",
+  "navbar_admin_upr_sis": "Управление системой",
+  "navbar_admin_upr_bd": "Управление БД"
 }

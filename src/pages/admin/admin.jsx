@@ -7,6 +7,7 @@ const AdminPage = () => {
   return (
     <MenagerPageContainer>
       <AdminNavbar />
+
       <Outlet />
     </MenagerPageContainer>
   );

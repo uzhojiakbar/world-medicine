@@ -29,7 +29,7 @@ const Router = () => {
           element={
             <NotAuth>
               {role === "CHIEF" ? (
-                <Navigate to="/admin" replace />
+                <Navigate to="/admin/analiktika" replace />
               ) : (
                 <Navigate to="/login" replace />
               )}
@@ -46,7 +46,7 @@ const Router = () => {
             </OnlyAdmin>
           }
         >
-          {NavbarDataAdmin.map(({ id, path, element }) => (
+          {NavbarDataAdmin().map(({ id, path, element }) => (
             <Route
               key={id}
               path={path}

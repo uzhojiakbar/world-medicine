@@ -1,11 +1,16 @@
 {
-  "welcome": "World Medicine ga Hush Kelibsiz!",
+  "welcome": "World Medicine'ga xush kelibsiz",
   "login": "Hisobga kirish",
-  "username": "Login, E-Pochta yoki telefon raqami",
+  "username": "Foydalanuvchi nomi yoki telefon raqami",
+  "number_reset_pass": "telefon raqami",
   "password": "Parol",
   "placeholder_username": "Bu yerga yozing",
   "placeholder_password": "123456",
-  "forgot_password": "Parolni esingizdan chiqardingmi?",
+  "forgot_password": "Parolni unutdingizmi?",
   "back": "Orqaga",
-  "login_button": "Kirish"
+  "login_button": "Kirish",
+  "login_success": "Tanishtirganimizdan xursandmiz!",
+  "login_success_desc": "World Medicine'ga xush kelibsiz",
+  "login_success_button": "Ishni boshlash",
+  "reset_account": "Hisobni tiklash"
 }

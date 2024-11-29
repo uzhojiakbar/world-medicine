@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ProfileBarButton,
   GoToProfileButton,
@@ -8,11 +8,16 @@ import {
   NavContainer,
   ProfieBtn,
   BurgerMenu,
+  ChangeLanguage,
 } from "./style";
 
 // *IMG
 import LogoMain from "../../../assets/logo-Banner.svg";
-import { NavbarBurgerMenu, navbarData } from "../../../utils/navbar";
+import {
+  NavbarBurgerMenu,
+  navbarData,
+  NavbarDataAdmin,
+} from "../../../utils/navbar";
 
 import useCustomNavigate from "../../../hooks/useCustomNavigate";
 import { Dropdown } from "antd";
@@ -22,10 +27,20 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import useLogout from "../../../hooks/useLogOut";
-import { getCookie } from "../../../hooks/useCookie";
+import Cookies from "js-cookie";
+import { useLanguage } from "../../../context/LanguageContext";
 
 const AdminNavbar = () => {
   const nav = useCustomNavigate();
+
+  const { language, setLanguage } = useLanguage(); // Use context for language state
+
+  const [open, setOpen] = useState(false);
+  const userRole = Cookies.get("role");
+
+  const [data, setData] = useState(
+    userRole === "CHIEF" ? NavbarDataAdmin(language) : navbarData(language)
+  );
 
   const logout = useLogout();
 
@@ -36,7 +51,6 @@ const AdminNavbar = () => {
     });
   };
 
-  // Dropdown menu for profile options
   const items = [
     {
       key: "1",
@@ -91,29 +105,55 @@ const AdminNavbar = () => {
     },
   ];
 
-  const [open, setOpen] = useState(false);
+  const languages = [
+    { value: "ru", label: "Русский", icon: "" },
+    { value: "en", label: "English", icon: "" },
+    { value: "uz", label: "O'zbek", icon: "" },
+  ];
 
-  const isOpen = () => setOpen(!open);
+  const handleLanguageChange = (value) => {
+    setLanguage(value); // Update language using context
+    setData();
+    localStorage.setItem("lang", value); // Save language to localStorage
+  };
+
+  const langs = languages.map((lang) => ({
+    key: lang.value,
+    label: (
+      <div
+        onClick={() => handleLanguageChange(lang.value)}
+        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+      >
+        {lang.label}
+      </div>
+    ),
+  }));
 
   return (
     <NavContainer>
       <Logo onClick={() => nav("/")} src={LogoMain} />
       <Links>
-        {navbarData.map((v) => {
-          return (
-            <Link
-              className={({ isActive }) => (isActive ? "active" : "")}
-              key={v.id || v.title}
-              to={
-                getCookie("role") === "CHIEF"
-                  ? `/admin/${v.path}`
-                  : `/menager/${v.path}`
-              }
-            >
-              {v.title}
-            </Link>
-          );
-        })}
+        {data.map(
+          (v) =>
+            v.visible && (
+              <Link
+                className={({ isActive }) => (isActive ? "active" : "")}
+                key={v.id || v.title}
+                to={
+                  userRole === "CHIEF"
+                    ? `/admin/${v.path}`
+                    : `/menager/${v.path}`
+                }
+              >
+                {v.title}
+              </Link>
+            )
+        )}
+
+        <Dropdown menu={{ items: langs }} trigger={["click"]}>
+          <ChangeLanguage className={"inactive"}>{language}</ChangeLanguage>
+        </Dropdown>
+
         <Dropdown menu={{ items }} trigger={["click"]}>
           <ProfieBtn>
             <i className="fa-solid fa-user"></i>
@@ -122,7 +162,7 @@ const AdminNavbar = () => {
       </Links>
 
       {/* Burger menu dropdown */}
-      <Dropdown menu={{ items: NavbarBurgerMenu }} trigger={["click"]}>
+      <Dropdown menu={{ items: NavbarBurgerMenu() }} trigger={["click"]}>
         <BurgerMenu>
           <i className="fa-solid fa-bars"></i>
         </BurgerMenu>

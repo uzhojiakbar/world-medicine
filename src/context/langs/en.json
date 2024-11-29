@@ -1,12 +1,16 @@
 {
   "welcome": "Welcome to World Medicine",
   "login": "Login to your account",
-  "username": "Username, email, or phone number",
+  "username": "Username or phone number",
+  "number_reset_pass": "phone number",
   "password": "Password",
-  "placeholder_username": "Type here",
+  "placeholder_username": "Enter here",
   "placeholder_password": "123456",
   "forgot_password": "Forgot password?",
   "back": "Back",
   "login_button": "Login",
-  "incorrectUsernameOrpassword": "Incorrect username or password"
+  "login_success": "Nice to meet you!",
+  "login_success_desc": "Welcome to World Medicine",
+  "login_success_button": "Start working",
+  "reset_account": "Account recovery"
 }

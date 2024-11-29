@@ -9,6 +9,8 @@ import DateRangePicker from "../../../components/Generic/DataRangePicker/DataRan
 import Information from "../../../components/Information/Information";
 import DrugsAnalictic from "../../../components/DrugsAnalictic/DrugsAnalictic";
 import ChartBlock from "../../../components/ChartBlock/ChartBlock";
+import QuickAccess from "../../admin/quickAccess/quickAccess";
+import { useLanguage } from "../../../context/LanguageContext";
 
 const AdminAnaliktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -32,8 +34,12 @@ const AdminAnaliktika = () => {
     setSelectedMestaRabot(value);
   };
 
+  const { translate } = useLanguage(); // Tarjima funksiyasi
+
   return (
     <AnaliktikaCon>
+      <Title>{translate("quick_access")}</Title>
+      <QuickAccess />
       <Title>Аналитика</Title>
       <Analiktika__Cards.Con>
         <Analiktika__Cards type="type-1">
@@ -77,21 +83,6 @@ const AdminAnaliktika = () => {
           <ChartBlock admin={1} active={active} />
         </Analiktika__Cards>
       </Analiktika__Cards.Con>
-      {/* <Analiktika__Cards type="type-2">
-        <Information active={active} setActive={setActive} />
-        <InfoCard
-          title={"Все препараты"}
-          rightBtn="Все"
-          rightBtnFunc={() => {
-            console.log("Clicker");
-          }}
-        >
-          <DrugsAnalictic />
-        </InfoCard>
-      </Analiktika__Cards>
-      <Analiktika__Cards type="type-3">
-        <ChartBlock active={active} />
-      </Analiktika__Cards> */}
     </AnaliktikaCon>
   );
 };

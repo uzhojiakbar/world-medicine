@@ -51,6 +51,39 @@ const Link = styled(NavLink)`
   &.active {
     color: var(--text-hover);
   }
+
+  &.inactive {
+    color: var(--black);
+  }
+`;
+
+const ChangeLanguage = styled.div`
+  text-decoration: none;
+  color: var(--black);
+  font-size: 18px;
+  font-family: "Vela Sans GX";
+
+  text-transform: uppercase;
+
+  ${media.tabletMax} {
+    font-size: 16px;
+  }
+
+  ${media.tablet} {
+    font-size: 14px;
+  }
+
+  &:hover {
+    color: var(--text-hover);
+  }
+
+  &.active {
+    color: var(--text-hover);
+  }
+
+  &.inactive {
+    color: var(--black);
+  }
 `;
 
 const ProfieBtn = styled.div`
@@ -115,4 +148,5 @@ export {
   GoToProfileButton,
   ProfileBarButton,
   BurgerMenu,
+  ChangeLanguage,
 };
