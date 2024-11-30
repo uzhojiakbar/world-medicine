@@ -11,6 +11,7 @@ import DrugsAnalictic from "../../../components/DrugsAnalictic/DrugsAnalictic";
 import ChartBlock from "../../../components/ChartBlock/ChartBlock";
 import QuickAccess from "../../admin/quickAccess/quickAccess";
 import { useLanguage } from "../../../context/LanguageContext";
+import Reports from "../../admin/Reports/Reports";
 
 const AdminAnaliktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -83,6 +84,8 @@ const AdminAnaliktika = () => {
           <ChartBlock admin={1} active={active} />
         </Analiktika__Cards>
       </Analiktika__Cards.Con>
+      <Title>Отчеты</Title>
+      <Reports />
     </AnaliktikaCon>
   );
 };

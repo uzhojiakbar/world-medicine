@@ -76,3 +76,41 @@ body {
 .txtcenter {
   text-align: center !important;
 }
+
+.chart-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+
+.chart {
+  width: 250px; /* Diagrammaning kengligi */
+  height: 250px; /* Diagrammaning balandligi */
+  margin-bottom: 20px;
+}
+
+.total {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
