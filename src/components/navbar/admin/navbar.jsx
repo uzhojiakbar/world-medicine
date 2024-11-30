@@ -33,13 +33,17 @@ import { useLanguage } from "../../../context/LanguageContext";
 const AdminNavbar = () => {
   const nav = useCustomNavigate();
 
-  const { language, setLanguage } = useLanguage(); // Use context for language state
+  // Keep hooks at the top and avoid conditional calls
+  const [language, setLanguage2] = useState(
+    localStorage.getItem("lang") || "ru"
+  );
+  const { translate, setLanguage } = useLanguage(); // useLanguage hook'ini chaqiramiz
 
   const [open, setOpen] = useState(false);
   const userRole = Cookies.get("role");
 
   const [data, setData] = useState(
-    userRole === "CHIEF" ? NavbarDataAdmin(language) : navbarData(language)
+    userRole === "CHIEF" ? NavbarDataAdmin : navbarData
   );
 
   const logout = useLogout();
@@ -51,6 +55,9 @@ const AdminNavbar = () => {
     });
   };
 
+  // Set data depending on the user's role
+
+  // Dropdown menu for profile options
   const items = [
     {
       key: "1",
@@ -112,9 +119,9 @@ const AdminNavbar = () => {
   ];
 
   const handleLanguageChange = (value) => {
-    setLanguage(value); // Update language using context
-    setData();
-    localStorage.setItem("lang", value); // Save language to localStorage
+    setLanguage2(value); // Holatni yangilash
+    setLanguage(value);
+    localStorage.setItem("lang", value); // Tanlangan tilni saqlash
   };
 
   const langs = languages.map((lang) => ({
@@ -129,18 +136,20 @@ const AdminNavbar = () => {
     ),
   }));
 
+  const isOpen = () => setOpen(!open);
+
   return (
     <NavContainer>
       <Logo onClick={() => nav("/")} src={LogoMain} />
       <Links>
-        {data.map(
+        {NavbarDataAdmin(language).map(
           (v) =>
             v.visible && (
               <Link
                 className={({ isActive }) => (isActive ? "active" : "")}
                 key={v.id || v.title}
                 to={
-                  userRole === "CHIEF"
+                  Cookies.get("role") === "CHIEF"
                     ? `/admin/${v.path}`
                     : `/menager/${v.path}`
                 }
