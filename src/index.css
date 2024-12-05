@@ -63,6 +63,7 @@ body {
   background-color: rgba(255, 255, 255, 0.4);
 
   transition: 0.2s;
+  z-index: 9999999999999999999 !important;
 }
 
 @keyframes l5 {
@@ -113,4 +114,8 @@ body {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+}
+
+.ant-message {
+  z-index: 99999999999999999999 !important;
 }

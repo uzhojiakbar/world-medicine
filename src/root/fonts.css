@@ -18,6 +18,8 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Vela Sans GX Regular", sans-serif;
+
+  scroll-behavior: smooth;
 }
 
 body {

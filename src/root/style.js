@@ -103,3 +103,18 @@ export const PageContainer = styled.div`
 
   padding: 10px 40px;
 `;
+
+export const WhiteWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  background-color: #ffffff;
+  border-radius: 30px;
+
+  min-height: 215px;
+  height: fit-content;
+  width: 100%;
+
+  padding: 20px;
+`;

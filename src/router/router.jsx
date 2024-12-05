@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import React, { lazy, Suspense, useEffect } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { NavbarDataAdmin } from "../utils/navbar";
 import { useAuth } from "../context/AuthContext/AuthContext";
 import { MainContainer } from "../root/style";
@@ -22,6 +22,15 @@ const Loader = () => (
 
 const Router = () => {
   const { role } = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (role === "CHIEF") {
+      localStorage.setItem("lastPage", location.pathname);
+    }
+  }, [location.pathname, role]);
+
+  const lastPage = localStorage.getItem("lastPage");
 
   const isAdmin = role === "CHIEF";
 
@@ -35,7 +44,13 @@ const Router = () => {
             <MainContainer>
               <NotAuth>
                 <Navigate
-                  to={isAdmin ? "/admin/analiktika" : "/login"}
+                  to={
+                    isAdmin
+                      ? lastPage === "login" || lastPage === "/login"
+                        ? "/admin"
+                        : lastPage || "/admin/analiktika"
+                      : "/login"
+                  }
                   replace
                 />
               </NotAuth>
@@ -61,7 +76,14 @@ const Router = () => {
             path="*"
             element={
               <MainContainer>
-                <Navigate to="/admin/analiktika" replace />
+                <Navigate
+                  to={
+                    lastPage === "login" || lastPage === "/login"
+                      ? "/admin"
+                      : lastPage || "/admin/analiktika"
+                  }
+                  replace
+                />
               </MainContainer>
             }
           />
