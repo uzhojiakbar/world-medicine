@@ -21,11 +21,7 @@ const Root = () => {
     }
   }, []);
 
-  return (
-    <MainContainer>
-      <Router />
-    </MainContainer>
-  );
+  return <Router />;
 };
 
 export default Root;

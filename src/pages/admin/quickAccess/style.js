@@ -3,6 +3,7 @@ import styled from "styled-components";
 const QuickAccessPContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  width: 100%;
   gap: 20px;
 
   @media (max-width: 770px) {
@@ -15,6 +16,7 @@ const QuickAccessPContainer = styled.div`
 const QAccessButton = styled.div`
   display: flex;
   flex-direction: column;
+
   gap: 5px;
   background-color: white;
   padding: 16px;
@@ -25,6 +27,9 @@ const QAccessButton = styled.div`
   line-height: 32.78px;
   text-align: left;
   border-radius: 10px;
+
+  width: 100%;
+  min-width: 320px;
 
   transition: all 0.2s ease-in-out;
   cursor: pointer;

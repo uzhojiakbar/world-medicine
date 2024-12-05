@@ -9,6 +9,7 @@ import {
   ProfieBtn,
   BurgerMenu,
   ChangeLanguage,
+  NavBigContainer,
 } from "./style";
 
 // *IMG
@@ -139,44 +140,58 @@ const AdminNavbar = () => {
   const isOpen = () => setOpen(!open);
 
   return (
-    <NavContainer>
-      <Logo onClick={() => nav("/")} src={LogoMain} />
-      <Links>
-        {NavbarDataAdmin(language).map(
-          (v) =>
-            v.visible && (
-              <Link
-                className={({ isActive }) => (isActive ? "active" : "")}
-                key={v.id || v.title}
-                to={
-                  Cookies.get("role") === "CHIEF"
-                    ? `/admin/${v.path}`
-                    : `/menager/${v.path}`
-                }
-              >
-                {v.title}
-              </Link>
-            )
-        )}
+    <NavBigContainer>
+      <NavContainer>
+        <Logo onClick={() => nav("/")} src={LogoMain} />
+        <Links>
+          {NavbarDataAdmin(language).map(
+            (v) =>
+              v.visible && (
+                <Link
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                  key={v.id || v.title}
+                  to={
+                    Cookies.get("role") === "CHIEF"
+                      ? `/admin/${v.path}`
+                      : `/menager/${v.path}`
+                  }
+                >
+                  {v.title}
+                </Link>
+              )
+          )}
 
-        <Dropdown menu={{ items: langs }} trigger={["click"]}>
-          <ChangeLanguage className={"inactive"}>{language}</ChangeLanguage>
+          <Dropdown
+            overlayStyle={{ zIndex: "999999999" }}
+            menu={{ items: langs }}
+            trigger={["click"]}
+          >
+            <ChangeLanguage className={"inactive"}>{language}</ChangeLanguage>
+          </Dropdown>
+
+          <Dropdown
+            overlayStyle={{ zIndex: "999999999" }}
+            menu={{ items }}
+            trigger={["click"]}
+          >
+            <ProfieBtn>
+              <i className="fa-solid fa-user"></i>
+            </ProfieBtn>
+          </Dropdown>
+        </Links>
+
+        {/* Burger menu dropdown */}
+        <Dropdown
+          overlayStyle={{ zIndex: "999999999" }}
+          menu={{ items: NavbarBurgerMenu() }}
+          trigger={["click"]}
+        >
+          <BurgerMenu>
+            <i className="fa-solid fa-bars"></i>
+          </BurgerMenu>
         </Dropdown>
-
-        <Dropdown menu={{ items }} trigger={["click"]}>
-          <ProfieBtn>
-            <i className="fa-solid fa-user"></i>
-          </ProfieBtn>
-        </Dropdown>
-      </Links>
-
-      {/* Burger menu dropdown */}
-      <Dropdown menu={{ items: NavbarBurgerMenu() }} trigger={["click"]}>
-        <BurgerMenu>
-          <i className="fa-solid fa-bars"></i>
-        </BurgerMenu>
-      </Dropdown>
-    </NavContainer>
+      </NavContainer>
+    </NavBigContainer>
   );
 };
 

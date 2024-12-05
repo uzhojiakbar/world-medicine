@@ -2,13 +2,33 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { media } from "../../../utils/media";
 
-const NavContainer = styled.div`
-  width: 100%;
-  height: 80px;
+export const NavBigContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
 
+  z-index: 999999999;
+
+  width: 100%;
+  height: 100px;
+  min-width: 320px;
+  width: 100%;
+
+  backdrop-filter: blur(10px);
+  padding: 30px;
+`;
+
+const NavContainer = styled.div`
+  max-width: 1920px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: white !important;
+
+  padding: 15px 30px;
+
+  border-radius: 30px;
 `;
 
 const Links = styled.div`

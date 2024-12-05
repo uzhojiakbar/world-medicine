@@ -1,69 +1,76 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NavbarDataAdmin } from "../utils/navbar";
-import NotAuth from "../components/Navigate/notAuth";
-import OnlyAdmin from "../components/Navigate/onlyAdmin";
-import { useAuth } from "../context/AuthContext/AuthContext"; // Import AuthContext for global state
+import { useAuth } from "../context/AuthContext/AuthContext";
+import { MainContainer } from "../root/style";
 
-// Lazy loaded pages
+// Components
+const NotAuth = lazy(() => import("../components/Navigate/notAuth"));
+const OnlyAdmin = lazy(() => import("../components/Navigate/onlyAdmin"));
+
+// Pages
 const AdminPage = lazy(() => import("../pages/admin/admin"));
 const Login = lazy(() => import("../pages/login/login"));
 const CompleteSetup = lazy(() => import("../pages/login/ForgetPassword"));
 
-// Loader fallback component
+// Loader
 const Loader = () => (
   <div className="loaderWindow">
-    <div className="loader"></div>
+    <div className="loader" />
   </div>
 );
 
 const Router = () => {
-  const { role, token } = useAuth(); // Fetch global role and token from context
+  const { role } = useAuth();
+
+  const isAdmin = role === "CHIEF";
 
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        {/* Root Route */}
+        {/* Root redirect */}
         <Route
           path="/"
           element={
-            <NotAuth>
-              {role === "CHIEF" ? (
-                <Navigate to="/admin/analiktika" replace />
-              ) : (
-                <Navigate to="/login" replace />
-              )}
-            </NotAuth>
+            <MainContainer>
+              <NotAuth>
+                <Navigate
+                  to={isAdmin ? "/admin/analiktika" : "/login"}
+                  replace
+                />
+              </NotAuth>
+            </MainContainer>
           }
         />
 
-        {/* Admin Routes */}
+        {/* Protected admin routes */}
         <Route
-          path="/admin/*"
+          path="/admin"
           element={
-            <OnlyAdmin>
-              <AdminPage />
-            </OnlyAdmin>
+            <MainContainer>
+              <OnlyAdmin>
+                <AdminPage />
+              </OnlyAdmin>
+            </MainContainer>
           }
         >
           {NavbarDataAdmin().map(({ id, path, element }) => (
-            <Route
-              key={id}
-              path={path}
-              element={<OnlyAdmin>{element}</OnlyAdmin>}
-            />
+            <Route key={id} path={path} element={element} />
           ))}
-          <Route path="*" element={<h1>ADMIN: Not Found Page</h1>} />
+          <Route
+            path="*"
+            element={
+              <MainContainer>
+                <Navigate to="/admin/analiktika" replace />
+              </MainContainer>
+            }
+          />
         </Route>
 
-        {/* Login Route */}
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
-
-        {/* Forget Password Route */}
         <Route path="/forget-password" element={<CompleteSetup />} />
-
-        {/* Catch-All Route */}
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Suspense>
   );

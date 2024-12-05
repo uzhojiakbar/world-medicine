@@ -7,6 +7,8 @@ export const MainContainer = styled.div`
   width: 100vw;
   margin: 0 auto;
   min-height: 100vh;
+  padding: 0 100px;
+  padding-top: 160px;
 
   /* Ant Design Select component uchun umumiy uslublar */
   .ant-select {
@@ -51,6 +53,15 @@ export const MainContainer = styled.div`
     font-family: "Vela Sans GX", sans-serif !important;
     font-weight: 600 !important;
     background-color: var(--bg-hover) !important; /* Hover fon rangi */
+  }
+
+  @media (max-width: 1024px) {
+    padding: 0 50px;
+    padding-top: 160px;
+  }
+  @media (max-width: 500px) {
+    padding-left: 20px;
+    padding-top: 160px;
   }
 `;
 
