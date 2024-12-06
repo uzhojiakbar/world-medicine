@@ -55,7 +55,7 @@ const SettingsConditionAdmin = () => {
 
   const handleEdit = (row) => {
     setCurrentRow(row);
-    setIsEditOpen(true); // Modalni ochish
+    setIsEditOpen(true);
   };
 
   const handleSave = () => {
@@ -64,7 +64,7 @@ const SettingsConditionAdmin = () => {
         row.id === currentRow.id ? { ...row, ...currentRow } : row
       )
     );
-    setIsEditOpen(false); // Modalni yopish
+    setIsEditOpen(false);
   };
 
   const nav = useNavigate();
