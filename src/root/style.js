@@ -66,7 +66,7 @@ export const MainContainer = styled.div`
 `;
 
 export const Title = styled.div`
-  font-size: 36px;
+  font-size: ${({ size }) => (size ? size : "36px")};
   font-weight: 800;
 
   font-family: "Vela Sans GX", sans-serif;

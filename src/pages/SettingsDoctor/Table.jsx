@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { message } from "antd";
-import styled from "styled-components";
-import { TitleSmall, WhiteWrapper } from "../../../root/style";
+import { TitleSmall, WhiteWrapper } from "../../root/style";
 import {
   PaginationButtonsWrapper,
   ResponsiveTableAdmin,
-} from "../../../components/ResizeTable/ResizeTableAdmin/style";
-import { formatPhoneNumber } from "../../../utils/PhoneFormatter";
-import LeftArrow from "../../../assets/svg/LeftArrow";
-import RightArrow from "../../../assets/svg/RightArrow";
-import CancelIcon from "../../../assets/svg/CancelIcon";
-import ReceptIcon from "../../../assets/svg/ReceptIcon";
+} from "../../components/ResizeTable/ResizeTableAdmin/style";
+import LeftArrow from "../../assets/svg/LeftArrow";
+import RightArrow from "../../assets/svg/RightArrow";
+import styled from "styled-components";
 
 const Container = styled.div`
   position: relative;
@@ -18,7 +14,7 @@ const Container = styled.div`
   transition: all 0.2s ease-in-out;
 `;
 
-const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
+const Table = ({ title = "", data = [] }) => {
   const [loading, setLoading] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -43,21 +39,6 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
     (currentPage + 1) * itemsPerPage
   );
 
-  const onPrinyat = () => {
-    setLoading(1);
-    setTimeout(() => {
-      setLoading(0);
-      message.success("Принять");
-    }, 1000);
-  };
-  const onOtk = () => {
-    setLoading(1);
-    setTimeout(() => {
-      setLoading(0);
-      message.error("Отклонить");
-    }, 1000);
-  };
-
   return (
     <Container>
       {loading ? (
@@ -75,10 +56,10 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
               <tr>
                 <th>№</th>
                 <th className="idfixed">Ф.И.О. Врача</th>
-                <th>Регион</th>
-                <th>Номер телефона</th>
-                <th>Подключенный договор</th>
-                <th>Разрешение</th>
+                <th>Зона отвественности</th>
+                <th>Дата назначения</th>
+                <th colSpan={2}>Выполнение KPI</th>
+                <th>Открыть</th>
               </tr>
             </thead>
             <tbody>
@@ -86,19 +67,33 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
                 currentData.map((row) => (
                   <tr key={row?.id}>
                     <td>№{row?.id}</td>
-                    <td className="idfixed">{row?.name}</td>
-                    <td>{row?.location}</td>
-                    <td>{formatPhoneNumber(row?.phone)}</td>
-                    <td>{row?.contract}</td>
-
-                    <td className="buttons">
-                      <button onClick={() => onPrinyat()}>
-                        <ReceptIcon />
-                        Принять
-                      </button>
-                      <button onClick={() => onOtk()}>
-                        <CancelIcon />
-                        Отклонить
+                    <td className="idfixed">{row?.fio}</td>
+                    <td>{row?.district}</td>
+                    <td>Создан {row?.dateCreated}</td>
+                    <td colSpan={2}>
+                      <div className="progressKPI">{row?.progress}</div>
+                    </td>
+                    <td>
+                      <button className="Viewbutton">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            opacity="0.5"
+                            d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12Z"
+                            fill="#343434"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M8.25 12C8.25 9.92893 9.92893 8.25 12 8.25C14.0711 8.25 15.75 9.92893 15.75 12C15.75 14.0711 14.0711 15.75 12 15.75C9.92893 15.75 8.25 14.0711 8.25 12ZM9.75 12C9.75 10.7574 10.7574 9.75 12 9.75C13.2426 9.75 14.25 10.7574 14.25 12C14.25 13.2426 13.2426 14.25 12 14.25C10.7574 14.25 9.75 13.2426 9.75 12Z"
+                            fill="#343434"
+                          />
+                        </svg>
                       </button>
                     </td>
                   </tr>
@@ -107,7 +102,7 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
                 <tr>
                   <td
                     className="empty"
-                    colSpan="7"
+                    colSpan="6"
                     style={{ textAlign: "center" }}
                   >
                     Нет данных для отображения
@@ -134,4 +129,4 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
   );
 };
 
-export default ResizeTableAdminLayout;
+export default Table;

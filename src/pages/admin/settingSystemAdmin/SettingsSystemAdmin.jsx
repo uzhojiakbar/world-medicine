@@ -1,22 +1,24 @@
 import React from "react";
-import styled from "styled-components";
-
 import ResizeTableAdminLayout from "../../../components/ResizeTable/ResizeTableAdminLayout/ResizeTableAdminLayout";
-
-const Container = styled.div`
-  background: var(--bg-color);
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
+import { connectingUser } from "../../../mock/NewConnectingData";
+import { Container } from "./style";
+import SettingsMenager from "../../SettingsMenager/SettingsMenager";
+import SettingsDoctor from "../../SettingsDoctor/SettingsDoctor.jsx";
 
 const SettingsSystemAdmin = () => {
   return (
     <Container>
-      <ResizeTableAdminLayout />
-      <ResizeTableAdminLayout />
-      <ResizeTableAdminLayout />
+      <ResizeTableAdminLayout
+        title="Новое подключение"
+        data={connectingUser || []}
+      />
+      <ResizeTableAdminLayout
+        title="Новые предложения пакетов"
+        data={connectingUser || []}
+      />
+
+      <SettingsMenager />
+      <SettingsDoctor />
     </Container>
   );
 };

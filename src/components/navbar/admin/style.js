@@ -7,7 +7,7 @@ export const NavBigContainer = styled.div`
   top: 0;
   left: 0;
 
-  z-index: 999999999;
+  z-index: 99;
 
   width: 100%;
   height: 100px;

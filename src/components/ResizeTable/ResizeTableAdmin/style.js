@@ -43,9 +43,47 @@ export const ResponsiveTableAdmin = styled.div`
     }
   }
 
+  .empty {
+    height: 400px;
+    background-color: var(--bg-color);
+
+    &:hover {
+      background-color: var(--bg-color);
+    }
+  }
+
   .idfixed {
     position: sticky;
     left: 0;
+  }
+
+  .progressKPI {
+    background-color: white;
+    padding: 10px;
+    font-family: "Vela Sans GX", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .Viewbutton {
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.7;
+    }
+    &:active {
+      opacity: 1;
+      transform: scale(1.01);
+    }
   }
 
   tr {
@@ -144,6 +182,12 @@ export const PaginationButtonsWrapper = styled.div`
       & svg path {
         stroke: #dbe7f5;
       }
+    }
+  }
+
+  @media (max-width: 600px) {
+    button {
+      padding: 10px 20px;
     }
   }
 `;
