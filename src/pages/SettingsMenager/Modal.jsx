@@ -1,16 +1,28 @@
 import React from "react";
-import { ModalBody, ModalContainer, ModalHeader } from "../../root/Modal";
-import { Title } from "../../root/style";
+import {
+  ModalBody,
+  ModalBodyHeader,
+  ModalBodySection,
+  ModalContainer,
+  ModalHeader,
+  ModalInnerSection,
+  ModalUserProfilePicture,
+} from "../../root/Modal";
+import { MiniTitleSmall, Title, TitleSmall } from "../../root/style";
 import { Managers } from "../../mock/managers";
 import { message } from "antd";
+import EditableInput from "../../components/Generic/EditableInput/EditableInput";
 
 const ModalManager = ({ id = 122, setId = () => {} }) => {
   let userId = Managers.filter((v) => {
     return v.id === id ? v : false;
   });
 
-  userId = userId[0];
-  console.log("YANGI ID", userId);
+  const handleSave = (value) => {
+    console.log("Saved value:", value);
+  };
+
+  const user = userId[0];
 
   return (
     <ModalContainer
@@ -45,7 +57,30 @@ const ModalManager = ({ id = 122, setId = () => {} }) => {
       footer={[]}
       centered
     >
-      <ModalBody></ModalBody>
+      <ModalBody>
+        <ModalBodyHeader>
+          <ModalBodySection>
+            <MiniTitleSmall>Менеджер</MiniTitleSmall>
+            <ModalInnerSection>
+              <ModalUserProfilePicture pic={user?.profilePic} />
+              <EditableInput initialValue={user?.fio} isInput={0} />
+            </ModalInnerSection>
+          </ModalBodySection>
+          {/*  */}
+          <ModalBodySection>
+            <MiniTitleSmall>Ответственная зона</MiniTitleSmall>
+            <ModalInnerSection>
+              <EditableInput
+                initialValue="Ташкент, Шайхантахурский район"
+                isEditable={false}
+                isInput={1}
+                inputType="text"
+                onSave={handleSave}
+              />
+            </ModalInnerSection>
+          </ModalBodySection>
+        </ModalBodyHeader>
+      </ModalBody>
     </ModalContainer>
   );
 };
