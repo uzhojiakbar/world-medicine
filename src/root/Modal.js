@@ -29,7 +29,7 @@ export const ModalBody = styled.div``;
 
 export const ModalBodyHeader = styled.div`
   display: grid;
-  gap: 10px;
+  gap: 20px 10px;
   grid-template-columns: repeat(2, 1fr);
 `;
 

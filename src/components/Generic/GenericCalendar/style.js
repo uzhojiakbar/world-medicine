@@ -13,6 +13,8 @@ export const StyledDatePicker = styled(DatePicker)`
   border: none !important;
   outline: none !important;
 
+  border-radius: ${({ borderR }) => (borderR ? borderR : "0px")};
+
   .ant-picker-input > input {
     font-weight: 600; /* Input text weight */
     font-size: 16px; /* Input text size */

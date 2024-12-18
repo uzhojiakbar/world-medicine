@@ -12,6 +12,18 @@ export const Container = styled.div`
 
   position: relative;
 
+  padding-right: ${({ rightIcon }) => (rightIcon ? "50px" : "0")};
+  > .rightIcon {
+    padding: 10px;
+    border: 1px solid red;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+  }
+
   > .input {
     padding: 20px;
     width: 100%;

@@ -5,6 +5,7 @@ import SettingsConditionAdmin from "../pages/setingsCondition/admin/index";
 import AdminCreateContract from "../pages/createContract/admin/adminCreateContract";
 import SettingsSystemAdmin from "../pages/admin/settingSystemAdmin/SettingsSystemAdmin";
 import { useLanguage } from "../context/LanguageContext";
+import AddMeneger from "../pages/addManager/AddManager";
 
 export const navbarData = (lang) => {
   return [
@@ -124,11 +125,21 @@ export const NavbarDataAdmin = (lang) => {
       onlyAdmin: false,
       icon: false,
     },
+    // {
+    //   id: 4,
+    //   title: "Создать договор",
+    //   path: "create-contract",
+    //   element: <AdminCreateContract />,
+    //   child: [],
+    //   visible: false,
+    //   onlyAdmin: false,
+    //   icon: false,
+    // },
     {
-      id: 4,
-      title: "Создать договор",
-      path: "create-contract",
-      element: <AdminCreateContract />,
+      id: 5,
+      title: "Добавить менеджера",
+      path: "create-manager",
+      element: <AddMeneger />,
       child: [],
       visible: false,
       onlyAdmin: false,

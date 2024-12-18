@@ -47,7 +47,7 @@ const SettingsMenager = () => {
     <>
       <Title>
         <span>Управление менеджерами</span>
-        <Button onClick={() => nav("../create-contract")} icon={<IconPlus />}>
+        <Button onClick={() => nav("../create-manager")} icon={<IconPlus />}>
           Добавить менеджера
         </Button>
       </Title>

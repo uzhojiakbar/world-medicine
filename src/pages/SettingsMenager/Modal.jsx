@@ -12,6 +12,7 @@ import { MiniTitleSmall, Title, TitleSmall } from "../../root/style";
 import { Managers } from "../../mock/managers";
 import { message } from "antd";
 import EditableInput from "../../components/Generic/EditableInput/EditableInput";
+import GenericDatePicker from "../../components/Generic/GenericCalendar/GenericCalendar";
 
 const ModalManager = ({ id = 122, setId = () => {} }) => {
   let userId = Managers.filter((v) => {
@@ -20,6 +21,9 @@ const ModalManager = ({ id = 122, setId = () => {} }) => {
 
   const handleSave = (value) => {
     console.log("Saved value:", value);
+  };
+  const handleSaveNumber = (value) => {
+    console.log("Saved number:", value);
   };
 
   const user = userId[0];
@@ -76,6 +80,69 @@ const ModalManager = ({ id = 122, setId = () => {} }) => {
                 isInput={1}
                 inputType="text"
                 onSave={handleSave}
+              />
+            </ModalInnerSection>
+          </ModalBodySection>
+          {/*  */}
+          <ModalBodySection>
+            <MiniTitleSmall>Дата назначения</MiniTitleSmall>
+            <ModalInnerSection>
+              <EditableInput
+                initialValue="11.11.2022"
+                isInput={0}
+                inputType="text"
+              />
+            </ModalInnerSection>
+          </ModalBodySection>
+          {/*  */}
+          <ModalBodySection>
+            <MiniTitleSmall>Контакты менеджера</MiniTitleSmall>
+            <ModalInnerSection>
+              <EditableInput
+                initialValue="+998977373311"
+                isInput={1}
+                phoneFormat={true}
+                inputType="text"
+                isEditable={false}
+                onSave={handleSaveNumber}
+              />
+            </ModalInnerSection>
+          </ModalBodySection>
+
+          {/*  */}
+          <ModalBodySection>
+            <MiniTitleSmall>Логин</MiniTitleSmall>
+            <ModalInnerSection>
+              <EditableInput
+                initialValue="saratovvm"
+                isInput={0}
+                inputType="text"
+                isEditable={false}
+              />
+            </ModalInnerSection>
+          </ModalBodySection>
+          {/*  */}
+          <ModalBodySection>
+            <MiniTitleSmall>Почта</MiniTitleSmall>
+            <ModalInnerSection>
+              <EditableInput
+                initialValue="saratovmolev@wm.uz"
+                isInput={0}
+                inputType="text"
+                isEditable={false}
+              />
+            </ModalInnerSection>
+          </ModalBodySection>
+          {/*  */}
+          <ModalBodySection>
+            <MiniTitleSmall>Пароль</MiniTitleSmall>
+            <ModalInnerSection>
+              <EditableInput
+                initialValue="qwerty123"
+                isInput={0}
+                JustPassword={1}
+                inputType="text"
+                isEditable={false}
               />
             </ModalInnerSection>
           </ModalBodySection>

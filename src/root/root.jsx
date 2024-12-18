@@ -12,10 +12,9 @@ const Root = () => {
 
   useEffect(() => {
     const token = Cookies.get("access_token");
-    console.log("11212");
 
     if (token) {
-      const role = jwtDecode(token)?.role;
+      const role = "CHIEF" || jwtDecode(token)?.role;
       Cookies.set("role", role);
       nav("/");
     }

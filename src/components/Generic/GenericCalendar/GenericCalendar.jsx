@@ -11,6 +11,8 @@ const GenericDatePicker = ({
   placeholder = "Выберите дату",
   format = "DD.MM.YYYY",
   icon = <CalendarIcon />,
+  showicon = true,
+  borderR,
 }) => {
   const [tempValue, setTempValue] = useState(value); // Vaqtinchalik qiymatni saqlash uchun
 
@@ -36,7 +38,8 @@ const GenericDatePicker = ({
       onOk={handleDateSelect} // Sana tanlanganda tasdiqlash
       format={format} // Ko'rsatish uchun format
       placeholder={placeholder}
-      suffixIcon={icon} // Custom ikonka
+      suffixIcon={showicon ? icon : ""} // Custom ikonka
+      borderR={borderR}
     />
   );
 };
