@@ -33,14 +33,6 @@ export const useSignIn = () => {
       console.log("Response Data:", response.data);
 
       // Tokenlarni ajratib olish (javobni to'g'ri tuzish)
-      const accessToken = response.data?.accessToken;
-      const refreshToken = response.data?.refreshToken;
-
-      const { access_token, refresh_token } = response.data;
-
-      console.log(response.data);
-
-      // Muvaffaqiyatli javobni qayta ishlash
       notify("ok", `${response.data.name}, добро пожаловать!`);
       onSuccess(response.data);
     } catch (error) {

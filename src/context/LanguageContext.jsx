@@ -7,7 +7,7 @@ const LanguageContext = createContext();
 
 const translations = { ru, en, uz };
 
-export const LanguageProvider = ({ children }) => {
+export const LanguageProvider = React.memo(({ children }) => {
   const [language, setLanguageFunc] = useState(
     localStorage.getItem("lang") || "ru"
   );
@@ -24,6 +24,6 @@ export const LanguageProvider = ({ children }) => {
       {children}
     </LanguageContext.Provider>
   );
-};
+});
 
 export const useLanguage = () => useContext(LanguageContext);

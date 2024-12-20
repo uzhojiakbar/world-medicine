@@ -9,13 +9,13 @@ import { AuthProvider } from "./context/AuthContext/AuthContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <LanguageProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <LanguageProvider>
           <Root />
           <Toaster />
-        </BrowserRouter>
-      </LanguageProvider>
-    </AuthProvider>
+        </LanguageProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </StrictMode>
 );

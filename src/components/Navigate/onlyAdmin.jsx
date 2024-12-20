@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getCookie } from "../../hooks/useCookie";
 
 const OnlyAdmin = ({ children, toHome = 0 }) => {

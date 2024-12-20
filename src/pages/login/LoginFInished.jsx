@@ -40,8 +40,8 @@ const LoginFInished = ({ isSucces = true, setSucces = () => {} }) => {
   };
 
   const Go = () => {
-    nav("/");
     document.location.reload();
+    nav("/");
   };
 
   //   console.log(e);

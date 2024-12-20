@@ -35,17 +35,31 @@ const AdminNavbar = () => {
   const nav = useCustomNavigate();
 
   // Keep hooks at the top and avoid conditional calls
-  const [language, setLanguage2] = useState(
-    localStorage.getItem("lang") || "ru"
-  );
-  const { translate, setLanguage } = useLanguage(); // useLanguage hook'ini chaqiramiz
+  const [lang1, setLanguage2] = useState(localStorage.getItem("lang") || "ru");
+  const { translate, language, setLanguage } = useLanguage(); // useLanguage hook'ini chaqiramiz
+  console.log(language);
 
   const [open, setOpen] = useState(false);
   const userRole = Cookies.get("role");
 
-  const [data, setData] = useState(
-    userRole === "CHIEF" ? NavbarDataAdmin : navbarData
-  );
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    console.log("data");
+
+    const CurrentData = userRole === "CHIEF" ? NavbarDataAdmin : navbarData;
+
+    setData(
+      CurrentData?.map((v) => {
+        return {
+          ...v,
+          title: translate(v.title),
+        };
+      })
+    );
+
+    console.log(data);
+  }, [language]);
 
   const logout = useLogout();
 
@@ -144,7 +158,7 @@ const AdminNavbar = () => {
       <NavContainer>
         <Logo onClick={() => nav("/")} src={LogoMain} />
         <Links>
-          {NavbarDataAdmin(language).map(
+          {data.map(
             (v) =>
               v.visible && (
                 <Link
@@ -166,18 +180,18 @@ const AdminNavbar = () => {
             menu={{ items: langs }}
             trigger={["click"]}
           >
-            <ChangeLanguage className={"inactive"}>{language}</ChangeLanguage>
+            <ChangeLanguage className={"inactive"}>{lang1}</ChangeLanguage>
           </Dropdown>
 
-          <Dropdown
-            overlayStyle={{ zIndex: "999999999" }}
-            menu={{ items }}
-            trigger={["click"]}
+          <ProfieBtn
+            to={
+              Cookies.get("role") === "CHIEF"
+                ? `/admin/profile`
+                : `/menager/profile`
+            }
           >
-            <ProfieBtn>
-              <i className="fa-solid fa-user"></i>
-            </ProfieBtn>
-          </Dropdown>
+            <i className="fa-solid fa-user"></i>
+          </ProfieBtn>
         </Links>
 
         {/* Burger menu dropdown */}

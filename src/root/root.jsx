@@ -10,15 +10,15 @@ import { useNavigate } from "react-router-dom";
 const Root = () => {
   const nav = useNavigate();
 
+  const token = Cookies.get("access_token");
   useEffect(() => {
-    const token = Cookies.get("access_token");
-
     if (token) {
-      const role = "CHIEF" || jwtDecode(token)?.role;
+      // const role = "CHIEF";
+      const role = jwtDecode(token)?.role;
       Cookies.set("role", role);
       nav("/");
     }
-  }, []);
+  }, [token]);
 
   return <Router />;
 };

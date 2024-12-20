@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const Instance = axios.create({
-  baseURL: "http://falcon-api.etamin.agency:8080/api", // O'zingizning backend URL
+  baseURL: "http://192.168.23.98:8080/api", // O'zingizning backend URL
   timeout: 10000, // Maksimal kutish vaqti (10 soniya)
   headers: {
     "Content-Type": "application/json", // JSON formatini ishlatish

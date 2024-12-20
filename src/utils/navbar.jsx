@@ -6,8 +6,9 @@ import AdminCreateContract from "../pages/createContract/admin/adminCreateContra
 import SettingsSystemAdmin from "../pages/admin/settingSystemAdmin/SettingsSystemAdmin";
 import { useLanguage } from "../context/LanguageContext";
 import AddMeneger from "../pages/addManager/AddManager";
+import Profile from "../pages/profile/admin";
 
-export const navbarData = (lang) => {
+export const navbarData = () => {
   return [
     {
       id: 1,
@@ -89,61 +90,65 @@ export const NavbarBurgerMenu = () => {
   ];
 };
 
-export const NavbarDataAdmin = (lang) => {
-  console.log(lang);
-
-  const { translate } = useLanguage(); // useLanguage hook'ini chaqiramiz
-
-  return [
-    {
-      id: 1,
-      title: translate("navbar_admin_analiktika"),
-      path: "analiktika",
-      element: <AdminAnaliktika />,
-      child: [],
-      visible: true,
-      onlyAdmin: false,
-      icon: false,
-    },
-    {
-      id: 2,
-      title: translate("navbar_admin_upr_sis"),
-      path: "upravleniya-sistemoy",
-      element: <SettingsSystemAdmin />,
-      child: [],
-      visible: true,
-      onlyAdmin: false,
-      icon: false,
-    },
-    {
-      id: 3,
-      title: translate("navbar_admin_upr_bd"),
-      path: "upravleniya-bd",
-      element: <h1>Рецепт</h1>,
-      child: [],
-      visible: true,
-      onlyAdmin: false,
-      icon: false,
-    },
-    // {
-    //   id: 4,
-    //   title: "Создать договор",
-    //   path: "create-contract",
-    //   element: <AdminCreateContract />,
-    //   child: [],
-    //   visible: false,
-    //   onlyAdmin: false,
-    //   icon: false,
-    // },
-    {
-      id: 5,
-      title: "Добавить менеджера",
-      path: "create-manager",
-      element: <AddMeneger />,
-      child: [],
-      visible: false,
-      onlyAdmin: false,
-      icon: false,
-    },
-  ];
-};
+export const NavbarDataAdmin = [
+  {
+    id: 1,
+    title: "navbar_admin_analiktika",
+    path: "analiktika",
+    element: <AdminAnaliktika />,
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 2,
+    title: "navbar_admin_upr_sis",
+    path: "upravleniya-sistemoy",
+    element: <SettingsSystemAdmin />,
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 3,
+    title: "navbar_admin_upr_bd",
+    path: "upravleniya-bd",
+    element: <h1>Рецепт</h1>,
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  // {
+  //   id: 4,
+  //   title: "Создать договор",
+  //   path: "create-contract",
+  //   element: <AdminCreateContract />,
+  //   child: [],
+  //   visible: false,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
+  {
+    id: 5,
+    title: "Profile",
+    path: "profile",
+    element: <Profile />,
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 6,
+    title: "Добавить менеджера",
+    path: "create-manager",
+    element: <AddMeneger />,
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+];

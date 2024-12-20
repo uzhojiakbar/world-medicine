@@ -106,7 +106,7 @@ const ChangeLanguage = styled.div`
   }
 `;
 
-const ProfieBtn = styled.div`
+const ProfieBtn = styled(NavLink)`
   width: 50px;
   height: 50px;
   background-color: white;
@@ -115,6 +115,8 @@ const ProfieBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  cursor: pointer;
 
   color: var(--text-hover);
   cursor: pointer;
