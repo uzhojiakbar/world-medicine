@@ -17,5 +17,14 @@
   "navbar_admin_analiktika": "Аналитика",
   "navbar_admin_upr_sis": "Управление системой",
   "navbar_admin_upr_bd": "Управление БД",
-  "new_connect": "Новое подключение"
+  "new_connect": "Новое подключение",
+  "Fullname_doctor": "Ф.И.О. Врача",
+  "region": "Регион",
+  "phone_number": "Номер телефона",
+  "pod_dogovor": "Подключенный договор",
+  "Разрешение": "Разрешение",
+  "accept": "Принять",
+  "reject": "Отклонить",
+  "notInformation": "Нет данных для отображения",
+  "from": "из"
 }

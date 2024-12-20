@@ -11,6 +11,7 @@ import LeftArrow from "../../../assets/svg/LeftArrow";
 import RightArrow from "../../../assets/svg/RightArrow";
 import CancelIcon from "../../../assets/svg/CancelIcon";
 import ReceptIcon from "../../../assets/svg/ReceptIcon";
+import { useLanguage } from "../../../context/LanguageContext";
 
 const Container = styled.div`
   position: relative;
@@ -20,6 +21,8 @@ const Container = styled.div`
 
 const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
   const [loading, setLoading] = useState(0);
+
+  const { translate } = useLanguage();
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -74,11 +77,11 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
             <thead>
               <tr>
                 <th>№</th>
-                <th className="idfixed">Ф.И.О. Врача</th>
-                <th>Регион</th>
-                <th>Номер телефона</th>
-                <th>Подключенный договор</th>
-                <th>Разрешение</th>
+                <th className="idfixed">{translate("Fullname_doctor")}</th>
+                <th>{translate("region")}</th>
+                <th>{translate("phone_number")}</th>
+                <th>{translate("pod_dogovor")}</th>
+                <th>{translate("Разрешение")}</th>
               </tr>
             </thead>
             <tbody>
@@ -94,11 +97,11 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
                     <td className="buttons">
                       <button onClick={() => onPrinyat()}>
                         <ReceptIcon />
-                        Принять
+                        {translate("accept")}
                       </button>
                       <button onClick={() => onOtk()}>
                         <CancelIcon />
-                        Отклонить
+                        {translate("reject")}
                       </button>
                     </td>
                   </tr>
@@ -110,7 +113,7 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
                     colSpan="7"
                     style={{ textAlign: "center" }}
                   >
-                    Нет данных для отображения
+                    {translate("notInformation")}
                   </td>
                 </tr>
               )}
@@ -123,7 +126,8 @@ const ResizeTableAdminLayout = ({ data = [], title = "" }) => {
             <LeftArrow />
           </button>
           <span>
-            {currentPage + 1} из {totalPages}
+            {currentPage + 1} {translate("from")} {""}
+            {totalPages}
           </span>
           <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
             <RightArrow />
