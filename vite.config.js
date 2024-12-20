@@ -10,12 +10,16 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
-    headers: {
-      "Content-Security-Policy": "script-src 'self' 'unsafe-inline';",
+    proxy: {
+      "/api": {
+        target: "http://192.168.23.100:8080/api", // Backend manzili
+        changeOrigin: true,
+        secure: false,
+      },
     },
+    port: 5000,
   },
   preview: {
-    port: 3000,
+    port: 5000,
   },
 });

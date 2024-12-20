@@ -7,6 +7,8 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 20px;
   padding: 10px;
+  min-width: 320px;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     gap: 15px;
@@ -16,11 +18,13 @@ const Wrapper = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   max-width: 950px;
   width: 100%;
 
   @media (max-width: 768px) {
-    align-items: center;
+    flex-direction: column-reverse;
+    align-items: flex-start;
     gap: 20px;
   }
 `;
@@ -91,6 +95,10 @@ const ExitIcon = styled.div`
     width: 60px;
     height: 60px;
   }
+  @media (max-width: 425px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const MainAdminButton = styled.div`
@@ -107,12 +115,6 @@ const MainAdminButton = styled.div`
   cursor: pointer;
   transition: all 0.3s;
 
-  &:hover {
-    background-color: rgb(229, 235, 245);
-  }
-  &:active {
-    transform: scale(0.95);
-  }
   user-select: none;
 
   @media (max-width: 768px) {
@@ -212,11 +214,7 @@ const ResetPassword = styled.div`
   }
 `;
 
-const Item = styled.span`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
+const Item = styled.span``;
 
 export {
   Input,

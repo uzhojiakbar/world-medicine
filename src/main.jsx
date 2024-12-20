@@ -6,15 +6,20 @@ import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { LanguageProvider } from "./context/LanguageContext";
 import { AuthProvider } from "./context/AuthContext/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <LanguageProvider>
-          <Root />
-          <Toaster />
-        </LanguageProvider>
+        <QueryClientProvider client={queryClient}>
+          <LanguageProvider>
+            <Root />
+            <Toaster />
+          </LanguageProvider>
+        </QueryClientProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

@@ -24,9 +24,22 @@ import MainAdmin from "../../../assets/svg/mainAdmin.jsx";
 import { MiniTitleSmall } from "../../../root/style";
 import ForSee from "../../../assets/svg/see.jsx";
 import { formatPhoneNumber } from "../../../utils/PhoneFormatter.js";
+import useLogout from "../../../hooks/useLogOut.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [inputType, setInputType] = useState(true);
+
+  const logout = useLogout();
+  const nav = useNavigate();
+
+  const handleLogout = () => {
+    logout(() => {
+      console.log("User logged out successfully");
+      nav("/");
+    });
+  };
+
   const data = {
     status: "Главный администратор",
     privateData: "Личная информация",
@@ -37,6 +50,7 @@ const Profile = () => {
     restartPassword: "Сбросить пароль",
     createPassword: "Установить новый пароль",
   };
+
   const UserData = {
     userName: "koptleulovarslan111",
     email: "koptleulovarss@gmail.com",
@@ -54,7 +68,7 @@ const Profile = () => {
           </UserName>
         </UserDate>
         <UserSetting>
-          <ExitIcon>
+          <ExitIcon onClick={handleLogout}>
             <Exit />
           </ExitIcon>
           <MainAdminButton>

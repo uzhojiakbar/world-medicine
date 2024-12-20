@@ -33,8 +33,8 @@ export const useSignIn = () => {
       console.log("Response Data:", response.data);
 
       // Tokenlarni ajratib olish (javobni to'g'ri tuzish)
-      notify("ok", `${response.data.name}, добро пожаловать!`);
-      onSuccess(response.data);
+      notify("ok", `${response?.data?.name}, добро пожаловать!`);
+      onSuccess(response?.data);
     } catch (error) {
       // Xatolikni qayta ishlash
       onError(error);
