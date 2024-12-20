@@ -38,10 +38,10 @@ const SettingsSystemAdmin = () => {
     <Container>
       <ResizeTableAdminLayout
         title={translate("new_connect")}
-        data={newconnecting || []}
+        data={connectingUser || []}
       />
       <ResizeTableAdminLayout
-        title="Новые предложения пакетов"
+        title={translate("Новые_предложения_пакетов")}
         data={connectingUser || []}
       />
 

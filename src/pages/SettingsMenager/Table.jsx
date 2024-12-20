@@ -8,6 +8,7 @@ import LeftArrow from "../../assets/svg/LeftArrow";
 import RightArrow from "../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal";
+import { useLanguage } from "../../context/LanguageContext";
 
 const Container = styled.div`
   position: relative;
@@ -41,6 +42,8 @@ const Table = ({ title = "", data = [] }) => {
     (currentPage + 1) * itemsPerPage
   );
 
+  const { translate } = useLanguage();
+
   return (
     <Container>
       {loading ? (
@@ -60,11 +63,11 @@ const Table = ({ title = "", data = [] }) => {
             <thead>
               <tr>
                 <th>№</th>
-                <th className="idfixed">Ф.И.О. Врача</th>
-                <th>Зона отвественности</th>
-                <th>Дата назначения</th>
-                <th colSpan={2}>Выполнение KPI</th>
-                <th>Открыть</th>
+                <th className="idfixed">{translate("Fullname_doctor")}</th>
+                <th>{translate("Зона_отвественности")}</th>
+                <th>{translate("Дата_назначения")}</th>
+                <th colSpan={2}>{translate("Выполнение_KPI")}</th>
+                <th>{translate("Открыть")}</th>
               </tr>
             </thead>
             <tbody>
@@ -74,7 +77,9 @@ const Table = ({ title = "", data = [] }) => {
                     <td>№{row?.id}</td>
                     <td className="idfixed">{row?.fio}</td>
                     <td>{row?.district}</td>
-                    <td>Создан {row?.dateCreated}</td>
+                    <td>
+                      {translate("Создан")} {row?.dateCreated}
+                    </td>
                     <td colSpan={2}>
                       <div className="progressKPI">{row?.progress}</div>
                     </td>
@@ -113,7 +118,7 @@ const Table = ({ title = "", data = [] }) => {
                     colSpan="6"
                     style={{ textAlign: "center" }}
                   >
-                    Нет данных для отображения
+                    {translate("notInformation")}
                   </td>
                 </tr>
               )}
@@ -126,7 +131,7 @@ const Table = ({ title = "", data = [] }) => {
             <LeftArrow />
           </button>
           <span>
-            {currentPage + 1} из {totalPages}
+            {currentPage + 1} {translate("from")} {""} {totalPages}
           </span>
           <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
             <RightArrow />

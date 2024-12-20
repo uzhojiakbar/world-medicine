@@ -11,6 +11,7 @@ import { Checkbox } from "antd";
 import { FilterCardsWrapper } from "../admin/settingSystemAdmin/style";
 import Table from "./Table";
 import { Managers } from "../../mock/managers";
+import { useLanguage } from "../../context/LanguageContext";
 
 const SettingsMenager = () => {
   const nav = useNavigate();
@@ -43,37 +44,42 @@ const SettingsMenager = () => {
     setChecked(e.target.checked);
   };
 
+  const { translate } = useLanguage();
+
   return (
     <>
       <Title>
-        <span>Управление менеджерами</span>
+        <span>{translate("Управление_менеджерами")}</span>
         <Button onClick={() => nav("../create-manager")} icon={<IconPlus />}>
-          Добавить менеджера
+          {translate("Добавить_менеджера")}
         </Button>
       </Title>
 
       <FilterCardsWrapper>
-        <TitleSmall>Поиск менеджера / врача по фильтрам</TitleSmall>
+        <TitleSmall> {translate("врача_по_фильтрам")}</TitleSmall>
         <div className="cards">
           <PrimarySelect
-            def={"область"}
+            def={translate("область")}
             options={Viloyatlar}
             onValueChange={handleViloyatChange}
           />
           <PrimarySelect
-            def={"Район"}
+            def={translate("Район")}
             options={Tumanlar[selectedViloyat] || []}
             onValueChange={handleTumanChange}
           />
           <PrimarySelect
-            def={"Место работы"}
+            def={translate("Место_работы")}
             options={MestaRabot[selectedTuman] || []}
             onValueChange={handleMestaRabotChange}
           />
 
-          <Input onChange={setNameSurname} placeholder={"Ф.И.О. врача"} />
+          <Input
+            onChange={setNameSurname}
+            placeholder={translate("Fullname_doctor")}
+          />
           <Checkbox onChange={onChangeCheckbox} checked={checked}>
-            Назначен мною
+            {translate("Назначен_мною")}
           </Checkbox>
         </div>
       </FilterCardsWrapper>

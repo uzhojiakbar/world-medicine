@@ -5,16 +5,18 @@ import IconPlus from "../../assets/svg/IconPlus";
 import { useNavigate } from "react-router-dom";
 import Table from "./Table";
 import { Doctors } from "../../mock/doctors";
+import { useLanguage } from "../../context/LanguageContext";
 
 const SettingsDoctor = () => {
   const nav = useNavigate();
+  const { translate } = useLanguage();
 
   return (
     <>
       <Title>
-        <span>Управление врачами</span>
+        <span>{translate("Управление_врачами")}</span>
         <Button onClick={() => nav("../create-contract")} icon={<IconPlus />}>
-          Добавить врача
+          {translate("Добавить_врача")}
         </Button>
       </Title>
 
