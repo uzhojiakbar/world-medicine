@@ -9,6 +9,7 @@ import {
   PieContainer,
   PieDiagramCon,
 } from "./style";
+import { Title } from "../../root/style";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -40,11 +41,13 @@ const options = {
   },
 };
 
-const PieDiagram = () => {
+const PieDiagram = ({ title = "" }) => {
   const total = data.datasets[0].data.reduce((acc, value) => acc + value, 0);
 
   return (
     <PieContainer>
+      <Title size={"24px"}>{title}</Title>
+
       <Container>
         <div className="main">
           <div className="pie-main">

@@ -1,64 +1,67 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
-import styled from "styled-components";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
-  Filler,
 } from "chart.js";
+import styled from "styled-components";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
-  Legend,
-  Filler
+  Legend
 );
 
 const CardContainer = styled.div`
   background-color: var(--bg-color);
   border-radius: 12px;
-  padding: 10px;
-  height: 100%;
-  width: 100%; /* Ensure charts take full width of their container */
-`;
-
-const CHartLine = styled.div`
-  height: 100%;
+  padding: 20px;
   width: 100%;
-  max-width: 100%; /* Prevent the chart from going outside of its container */
-
-  padding: 25px;
 `;
 
-import { Title as TitleRoot } from "../../root/style";
+export const TitleText = styled.h2`
+  font-size: 24px;
+  font-family: "Vela Sans GX", sans-serif;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin-bottom: 20px;
+`;
 
-const SalesChart = ({ admin = 0, active = 1, title = "" }) => {
+const CHartBar = styled.div`
+  height: 300px;
+  max-width: 100%;
+  @media (max-width: 768px) {
+    padding: 0;
+  }
+`;
+
+const ChartBar = ({ admin = 0, active = 1, title }) => {
   const numsFull = {
     1: [
-      31555, 56216, 11294, 15027, 12974, 64116, 18768, 46218, 15762, 66912,
-      38100, 33396,
+      1000, 2000, 3000, 4000, 5000, 8000, 9000, 10000, 7000, 6000, 4000, 3000,
     ],
     2: [
-      21184, 46946, 10282, 27202, 36034, 23612, 43236, 38045, 14781, 52533,
-      25647, 10481,
+      1000, 2000, 1000, 4000, 6000, 2000, 9000, 10000, 5000, 6000, 4000, 3000,
     ],
     3: [
-      69714, 68237, 36625, 18479, 65735, 68701, 32130, 63549, 59675, 17483,
-      58117, 68925,
+      1000, 2000, 8000, 4000, 10000, 2000, 9000, 5000, 5000, 7000, 4000, 3000,
     ],
     4: [
-      42358, 55731, 63711, 41558, 57068, 14168, 61614, 41071, 44714, 21554,
-      25791, 43728,
+      1000, 10000, 1000, 3000, 6000, 2000, 9000, 10000, 3000, 6000, 9000, 3000,
+    ],
+    5: [
+      1000, 2000, 8000, 4000, 10000, 2000, 9000, 5000, 5000, 7000, 4000, 3000,
+    ],
+    6: [
+      1000, 2000, 3000, 4000, 5000, 8000, 9000, 10000, 7000, 6000, 4000, 3000,
     ],
   };
 
@@ -81,12 +84,10 @@ const SalesChart = ({ admin = 0, active = 1, title = "" }) => {
     ],
     datasets: [
       {
-        label: "Sales",
+        label: "Monthly Activity",
         data: nums || [],
-        borderColor: admin ? "#216bf4" : "#1E40AF",
-        backgroundColor: "rgba(30, 64, 175, 0.1)",
-        tension: 0.4,
-        pointRadius: 0,
+        backgroundColor: "#6366F1",
+        borderRadius: 8,
       },
     ],
   };
@@ -96,9 +97,6 @@ const SalesChart = ({ admin = 0, active = 1, title = "" }) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false,
-      },
-      title: {
         display: false,
       },
       tooltip: {
@@ -138,13 +136,16 @@ const SalesChart = ({ admin = 0, active = 1, title = "" }) => {
 
   return (
     <CardContainer>
-      <TitleRoot size={"24px"}>{title}</TitleRoot>
-
-      <CHartLine>
-        <Line style={{ maxWidth: "100%" }} data={data} options={options} />
-      </CHartLine>
+      <TitleText>{title}</TitleText>
+      <CHartBar>
+        <Bar
+          style={{ maxWidth: "100%", minWidth: "100%" }}
+          data={data}
+          options={options}
+        />
+      </CHartBar>
     </CardContainer>
   );
 };
 
-export default SalesChart;
+export default ChartBar;

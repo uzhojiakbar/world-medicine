@@ -21,15 +21,23 @@ const PieContainer = styled.div`
   ${media.mobileMM} {
     max-width: 100% !important;
   }
-`;
 
-const Container = styled.div`
   background: var(--bg-color);
   border-radius: 12px;
   text-align: center;
   font-family: Arial, sans-serif;
   padding: 10px;
 
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+`;
+
+const Container = styled.div`
   width: 100%;
   height: 100%;
 

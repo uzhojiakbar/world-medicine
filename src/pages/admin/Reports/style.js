@@ -4,8 +4,10 @@ import styled from "styled-components";
 export const ChartBlockContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Two columns for large screens */
+  grid-template-rows: repeat(2, 350px); /* Two columns for large screens */
   grid-gap: 20px; /* Space between the grid items */
   padding: 20px;
+  background-color: white;
 
   .chart-item {
     /* Each chart item will have equal width and responsive height */

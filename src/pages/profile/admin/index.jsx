@@ -26,6 +26,7 @@ import ForSee from "../../../assets/svg/see.jsx";
 import { formatPhoneNumber } from "../../../utils/PhoneFormatter.js";
 import useLogout from "../../../hooks/useLogOut.jsx";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../../context/LanguageContext.jsx";
 
 const Profile = () => {
   const [inputType, setInputType] = useState(true);
@@ -40,15 +41,17 @@ const Profile = () => {
     });
   };
 
+  const { translate } = useLanguage();
+
   const data = {
-    status: "Главный администратор",
-    privateData: "Личная информация",
-    login: "Логин",
-    email: "Почта",
-    phone: "Телефон",
-    password: "Пароль",
-    restartPassword: "Сбросить пароль",
-    createPassword: "Установить новый пароль",
+    status: translate("Главный_администратор"),
+    privateData: translate("Личная_информация"),
+    login: translate("Логин"),
+    email: translate("Почта"),
+    phone: translate("Телефон"),
+    password: translate("password"),
+    restartPassword: translate("Сбросить_пароль"),
+    createPassword: translate("Установить_новый_пароль"),
   };
 
   const UserData = {
