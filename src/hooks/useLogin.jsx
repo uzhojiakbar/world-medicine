@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import Instance from "../utils/Instance";
 import getNotify from "./useNotify";
 
@@ -31,9 +32,10 @@ export const useSignIn = () => {
       // Javobni console.log bilan tekshirish
       console.log("API Response:", response);
       console.log("Response Data:", response.data);
+      const role = jwtDecode(response?.data?.access_token)?.role;
 
       // Tokenlarni ajratib olish (javobni to'g'ri tuzish)
-      notify("ok", `${response?.data?.name}, добро пожаловать!`);
+      notify("ok", `${role}, добро пожаловать!`);
       onSuccess(response?.data);
     } catch (error) {
       // Xatolikni qayta ishlash

@@ -6,10 +6,9 @@ import "./fonts.css";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-// import publishService from "../utils/server/some_shit";
+import Server from "../utils/server/server";
 
 const Root = () => {
-  // publishService.getPosts();
   const nav = useNavigate();
 
   const token = Cookies.get("access_token");
@@ -19,6 +18,8 @@ const Root = () => {
       const role = jwtDecode(token)?.role;
       Cookies.set("role", role);
       console.log("DECODE: ", jwtDecode(token));
+
+      // Server.getUserInfo();
     }
   }, [token]);
 

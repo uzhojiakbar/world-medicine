@@ -109,15 +109,6 @@ const Login = () => {
     signIn(username, password, isNumber, onSuccess, onError);
   };
 
-  // Formda onFinish ni quyidagicha chaqiring
-  <Form
-    name="login"
-    onFinish={handleSubmit} // `handleSubmit`ni chaqiring
-    layout="vertical"
-  >
-    {/* Form elementlari */}
-  </Form>;
-
   return isSucces == "1" ? (
     <LoginContainer
       initial={{ opacity: 0 }}

@@ -6,7 +6,6 @@ import SettingsMenager from "../../SettingsMenager/SettingsMenager";
 import SettingsDoctor from "../../SettingsDoctor/SettingsDoctor.jsx";
 import { useLanguage } from "../../../context/LanguageContext.jsx";
 import { UseNewConnecting } from "../../../hooks/UseGetNewConnecting.jsx";
-import publishService from "../../../utils/server/some_shit.js";
 
 const SettingsSystemAdmin = () => {
   const { translate } = useLanguage();
@@ -18,9 +17,6 @@ const SettingsSystemAdmin = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const data = await publishService.getPosts();
-        console.log("datadata", data);
-
         setPosts(data); // olingan ma'lumotni saqlaymiz
       } catch (err) {
         setError("Error fetching posts.");

@@ -12,7 +12,6 @@ import {
   LoginWrapper,
   ImageSection,
   FormSection,
-  Title,
   LogoContainer,
   LanguageContainer,
   FormSectionBottom,
@@ -21,23 +20,13 @@ import {
   Description,
 } from "./style.js";
 
-import Input from "../../components/Generic/Input/Input.jsx";
 import CricleButton from "../../components/Generic/Button/CircleButton.jsx";
-import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import { useLanguage } from "../../context/LanguageContext"; // Tarjima uchun kontekst
 
 const LoginFInished = ({ isSucces = true, setSucces = () => {} }) => {
-  const signIn = useSignIn();
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
-
-  const Back = () => {
-    if (isSucces == "1") {
-      setSucces("2");
-    } else if (isSucces == "2") {
-      setSucces("1");
-    }
-  };
 
   const Go = () => {
     document.location.reload();
