@@ -4,6 +4,9 @@ import { NavbarDataAdmin } from "../utils/navbar";
 import { useAuth } from "../context/AuthContext/AuthContext";
 import { MainContainer } from "../root/style";
 import { getCookie } from "../hooks/useCookie";
+import PrivateRoute from "../components/Navigate/PrivateRoute";
+import Cookies from "js-cookie";
+import AdminNavbar from "../components/navbar/admin/navbar";
 
 // Components
 const NotAuth = lazy(() => import("../components/Navigate/notAuth"));
@@ -29,67 +32,166 @@ const Router = () => {
 
   const lastPage = localStorage.getItem("lastPage");
 
-  return (
-    <Suspense fallback={<Loader />}>
-      <Routes>
-        {/* Root redirect */}
-        <Route
-          path="/"
-          element={
-            <MainContainer>
-              <NotAuth>
-                {/* <Navigate to={isAdmin ? <AdminPage /> : <Login />} replace /> */}
-                {isAdmin ? <AdminPage /> : <Login />}
-              </NotAuth>
-            </MainContainer>
-          }
-        />
+  const currentUserRole = Cookies.get("role");
+  console.log("HOZIRGI ROLE: ", currentUserRole);
 
-        {/* Protected admin routes */}
-        <Route
-          path="/admin/*"
-          element={
-            isAdmin ? (
-              <MainContainer>
-                <OnlyAdmin>
-                  <AdminPage />
-                </OnlyAdmin>
-              </MainContainer>
-            ) : (
-              <Navigate to={"/notadmin"} />
-            )
-          }
-        >
+  // return (
+  //   <Suspense fallback={<Loader />}>
+  //     <Routes>
+  //       {/* Root redirect */}
+  //       <Route
+  //         path="/"
+  //         element={
+  //           <MainContainer>
+  //             <NotAuth>
+  //               {/* <Navigate to={isAdmin ? <AdminPage /> : <Login />} replace /> */}
+  //               {isAdmin ? <AdminPage /> : <Login />}
+  //             </NotAuth>
+  //           </MainContainer>
+  //         }
+  //       />
+
+  //       {/* Protected admin routes */}
+  //       <Route
+  //         path="/admin/*"
+  //         element={
+  //           isAdmin ? (
+  //             <MainContainer>
+  //               <OnlyAdmin>
+  //                 <AdminPage />
+  //               </OnlyAdmin>
+  //             </MainContainer>
+  //           ) : (
+  //             <Navigate to={"/notadmin"} />
+  //           )
+  //         }
+  //       >
+  //         {NavbarDataAdmin.map(({ id, path, element }) => (
+  //           <Route key={id} path={path} element={element} />
+  //         ))}
+  //         <Route
+  //           path="*"
+  //           element={
+  //             <MainContainer>
+  //               <OnlyAdmin>
+  //                 <Navigate
+  //                   to={
+  //                     // lastPage === "login" || lastPage === "/login"
+  //                     //   ? "/admin"
+  //                     //   : lastPage || "/admin/analiktika"
+  //                     lastPage ? lastPage : "/admin/analiktika"
+  //                   }
+  //                   replace
+  //                 />
+  //               </OnlyAdmin>
+  //             </MainContainer>
+  //           }
+  //         />
+  //       </Route>
+
+  //       {/* Public routes */}
+  //       <Route path="/login" element={<Login />} />
+  //       <Route path="/forget-password" element={<CompleteSetup />} />
+  //       {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+  //     </Routes>
+  //   </Suspense>
+
+  // ADMIN ROUTES
+  if (currentUserRole === "CHIEF") {
+    return (
+      <Suspense fallback={<Loader />}>
+        <AdminNavbar />
+
+        <Routes>
           {NavbarDataAdmin.map(({ id, path, element }) => (
             <Route key={id} path={path} element={element} />
           ))}
+          <Route path="*" element={<h1>NOT FOUND</h1>} />
+        </Routes>
+      </Suspense>
+    );
+  }
+
+  // MANAGER
+  else if (currentUserRole === "MANAGER") {
+    return (
+      <Suspense fallback={<Loader />}>
+        <Routes>
           <Route
-            path="*"
+            path="/"
             element={
-              <MainContainer>
-                <OnlyAdmin>
-                  <Navigate
-                    to={
-                      // lastPage === "login" || lastPage === "/login"
-                      //   ? "/admin"
-                      //   : lastPage || "/admin/analiktika"
-                      lastPage ? lastPage : "/admin/analiktika"
-                    }
-                    replace
-                  />
-                </OnlyAdmin>
-              </MainContainer>
+              <PrivateRoute role={currentUserRole} allowedRoles={["MANAGER"]}>
+                <h1>MANAGER HOME</h1>
+              </PrivateRoute>
             }
           />
-        </Route>
+          <Route
+            path="/analiktika"
+            element={
+              <PrivateRoute role={currentUserRole} allowedRoles={["MANAGER"]}>
+                <h1>MANAGER ANALIKTIKA</h1>
+              </PrivateRoute>
+            }
+          />
 
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/forget-password" element={<CompleteSetup />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </Suspense>
-  );
+          <Route path="*" element={<h1>NOT FOUND</h1>} />
+        </Routes>
+      </Suspense>
+    );
+  }
+
+  // Public Routes
+  else {
+    return (
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forget-password" element={<CompleteSetup />} />
+          <Route path="*" element={<h1>NOT FOUND</h1>} />
+        </Routes>
+      </Suspense>
+    );
+  }
+  // return (
+  //   <Suspense fallback={<Loader />}>
+  //     <Routes>
+  //       {/* Public routes */}
+  //       <Route path="/login" element={<Login />} />
+  //       <Route path="/forget-password" element={<CompleteSetup />} />
+  //       {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+
+  //       {/* Admin */}
+
+  //       <Route
+  //         path="/"
+  //         element={
+  //           <PrivateRoute role={currentUserRole} allowedRoles={["admin"]}>
+  //             <h1>ADMIN HOME</h1>
+  //           </PrivateRoute>
+  //         }
+  //       />
+  //       <Route
+  //         path="/analiktika"
+  //         element={
+  //           <PrivateRoute role={currentUserRole} allowedRoles={["admin"]}>
+  //             <h1>ADMIN ANALIKTIKA</h1>
+  //           </PrivateRoute>
+  //         }
+  //       />
+
+  //       {/* FF marshrutlari */}
+  //       <Route
+  //         path="/"
+  //         element={
+  //           <PrivateRoute role={currentUserRole} allowedRoles={["FF"]}>
+  //             <h1>FF home</h1>
+  //           </PrivateRoute>
+  //         }
+  //       />
+  //     </Routes>
+  //   </Suspense>
+  // );
 };
 
 export default Router;

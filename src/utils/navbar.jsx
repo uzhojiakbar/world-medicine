@@ -7,6 +7,8 @@ import SettingsSystemAdmin from "../pages/admin/settingSystemAdmin/SettingsSyste
 import { useLanguage } from "../context/LanguageContext";
 import AddMeneger from "../pages/addManager/AddManager";
 import Profile from "../pages/profile/admin";
+import AdminPage from "../pages/admin/admin";
+import { MainContainer } from "../root/style";
 
 export const navbarData = () => {
   return [
@@ -93,9 +95,27 @@ export const NavbarBurgerMenu = () => {
 export const NavbarDataAdmin = [
   {
     id: 1,
+    title: "Main Page Admin",
+    path: "/",
+    element: (
+      <MainContainer>
+        <AdminPage />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 1,
     title: "navbar_admin_analiktika",
     path: "analiktika",
-    element: <AdminAnaliktika />,
+    element: (
+      <MainContainer>
+        <h1>Analiktika</h1>
+      </MainContainer>
+    ),
     child: [],
     visible: true,
     onlyAdmin: false,
@@ -105,7 +125,11 @@ export const NavbarDataAdmin = [
     id: 2,
     title: "navbar_admin_upr_sis",
     path: "upravleniya-sistemoy",
-    element: <SettingsSystemAdmin />,
+    element: (
+      <MainContainer>
+        <SettingsSystemAdmin />
+      </MainContainer>
+    ),
     child: [],
     visible: true,
     onlyAdmin: false,
@@ -115,12 +139,59 @@ export const NavbarDataAdmin = [
     id: 3,
     title: "navbar_admin_upr_bd",
     path: "upravleniya-bd",
-    element: <h1>Рецепт</h1>,
+    element: (
+      <MainContainer>
+        <h1>Рецепт</h1>
+      </MainContainer>
+    ),
     child: [],
     visible: true,
     onlyAdmin: false,
     icon: false,
   },
+  {
+    id: 5,
+    title: "Profile",
+    path: "profile",
+    element: (
+      <MainContainer>
+        <Profile />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 6,
+    title: "Добавить менеджера",
+    path: "create-manager",
+    element: (
+      <MainContainer>
+        <AddMeneger />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 6,
+    title: "NOT FOUND PAGE",
+    path: "*",
+    element: (
+      <MainContainer>
+        <h1>Not Found</h1>
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+
   // {
   //   id: 4,
   //   title: "Создать договор",
@@ -131,24 +202,4 @@ export const NavbarDataAdmin = [
   //   onlyAdmin: false,
   //   icon: false,
   // },
-  {
-    id: 5,
-    title: "Profile",
-    path: "profile",
-    element: <Profile />,
-    child: [],
-    visible: false,
-    onlyAdmin: false,
-    icon: false,
-  },
-  {
-    id: 6,
-    title: "Добавить менеджера",
-    path: "create-manager",
-    element: <AddMeneger />,
-    child: [],
-    visible: false,
-    onlyAdmin: false,
-    icon: false,
-  },
 ];

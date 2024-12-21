@@ -61,72 +61,6 @@ const AdminNavbar = () => {
     console.log(data);
   }, [language]);
 
-  const logout = useLogout();
-
-  const handleLogout = () => {
-    logout(() => {
-      console.log("User logged out successfully");
-      nav("/");
-    });
-  };
-
-  // Set data depending on the user's role
-
-  // Dropdown menu for profile options
-  const items = [
-    {
-      key: "1",
-      label: (
-        <GoToProfileButton
-          onClick={() => console.log("Profile clicked")}
-          style={{ cursor: "pointer" }}
-        >
-          <div className="name">Admin username</div>
-          <div className="name-desc">Hisobni ochish</div>
-        </GoToProfileButton>
-      ),
-    },
-    {
-      type: "divider",
-    },
-    {
-      key: "2",
-      label: (
-        <ProfileBarButton
-          onClick={() => console.log("Help clicked")}
-          style={{ cursor: "pointer" }}
-        >
-          <HeartFilled />
-          <div>Help</div>
-        </ProfileBarButton>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <ProfileBarButton
-          onClick={() => console.log("Settings clicked")}
-          style={{ cursor: "pointer" }}
-        >
-          <SettingOutlined />
-          <div>Sozlamalar</div>
-        </ProfileBarButton>
-      ),
-    },
-    {
-      type: "divider",
-    },
-    {
-      key: "4",
-      label: (
-        <ProfileBarButton onClick={handleLogout} style={{ cursor: "pointer" }}>
-          <LogoutOutlined />
-          <div>Hisobdan chiqish</div>
-        </ProfileBarButton>
-      ),
-    },
-  ];
-
   const languages = [
     { value: "ru", label: "Русский", icon: "" },
     { value: "en", label: "English", icon: "" },
@@ -151,8 +85,6 @@ const AdminNavbar = () => {
     ),
   }));
 
-  const isOpen = () => setOpen(!open);
-
   return (
     <NavBigContainer>
       <NavContainer>
@@ -164,11 +96,7 @@ const AdminNavbar = () => {
                 <Link
                   className={({ isActive }) => (isActive ? "active" : "")}
                   key={v.id || v.title}
-                  to={
-                    Cookies.get("role") === "CHIEF"
-                      ? `/admin/${v.path}`
-                      : `/menager/${v.path}`
-                  }
+                  to={Cookies.get("role") === "CHIEF" ? v.path : v.path}
                 >
                   {v.title}
                 </Link>
@@ -183,13 +111,7 @@ const AdminNavbar = () => {
             <ChangeLanguage className={"inactive"}>{lang1}</ChangeLanguage>
           </Dropdown>
 
-          <ProfieBtn
-            to={
-              Cookies.get("role") === "CHIEF"
-                ? `/admin/profile`
-                : `/menager/profile`
-            }
-          >
+          <ProfieBtn to={`/profile`}>
             <i className="fa-solid fa-user"></i>
           </ProfieBtn>
         </Links>

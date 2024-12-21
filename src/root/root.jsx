@@ -18,7 +18,7 @@ const Root = () => {
       // const role = "CHIEF";
       const role = jwtDecode(token)?.role;
       Cookies.set("role", role);
-      nav("/");
+      console.log("DECODE: ", jwtDecode(token));
     }
   }, [token]);
 
