@@ -5,12 +5,14 @@ const QuickAccessPContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
   gap: 20px;
+  grid-auto-rows: auto; /* Bu qator balandligini avtomatik ravishda moslashtiradi */
 
-  @media (max-width: 770px) {
+  @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (max-width: 460px) {
-    grid-template-columns: repeat(1, 1fr);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 `;
 const QAccessButton = styled.div`
@@ -28,9 +30,7 @@ const QAccessButton = styled.div`
   text-align: left;
   border-radius: 10px;
 
-  width: 100%;
   min-width: 320px;
-
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   user-select: none;

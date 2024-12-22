@@ -16,7 +16,8 @@ const Analiktika__Cards = styled.div`
   border-radius: 30px;
 
   ${media.mobileMM} {
-    width: 100%;
+    width: 90%;
+    margin: 0 auto;
   }
 `;
 
@@ -24,6 +25,8 @@ Analiktika__Cards.Con = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+
+  width: 100%;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;

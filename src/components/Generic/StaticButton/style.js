@@ -7,7 +7,7 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
   grid-template-columns: repeat(2, 1fr);
   word-wrap: break-word;
-  width: 100%;
+  width: 90%;
 
   gap: 10px;
 
