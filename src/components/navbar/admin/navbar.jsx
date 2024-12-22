@@ -85,10 +85,15 @@ const AdminNavbar = () => {
     ),
   }));
 
+  const ToHome = () => {
+    nav("/");
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Tepaga skroll qilish
+  };
+
   return (
     <NavBigContainer>
       <NavContainer>
-        <Logo onClick={() => nav("/")} src={LogoMain} />
+        <Logo onClick={ToHome} src={LogoMain} />
         <Links>
           {data.map(
             (v) =>

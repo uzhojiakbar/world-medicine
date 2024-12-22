@@ -13,7 +13,7 @@ import Table from "./Table";
 import { Managers } from "../../mock/managers";
 import { useLanguage } from "../../context/LanguageContext";
 
-const SettingsMenager = () => {
+const SettingsMenager = ({ id }) => {
   const nav = useNavigate();
 
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -47,7 +47,7 @@ const SettingsMenager = () => {
   const { translate } = useLanguage();
 
   return (
-    <>
+    <div id={id || "administration"}>
       <Title>
         <span>{translate("Управление_менеджерами")}</span>
         <Button onClick={() => nav("../create-manager")} icon={<IconPlus />}>
@@ -85,7 +85,7 @@ const SettingsMenager = () => {
       </FilterCardsWrapper>
 
       <Table data={Managers || []} />
-    </>
+    </div>
   );
 };
 

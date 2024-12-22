@@ -5,35 +5,8 @@ import SystemIcon from "../../../assets/svg/SystemIcon";
 import BDIcon from "../../../assets/svg/BDIcon";
 import { useLanguage } from "../../../context/LanguageContext";
 
-const QuickAccess = () => {
+const QuickAccess = ({ data = [] }) => {
   const { translate } = useLanguage();
-
-  const data = [
-    {
-      id: 1,
-      name: "Просмотр отчетов",
-      icon: <EyeIcon />,
-      onclick: () => {
-        console.log("button clickd");
-      },
-    },
-    {
-      id: 2,
-      name: "Управление системой",
-      icon: <SystemIcon />,
-      onclick: () => {
-        console.log("button clickd");
-      },
-    },
-    {
-      id: 3,
-      name: "Управление Базой Данных",
-      icon: <BDIcon />,
-      onclick: () => {
-        console.log("button clickd");
-      },
-    },
-  ];
 
   return (
     <QuickAccessPContainer>

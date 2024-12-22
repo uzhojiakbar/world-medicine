@@ -6,6 +6,7 @@ import SettingsMenager from "../../SettingsMenager/SettingsMenager";
 import SettingsDoctor from "../../SettingsDoctor/SettingsDoctor.jsx";
 import { useLanguage } from "../../../context/LanguageContext.jsx";
 import { UseNewConnecting } from "../../../hooks/UseGetNewConnecting.jsx";
+import SettingsMed from "../../settingsMed/index.jsx";
 
 const SettingsSystemAdmin = () => {
   const { translate } = useLanguage();
@@ -15,11 +16,27 @@ const SettingsSystemAdmin = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        const topOffset = 200; // 150px yuqoriga
+        const elementPosition = element.getBoundingClientRect().top; // Element joylashuvi
+        const offsetPosition = elementPosition + window.pageYOffset - topOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth", // Animatsiyali skroll
+        });
+      }
+    }
+
     const fetchPosts = async () => {
       try {
         setPosts(data); // olingan ma'lumotni saqlaymiz
       } catch (err) {
-        setError("Error fetching posts.");
+        // setError("Error fetching posts.");
+        return;
       } finally {
         console.log("FINAl");
       }
@@ -41,8 +58,11 @@ const SettingsSystemAdmin = () => {
         data={connectingUser || []}
       />
 
+      <span id="administration"></span>
+
       <SettingsMenager />
       <SettingsDoctor />
+      <SettingsMed />
     </Container>
   );
 };

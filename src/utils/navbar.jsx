@@ -9,6 +9,7 @@ import AddMeneger from "../pages/addManager/AddManager";
 import Profile from "../pages/profile/admin";
 import AdminPage from "../pages/admin/admin";
 import { MainContainer } from "../root/style";
+import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
 
 export const navbarData = () => {
   return [
@@ -60,7 +61,7 @@ export const NavbarBurgerMenu = () => {
     {
       key: 1,
       label: (
-        <Link to={`/admin/analiktika`}>
+        <Link to={`/analiktika`}>
           <div>Аналитика</div>
         </Link>
       ),
@@ -68,7 +69,7 @@ export const NavbarBurgerMenu = () => {
     {
       key: 2,
       label: (
-        <Link to={`/admin/nastroyka-usloviya`}>
+        <Link to={`/nastroyka-usloviya`}>
           <div>Настройка условий</div>
         </Link>
       ),
@@ -76,7 +77,7 @@ export const NavbarBurgerMenu = () => {
     {
       key: 3,
       label: (
-        <Link to={`/admin/retsept`}>
+        <Link to={`/retsept`}>
           <div>Рецепт</div>
         </Link>
       ),
@@ -84,7 +85,7 @@ export const NavbarBurgerMenu = () => {
     {
       key: 4,
       label: (
-        <Link to={`/admin/depozit`}>
+        <Link to={`/depozit`}>
           <div>Депозит</div>
         </Link>
       ),
@@ -113,7 +114,7 @@ export const NavbarDataAdmin = [
     path: "analiktika",
     element: (
       <MainContainer>
-        <h1>Analiktika</h1>
+        <AnaliktikaPage />
       </MainContainer>
     ),
     child: [],
@@ -137,11 +138,11 @@ export const NavbarDataAdmin = [
   },
   {
     id: 3,
-    title: "navbar_admin_upr_bd",
-    path: "upravleniya-bd",
+    title: "Настройка_условий",
+    path: "nastroyka-usloviya",
     element: (
       <MainContainer>
-        <h1>Рецепт</h1>
+        <SettingsConditionAdmin />
       </MainContainer>
     ),
     child: [],
@@ -184,6 +185,21 @@ export const NavbarDataAdmin = [
     element: (
       <MainContainer>
         <h1>Not Found</h1>
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 6,
+    title: "Reports",
+    path: "reports",
+    element: (
+      <MainContainer>
+        {/* <h1>Not Found</h1> */}
+        <AnaliktikaPage />
       </MainContainer>
     ),
     child: [],

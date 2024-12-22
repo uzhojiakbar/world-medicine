@@ -12,6 +12,10 @@ import ChartBlock from "../../../components/ChartBlock/ChartBlock";
 import QuickAccess from "../../admin/quickAccess/quickAccess";
 import { useLanguage } from "../../../context/LanguageContext";
 import Reports from "../../admin/Reports/Reports";
+import EyeIcon from "../../../assets/svg/Eye";
+import SystemIcon from "../../../assets/svg/SystemIcon";
+import BDIcon from "../../../assets/svg/BDIcon";
+import { useNavigate } from "react-router-dom";
 
 const AdminAnaliktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -19,6 +23,8 @@ const AdminAnaliktika = () => {
   const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
   const [nameSurname, setNameSurname] = useState("");
   const [active, setActive] = useState(1);
+
+  const nav = useNavigate();
 
   const handleViloyatChange = (value) => {
     setSelectedViloyat(value);
@@ -36,11 +42,38 @@ const AdminAnaliktika = () => {
   };
 
   const { translate } = useLanguage(); // Tarjima funksiyasi
+  const data = [
+    {
+      id: 1,
+      name: "Отчеты",
+      icon: <EyeIcon />,
+      onclick: () => {
+        nav("analiktika");
+      },
+    },
+    {
+      id: 2,
+      name: "Администрирование",
+      icon: <SystemIcon />,
+      onclick: () => {
+        nav("upravleniya-sistemoy#administration");
+        console.log("button clickd");
+      },
+    },
+    {
+      id: 3,
+      name: "Настройка условий",
+      icon: <BDIcon />,
+      onclick: () => {
+        nav("nastroyka-usloviya");
+      },
+    },
+  ];
 
   return (
     <AnaliktikaCon>
       <Title>{translate("quick_access")}</Title>
-      <QuickAccess />
+      <QuickAccess data={data} />
       <Title>Аналитика</Title>
       <Analiktika__Cards.Con>
         <Analiktika__Cards type="type-1">
