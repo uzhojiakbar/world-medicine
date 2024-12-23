@@ -1,49 +1,27 @@
 import axios from "axios";
 import Cookie from "js-cookie";
+import Instance from "../Instance";
 import { jwtDecode } from "jwt-decode";
 
-const API_BASE_URL = "http://192.168.23.100:8080/api/v1";
-
 const Server = {
-  getPosts: async () => {
-    const token = Cookie.get("access_token");
-
-    console.log("TOKEEEEEEEN", token);
-
-    const axiosInstance = axios.create({
-      baseURL: API_BASE_URL,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
+  getNewConnect: async () => {
     try {
-      const response = await axiosInstance.get(
-        `/admin/doctors/not-declined-not-enabled`
+      const response = await Instance.get(
+        `/v1/admin/doctors/not-declined-not-enabled?page=0&size=10`
       );
-      return response.data;
+      return response?.data;
     } catch (error) {
       console.log(error);
     }
   },
-  getUserInfo: async () => {
-    const token = Cookie.get("access_token");
+  getUserInfo: async (tokeen) => {
+    const token = tokeen || Cookie.get("access_token");
 
-    console.log("TOKEEEEEEEN", token);
-    const sub = jwtDecode(token)?.sub;
-
-    const axiosInstance = axios.create({
-      baseURL: API_BASE_URL,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const sub = jwtDecode(token)?.sub; // To'g'ri ishlatilmoqda
 
     try {
-      const response = await axiosInstance.get(`/user/${sub}`);
-      console.log(response);
+      const response = await Instance.get(`/user/${sub}`);
+      console.log("RESPONSE USER INFO", response);
 
       return response.data;
     } catch (error) {

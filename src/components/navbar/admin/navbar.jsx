@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  ProfileBarButton,
-  GoToProfileButton,
   Link,
   Links,
   Logo,
@@ -22,31 +20,21 @@ import {
 
 import useCustomNavigate from "../../../hooks/useCustomNavigate";
 import { Dropdown } from "antd";
-import {
-  HeartFilled,
-  LogoutOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import useLogout from "../../../hooks/useLogOut";
+
 import Cookies from "js-cookie";
 import { useLanguage } from "../../../context/LanguageContext";
 
 const AdminNavbar = () => {
   const nav = useCustomNavigate();
 
-  // Keep hooks at the top and avoid conditional calls
   const [lang1, setLanguage2] = useState(localStorage.getItem("lang") || "ru");
   const { translate, language, setLanguage } = useLanguage(); // useLanguage hook'ini chaqiramiz
-  console.log(language);
 
-  const [open, setOpen] = useState(false);
   const userRole = Cookies.get("role");
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log("data");
-
     const CurrentData = userRole === "CHIEF" ? NavbarDataAdmin : navbarData;
 
     setData(
@@ -57,8 +45,6 @@ const AdminNavbar = () => {
         };
       })
     );
-
-    console.log(data);
   }, [language]);
 
   const languages = [

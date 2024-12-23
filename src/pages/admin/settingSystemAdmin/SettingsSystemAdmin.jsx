@@ -7,16 +7,18 @@ import SettingsDoctor from "../../SettingsDoctor/SettingsDoctor.jsx";
 import { useLanguage } from "../../../context/LanguageContext.jsx";
 import { UseNewConnecting } from "../../../hooks/UseGetNewConnecting.jsx";
 import SettingsMed from "../../settingsMed/index.jsx";
+import Server from "../../../utils/server/server.js";
+import NewConnect from "./NewConnect.jsx";
 
 const SettingsSystemAdmin = () => {
   const { translate } = useLanguage();
-  const newconnecting = [];
   // const { data: , isLoading, error } = UseNewConnecting();
 
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const hash = window.location.hash;
+
     if (hash) {
       const element = document.querySelector(hash);
       if (element) {
@@ -30,28 +32,14 @@ const SettingsSystemAdmin = () => {
         });
       }
     }
-
-    const fetchPosts = async () => {
-      try {
-        setPosts(data); // olingan ma'lumotni saqlaymiz
-      } catch (err) {
-        // setError("Error fetching posts.");
-        return;
-      } finally {
-        console.log("FINAl");
-      }
-    };
-
-    fetchPosts();
   }, []); // Faqat komponent birinchi marta render bo'lganda chaqiriladi
-
-  console.log("NE CONN", newconnecting);
 
   return (
     <Container>
-      <ResizeTableAdminLayout
+      <NewConnect
         title={translate("new_connect")}
-        data={connectingUser || []}
+        data={posts || []}
+        loading={false}
       />
       <ResizeTableAdminLayout
         title={translate("Новые_предложения_пакетов")}

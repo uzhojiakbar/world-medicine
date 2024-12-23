@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import styled from "styled-components";
 import { TitleSmall, WhiteWrapper } from "../../../root/style";
@@ -12,6 +12,7 @@ import RightArrow from "../../../assets/svg/RightArrow";
 import CancelIcon from "../../../assets/svg/CancelIcon";
 import ReceptIcon from "../../../assets/svg/ReceptIcon";
 import { useLanguage } from "../../../context/LanguageContext";
+import Server from "../../../utils/server/server";
 
 const Container = styled.div`
   position: relative;
@@ -19,13 +20,28 @@ const Container = styled.div`
   transition: all 0.2s ease-in-out;
 `;
 
-const ResizeTableAdminLayout = ({
-  title = "",
-  data = [],
-  loading,
-  setLoading,
-}) => {
+const NewConnect = ({ title = "" }) => {
   const { translate } = useLanguage();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await Server.getNewConnect();
+        setData(data?.content); // olingan ma'lumotni saqlaymiz
+      } catch (err) {
+        // setError("Error fetching posts.");
+        return;
+      } finally {
+        console.log("FINAl");
+      }
+    };
+
+    fetchPosts();
+  }, []);
+  console.log(data);
+
+  const [loading, setLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -90,7 +106,7 @@ const ResizeTableAdminLayout = ({
             <tbody>
               {currentData?.length > 0 ? (
                 currentData?.map((row) => (
-                  <tr key={row?.id}>
+                  <tr key={row?.userId}>
                     <td>№{row?.id}</td>
                     <td className="idfixed">{row?.name}</td>
                     <td>{row?.location}</td>
@@ -141,4 +157,4 @@ const ResizeTableAdminLayout = ({
   );
 };
 
-export default ResizeTableAdminLayout;
+export default NewConnect;

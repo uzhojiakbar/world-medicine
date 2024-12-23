@@ -67,8 +67,6 @@ const SalesChart = ({ admin = 0, active = 1 }) => {
 
   const nums = numsFull[active];
 
-  console.log(nums);
-
   const data = {
     labels: [
       "Jan",

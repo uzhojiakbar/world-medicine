@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import Instance from "../utils/Instance";
 import getNotify from "./useNotify";
+import Server from "../utils/server/server";
 
 const { notify } = getNotify();
 
@@ -39,6 +40,8 @@ export const useSignIn = () => {
       onSuccess(response?.data);
     } catch (error) {
       // Xatolikni qayta ishlash
+      console.log("ERRROOOR", error);
+
       onError(error);
       handleApiError(error);
     }
