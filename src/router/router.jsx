@@ -16,6 +16,7 @@ const OnlyAdmin = lazy(() => import("../components/Navigate/onlyAdmin"));
 const AdminPage = lazy(() => import("../pages/admin/admin"));
 const Login = lazy(() => import("../pages/login/login"));
 const CompleteSetup = lazy(() => import("../pages/login/ForgetPassword"));
+const SettingsCondition = lazy(() => import("../pages/setingsCondition/index"));
 
 // Loader
 const Loader = () => (
@@ -106,7 +107,23 @@ const Router = () => {
           {NavbarDataAdmin.map(({ id, path, element }) => (
             <Route key={id} path={path} element={element} />
           ))}
-          <Route path="*" element={<h1>NOT FOUND</h1>} />
+
+          {/* <Route path="nastroyka-usloviya/" element={<h1>1</h1>} /> */}
+
+          <Route
+            path="/nastroyka-usloviya"
+            element={
+              <MainContainer>
+                <SettingsCondition />
+              </MainContainer>
+            }
+          >
+            <Route path="" element={<h1>221</h1>} />
+            <Route path="Preparad" element={<h1>2</h1>} />
+            <Route path="Mestrabotaya" element={<h1>3</h1>} />
+            <Route path="Predoji" element={<h1>4</h1>} />
+            <Route path="*" element={<h1>NOT FOUND</h1>} />
+          </Route>
         </Routes>
       </Suspense>
     );

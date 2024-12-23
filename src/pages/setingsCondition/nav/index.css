@@ -1,0 +1,27 @@
+.activeInner {
+  background: white;
+  color: #000000;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: blue;
+  padding: 16px;
+  background-color: #216bf4;
+  color: white;
+}
+.activeInner span i {
+  color: #93b6f6;
+}
+
+.itemInner {
+  background: white;
+  color: #000000;
+  padding: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.itemInner:hover {
+  background-color: #216bf4;
+  color: white;
+}

@@ -10,6 +10,7 @@ import Profile from "../pages/profile/admin";
 import AdminPage from "../pages/admin/admin";
 import { MainContainer } from "../root/style";
 import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
+import SettingsCondition from "../pages/setingsCondition";
 
 export const navbarData = () => {
   return [
@@ -139,10 +140,11 @@ export const NavbarDataAdmin = [
   {
     id: 3,
     title: "Настройка_условий",
-    path: "nastroyka-usloviya",
+    path: "nastroyka-usloviya1",
     element: (
       <MainContainer>
-        <SettingsConditionAdmin />
+        {/* <SettingsConditionAdmin /> */}
+        <SettingsCondition />
       </MainContainer>
     ),
     child: [],
