@@ -95,6 +95,7 @@ const Router = () => {
   //       <Route path="/forget-password" element={<CompleteSetup />} />
   //       {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
   //     </Routes>
+
   //   </Suspense>
 
   // ADMIN ROUTES
@@ -118,7 +119,7 @@ const Router = () => {
 
           {/* <Route path="nastroyka-usloviya/" element={<h1>1</h1>} /> */}
 
-          <Route
+          {/* <Route
             path="/nastroyka-usloviya"
             element={
               <MainContainer>
@@ -131,7 +132,7 @@ const Router = () => {
             <Route path="Mestrabotaya" element={<h1>3</h1>} />
             <Route path="Predoji" element={<h1>4</h1>} />
             <Route path="*" element={<h1>NOT FOUND</h1>} />
-          </Route>
+          </Route> */}
         </Routes>
       </Suspense>
     );

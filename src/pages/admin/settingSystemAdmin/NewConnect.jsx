@@ -46,7 +46,7 @@ const NewConnect = ({ title = "" }) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(data?.length / itemsPerPage) || 0;
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
@@ -60,7 +60,7 @@ const NewConnect = ({ title = "" }) => {
     }
   };
 
-  const currentData = data.slice(
+  const currentData = data?.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
