@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Container, H1, ContainerItem, Title } from "./style";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./index.css";
 import { MenagerPageContainer } from "../../menager/style";
 const Pagination = () => {
   const [active, setActive] = useState("nastroyka-usloviya");
+  const location = useLocation(); // React Router'dan location hook
 
   const navdata = [
     { id: 0, name: "Архив договоров", path: "" },
@@ -14,17 +15,19 @@ const Pagination = () => {
   ];
 
   useEffect(() => {
-    const pageName =
-      document.location.pathname.split("/")[
-        document.location.pathname.split("/").length - 1
-      ];
+    const pathSegments = location.pathname.split("/");
+    const pageName = pathSegments[pathSegments.length - 1] || ""; // Oxirgi segmentni oladi
 
     if (pageName === "nastroyka-usloviya") {
+      console.log(1);
       setActive("");
     } else {
+      console.log(2);
       setActive(pageName);
     }
-  });
+
+    console.log(active); // Ehtimoliy eski qiymatni ko'rsatadi
+  }, [location.pathname]); // document.location o'rniga location.pathname ishlatiladi
 
   return (
     <MenagerPageContainer>

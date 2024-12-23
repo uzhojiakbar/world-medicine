@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import Analiktika from "../pages/analiktika/analiktika";
 import AdminAnaliktika from "../pages/analiktika/admin/adminAnaliktika";
 import SettingsConditionAdmin from "../pages/setingsCondition/admin/index";
@@ -140,14 +140,21 @@ export const NavbarDataAdmin = [
   {
     id: 3,
     title: "Настройка_условий",
-    path: "nastroyka-usloviya1",
+    path: "nastroyka-usloviya",
     element: (
       <MainContainer>
-        {/* <SettingsConditionAdmin /> */}
         <SettingsCondition />
       </MainContainer>
     ),
-    child: [],
+    child: (
+      <>
+        <Route path="" element={<h1>221</h1>} />
+        <Route path="Preparad" element={<h1>2</h1>} />
+        <Route path="Mestrabotaya" element={<h1>3</h1>} />
+        <Route path="Predoji" element={<h1>4</h1>} />
+        <Route path="*" element={<h1>NOT FOUND</h1>} />
+      </>
+    ),
     visible: true,
     onlyAdmin: false,
     icon: false,

@@ -104,9 +104,17 @@ const Router = () => {
         <AdminNavbar />
 
         <Routes>
-          {NavbarDataAdmin.map(({ id, path, element }) => (
-            <Route key={id} path={path} element={element} />
-          ))}
+          {NavbarDataAdmin.map(({ id, path, element, child }) => {
+            if (child.length) {
+              return <Route key={id} path={path} element={element} />;
+            } else {
+              return (
+                <Route key={id} path={path} element={element}>
+                  {child}
+                </Route>
+              );
+            }
+          })}
 
           {/* <Route path="nastroyka-usloviya/" element={<h1>1</h1>} /> */}
 
