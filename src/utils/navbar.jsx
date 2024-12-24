@@ -11,6 +11,7 @@ import AdminPage from "../pages/admin/admin";
 import { MainContainer } from "../root/style";
 import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
 import SettingsCondition from "../pages/setingsCondition";
+import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
 
 export const navbarData = () => {
   return [
@@ -148,11 +149,10 @@ export const NavbarDataAdmin = [
     ),
     child: (
       <>
-        <Route path="" element={<h1>221</h1>} />
+        <Route path="" element={<Arxiv />} />
         <Route path="Preparad" element={<h1>2</h1>} />
         <Route path="Mestrabotaya" element={<h1>3</h1>} />
-        <Route path="Predoji" element={<h1>4</h1>} />
-        <Route path="*" element={<h1>NOT FOUND</h1>} />
+        <Route path="Predoji" element={<h1>4</h1>} />{" "}
       </>
     ),
     visible: true,

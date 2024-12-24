@@ -30,7 +30,7 @@ const Pagination = () => {
   }, [location.pathname]); // document.location o'rniga location.pathname ishlatiladi
 
   return (
-    <MenagerPageContainer>
+    <>
       <ContainerItem>
         {navdata?.map((item) => (
           <NavLink
@@ -53,7 +53,7 @@ const Pagination = () => {
           </NavLink>
         ))}
       </ContainerItem>
-    </MenagerPageContainer>
+    </>
   );
 };
 
