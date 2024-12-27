@@ -9,6 +9,7 @@ import { UseNewConnecting } from "../../../hooks/UseGetNewConnecting.jsx";
 import SettingsMed from "../../settingsMed/index.jsx";
 import Server from "../../../utils/server/server.js";
 import NewConnect from "./NewConnect.jsx";
+import NoviyPaket from "./NoviyPaket.jsx";
 
 const SettingsSystemAdmin = () => {
   const { translate } = useLanguage();
@@ -41,10 +42,18 @@ const SettingsSystemAdmin = () => {
         data={posts || []}
         loading={false}
       />
+
+      <NoviyPaket
+        title={translate("Новые_предложения_пакетов")}
+        data1={connectingUser || []}
+        loading={false}
+      />
+      {/* 
       <ResizeTableAdminLayout
         title={translate("Новые_предложения_пакетов")}
         data={connectingUser || []}
-      />
+        loading={false}
+      /> */}
 
       <span id="administration"></span>
 
