@@ -137,3 +137,8 @@ body {
 .ant-message {
   z-index: 99999999999999999999 !important;
 }
+
+.leftright {
+  display: flex;
+  gap: 5px;
+}

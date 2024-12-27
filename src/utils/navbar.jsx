@@ -13,6 +13,7 @@ import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
 import SettingsCondition from "../pages/setingsCondition";
 import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
 import AddPreporad from "../pages/setingsCondition/Predoji";
+import Preparat from "../pages/setingsCondition/Preprat";
 
 export const navbarData = () => {
   return [
@@ -151,7 +152,7 @@ export const NavbarDataAdmin = [
     child: (
       <>
         <Route path="" element={<Arxiv />} />
-        <Route path="Preparad" element={<h1>2</h1>} />
+        <Route path="Preparad" element={<Preparat />} />
         <Route path="Mestrabotaya" element={<h1>3</h1>} />
         <Route path="Predoji" element={<AddPreporad />} />{" "}
       </>

@@ -135,6 +135,71 @@ const Server = {
       console.log(error);
     }
   },
+  getPreparat: async (tokeen) => {
+    const token = tokeen || Cookie.get("access_token");
+
+    const sub = jwtDecode(token)?.sub; // To'g'ri ishlatilmoqda
+
+    const mock = [
+      {
+        id: 1,
+        name: "Амините таблеткалар",
+        dosage: "5/10 мг",
+        quantity: "30 шт",
+        price: "12000 Сум",
+        Рецептурник: "7",
+        СУ11: "11%",
+        СУ12: "5",
+        СБ1: "5",
+        СБ2: "3",
+        ГЗ1: "6%",
+        ГЗ2: "10",
+        КВ1: "6%",
+        КВ2: "10",
+      },
+      {
+        id: 2,
+        name: "Амините таблеткалар",
+        dosage: "5/10 мг",
+        quantity: "30 шт",
+        price: "12000 Сум",
+        Рецептурник: "7",
+        СУ11: "11%",
+        СУ12: "5",
+        СБ1: "5",
+        СБ2: "3",
+        ГЗ1: "6%",
+        ГЗ2: "10",
+        КВ1: "6%",
+        КВ2: "10",
+      },
+      {
+        id: 3,
+        name: "Амините таблеткалар",
+        dosage: "5/10 мг",
+        quantity: "30 шт",
+        price: "12000 Сум",
+        Рецептурник: "7",
+        СУ11: "11%",
+        СУ12: "5",
+        СБ1: "5",
+        СБ2: "3",
+        ГЗ1: "6%",
+        ГЗ2: "10",
+        КВ1: "6%",
+        КВ2: "10",
+      },
+    ];
+
+    try {
+      // const response = await Instance.get(`/user/${sub}`);
+      // console.log("RESPONSE USER INFO", response);
+
+      return mock;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default Server;
