@@ -4,6 +4,10 @@ export const ResponsiveTableAdmin = styled.div`
   overflow-x: auto; /* Scrollable */
   width: 100%;
 
+  * > {
+    transition: all 0.2s ease-in-out;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -40,6 +44,10 @@ export const ResponsiveTableAdmin = styled.div`
       align-items: center;
       justify-content: center;
       gap: 10px;
+    }
+
+    > input {
+      width: 100%;
     }
   }
 
@@ -136,6 +144,13 @@ export const ResponsiveTableAdmin = styled.div`
       font-size: 12px;
       padding: 8px;
     }
+  }
+
+  .flex {
+    display: flex !important;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
   }
 `;
 

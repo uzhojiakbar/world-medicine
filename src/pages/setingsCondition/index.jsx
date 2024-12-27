@@ -3,11 +3,13 @@ import { AnaliktikaCon } from "../analiktika/admin/style";
 import { Title } from "../../root/style";
 import Pagination from "./nav/Pagination";
 import { Outlet, Route, Routes } from "react-router-dom";
+import { useLanguage } from "../../context/LanguageContext";
 
 const SettingsCondition = () => {
+  const { translate } = useLanguage();
   return (
     <AnaliktikaCon>
-      <Title>Управление базой данных</Title>
+      <Title>{translate("Управление_базой_данных")}</Title>
       <Pagination />
       <Outlet />
     </AnaliktikaCon>

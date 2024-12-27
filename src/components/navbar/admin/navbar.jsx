@@ -16,6 +16,7 @@ import {
   NavbarBurgerMenu,
   navbarData,
   NavbarDataAdmin,
+  NavbarDataSuperAdmin,
 } from "../../../utils/navbar";
 
 import useCustomNavigate from "../../../hooks/useCustomNavigate";
@@ -35,7 +36,12 @@ const AdminNavbar = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const CurrentData = userRole === "CHIEF" ? NavbarDataAdmin : navbarData;
+    const CurrentData =
+      userRole === "CHIEF"
+        ? NavbarDataAdmin
+        : userRole === "SUPERADMIN"
+        ? NavbarDataSuperAdmin
+        : navbarData;
 
     setData(
       CurrentData?.map((v) => {

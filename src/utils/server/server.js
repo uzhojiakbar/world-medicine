@@ -20,7 +20,7 @@ const Server = {
     const sub = jwtDecode(token)?.sub; // To'g'ri ishlatilmoqda
 
     try {
-      const response = await Instance.get(`/user/${sub}`);
+      const response = await Instance.get(`/v1/user/${sub}`);
       console.log("RESPONSE USER INFO", response);
 
       return response.data;
@@ -55,6 +55,74 @@ const Server = {
         Спецбал: "18000 Сум",
         Госзакуп: "XX",
         "Каб. вакцинации": "XX",
+      },
+    ];
+
+    try {
+      // const response = await Instance.get(`/user/${sub}`);
+      // console.log("RESPONSE USER INFO", response);
+
+      return mock;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getProdaji: async (tokeen) => {
+    const token = tokeen || Cookie.get("access_token");
+
+    const sub = jwtDecode(token)?.sub; // To'g'ri ishlatilmoqda
+
+    const mock = [
+      {
+        id: 1,
+        name: "Амлипин таблетки",
+        prodaj: 200,
+        Таш: 20,
+        Сам: 15,
+        Бух: 25,
+        Анж: 30,
+        Фер: 10,
+        Нам: 5,
+        Каш: 20,
+        Сур: 10,
+        Джи: 5,
+        Сыр: 15,
+        Таш_об: 10,
+        Хор: 5,
+      },
+      {
+        id: 2,
+        name: "Нурокс таблетки",
+        prodaj: 150,
+        Таш: 10,
+        Сам: 30,
+        Бух: 20,
+        Анж: 25,
+        Фер: 8,
+        Нам: 3,
+        Каш: 15,
+        Сур: 5,
+        Джи: 3,
+        Сыр: 10,
+        Таш_об: 8,
+        Хор: 4,
+      },
+      {
+        id: 3,
+        name: "Панадол капсулы",
+        prodaj: 100,
+        Таш: 8,
+        Сам: 25,
+        Бух: 18,
+        Анж: 20,
+        Фер: 5,
+        Нам: 2,
+        Каш: 10,
+        Сур: 3,
+        Джи: 2,
+        Сыр: 8,
+        Таш_об: 6,
+        Хор: 3,
       },
     ];
 

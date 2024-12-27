@@ -9,6 +9,7 @@
   background-color: #216bf4;
   color: white;
 }
+
 .activeInner span i {
   color: #93b6f6;
 }
@@ -22,6 +23,6 @@
   transition: all 0.3s ease;
 }
 .itemInner:hover {
-  background-color: #216bf4;
+  background-color: rgba(33, 107, 244, 0.7);
   color: white;
 }

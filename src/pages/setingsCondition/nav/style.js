@@ -14,20 +14,31 @@ export const Container = styled.div`
 `;
 
 export const ContainerItem = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 2fr);
+  display: flex;
+
+  justify-content: space-between;
+  width: 100%;
   gap: 20px;
 
   @media (max-width: 1024px) {
+    display: grid;
     grid-template-columns: repeat(3, 2fr);
   }
 
   @media (max-width: 768px) {
+    display: grid;
+
     grid-template-columns: repeat(2, 1fr);
   }
 
   @media (max-width: 480px) {
+    display: grid;
+
     grid-template-columns: 1fr;
+  }
+
+  > .itemLink {
+    flex: 1;
   }
 `;
 

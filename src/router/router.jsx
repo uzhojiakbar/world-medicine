@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { NavbarDataAdmin } from "../utils/navbar";
+import { NavbarDataAdmin, NavbarDataSuperAdmin } from "../utils/navbar";
 import { useAuth } from "../context/AuthContext/AuthContext";
 import { MainContainer } from "../root/style";
 import { getCookie } from "../hooks/useCookie";
@@ -138,6 +138,28 @@ const Router = () => {
     );
   }
 
+  // FF
+  else if (currentUserRole === "SUPERADMIN") {
+    return (
+      <Suspense fallback={<Loader />}>
+        <AdminNavbar />
+
+        <Routes>
+          {NavbarDataSuperAdmin.map(({ id, path, element, child }) => {
+            if (child.length) {
+              return <Route key={id} path={path} element={element} />;
+            } else {
+              return (
+                <Route key={id} path={path} element={element}>
+                  {child}
+                </Route>
+              );
+            }
+          })}
+        </Routes>
+      </Suspense>
+    );
+  }
   // MANAGER
   else if (currentUserRole === "MANAGER") {
     return (

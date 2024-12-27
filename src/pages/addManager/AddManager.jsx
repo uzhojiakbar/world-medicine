@@ -17,8 +17,11 @@ import Copy from "../../assets/svg/copy";
 import { Tumanlar, Viloyatlar } from "../../mock/data";
 import { MiniTitleSmall, Title } from "../../root/style.js";
 import Button from "../../components/Generic/Button/Button.jsx";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 const AddMeneger = () => {
+  const { translate } = useLanguage();
+
   const formDataLabels = {
     title: "Добавить менеджера",
     download: "Загрузить базу менеджеров",
@@ -74,7 +77,7 @@ const AddMeneger = () => {
       <Title className="titlee">
         <div>Настройка условий</div>
         <Button onClick={() => nav("../")} icon={<IconPlus />}>
-          Загрузить базу менеджеров
+          {translate("Загрузить_базу_менеджеров")}
         </Button>
       </Title>
       <FormWrapper onSubmit={handleSubmit}>

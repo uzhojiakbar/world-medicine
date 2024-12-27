@@ -6,6 +6,7 @@ const Input = ({
   placeholder,
   maxLength = 256,
   type,
+  value = "",
   onChange = () => {},
 }) => {
   return (
@@ -15,6 +16,7 @@ const Input = ({
       disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder || ""}
+      defaultValue={value}
     />
   );
 };
