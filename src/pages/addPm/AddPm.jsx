@@ -8,19 +8,19 @@ import {
   SubTitle,
   Wrapper,
 } from "./style.js";
-import IconPlus from "../../assets/svg/IconPlus";
+import IconPlus from "../../assets/svg/IconPlus.jsx";
 import Man from "../../assets/svg/Man.jsx";
-import Input2 from "../../components/Generic/Input/Input2";
-import PrimarySelect from "../../components/Generic/Select/Select";
-import Restart from "../../assets/svg/restart";
-import Copy from "../../assets/svg/copy";
-import { Tumanlar, Viloyatlar } from "../../mock/data";
+import Input2 from "../../components/Generic/Input/Input2.jsx";
+import PrimarySelect from "../../components/Generic/Select/Select.jsx";
+import Restart from "../../assets/svg/restart.jsx";
+import Copy from "../../assets/svg/copy.jsx";
+import { Tumanlar, Viloyatlar } from "../../mock/data.js";
 import { MiniTitleSmall, Title } from "../../root/style.js";
 import Button from "../../components/Generic/Button/Button.jsx";
 import { useLanguage } from "../../context/LanguageContext.jsx";
 import { useNavigate } from "react-router-dom";
 
-const AddMeneger = () => {
+const AddPm = () => {
   const { translate } = useLanguage();
 
   const formDataLabels = {
@@ -38,6 +38,8 @@ const AddMeneger = () => {
     temporaryPassword: "Временный пароль",
     isAdmin: "Добавить администратора",
   };
+
+  const nav = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -72,8 +74,6 @@ const AddMeneger = () => {
       region: value, // regionni yangilash uchun qiymatni saqlash
     });
   };
-
-  const nav = useNavigate();
 
   return (
     <Wrapper>
@@ -158,4 +158,4 @@ const AddMeneger = () => {
   );
 };
 
-export default AddMeneger;
+export default AddPm;

@@ -14,6 +14,8 @@ import SettingsCondition from "../pages/setingsCondition";
 import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
 import AddPreporad from "../pages/setingsCondition/Predoji";
 import Preparat from "../pages/setingsCondition/Preprat";
+import AddPm from "../pages/addPm/AddPm";
+import AddDoctor from "../pages/addDoctor/AddDoctor";
 
 export const navbarData = () => {
   return [
@@ -190,7 +192,35 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 6,
+    id: 7,
+    title: "Добавление МП",
+    path: "create-med-rep",
+    element: (
+      <MainContainer>
+        <AddPm />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 8,
+    title: "Добавление МП",
+    path: "create-doctor",
+    element: (
+      <MainContainer>
+        <AddDoctor />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 999,
     title: "NOT FOUND PAGE",
     path: "*",
     element: (
@@ -204,7 +234,7 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 6,
+    id: 897,
     title: "Reports",
     path: "reports",
     element: (

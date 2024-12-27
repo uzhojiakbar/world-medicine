@@ -15,7 +15,7 @@ const SettingsDoctor = () => {
     <>
       <Title>
         <span>{translate("Управление_врачами")}</span>
-        <Button onClick={() => nav("../create-contract")} icon={<IconPlus />}>
+        <Button onClick={() => nav("../create-doctor")} icon={<IconPlus />}>
           {translate("Добавить_врача")}
         </Button>
       </Title>
