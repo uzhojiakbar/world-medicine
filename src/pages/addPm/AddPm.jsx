@@ -78,7 +78,7 @@ const AddPm = () => {
   return (
     <Wrapper>
       <Title className="titlee">
-        <div>Настройка условий</div>
+        <div>Добавление МП</div>
         <Button onClick={() => nav("../")} icon={<IconPlus />}>
           {translate("Загрузить_базу_менеджеров")}
         </Button>
