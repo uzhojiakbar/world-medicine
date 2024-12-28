@@ -45,7 +45,7 @@ const AdminAnaliktika = () => {
   const data = [
     {
       id: 1,
-      name: "Отчеты",
+      name: translate("Отчеты"),
       icon: <EyeIcon />,
       onclick: () => {
         nav("analiktika");
@@ -53,7 +53,7 @@ const AdminAnaliktika = () => {
     },
     {
       id: 2,
-      name: "Администрирование",
+      name: translate("Администрирование"),
       icon: <SystemIcon />,
       onclick: () => {
         nav("upravleniya-sistemoy#administration");
@@ -62,7 +62,7 @@ const AdminAnaliktika = () => {
     },
     {
       id: 3,
-      name: "Настройка условий",
+      name: translate("Настройка_условий"),
       icon: <BDIcon />,
       onclick: () => {
         nav("nastroyka-usloviya");
@@ -74,12 +74,12 @@ const AdminAnaliktika = () => {
     <AnaliktikaCon>
       <Title>{translate("quick_access")}</Title>
       <QuickAccess data={data} />
-      <Title>Аналитика</Title>
+      <Title>{translate("navbar_admin_analiktika")}</Title>
       <Analiktika__Cards.Con>
         <Analiktika__Cards type="type-1">
           <InfoCard padding={"5px 5px"} title={"Регион"}>
             <PrimarySelect
-              def={"область"}
+              def={translate("область")}
               options={Viloyatlar}
               onValueChange={handleViloyatChange}
             />
