@@ -149,7 +149,7 @@ function Preparat() {
                 fill="black"
               />
             </svg>
-            Обновить базу
+            {translate("Обновить_базу")}
           </Text>
 
           <Button onClick={() => exportToExcel(data)} icon={<IconPlus />}>

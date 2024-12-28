@@ -24,10 +24,10 @@ const exportToExcel = (data) => {
 
   // 4. Faylni saqlash
   const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(blob, "Продажи.xlsx");
+  saveAs(blob, "Места работы.xlsx");
 };
 
-function AddPreporad() {
+function MestaRabota() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +35,7 @@ function AddPreporad() {
     setLoading(true);
     try {
       setTimeout(async () => {
-        const data = await Server.getProdaji();
+        const data = await Server.getMestaRabotaya();
         setData(data || []);
         setLoading(false);
       }, 300);
@@ -44,6 +44,7 @@ function AddPreporad() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -125,7 +126,7 @@ function AddPreporad() {
   return (
     <>
       <Container1>
-        <Title>Продажи</Title>
+        <Title>{translate("Места_работы")}</Title>
         <Box>
           <Text onClick={fetchData}>
             <svg
@@ -147,7 +148,7 @@ function AddPreporad() {
                 fill="black"
               />
             </svg>
-            {translate("Обновить_базу")}{" "}
+            {translate("Обновить_базу")}
           </Text>
 
           <Button onClick={() => exportToExcel(data)} icon={<IconPlus />}>
@@ -181,4 +182,4 @@ function AddPreporad() {
   );
 }
 
-export default AddPreporad;
+export default MestaRabota;

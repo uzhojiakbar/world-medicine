@@ -33,6 +33,7 @@ export const ResponsiveTableAdmin = styled.div`
   td {
     color: #333; /* Default matn rangi */
     padding: 17px !important;
+    height: 100%;
 
     background-color: #f7f8fc; /* Jadval uyalarining default foni */
 
@@ -76,6 +77,7 @@ export const ResponsiveTableAdmin = styled.div`
   .Viewbutton {
     background-color: white;
     width: 100%;
+    height: 100%;
     padding: 10px;
 
     display: flex;
@@ -83,10 +85,13 @@ export const ResponsiveTableAdmin = styled.div`
     justify-content: center;
     cursor: pointer;
 
+    font-size: 20px;
+
     transition: all 0.2s ease-in-out;
 
     &:hover {
       opacity: 0.7;
+      background-color: var(--bg-color);
     }
     &:active {
       opacity: 1;
@@ -94,9 +99,19 @@ export const ResponsiveTableAdmin = styled.div`
     }
   }
 
+  .colorBlue {
+    color: #216bf4;
+    height: 100%;
+  }
+  .colorRed {
+    color: #fb3748;
+    height: 100%;
+  }
+
   tr {
     background-color: #f7f8fc; /* Jadval uyalarining default foni */
     padding: 18px 12px;
+    height: 100%;
   }
   tr:hover {
     td {
@@ -104,6 +119,10 @@ export const ResponsiveTableAdmin = styled.div`
     }
   }
 
+  tbody {
+    /* border-bottom: 10px solid white; */
+    height: 100%;
+  }
   tbody tr {
     border-bottom: 10px solid white;
   }
@@ -117,12 +136,14 @@ export const ResponsiveTableAdmin = styled.div`
     align-items: center;
     justify-content: left;
     gap: 10px;
+    height: 100%;
 
     > button {
       background-color: white;
       padding: 5px 20px;
       border-radius: 5px;
       cursor: pointer;
+      height: 100%;
 
       &:active {
         opacity: 0.5;

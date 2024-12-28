@@ -275,6 +275,41 @@ const Server = {
       console.log(error);
     }
   },
+  getMestaRabotaya: async (tokeen) => {
+    const token = tokeen || Cookie.get("access_token");
+
+    const sub = jwtDecode(token)?.sub; // To'g'ri ishlatilmoqda
+
+    const mock = [
+      {
+        id: 1,
+        "Ф.И.О. Врача": "1 Городская общественная больница",
+        Город: "Ташкент",
+        Район: "Шайхантахурский район",
+      },
+      {
+        id: 2,
+        "Ф.И.О. Врача": "Онкологический центр",
+        Город: "Ташкент",
+        Район: "Чиланзарский район",
+      },
+      {
+        id: 3,
+        "Ф.И.О. Врача": "Медецинский центр MClinic",
+        Город: "Ташкент",
+        Район: "Чиланзарский район",
+      },
+    ];
+
+    try {
+      // const response = await Instance.get(`/user/${sub}`);
+      // console.log("RESPONSE USER INFO", response);
+
+      return mock;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default Server;

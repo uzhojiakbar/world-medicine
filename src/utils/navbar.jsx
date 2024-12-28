@@ -16,6 +16,7 @@ import AddPreporad from "../pages/setingsCondition/Predoji";
 import Preparat from "../pages/setingsCondition/Preprat";
 import AddPm from "../pages/addPm/AddPm";
 import AddDoctor from "../pages/addDoctor/AddDoctor";
+import MestaRabota from "../pages/setingsCondition/MestaRabota";
 
 export const navbarData = () => {
   return [
@@ -155,7 +156,7 @@ export const NavbarDataAdmin = [
       <>
         <Route path="" element={<Arxiv />} />
         <Route path="Preparad" element={<Preparat />} />
-        <Route path="Mestrabotaya" element={<h1>3</h1>} />
+        <Route path="Mestrabotaya" element={<MestaRabota />} />
         <Route path="Predoji" element={<AddPreporad />} />{" "}
       </>
     ),

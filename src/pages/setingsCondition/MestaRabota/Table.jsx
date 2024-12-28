@@ -1,32 +1,23 @@
 import React, { useEffect, useState } from "react";
-import {
-  MiniTitleSmall,
-  TitleSmall,
-  WhiteWrapper,
-} from "../../../root/style.js";
+import { TitleSmall, WhiteWrapper } from "../../../root/style";
 import {
   PaginationButtonsWrapper,
   ResponsiveTableAdmin,
-} from "../../../components/ResizeTable/ResizeTableAdmin/style.js";
-import LeftArrow from "../../../assets/svg/LeftArrow.jsx";
-import RightArrow from "../../../assets/svg/RightArrow.jsx";
+} from "../../../components/ResizeTable/ResizeTableAdmin/style";
+import LeftArrow from "../../../assets/svg/LeftArrow";
+import RightArrow from "../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal.jsx";
-import { useLanguage } from "../../../context/LanguageContext.jsx";
-import Server from "../../../utils/server/server.js";
-import Input from "../../../components/Generic/Input/Input.jsx"; // Import your Input component
+import { useLanguage } from "../../../context/LanguageContext";
+import Server from "../../../utils/server/server";
+import Input from "../../../components/Generic/Input/Input"; // Import your Input component
 
 const Container = styled.div`
   position: relative;
   transition: all 0.2s ease-in-out;
 `;
 
-const Table = ({
-  data = [],
-  loading = true,
-  setLoading = () => {},
-  title = "",
-}) => {
+const Table = ({ data = [], loading = true, setLoading = () => {} }) => {
   const [openModalId, setOpenModalId] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   //   const [data, setData] = useState([]);
@@ -84,22 +75,14 @@ const Table = ({
         </div>
       )}
 
-      <ModalManager id={openModalId} setId={setOpenModalId} />
       <WhiteWrapper>
-        <TitleSmall>{title}</TitleSmall>
         <ResponsiveTableAdmin>
           <table>
             <thead>
               <tr>
-                <th className="idfixed">{translate("Препарат")}</th>
-                <th>{translate("Объём")}</th>
-                <th>{translate("В_упаковке")}</th>
-                <th>{translate("Цена_препарата")}</th>
-                <th>{translate("Рецептурник")}</th>
-                <th>{translate("СУ")}</th>
-                <th>{translate("СБ")}</th>
-                <th>{translate("ГЗ")}</th>
-                <th>{translate("КВ")}</th>
+                <th className="idfixed">{translate("Ф_Врача")}</th>
+                <th className="idfixed">{translate("Город")}</th>
+                <th className="idfixed">{translate("Район")}</th>
                 <th>{translate("Actions")}</th>
               </tr>
             </thead>
@@ -112,130 +95,42 @@ const Table = ({
                         <Input
                           type="text"
                           name="name"
-                          value={editedRow.name}
+                          value={editedRow["Ф.И.О. Врача"]}
                           onChange={(value) => handleInputChange("name", value)}
-                          placeholder="Препарат"
+                          placeholder="Enter name"
                         />
                       ) : (
-                        row?.name
+                        row?.["Ф.И.О. Врача"]
                       )}
                     </td>
                     <td>
                       {editId === row.id ? (
                         <Input
-                          type="number"
-                          name="prodaj"
-                          value={editedRow.prodaj}
+                          type="text"
+                          name="Город"
+                          value={editedRow.Город}
                           onChange={(value) =>
-                            handleInputChange("prodaj", value)
+                            handleInputChange("Город", value)
                           }
-                          placeholder="Объём"
+                          placeholder={translate("Город")}
                         />
                       ) : (
-                        row?.dosage
+                        row?.Город
                       )}
                     </td>
                     <td>
                       {editId === row.id ? (
                         <Input
-                          type="number"
-                          name="Таш"
-                          value={editedRow.Таш}
-                          onChange={(value) => handleInputChange("Таш", value)}
-                          placeholder="В упаковке	"
+                          type="text"
+                          name="Район"
+                          value={editedRow.Район}
+                          onChange={(value) =>
+                            handleInputChange("Район", value)
+                          }
+                          placeholder={translate("Район")}
                         />
                       ) : (
-                        row?.quantity
-                      )}
-                    </td>
-                    <td>
-                      {editId === row.id ? (
-                        <Input
-                          type="number"
-                          name="Сам"
-                          value={editedRow.Сам}
-                          onChange={(value) => handleInputChange("Сам", value)}
-                          placeholder=" Цена препарата	"
-                        />
-                      ) : (
-                        row?.price
-                      )}
-                    </td>
-                    <td>
-                      {editId === row.id ? (
-                        <Input
-                          type="number"
-                          name="Бух"
-                          value={editedRow.Бух}
-                          onChange={(value) => handleInputChange("Бух", value)}
-                          placeholder="Enter Рецептурник"
-                        />
-                      ) : (
-                        row?.Рецептурник
-                      )}
-                    </td>
-                    <td>
-                      {editId === row.id ? (
-                        <Input
-                          type="number"
-                          name="Анж"
-                          value={editedRow.Анж}
-                          onChange={(value) => handleInputChange("Анж", value)}
-                          placeholder="Enter СУ"
-                        />
-                      ) : (
-                        <>
-                          {row?.СУ11} = {row?.СУ12}
-                        </>
-                      )}
-                    </td>
-                    <td>
-                      {editId === row.id ? (
-                        <Input
-                          type="number"
-                          name="Фер"
-                          value={editedRow.Фер}
-                          onChange={(value) => handleInputChange("Фер", value)}
-                          placeholder="Enter СБ"
-                        />
-                      ) : (
-                        <>
-                          {row?.СБ1} = {row?.СБ2}
-                        </>
-                      )}
-                    </td>
-                    <td>
-                      {editId === row.id ? (
-                        <Input
-                          type="number"
-                          name="Нам"
-                          value={editedRow.Нам}
-                          onChange={(value) => handleInputChange("Нам", value)}
-                          placeholder="Enter ГЗ"
-                        />
-                      ) : (
-                        <>
-                          {row?.ГЗ1} = {row?.ГЗ2}
-                        </>
-                      )}
-                    </td>
-                    <td>
-                      {editId === row.id ? (
-                        <>
-                          <Input
-                            type="number"
-                            name="Каш"
-                            value={editedRow.Каш}
-                            onChange={(value) =>
-                              handleInputChange("Каш", value)
-                            }
-                            placeholder="Enter КВ"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          {row?.ГЗ1} = {row?.ГЗ2}
-                        </>
+                        row?.Район
                       )}
                     </td>
 
