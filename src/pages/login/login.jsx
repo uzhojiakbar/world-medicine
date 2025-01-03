@@ -101,7 +101,9 @@ const Login = () => {
       // setSucces("2");
       console.log(user);
 
-      Cookies.set("access_token", user);
+      Cookies.set("access_token", user?.access_token);
+      Cookies.set("refresh_token", user?.refresh_token);
+
       setLoading(false);
       setSucces("2");
     };

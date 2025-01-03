@@ -79,12 +79,12 @@ const AdminAnaliktika = () => {
         <Analiktika__Cards type="type-1">
           <InfoCard padding={"5px 5px"} title={"Регион"}>
             <PrimarySelect
-              def={translate("область")}
+              translateDef={"область"}
               options={Viloyatlar}
               onValueChange={handleViloyatChange}
             />
             <PrimarySelect
-              def={"Район"}
+              def={translate("Район")}
               options={Tumanlar[selectedViloyat] || []}
               onValueChange={handleTumanChange}
             />
