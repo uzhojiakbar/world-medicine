@@ -2,89 +2,90 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import Instance from "../Instance";
 import { jwtDecode } from "jwt-decode";
+import { useQuery } from "@tanstack/react-query";
 
 const Server = {
   getNewConnect: async () => {
     try {
-      // const response = await Instance.get(
-      //   `/v1/admin/doctors/not-declined-not-enabled?page=0&size=10`
-      // );
-      // return response?.data;
-      const data = [
-        {
-          id: 1,
-          name: "Иванов Дмитрий Евгеньевич",
-          location: "Ташкент, Яшнабадский район",
-          phone: "+998981111111",
-          contract: "Нет",
-        },
-        {
-          id: 2,
-          name: "Григорьев Алексей Ильич",
-          location: "Ташкент, Мирзо-Улугбекский район",
-          phone: "+998981111111",
-          contract: "Договор №144",
-        },
-        {
-          id: 3,
-          name: "Петров Сергей Александрович",
-          location: "Ташкент, Шайхантахурский район",
-          phone: "+998981111111",
-          contract: "Нет",
-        },
-        {
-          id: 4,
-          name: "Смирнова Ольга Павловна",
-          location: "Ташкент, Сергелийский район",
-          phone: "+998981111111",
-          contract: "Нет",
-        },
-        {
-          id: 5,
-          name: "Козлов Игорь Николаевич",
-          location: "Ташкент, Чиланзарский район",
-          phone: "+998981111111",
-          contract: "Договор №2",
-        },
-        {
-          id: 6,
-          name: "Иванов Дмитрий Евгеньевич",
-          location: "Ташкент, Яшнабадский район",
-          phone: "+998981111111",
-          contract: "Нет",
-        },
-        {
-          id: 7,
-          name: "Григорьев Алексей Ильич",
-          location: "Ташкент, Мирзо-Улугбекский район",
-          phone: "+998981111111",
-          contract: "Договор №144",
-        },
-        {
-          id: 8,
-          name: "Петров Сергей Александрович",
-          location: "Ташкент, Шайхантахурский район",
-          phone: "+998981111111",
-          contract: "Нет",
-        },
-        {
-          id: 9,
-          name: "Смирнова Ольга Павловна",
-          location: "Ташкент, Сергелийский район",
-          phone: "+998981111111",
-          contract: "Нет",
-        },
-        {
-          id: 10,
-          name: "Козлов Игорь Николаевич",
-          location: "Ташкент, Чиланзарский район",
-          phone: "+998981111111",
-          contract: "Договор №2",
-        },
-      ];
-      return {
-        content: data,
-      };
+      const response = await Instance.get(
+        `/v1/admin/doctors/not-declined-not-enabled?page=0&size=10`
+      );
+      return response?.data;
+      // const data = [
+      //   {
+      //     id: 1,
+      //     name: "Иванов Дмитрий Евгеньевич",
+      //     location: "Ташкент, Яшнабадский район",
+      //     phone: "+998981111111",
+      //     contract: "Нет",
+      //   },
+      //   {
+      //     id: 2,
+      //     name: "Григорьев Алексей Ильич",
+      //     location: "Ташкент, Мирзо-Улугбекский район",
+      //     phone: "+998981111111",
+      //     contract: "Договор №144",
+      //   },
+      //   {
+      //     id: 3,
+      //     name: "Петров Сергей Александрович",
+      //     location: "Ташкент, Шайхантахурский район",
+      //     phone: "+998981111111",
+      //     contract: "Нет",
+      //   },
+      //   {
+      //     id: 4,
+      //     name: "Смирнова Ольга Павловна",
+      //     location: "Ташкент, Сергелийский район",
+      //     phone: "+998981111111",
+      //     contract: "Нет",
+      //   },
+      //   {
+      //     id: 5,
+      //     name: "Козлов Игорь Николаевич",
+      //     location: "Ташкент, Чиланзарский район",
+      //     phone: "+998981111111",
+      //     contract: "Договор №2",
+      //   },
+      //   {
+      //     id: 6,
+      //     name: "Иванов Дмитрий Евгеньевич",
+      //     location: "Ташкент, Яшнабадский район",
+      //     phone: "+998981111111",
+      //     contract: "Нет",
+      //   },
+      //   {
+      //     id: 7,
+      //     name: "Григорьев Алексей Ильич",
+      //     location: "Ташкент, Мирзо-Улугбекский район",
+      //     phone: "+998981111111",
+      //     contract: "Договор №144",
+      //   },
+      //   {
+      //     id: 8,
+      //     name: "Петров Сергей Александрович",
+      //     location: "Ташкент, Шайхантахурский район",
+      //     phone: "+998981111111",
+      //     contract: "Нет",
+      //   },
+      //   {
+      //     id: 9,
+      //     name: "Смирнова Ольга Павловна",
+      //     location: "Ташкент, Сергелийский район",
+      //     phone: "+998981111111",
+      //     contract: "Нет",
+      //   },
+      //   {
+      //     id: 10,
+      //     name: "Козлов Игорь Николаевич",
+      //     location: "Ташкент, Чиланзарский район",
+      //     phone: "+998981111111",
+      //     contract: "Договор №2",
+      //   },
+      // ];
+      // return {
+      //   content: data,
+      // };
     } catch (error) {
       console.log(error);
     }
@@ -310,6 +311,20 @@ const Server = {
       console.log(error);
     }
   },
+};
+
+export const useGetNewConnecting = () => {
+  return useQuery({
+    queryKey: "newConnecting",
+    queryFn: async () => {
+      const { data } = await Instance.get(
+        "/v1/admin/doctors/not-declined-not-enabled?page=0&size=10"
+      );
+
+      return data;
+    },
+    staleTime: 1000 * 60 * 10,
+  });
 };
 
 export default Server;

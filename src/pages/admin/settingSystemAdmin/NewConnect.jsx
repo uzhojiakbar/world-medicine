@@ -12,7 +12,7 @@ import RightArrow from "../../../assets/svg/RightArrow";
 import CancelIcon from "../../../assets/svg/CancelIcon";
 import ReceptIcon from "../../../assets/svg/ReceptIcon";
 import { useLanguage } from "../../../context/LanguageContext";
-import Server from "../../../utils/server/server";
+import Server, { useGetNewConnecting } from "../../../utils/server/server";
 
 const Container = styled.div`
   position: relative;
@@ -22,31 +22,13 @@ const Container = styled.div`
 
 const NewConnect = ({ title = "" }) => {
   const { translate } = useLanguage();
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await Server.getNewConnect();
-        setData(data?.content); // olingan ma'lumotni saqlaymiz
-      } catch (err) {
-        // setError("Error fetching posts.");
-        return;
-      } finally {
-        console.log("FINAl");
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  const { data, isLoading } = useGetNewConnecting();
   console.log(data);
-
-  const [loading, setLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
 
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(data?.length / itemsPerPage) || 0;
+  const totalPages = Math.ceil(data?.content?.length / itemsPerPage) || 0;
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
@@ -60,31 +42,27 @@ const NewConnect = ({ title = "" }) => {
     }
   };
 
-  const currentData = data?.slice(
+  const currentData = data?.content?.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
 
   const onPrinyat = () => {
-    setLoading(1);
     setTimeout(() => {
-      setLoading(0);
       message.success("Принять");
     }, 1000);
   };
   const onOtk = () => {
-    setLoading(1);
     setTimeout(() => {
-      setLoading(0);
       message.error("Отклонить");
     }, 1000);
   };
 
   return (
     <Container>
-      {loading ? (
+      {isLoading ? (
         <div className="loaderParent">
-          <div class="loader"></div>
+          <div className="loader"></div>
         </div>
       ) : (
         ""

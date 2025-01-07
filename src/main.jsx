@@ -14,12 +14,12 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <LanguageProvider>
+        <LanguageProvider>
+          <QueryClientProvider client={queryClient}>
             <Root />
             <Toaster />
-          </LanguageProvider>
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </LanguageProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>
