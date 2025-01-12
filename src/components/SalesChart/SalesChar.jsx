@@ -12,6 +12,7 @@ import {
   Filler,
 } from "chart.js";
 import styled from "styled-components";
+import { useLanguage } from "../../context/LanguageContext";
 
 ChartJS.register(
   CategoryScale,
@@ -46,6 +47,8 @@ const CHartLine = styled.div`
 `;
 
 const SalesChart = ({ admin = 0, active = 1 }) => {
+  const { translate } = useLanguage();
+
   const numsFull = {
     1: [
       31555, 56216, 11294, 15027, 12974, 64116, 18768, 46218, 15762, 66912,
@@ -145,7 +148,7 @@ const SalesChart = ({ admin = 0, active = 1 }) => {
 
   return (
     <CardContainer>
-      <TitleText>Статистика продажи препаратов</TitleText>
+      <TitleText>{translate("Статистика_продажи_препаратов")}</TitleText>
       <CHartLine>
         <Line
           style={{ maxWidth: "100%", minWidth: "100%" }}

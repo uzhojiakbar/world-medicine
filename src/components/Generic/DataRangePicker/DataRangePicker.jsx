@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { DateContainer, DisplayText, StyledDatePicker } from "./style";
 import dayjs from "dayjs";
 import CalendarIcon from "../../../assets/svg/CalendarIcon";
+import { useLanguage } from "../../../context/LanguageContext";
 
 // icon = <CalendarIcon />,
 // suffixIcon={icon} // Custom ikonka
@@ -10,6 +11,8 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlarini boshqarish
+
+  const { translate } = useLanguage();
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
@@ -27,7 +30,7 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
   ) : openPicker === "start" ? (
     "" // Start date ochilganda matn bo'sh bo'ladi
   ) : (
-    <span className="placeholder">Дата начала</span>
+    <span className="placeholder">{translate("Дата_начала")}</span>
   );
 
   const formattedEndDate = endDate ? (
@@ -35,7 +38,7 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
   ) : openPicker === "end" ? (
     "" // End date ochilganda matn bo'sh bo'ladi
   ) : (
-    <span className="placeholder">Дата окончания</span>
+    <span className="placeholder">{translate("Дата_окончания")}</span>
   );
 
   return (
@@ -45,11 +48,11 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
       {!openPicker ? (
         <DisplayText>
           <div>
-            <span> С </span>
+            <span> {translate("С")} </span>
             <span onClick={() => setOpenPicker("start")}>
               {formattedStartDate}
             </span>
-            <span> по </span>
+            <span> {translate("по")} </span>
             <span onClick={() => setOpenPicker("end")}>{formattedEndDate}</span>
           </div>
           <div onClick={() => setOpenPicker("start")}>{icon}</div>
@@ -66,7 +69,7 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
           onChange={handleStartDateChange}
           onOpenChange={(open) => !open && setOpenPicker(null)}
           format="DD.MM.YYYY"
-          placeholder="Дата начала"
+          placeholder={translate("Дата_начала")}
         />
       )}
 
@@ -78,7 +81,7 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
           onChange={handleEndDateChange}
           onOpenChange={(open) => !open && setOpenPicker(null)}
           format="DD.MM.YYYY"
-          placeholder="Дата окончания"
+          placeholder={translate("Дата_окончания")}
         />
       )}
     </DateContainer>

@@ -42,6 +42,7 @@ const AdminAnaliktika = () => {
   };
 
   const { translate } = useLanguage(); // Tarjima funksiyasi
+
   const data = [
     {
       id: 1,
@@ -80,8 +81,7 @@ const AdminAnaliktika = () => {
           <InfoCard padding={"5px 5px"} title={"Регион"}>
             <PrimarySelect
               def={translate("область")}
-              translateDef={"область"}
-              options={Viloyatlar}
+              options={Viloyatlar || []}
               onValueChange={handleViloyatChange}
             />
             <PrimarySelect
@@ -90,25 +90,28 @@ const AdminAnaliktika = () => {
               onValueChange={handleTumanChange}
             />
             <PrimarySelect
-              def={"Место работы"}
+              def={translate("Место_работы")}
               options={MestaRabot[selectedTuman] || []}
               onValueChange={handleMestaRabotChange}
             />
           </InfoCard>
 
-          <InfoCard padding={"5px 5px"} title={"Ф.И.О. врача"}>
-            <Input onChange={setNameSurname} placeholder={"Ф.И.О. врача"} />
+          <InfoCard padding={"5px 5px"} title={translate("Fullname_doctor")}>
+            <Input
+              onChange={setNameSurname}
+              placeholder={translate("Fullname_doctor")}
+            />
           </InfoCard>
 
-          <InfoCard padding={"5px 5px"} title={"Дата"}>
+          <InfoCard padding={"5px 5px"} title={translate("Дата")}>
             <DateRangePicker />
           </InfoCard>
           <Information admin={1} active={active} setActive={setActive} />
         </Analiktika__Cards>
         <Analiktika__Cards type="type-1">
           <InfoCard
-            title={"Все препараты"}
-            rightBtn="Все"
+            title={translate("Все_Препараты")}
+            rightBtn={translate("Все")}
             rightBtnFunc={() => {
               console.log("Clicker");
             }}
@@ -118,7 +121,7 @@ const AdminAnaliktika = () => {
           <ChartBlock admin={1} active={active} />
         </Analiktika__Cards>
       </Analiktika__Cards.Con>
-      <Title>Отчеты</Title>
+      <Title>{translate("Отчеты")}</Title>
       <Reports />
     </AnaliktikaCon>
   );

@@ -19,6 +19,8 @@ const Analiktika = () => {
   const [nameSurname, setNameSurname] = useState("");
   const [active, setActive] = useState(1);
 
+  const { translate } = useLanguage();
+
   const handleViloyatChange = (value) => {
     setSelectedViloyat(value);
     setSelectedTuman("");
@@ -36,7 +38,7 @@ const Analiktika = () => {
 
   return (
     <AnaliktikaCon>
-      <Title>Аналитика</Title>
+      <Title>{translate("navbar_admin_analiktika")}</Title>
       <Analiktika__Cards type="type-1">
         <InfoCard title={"Регион"}>
           <PrimarySelect

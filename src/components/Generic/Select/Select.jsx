@@ -33,7 +33,7 @@ const StyledFormControl = styled(FormControl)(({ borderRadius }) => ({
     padding: "10px 14px", // Padding inside the select
   },
   ".MuiSelect-icon": {
-    fontSize: "14px",
+    fontSize: "22px",
     color: "#000",
   },
 }));

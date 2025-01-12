@@ -1,19 +1,22 @@
 import React from "react";
 import { InfoCardWrapper } from "./style";
 import { TitleSmall } from "../../root/style";
+import { useLanguage } from "../../context/LanguageContext";
 
 const InfoCard = ({
   children,
   padding,
-  title,
+  title = "",
   width,
   rightBtn,
   rightBtnFunc,
 }) => {
+  const { translate } = useLanguage();
+
   return (
     <InfoCardWrapper padding={padding} width={width}>
       <TitleSmall>
-        <div>{title || "Header"}</div>
+        <div>{translate(title) || "Title"}</div>
         <div className="rightBtn" onClick={rightBtnFunc}>
           {rightBtn || ""}
         </div>
