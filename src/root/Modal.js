@@ -3,7 +3,9 @@ import styled from "styled-components";
 import ProfilePic1 from "../assets/img/profile/profile1.jpeg";
 
 export const ModalContainer = styled(Modal)`
-  width: 70vw !important;
+  width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
+  max-height: 90vh !important;
+  overflow: auto;
 
   .ant-modal-close {
     display: none !important;
@@ -34,6 +36,14 @@ export const ModalBodyHeader = styled.div`
 `;
 
 export const ModalBodySection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  height: 103px;
+`;
+
+export const ModalSectionFull = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

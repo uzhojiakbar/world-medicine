@@ -7,7 +7,7 @@ export const Container = styled.div`
   align-items: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
-  border-radius: 57px;
+  border-radius: ${({ brdr }) => (brdr ? brdr : "57px")};
   background-color: #f7f8fc;
 
   position: relative;
@@ -38,6 +38,10 @@ export const StaticText = styled.div`
   font-family: "Vela Sans GX";
   font-weight: 600;
   color: #333;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const IconButton = styled.button`

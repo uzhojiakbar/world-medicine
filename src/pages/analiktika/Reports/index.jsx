@@ -114,7 +114,7 @@ const Reports = () => {
   return (
     <Wrapper>
       <Recipes />
-      <Header>
+      {/* <Header>
         <Title>{information.title}</Title>
         <Item>
           <IconWrapper>
@@ -222,7 +222,7 @@ const Reports = () => {
           <ChartBar title={"Активность врачей"} active={active} />
           <HorizontalChart title={"Продажа препаратов по регионам"} />
         </Footer>
-      </Main>
+      </Main> */}
     </Wrapper>
   );
 };

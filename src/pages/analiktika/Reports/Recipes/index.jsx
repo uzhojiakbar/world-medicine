@@ -6,143 +6,167 @@ import PrimarySelect from "../../../../components/Generic/Select/Select";
 import Input2 from "../../../../components/Generic/Input/Input2";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import GenericTable from "../../../../components/Generic/GenericTable/GenericTable.jsx";
+import { useLanguage } from "../../../../context/LanguageContext.jsx";
+import Table from "./Table.jsx";
 const TableData = [
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
   {
-    title: "Иванов Дмитрий Евгеньевич",
-    replace: "Ташкент, 1 Гор. Больница",
-    date: "Создан 20.12.2024",
+    fio: "Иванов Дмитрий Евгеньевич",
+    district: "Ташкент, 1 Гор. Больница",
+    dateCreated: "20.12.2024",
     preparation: "Аналгин",
   },
 ];
 
 const Recipes = () => {
+  const { translate } = useLanguage();
+
   const information = {
-    title: "Рецепты",
-    filtrTitle: "Поиск выписок по фильтрам",
+    title: translate("Рецепты"),
+    filtrTitle: translate("Поиск_выписок_по_фильтрам"),
     inputData: {
-      city: "Oбласть",
-      district: "Район",
-      place: "Место работы",
-      preparation: "Препарат",
-      fullTitle: "Ф.И.О",
+      city: translate("область"),
+      district: translate("Район"),
+      place: translate("Место_работы"),
+      preparation: translate("Препарат"),
+      Специальность: translate("Специальность"),
+      fullTitle: translate("Fullname"),
+      Категория: translate("Категория"),
     },
-    tableTitle: "Список последних выписанных рецептов",
-    open: "Открыть",
+    tableTitle: translate("Список_последних_выписанных_рецептов"),
+    open: translate("Открыть"),
     tableData: {
-      fullName: "Ф.И.О. Врача",
-      place: "Место работы врача",
-      date: "Дата создания",
-      preparation: "Название препарата",
+      fullName: translate("Ф_Врача"),
+      place: translate("Место_работы_врача"),
+      date: translate("Дата_создания"),
+      preparation: translate("Название_препарата"),
     },
   };
 
+  const [selectedViloyat, setSelectedViloyat] = useState("");
+  const [selectedTuman, setSelectedTuman] = useState("");
+  const [SetKategoriya, setSetKategoriya] = useState("");
+
   const [formData, setFormData] = useState({
-    city: "",
+    city: selectedViloyat || "",
+    district: selectedTuman || "",
+    place: SetKategoriya || "",
     replace: "",
     preparation: "",
     fullName: "",
+    Специальность: "",
   });
-  const [selectedViloyat, setSelectedViloyat] = useState("");
-  const [selectedTuman, setSelectedTuman] = useState("");
-  const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
 
   const handleViloyatChange = (value) => {
     setSelectedViloyat(value);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      city: value, // formData ichidagi qiymatni yangilash
+    }));
+
     setSelectedTuman("");
-    setSelectedMestaRabot("");
+    setSetKategoriya("");
   };
 
   const handleTumanChange = (value) => {
-    console.log(MestaRabot[value]);
-
     setSelectedTuman(value);
-    setSelectedMestaRabot("");
+    setSetKategoriya("");
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      district: value, // formData ichidagi qiymatni yangilash
+    }));
   };
 
-  const handleMestaRabotChange = (value) => {
-    setSelectedMestaRabot(value);
+  const handelKategoryChange = (value) => {
+    setSetKategoriya(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      place: value, // formData ichidagi qiymatni yangilash
+    }));
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value, // formData ichidagi qiymatni yangilash
@@ -153,6 +177,8 @@ const Recipes = () => {
     e.preventDefault();
   };
 
+  console.log(formData);
+
   return (
     <Wrapper>
       <Header>
@@ -160,6 +186,13 @@ const Recipes = () => {
         <FiltrContainer>
           <TitleSmall size="20px">{information.filtrTitle}</TitleSmall>
           <Form onSubmit={handleSubmit}>
+            <Input2
+              type={"text"}
+              placeholder={information.inputData.fullTitle}
+              onChange={handleChange}
+              name="fullName"
+            />
+
             <PrimarySelect
               def={information.inputData.city}
               options={Viloyatlar}
@@ -170,34 +203,30 @@ const Recipes = () => {
               options={Tumanlar[selectedViloyat] || []}
               onValueChange={handleTumanChange}
             />
-            <PrimarySelect
-              def={information.inputData.fullTitle}
-              options={MestaRabot[selectedTuman] || []}
-              onValueChange={handleMestaRabotChange}
-            />
 
+            <PrimarySelect
+              def={information.inputData["Категория"]}
+              options={MestaRabot[selectedTuman] || []}
+              onValueChange={handelKategoryChange}
+            />
+            {/* * */}
+
+            <PrimarySelect
+              def={information.inputData.Специальность}
+              options={[]}
+              onValueChange={(value) => handleChange(["Специальность", value])}
+            />
             <PrimarySelect
               def={information.inputData.preparation}
               options={[]}
-              onValueChange={(value) => handleSelectChange(["place", value])}
+              onValueChange={(value) => handleChange(["preparation", value])}
             />
-            <Input2
-              type={"text"}
-              placeholder={information.inputData.fullTitle}
-              onChange={handleChange}
-              name="fullName"
-            />
-
             <DateRangePicker />
           </Form>
         </FiltrContainer>
       </Header>
       <TableWrapper>
-        <TitleSmall size="20px">{information.tableTitle}</TitleSmall>
-        <GenericTable
-          thead={Object.values(information.tableData)}
-          data={TableData}
-        />
+        <Table title={Object.values(information.tableTitle)} data={TableData} />
       </TableWrapper>
     </Wrapper>
   );

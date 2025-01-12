@@ -11,6 +11,8 @@ const EditableInput = ({
   inputType = "text",
   phoneFormat = false,
   JustPassword,
+  icon,
+  brdr,
   onSave = () => {},
 }) => {
   const [value, setValue] = useState(
@@ -34,7 +36,7 @@ const EditableInput = ({
 
   if (JustPassword) {
     return (
-      <Container rightIcon={true}>
+      <Container brdr={brdr} rightIcon={true}>
         <StaticText>{value}</StaticText>
         <div className="rightIcon">
           <svg
@@ -62,7 +64,7 @@ const EditableInput = ({
   }
 
   return isInput ? (
-    <Container>
+    <Container brdr={brdr}>
       {editing ? (
         <Input
           value={value}
@@ -98,8 +100,11 @@ const EditableInput = ({
       </IconButton>
     </Container>
   ) : (
-    <Container>
-      <StaticText>{value}</StaticText>
+    <Container brdr={brdr}>
+      <StaticText>
+        {value}
+        {icon ? icon : ""}
+      </StaticText>
     </Container>
   );
 };
