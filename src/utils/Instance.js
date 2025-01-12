@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 const url = "/api";
 
 const Instance = axios.create({
-  baseURL: "http://209.38.52.68:8080/api/", // O'zingizning backend URL
+  baseURL: "http://209.38.109.22:8080/api/", // O'zingizning backend URL
 
   timeout: 10000, // Maksimal kutish vaqti (10 soniya)
 });

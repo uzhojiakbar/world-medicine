@@ -4,6 +4,8 @@ import styled from "styled-components";
 export const SelectContainer = styled(Select)`
   width: 100%;
   height: 60px;
+  overflow-y: auto; /* Skroll qilish uchun */
+
   font-family: "Vela Sans GX", sans-serif !important;
   font-weight: 600 !important;
 
