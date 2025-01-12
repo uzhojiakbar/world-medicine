@@ -317,11 +317,15 @@ export const useGetNewConnecting = () => {
   return useQuery({
     queryKey: "newConnecting",
     queryFn: async () => {
-      const { data } = await Instance.get(
-        "/v1/admin/doctors/not-declined-not-enabled?page=0&size=10"
-      );
-
-      return data;
+      try {
+        const data = await Instance.get(
+          "/v1/admin/doctors/not-declined-not-enabled?page=0&size=10"
+        );
+        return data?.data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
     },
     staleTime: 1000 * 60 * 10,
   });

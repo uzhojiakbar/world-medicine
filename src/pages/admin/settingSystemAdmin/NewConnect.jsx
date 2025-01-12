@@ -23,7 +23,7 @@ const Container = styled.div`
 const NewConnect = ({ title = "" }) => {
   const { translate } = useLanguage();
   const { data, isLoading } = useGetNewConnecting();
-  console.log(data);
+  console.log("NEW CONNECT DATA", data);
 
   const [currentPage, setCurrentPage] = useState(0);
 
