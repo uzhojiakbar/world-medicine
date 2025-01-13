@@ -25,6 +25,7 @@ import SalesChart2 from "../../../components/SalesChart/SalesChar2.jsx";
 import ChartBar from "../../../components/ChartBar";
 import HorizontalChart from "../../../components/HorizontalBar/index";
 import Recipes from "./Recipes/index.jsx";
+import Usloviya from "./Usloviya/index.jsx";
 
 const Reports = () => {
   const information = {
@@ -114,6 +115,7 @@ const Reports = () => {
   return (
     <Wrapper>
       <Recipes />
+      <Usloviya />
       <Header>
         <Title>{information.title}</Title>
         <Item>

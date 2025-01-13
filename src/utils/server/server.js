@@ -2,7 +2,9 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import Instance from "../Instance";
 import { jwtDecode } from "jwt-decode";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useLanguage } from "../../context/LanguageContext";
+import { message } from "antd";
 
 const Server = {
   getNewConnect: async () => {
@@ -313,13 +315,15 @@ const Server = {
   },
 };
 
-export const useGetNewConnecting = () => {
+export const useGetNewConnecting = (page) => {
   return useQuery({
-    queryKey: "newConnecting",
+    queryKey: ["newConnecting", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
     queryFn: async () => {
       try {
+        console.log("PAAAAAAAAGE", page);
+
         const data = await Instance.get(
-          "/v1/admin/doctors/not-declined-not-enabled?page=0&size=10"
+          `/v1/admin/doctors/not-declined-not-enabled?page=${page}&size=10`
         );
         return data?.data;
       } catch (error) {
@@ -328,6 +332,23 @@ export const useGetNewConnecting = () => {
       }
     },
     staleTime: 1000 * 60 * 10,
+  });
+};
+
+export const useEnableDoctor = () => {
+  const { translate } = useLanguage();
+
+  return useMutation(async (userId = 0) => {
+    try {
+      const response = await Instance.patch(`/v1/admin/${userId}/enable`);
+
+      message.success(`${userId} ${translate("Успешно_получено")}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error enabling user", error.response || error);
+      message.error(translate("произошла_ошибка"));
+      throw error; // Bu yerda xatolikni qaytarish, `isError` ni qaytarish uchun
+    }
   });
 };
 

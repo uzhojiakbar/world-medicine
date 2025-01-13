@@ -126,7 +126,7 @@ export const WhiteWrapper = styled.div`
   background-color: #ffffff;
   border-radius: 30px;
 
-  min-height: 215px;
+  min-height: 500px;
   height: fit-content;
   width: 100%;
 
