@@ -127,5 +127,6 @@
   "Главный_администратор": "Bosh administrator",
   "администратор": "Administrator",
   "Менеджер": "Menejer",
-  "неизвестный": "noma’lum"
+  "неизвестный": "noma’lum",
+  "waiting_API": "Sahifa API ulanishini kutmoqda..."
 }
