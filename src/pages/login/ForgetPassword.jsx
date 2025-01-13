@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   ButtonWrapper,
   Description,
+  DisabledPage,
   FormSection,
+  FormSection2,
   FormSectionBottom,
   ImageSection,
   LanguageContainer,
@@ -134,123 +136,153 @@ const ForgetPassword = () => {
           </LanguageContainer>
         </ImageSection>
         <FormSection>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <TopTitle>{translate("reset_account")} </TopTitle>
-          </motion.div>
-
-          <FormSectionBottom>
-            <Form
-              name="login"
-              onFinish={handleSubmit} // Tasdiqlanganda handleSubmit chaqiriladi
-              layout="vertical"
+          <DisabledPage>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
             >
+              <TopTitle>{translate("adminga")} </TopTitle>
+            </motion.div>
+
+            <ButtonWrapper grid="yeah">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.3 }}
+                transition={{ delay: 0.6, duration: 0.3 }}
               >
-                <Form.Item
-                  label={translate("username")}
-                  name="username" // Form qiymati uchun `name`
-                  rules={[
-                    {
-                      required: true,
-                      message: translate("placeholder_username"),
-                    },
-                  ]}
-                  labelCol={{ span: 24 }} // Labelni to'liq kenglikka o'rnatish
-                  wrapperCol={{ span: 24 }} // Inputni to'liq kenglikka o'rnatish
+                <CricleButton
+                  icon={<ArrowLeftOutlined />}
+                  outline={true.toString()}
+                  disabled={loading}
+                  onClick={handelBack}
                 >
-                  <Input2
-                    type="number"
-                    disabled={isCodeSent}
-                    placeholder={translate("placeholder_username")}
-                  />
-                </Form.Item>
-
-                {/* SMS Kiritish */}
-                <Form.Item label="СМС код">
-                  <SMSInputWrapper>
-                    {smsCode.map((digit, index) => (
-                      <SMSInput
-                        key={index}
-                        name={`sms-${index}`}
-                        maxLength={1}
-                        value={digit}
-                        placeholder="-"
-                        required
-                        disabled={!isCodeSent} // Bu yerda 0 ni `false` ga o'zgartirdim
-                        inputMode="numeric" // Mobil qurilmalarda raqamli klaviaturani faollashtiramiz
-                        onChange={(e) => handleSmsChange(index, e.target.value)}
-                      />
-                    ))}
-                  </SMSInputWrapper>
-                </Form.Item>
-
-                <Description type={"long"}>
-                  Вам должен прийти 4-х значный смс код подтверждения
-                </Description>
+                  {translate("back")}
+                </CricleButton>
               </motion.div>
+            </ButtonWrapper>
+          </DisabledPage>
+          <FormSection2>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <TopTitle>{translate("reset_account")} </TopTitle>
+            </motion.div>
 
-              {/* SMS Kod yuborish tugmasi */}
-              {!isCodeSent && (
-                <ButtonWithout onClick={handleSendCode}>
-                  Отправить код
-                </ButtonWithout>
-              )}
-
-              {/* Vaqtni hisoblash va Orqaga yurish */}
-              {isCodeSent && countdown > 0 && (
-                <ButtonWithout
-                  onClick={() =>
-                    message.error(
-                      `${Math.floor(countdown / 60)}:${
-                        countdown % 60
-                      } daqiqa kuting`
-                    )
-                  }
-                >
-                  {Math.floor(countdown / 60)} : {countdown % 60}
-                </ButtonWithout>
-              )}
-
-              <ButtonWrapper>
+            <FormSectionBottom>
+              <Form
+                name="login"
+                onFinish={handleSubmit} // Tasdiqlanganda handleSubmit chaqiriladi
+                layout="vertical"
+              >
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.3 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
                 >
-                  <CricleButton
-                    icon={<ArrowLeftOutlined />}
-                    outline={true.toString()}
-                    disabled={loading}
-                    onClick={handelBack}
+                  <Form.Item
+                    label={translate("username")}
+                    name="username" // Form qiymati uchun `name`
+                    rules={[
+                      {
+                        required: true,
+                        message: translate("placeholder_username"),
+                      },
+                    ]}
+                    labelCol={{ span: 24 }} // Labelni to'liq kenglikka o'rnatish
+                    wrapperCol={{ span: 24 }} // Inputni to'liq kenglikka o'rnatish
                   >
-                    {translate("back")}
-                  </CricleButton>
+                    <Input2
+                      type="number"
+                      disabled={isCodeSent}
+                      placeholder={translate("placeholder_username")}
+                    />
+                  </Form.Item>
+
+                  {/* SMS Kiritish */}
+                  <Form.Item label="СМС код">
+                    <SMSInputWrapper>
+                      {smsCode.map((digit, index) => (
+                        <SMSInput
+                          key={index}
+                          name={`sms-${index}`}
+                          maxLength={1}
+                          value={digit}
+                          placeholder="-"
+                          required
+                          disabled={!isCodeSent} // Bu yerda 0 ni `false` ga o'zgartirdim
+                          inputMode="numeric" // Mobil qurilmalarda raqamli klaviaturani faollashtiramiz
+                          onChange={(e) =>
+                            handleSmsChange(index, e.target.value)
+                          }
+                        />
+                      ))}
+                    </SMSInputWrapper>
+                  </Form.Item>
+
+                  <Description type={"long"}>
+                    Вам должен прийти 4-х значный смс код подтверждения
+                  </Description>
                 </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.3 }}
-                >
-                  <CricleButton
-                    htmlType="submit" // Enter tugmasi bosilganda formni yuboradi
-                    icon={<ArrowRightOutlined />}
-                    iconRight="true"
-                    disabled={loading}
+                {/* SMS Kod yuborish tugmasi */}
+                {!isCodeSent && (
+                  <ButtonWithout onClick={handleSendCode}>
+                    Отправить код
+                  </ButtonWithout>
+                )}
+
+                {/* Vaqtni hisoblash va Orqaga yurish */}
+                {isCodeSent && countdown > 0 && (
+                  <ButtonWithout
+                    onClick={() =>
+                      message.error(
+                        `${Math.floor(countdown / 60)}:${
+                          countdown % 60
+                        } daqiqa kuting`
+                      )
+                    }
                   >
-                    {translate("login_button")}
-                  </CricleButton>
-                </motion.div>
-              </ButtonWrapper>
-            </Form>
-          </FormSectionBottom>
+                    {Math.floor(countdown / 60)} : {countdown % 60}
+                  </ButtonWithout>
+                )}
+
+                <ButtonWrapper>
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.3 }}
+                  >
+                    <CricleButton
+                      icon={<ArrowLeftOutlined />}
+                      outline={true.toString()}
+                      disabled={loading}
+                      onClick={handelBack}
+                    >
+                      {translate("back")}
+                    </CricleButton>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.3 }}
+                  >
+                    <CricleButton
+                      htmlType="submit" // Enter tugmasi bosilganda formni yuboradi
+                      icon={<ArrowRightOutlined />}
+                      iconRight="true"
+                      disabled={loading}
+                    >
+                      {translate("login_button")}
+                    </CricleButton>
+                  </motion.div>
+                </ButtonWrapper>
+              </Form>
+            </FormSectionBottom>
+          </FormSection2>
         </FormSection>
       </LoginWrapper>
     </LoginContainer>
