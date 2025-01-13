@@ -10,6 +10,8 @@ export const Container = styled.div`
   padding-bottom: 200px;
 
   min-width: 300px;
+
+  position: relative;
 `;
 
 export const FilterCardsWrapper = styled.div`
