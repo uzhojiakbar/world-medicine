@@ -353,6 +353,21 @@ export const useGetProfileInfo = (userId) => {
     staleTime: 1000 * 60 * 10,
   });
 };
+export const useGetDrugs = () => {
+  return useQuery({
+    queryKey: ["Drugs"],
+    queryFn: async () => {
+      try {
+        const data = await Instance.get(`/v1/db/medicines`);
+        return data?.data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
 
 export const useEnableDoctor = () => {
   const { translate } = useLanguage();

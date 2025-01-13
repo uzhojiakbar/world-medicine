@@ -10,6 +10,7 @@ const AnaliktikaCon = styled.div`
 
 const Analiktika__Cards = styled.div`
   display: grid;
+
   gap: 10px;
 
   background-color: white;

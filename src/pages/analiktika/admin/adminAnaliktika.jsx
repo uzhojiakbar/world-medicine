@@ -16,6 +16,7 @@ import EyeIcon from "../../../assets/svg/Eye";
 import SystemIcon from "../../../assets/svg/SystemIcon";
 import BDIcon from "../../../assets/svg/BDIcon";
 import { useNavigate } from "react-router-dom";
+import { useGetDrugs } from "../../../utils/server/server";
 
 const AdminAnaliktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -23,6 +24,8 @@ const AdminAnaliktika = () => {
   const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
   const [nameSurname, setNameSurname] = useState("");
   const [active, setActive] = useState(1);
+
+  const { data: dataDrugs, isLoading: loadingDrugs } = useGetDrugs();
 
   const nav = useNavigate();
 
@@ -108,15 +111,22 @@ const AdminAnaliktika = () => {
           </InfoCard>
           <Information admin={1} active={active} setActive={setActive} />
         </Analiktika__Cards>
-        <Analiktika__Cards type="type-1">
+        <Analiktika__Cards className="relative" type="type-1">
+          {loadingDrugs ? (
+            <div className="loaderParent">
+              <div className="loader"></div>
+            </div>
+          ) : (
+            ""
+          )}
           <InfoCard
             title={translate("Все_Препараты")}
-            rightBtn={translate("Все")}
-            rightBtnFunc={() => {
-              console.log("Clicker");
-            }}
+            // rightBtn={translate("Все")}
+            // rightBtnFunc={() => {
+            //   console.log("Clicker");
+            // }}
           >
-            <DrugsAnalictic />
+            <DrugsAnalictic data={dataDrugs} />
           </InfoCard>
           <ChartBlock admin={1} active={active} />
         </Analiktika__Cards>

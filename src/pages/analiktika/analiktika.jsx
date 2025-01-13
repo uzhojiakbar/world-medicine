@@ -11,6 +11,7 @@ import DrugsAnalictic from "../../components/DrugsAnalictic/DrugsAnalictic";
 import ChartBlock from "../../components/ChartBlock/ChartBlock";
 import PieDiagram from "../../components/PieDiagram/PieDiagram";
 import { useLanguage } from "../../context/LanguageContext";
+import { useGetDrugs } from "../../utils/server/server";
 
 const Analiktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");
@@ -18,6 +19,10 @@ const Analiktika = () => {
   const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
   const [nameSurname, setNameSurname] = useState("");
   const [active, setActive] = useState(1);
+
+  const { data: dataDrugs, isLoading: loadingDrugs } = useGetDrugs();
+
+  console.log(data);
 
   const { translate } = useLanguage();
 
