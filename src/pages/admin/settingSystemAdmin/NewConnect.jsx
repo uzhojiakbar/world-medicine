@@ -12,23 +12,27 @@ import RightArrow from "../../../assets/svg/RightArrow";
 import CancelIcon from "../../../assets/svg/CancelIcon";
 import ReceptIcon from "../../../assets/svg/ReceptIcon";
 import { useLanguage } from "../../../context/LanguageContext";
-import Server, { useGetNewConnecting } from "../../../utils/server/server";
+import { useGetNewConnecting } from "../../../utils/server/server";
+import Instance from "../../../utils/Instance";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Container = styled.div`
   position: relative;
-
   transition: all 0.2s ease-in-out;
 `;
 
 const NewConnect = ({ title = "" }) => {
   const { translate } = useLanguage();
-  const { data, isLoading } = useGetNewConnecting();
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data, isLoading } = useGetNewConnecting(currentPage);
+  const [isMainLoading, setMainLoading] = useState(false);
+
+  const queryClient = useQueryClient(); // Initialize queryClient
+
   console.log("NEW CONNECT DATA", data);
 
-  const [currentPage, setCurrentPage] = useState(0);
-
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(data?.content?.length / itemsPerPage) || 0;
+  const totalPages = Math.ceil(data?.totalElements / 10) || 0;
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
@@ -42,25 +46,49 @@ const NewConnect = ({ title = "" }) => {
     }
   };
 
-  const currentData = data?.content?.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  const currentData = data?.content;
 
-  const onPrinyat = () => {
-    setTimeout(() => {
-      message.success("Принять");
-    }, 1000);
+  const onPrinyat = async (userId = 0, first, last) => {
+    try {
+      setMainLoading(true);
+      const response = await Instance.patch(
+        `http://209.38.109.22:8080/api/v1/admin/${userId}/enable`
+      );
+      // Invalidate and refetch the query to get updated data
+      queryClient.invalidateQueries(["newConnecting", currentPage]);
+
+      message.success(`${first + " " + last} ${translate("Успешно_получено")}`);
+    } catch (error) {
+      console.error("Error enabling user", error);
+      message.error(translate("произошла_ошибка"));
+    } finally {
+      setMainLoading(false);
+    }
   };
-  const onOtk = () => {
-    setTimeout(() => {
-      message.error("Отклонить");
-    }, 1000);
+
+  const onOtk = async (userId = 0, first, last) => {
+    try {
+      setMainLoading(true);
+      const response = await Instance.patch(
+        `http://209.38.109.22:8080/api/v1/admin/${userId}/decline`
+      );
+      // Invalidate and refetch the query to get updated data
+      queryClient.invalidateQueries(["newConnecting", currentPage]);
+
+      message.success(
+        `${first + " " + last} ${translate("Успешно_отклонено")}`
+      );
+    } catch (error) {
+      console.error("Error enabling user", error);
+      message.error("Error occurred while enabling user");
+    } finally {
+      setMainLoading(false);
+    }
   };
 
   return (
     <Container>
-      {isLoading ? (
+      {isLoading || isMainLoading ? (
         <div className="loaderParent">
           <div className="loader"></div>
         </div>
@@ -83,20 +111,31 @@ const NewConnect = ({ title = "" }) => {
             </thead>
             <tbody>
               {currentData?.length > 0 ? (
-                currentData?.map((row) => (
+                currentData?.map((row, index) => (
                   <tr key={row?.userId}>
-                    <td>№{row?.id}</td>
-                    <td className="idfixed">{row?.name}</td>
+                    <td>№{index + 1}</td>
+                    <td className="idfixed">
+                      {row?.firstName + " " + " " + row?.lastName}
+                    </td>
                     <td>{row?.location}</td>
-                    <td>{formatPhoneNumber(row?.phone)}</td>
-                    <td>{row?.contract}</td>
+                    <td>{formatPhoneNumber(row?.number)}</td>
+                    <td>{row?.contract} Нет</td>
 
                     <td className="buttons">
-                      <button onClick={() => onPrinyat()}>
+                      <button
+                        disabled={isLoading || isMainLoading}
+                        onClick={() =>
+                          onPrinyat(row?.userId, row?.firstName, row?.lastName)
+                        }
+                      >
                         <ReceptIcon />
                         {translate("accept")}
                       </button>
-                      <button onClick={() => onOtk()}>
+                      <button
+                        onClick={() =>
+                          onOtk(row?.userId, row?.firstName, row?.lastName)
+                        }
+                      >
                         <CancelIcon />
                         {translate("reject")}
                       </button>
