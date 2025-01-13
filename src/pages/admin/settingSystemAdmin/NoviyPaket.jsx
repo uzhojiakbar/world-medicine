@@ -13,6 +13,7 @@ import CancelIcon from "../../../assets/svg/CancelIcon";
 import ReceptIcon from "../../../assets/svg/ReceptIcon";
 import { useLanguage } from "../../../context/LanguageContext";
 import Server from "../../../utils/server/server";
+import DisabledPage from "../../../components/DisabledPage";
 
 const Container = styled.div`
   position: relative;
@@ -82,6 +83,8 @@ const NoviyPaket = ({ title = "", data1 = [] }) => {
 
   return (
     <Container>
+      <DisabledPage />
+
       {loading ? (
         <div className="loaderParent">
           <div class="loader"></div>

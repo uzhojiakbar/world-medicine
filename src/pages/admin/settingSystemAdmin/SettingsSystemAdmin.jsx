@@ -10,6 +10,7 @@ import SettingsMed from "../../settingsMed/index.jsx";
 import Server from "../../../utils/server/server.js";
 import NewConnect from "./NewConnect.jsx";
 import NoviyPaket from "./NoviyPaket.jsx";
+import DisabledPage from "../../../components/DisabledPage/index.jsx";
 
 const SettingsSystemAdmin = () => {
   const { translate } = useLanguage();
