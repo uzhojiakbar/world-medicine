@@ -27,9 +27,14 @@ import { formatPhoneNumber } from "../../../utils/PhoneFormatter.js";
 import useLogout from "../../../hooks/useLogOut.jsx";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext.jsx";
+import { useGetProfileInfo } from "../../../utils/server/server.js";
+
+import Cookie from "js-cookie";
 
 const Profile = () => {
   const [inputType, setInputType] = useState(true);
+  const { data: info, isLoading } = useGetProfileInfo();
+  console.log(info);
 
   const logout = useLogout();
   const nav = useNavigate();
@@ -41,10 +46,15 @@ const Profile = () => {
     });
   };
 
+  const userRole = info?.role || Cookie.get("role");
+
   const { translate } = useLanguage();
 
   const data = {
-    status: translate("Главный_администратор"),
+    CHIEF: translate("Главный_администратор"),
+    status: translate("неизвестный"),
+    ADMIN: translate("администратор"),
+    MANAGER: translate("Менеджер"),
     privateData: translate("Личная_информация"),
     login: translate("Логин"),
     email: translate("Почта"),
@@ -63,11 +73,19 @@ const Profile = () => {
 
   return (
     <Wrapper>
+      {isLoading ? (
+        <div className="loaderParent">
+          <div className="loader"></div>
+        </div>
+      ) : (
+        ""
+      )}
       <Header>
         <UserDate>
           <ProfileImg src={img} alt="no img" />
           <UserName>
-            Коптлеулов <br /> Арслан
+            {info?.firstName || data.status} <br />{" "}
+            {info?.lastName || data.status}
           </UserName>
         </UserDate>
         <UserSetting>
@@ -75,7 +93,8 @@ const Profile = () => {
             <Exit />
           </ExitIcon>
           <MainAdminButton>
-            <MainAdmin /> <Item>{data.status}</Item>
+            <MainAdmin />{" "}
+            <Item> {userRole ? data?.[userRole] : data?.status}</Item>
           </MainAdminButton>
         </UserSetting>
       </Header>
@@ -85,23 +104,21 @@ const Profile = () => {
         <Section>
           <InputWrapper>
             <Name>{data.login}</Name>
-            <Text>{UserData.userName}</Text>
+            <Text>{info?.number || data.status}</Text>
           </InputWrapper>
           <InputWrapper>
             <Name>{data.email}</Name>
-            <Text>{UserData.email}</Text>
+            <Text>{info?.email || data.status}</Text>
           </InputWrapper>
           <InputWrapper>
             <Name>{data.phone}</Name>
-            <Text>{formatPhoneNumber(UserData.phoneNumber)}</Text>
+            <Text>{formatPhoneNumber(info?.number)}</Text>
           </InputWrapper>
         </Section>
         <Text mt={"true"}>
           <Section>
             <MiniTitleSmall>{data.password}</MiniTitleSmall>
             <InputWrapper pad={"none"}>
-              {/* <Name>{data.phone}</Name> */}
-
               <Input
                 defaultValue={UserData.password}
                 type={inputType ? "password" : "text"}

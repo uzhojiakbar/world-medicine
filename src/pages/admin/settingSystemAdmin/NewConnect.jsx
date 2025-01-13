@@ -72,7 +72,6 @@ const NewConnect = ({ title = "" }) => {
       const response = await Instance.patch(
         `http://209.38.109.22:8080/api/v1/admin/${userId}/decline`
       );
-      // Invalidate and refetch the query to get updated data
       queryClient.invalidateQueries(["newConnecting", currentPage]);
 
       message.success(
