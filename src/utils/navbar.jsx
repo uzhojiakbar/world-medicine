@@ -393,3 +393,19 @@ export const NavbarDataSuperAdmin = [
   //   icon: false,
   // },
 ];
+export const NavbarDataManager = [
+  {
+    id: 5,
+    title: "Profile",
+    path: "profile",
+    element: (
+      <MainContainer>
+        <Profile />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+];

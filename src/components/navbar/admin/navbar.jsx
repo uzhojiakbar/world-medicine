@@ -39,7 +39,7 @@ const AdminNavbar = () => {
     const CurrentData =
       userRole === "CHIEF"
         ? NavbarDataAdmin
-        : userRole === "SUPERADMIN"
+        : userRole === "ADMIN"
         ? NavbarDataSuperAdmin
         : navbarData;
 

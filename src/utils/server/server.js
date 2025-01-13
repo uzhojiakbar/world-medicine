@@ -335,6 +335,25 @@ export const useGetNewConnecting = (page) => {
   });
 };
 
+export const useGetProfileInfo = (userId) => {
+  return useQuery({
+    queryKey: ["ProfileInfo", userId],
+    queryFn: async () => {
+      try {
+        const token = Cookie.get("access_token") || "";
+
+        const userId = jwtDecode(token)?.sub; // To'g'ri ishlatilmoqda
+        const data = await Instance.get(`/v1/user/${userId}`);
+        return data?.data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+
 export const useEnableDoctor = () => {
   const { translate } = useLanguage();
 
