@@ -23,7 +23,7 @@ const Item = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: 32px;
-  background-color: ${(props) => (props.active ? "#007bff" : "white")};
+  background-color: ${(props) => (props.active ? "#007bff" : "#F7F8FC")};
   color: ${(props) => (props.active ? "#fff" : "#000")};
   font-weight: ${(props) => (props.active ? "bold" : "normal")};
   cursor: pointer;
@@ -97,6 +97,12 @@ const MiniItem = styled.div`
   &:hover {
     background-color: ${({ btn }) => btn && " rgb(230, 232, 239)"};
   }
+  transition: all 0.2s;
+`;
+
+const Input = styled.input`
+  padding: 5px;
+  border-radius: 8px;
 `;
 
 export {
@@ -109,4 +115,5 @@ export {
   InfoCard,
   MiniItem,
   MiniItemWrapper,
+  Input,
 };
