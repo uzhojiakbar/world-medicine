@@ -19,15 +19,22 @@ import { MiniTitleSmall, Title } from "../../root/style.js";
 import Button from "../../components/Generic/Button/Button.jsx";
 import { useLanguage } from "../../context/LanguageContext.jsx";
 import { useNavigate } from "react-router-dom";
+import EyeIcon from "../../assets/svg/Eye.jsx";
+import ForSee from "../../assets/svg/see.jsx";
 
 const AddMeneger = () => {
   const { translate } = useLanguage();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const formDataLabels = {
-    title: "Добавить менеджера",
+    title: translate("Добавить_менеджера"),
     download: "Загрузить базу менеджеров",
     komu: "Кому",
-    fullName: "Ф.И.О. менеджера",
+    fullName: translate("Fullname"),
+    фамилия: translate("фамилия"),
+    имя: translate("имя"),
+    Отчество: translate("Отчество"),
     region: "Регион",
     city: "Город",
     district: "Район",
@@ -78,7 +85,7 @@ const AddMeneger = () => {
   return (
     <Wrapper>
       <Title className="titlee">
-        <div>Настройка условий</div>
+        <div>{formDataLabels.title}</div>
         <Button onClick={() => nav("../")} icon={<IconPlus />}>
           {translate("Загрузить_базу_менеджеров")}
         </Button>
@@ -95,7 +102,21 @@ const AddMeneger = () => {
             name="fullName" // name qiymati state kalitiga mos bo‘lishi kerak
             value={formData.fullName}
             onChange={handleChange}
-            placeholder={formDataLabels.fullName}
+            placeholder={formDataLabels.фамилия}
+          />
+          <Input2
+            type="text"
+            name="fullName" // name qiymati state kalitiga mos bo‘lishi kerak
+            value={formData.fullName}
+            onChange={handleChange}
+            placeholder={formDataLabels.имя}
+          />
+          <Input2
+            type="text"
+            name="fullName" // name qiymati state kalitiga mos bo‘lishi kerak
+            value={formData.fullName}
+            onChange={handleChange}
+            placeholder={formDataLabels.Отчество}
           />
         </Section>
 
@@ -133,7 +154,7 @@ const AddMeneger = () => {
         <Section>
           <InputWraper>
             <Input2
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="temporaryPassword"
               value={formData.temporaryPassword}
               onChange={handleChange}
@@ -141,6 +162,10 @@ const AddMeneger = () => {
             />
             <IconSection>
               <Restart onClick={() => {}} />
+              <ForSee
+                color={"#216BF4"}
+                onClick={() => setShowPassword(!showPassword)}
+              />
               <Copy
                 onClick={() => {
                   const password = formData.temporaryPassword;

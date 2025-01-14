@@ -13,4 +13,8 @@ export const InputWrapper = styled(Input)`
   font-size: 16px;
 
   font-family: "Vela Sans GX";
+
+  &::placeholder {
+    text-transform: capitalize;
+  }
 `;
