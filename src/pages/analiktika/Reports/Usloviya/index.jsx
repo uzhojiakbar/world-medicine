@@ -5,6 +5,7 @@ import {
   Info,
   InfoCard,
   InfoWrapper,
+  Input,
   Item,
   MiniItem,
   MiniItemWrapper,
@@ -18,8 +19,10 @@ import { useNavigate } from "react-router-dom";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import IconPlusChange from "../../../../assets/svg/IconPlusChange";
 import ModalUsloviyaPrescription from "./ModalUsloviya";
+import ModalDogovor from "./ModalDogovor";
 
 const Usloviya = () => {
+  const titleChange = 1;
   const { translate } = useLanguage();
   const nav = useNavigate();
   const [activeTab, setActiveTab] = useState("Рецепт");
@@ -28,6 +31,9 @@ const Usloviya = () => {
     { first: "<=60%" },
   ]);
   const [openModal, setOpenModal] = useState(false);
+  const [isInput, setIsInput] = useState("");
+
+  const [editingIndex, setEditingIndex] = useState(null);
 
   const information = {
     title: translate("Условия"),
@@ -47,9 +53,47 @@ const Usloviya = () => {
     time: translate("Срок сдачи"),
     subtitle: translate("Доступный процент суммы"),
   };
+
+  const handleEdit = (index) => {
+    setEditingIndex(index);
+  };
+
+  const [values, setValues] = useState(
+    information.infoTitles.map((item) => item.value)
+  );
+
+  const handleChange = (e, index) => {
+    let inputValue = e.target.value;
+
+    // Agar % belgi yo'q bo'lsa, uni oxirida qo'shib qo'yamiz
+    if (!inputValue.includes("%") && inputValue.length > 1) {
+      inputValue += "%";
+    }
+
+    const updatedValues = [...values];
+    updatedValues[index] = inputValue;
+    setValues(updatedValues);
+  };
+
+  const handleClickOutside = (e) => {
+    if (e.target.tagName == "P" || e.target.tagName === "INPUT") {
+      // Boshqa joy bosilganda tahrirni tugatadi
+    } else setEditingIndex(null);
+  };
+
+  React.useEffect(() => {
+    // Hodisani faollashtirish
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      // Hodisani tozalash
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <Container>
-      <ModalUsloviyaPrescription id={openModal} setId={setOpenModal} />
+      <ModalDogovor id={openModal} setId={setOpenModal} />
 
       <Title className="titlee">
         {information.title}
@@ -79,11 +123,21 @@ const Usloviya = () => {
           </Info>
         </InfoWrapper>
         <InfoWrapper>
-          {information.infoTitles.map((v) => {
+          {information.infoTitles.map((v, index) => {
             return (
               <InfoCard>
                 <p>{v.title}</p>
-                <p>{v.value}</p>
+                {editingIndex === index && titleChange ? (
+                  <Input
+                    type="text"
+                    value={values[index]}
+                    onChange={(e) => handleChange(e, index)}
+                    autoFocus
+                    required
+                  />
+                ) : (
+                  <p onClick={() => handleEdit(index)}>{values[index]}</p>
+                )}
               </InfoCard>
             );
           })}
@@ -106,7 +160,6 @@ const Usloviya = () => {
                     btn="true"
                     onClick={() => {
                       setOpenModal(1);
-                      console.log("hi");
                     }}
                   >
                     <IconPlusChange />
@@ -128,7 +181,6 @@ const Usloviya = () => {
                 btn="true"
                 onClick={() => {
                   setOpenModal(1);
-                  console.log("hi");
                 }}
               >
                 <IconPlusChange />
