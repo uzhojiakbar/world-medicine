@@ -40,7 +40,6 @@ const NoviyPaket = ({ title = "", data1 = [] }) => {
 
   //     fetchPosts();
   //   }, []);
-  console.log(data);
 
   const [loading, setLoading] = useState(false);
 
@@ -108,8 +107,8 @@ const NoviyPaket = ({ title = "", data1 = [] }) => {
             </thead>
             <tbody>
               {currentData?.length > 0 ? (
-                currentData?.map((row) => (
-                  <tr key={row?.userId}>
+                currentData?.map((row, index) => (
+                  <tr key={row?.userId || index}>
                     <td>№{row?.id}</td>
                     <td className="idfixed">{row?.name}</td>
                     <td>{row?.location}</td>

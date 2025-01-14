@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TitleSmall, WhiteWrapper } from "../../root/style";
 import {
   PaginationButtonsWrapper,
@@ -9,31 +9,56 @@ import RightArrow from "../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal";
 import { useLanguage } from "../../context/LanguageContext";
+import { useGetDistrictById } from "../../utils/server/server"; // Import to'g'ri qilingan
+import Instance from "../../utils/Instance";
+import { DatFormatter } from "../../utils/DatFormatter";
 
 const Container = styled.div`
   position: relative;
-
   transition: all 0.2s ease-in-out;
 `;
 
-const Table = ({ title = "", data = [] }) => {
-  const [loading, setLoading] = useState(0);
+const Table = ({ title = "", data = [], isLoading = false }) => {
   const [openModalId, setOpenModalId] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(0);
+  const [districtInfo, setDistrictInfo] = useState([]); // Initial state as empty array
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data.length / itemsPerPage);
+  const { mutate, data: ResponseData, isError } = useGetDistrictById();
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
-      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentPage((prevPage) => prevPage + 1); // page ni birga oshirish
     }
   };
 
   const handlePrevious = () => {
     if (currentPage > 0) {
-      setCurrentPage((prevPage) => prevPage - 1);
+      setCurrentPage((prevPage) => prevPage - 1); // page ni birga kamaytirish
+    }
+  };
+
+  const { translate, language } = useLanguage();
+
+  const CurrentData1 = async (regId, DisId) => {
+    try {
+      // API so'rovini yuborish
+      const response = await Instance.get(
+        `/v1/auth/districts?regionId=${regId}`
+      );
+
+      // API'dan qaytgan districtlarni tekshirish
+      const district = response.data.find(
+        (district) => district.districtId === DisId
+      );
+
+      if (!district) throw new Error("District not found");
+
+      return district; // districtName ni qaytarish
+    } catch (error) {
+      console.error("Error fetching district data", error);
+      return null;
     }
   };
 
@@ -41,14 +66,33 @@ const Table = ({ title = "", data = [] }) => {
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
+  const currentPageData = districtInfo.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
 
-  const { translate } = useLanguage();
+  useEffect(() => {
+    const fetchData = async () => {
+      const updatedData = [];
+      for (let row of data) {
+        // `CurrentData1` funksiyasini async sifatida chaqirib, await bilan kutamiz
+        const districtName = await CurrentData1(1, row?.districtId); // Har bir row uchun district ma'lumotini olish
+        updatedData.push({ ...row, districtName }); // districtName ni rowga qo'shish
+      }
+
+      setDistrictInfo(updatedData); // districtInfo ni yangilash
+    };
+
+    if (currentData.length > 0 && districtInfo.length === 0) {
+      fetchData(); // currentData mavjud bo'lsa, fetchData chaqirilsin
+    }
+  }, [currentData, currentPage]); // currentData yoki districtInfo.length o'zgarganda qayta ishlaydi
 
   return (
     <Container>
-      {loading ? (
+      {isLoading || !districtInfo.length ? (
         <div className="loaderParent">
-          <div class="loader"></div>
+          <div className="loader"></div>
         </div>
       ) : (
         ""
@@ -71,23 +115,30 @@ const Table = ({ title = "", data = [] }) => {
               </tr>
             </thead>
             <tbody>
-              {currentData.length > 0 ? (
-                currentData.map((row) => (
-                  <tr key={row?.id}>
-                    <td>№{row?.id}</td>
-                    <td className="idfixed">{row?.fio}</td>
-                    <td>{row?.district}</td>
+              {currentPageData.length > 0 ? (
+                currentPageData.map((row, index) => (
+                  <tr key={row?.userId}>
+                    <td>№{row?.id || index + 1}</td>
+                    <td className="idfixed">
+                      {row?.firstName + " "}
+                      {(row?.middleName ?? "") + " "}
+                      {row?.lastName ?? ""}
+                    </td>
                     <td>
-                      {translate("Создан")} {row?.dateCreated}
+                      {language === "en" ? row?.districtName?.name : ""}
+                      {language === "ru" ? row?.districtName?.nameRussian : ""}
+                      {language === "uz" ? row?.districtName?.nameUzLatin : ""}
+                    </td>{" "}
+                    {/* Directly use districtName */}
+                    <td>
+                      {translate("Создан")}{" "}
+                      {DatFormatter(row?.dateOfBirth || "2025-05-25")}
                     </td>
                     <td colSpan={2}>
                       <div className="progressKPI">{row?.progress}</div>
                     </td>
                     <td>
-                      <button
-                        onClick={() => setOpenModalId(row.id)}
-                        className="Viewbutton"
-                      >
+                      <button className="Viewbutton">
                         <svg
                           width="24"
                           height="24"
@@ -131,7 +182,7 @@ const Table = ({ title = "", data = [] }) => {
             <LeftArrow />
           </button>
           <span>
-            {currentPage + 1} {translate("from")} {""} {totalPages}
+            {currentPage + 1} {translate("from")} {totalPages}
           </span>
           <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
             <RightArrow />
