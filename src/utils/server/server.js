@@ -320,8 +320,6 @@ export const useGetNewConnecting = (page) => {
     queryKey: ["newConnecting", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
     queryFn: async () => {
       try {
-        console.log("PAAAAAAAAGE", page);
-
         const data = await Instance.get(
           `/v1/admin/doctors/not-declined-not-enabled?page=${page}&size=10`
         );
@@ -353,6 +351,7 @@ export const useGetProfileInfo = (userId) => {
     staleTime: 1000 * 60 * 10,
   });
 };
+
 export const useGetDrugs = () => {
   return useQuery({
     queryKey: ["Drugs"],
@@ -383,6 +382,92 @@ export const useEnableDoctor = () => {
       message.error(translate("произошла_ошибка"));
       throw error; // Bu yerda xatolikni qaytarish, `isError` ni qaytarish uchun
     }
+  });
+};
+
+// NOTE Get managers
+export const useGetManagers = () => {
+  return useQuery({
+    queryKey: ["GetManagers"],
+    queryFn: async () => {
+      try {
+        const data = await Instance.get(`/v1/user/managers`);
+        return data?.data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // REVIEW xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+
+// NOTE GET DISTRICTS BY REGION ID
+export const useGetDistrictsByRegionId = () => {
+  return useMutation(async (regionId) => {
+    try {
+      const { data } = await Instance.get(
+        `/v1/auth/districts?regionId=${regionId}`
+      );
+
+      console.log("DAATA", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching districts data", error);
+      throw error;
+    }
+  });
+};
+
+// NOTE GET DISTRICT BY REGION ID  AND DISTRICT ID
+export const useGetDistrictById = () => {
+  const {
+    mutate: getDistricts,
+    isLoading,
+    isError,
+  } = useGetDistrictsByRegionId();
+
+  return useMutation(async ({ regionId, districtId }) => {
+    // Region bo'yicha districtlarni olish
+    const districts = await getDistricts(1); // regionIdni yuborib districtlarni olish
+
+    // Districtni topish
+    const district = districts.find(
+      (district) => district.districtId === districtId
+    );
+    if (!district) throw new Error("District not found");
+
+    return district;
+  });
+};
+
+// NOTE MANAGERS WITH DISTRICT NAME
+export const useGetManagersWithDistrictName = () => {
+  const regionId = 1; // Region 1 bo'ladi
+  const { data: districts, isLoading: isDistrictsLoading } =
+    useGetDistrictsByRegionId(regionId);
+
+  return useQuery({
+    queryKey: ["GetManagersWithDistrictName"], // queryKey - bu ham array bo'lishi kerak
+    queryFn: async () => {
+      if (isDistrictsLoading || !districts) return []; // Agar districtlar yuklanayotgan bo'lsa yoki ma'lumotlar yo'q bo'lsa, bo'sh array qaytarish
+
+      const { data: managers } = await Instance.get(`/v1/user/managers`);
+
+      // Districtlarni managerlar bilan birlashtirish
+      const managersWithDistricts = managers.map((manager) => {
+        const district = districts.find(
+          (d) => d?.districtId === manager?.districtId
+        );
+        return {
+          ...manager,
+          districtName: district ? district.name : "Unknown District",
+        };
+      });
+
+      return managersWithDistricts;
+    },
+    staleTime: 1000 * 60 * 10, // Ma'lumotlar eskirish vaqti
   });
 };
 

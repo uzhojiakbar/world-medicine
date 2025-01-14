@@ -44,6 +44,8 @@ const SettingsSystemAdmin = () => {
         loading={false}
       />
 
+      {/* // REVIEW   Waiting API  */}
+
       <NoviyPaket
         title={translate("Новые_предложения_пакетов")}
         data1={connectingUser || []}

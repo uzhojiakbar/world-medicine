@@ -10,11 +10,14 @@ import { Viloyatlar, Tumanlar, MestaRabot } from "../../mock/data";
 import { Checkbox } from "antd";
 import { FilterCardsWrapper } from "../admin/settingSystemAdmin/style";
 import Table from "./Table";
-import { Managers } from "../../mock/managers";
+// import { Managers } from "../../mock/managers";
 import { useLanguage } from "../../context/LanguageContext";
+import { useGetManagers } from "../../utils/server/server";
 
 const SettingsMenager = ({ id }) => {
   const nav = useNavigate();
+  const { data: Managers, isLoading } = useGetManagers();
+  console.log("MNG", Managers);
 
   const [selectedViloyat, setSelectedViloyat] = useState("");
   const [selectedTuman, setSelectedTuman] = useState("");
@@ -84,7 +87,7 @@ const SettingsMenager = ({ id }) => {
         </div>
       </FilterCardsWrapper>
 
-      <Table data={Managers || []} />
+      <Table data={Managers || []} isLoading={isLoading} />
     </div>
   );
 };

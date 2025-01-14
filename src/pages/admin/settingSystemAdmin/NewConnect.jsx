@@ -29,9 +29,6 @@ const NewConnect = ({ title = "" }) => {
 
   const queryClient = useQueryClient(); // Initialize queryClient
 
-  console.log("NEW CONNECT DATA", data);
-
-  const itemsPerPage = 10;
   const totalPages = Math.ceil(data?.totalElements / 10) || 0;
 
   const handleNext = () => {
