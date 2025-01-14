@@ -8,6 +8,7 @@ const Input2 = ({
   type,
   name,
   onChange = () => {},
+  bgColor,
 }) => {
   return (
     <InputWrapper
@@ -17,6 +18,7 @@ const Input2 = ({
       disabled={disabled}
       onChange={(e) => onChange(e)}
       placeholder={placeholder || ""}
+      bgColor={bgColor}
     />
   );
 };

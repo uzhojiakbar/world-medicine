@@ -2,7 +2,7 @@ import { Input } from "antd";
 import styled from "styled-components";
 
 export const InputWrapper = styled(Input)`
-  background-color: var(--bg-color);
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : "var(--bg-color)")};
 
   border-radius: 10px;
   display: inline-block;
