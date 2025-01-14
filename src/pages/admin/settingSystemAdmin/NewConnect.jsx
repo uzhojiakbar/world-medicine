@@ -25,6 +25,8 @@ const NewConnect = ({ title = "" }) => {
   const { translate } = useLanguage();
   const [currentPage, setCurrentPage] = useState(0);
   const { data, isLoading } = useGetNewConnecting(currentPage);
+  console.log(data);
+
   const [isMainLoading, setMainLoading] = useState(false);
 
   const queryClient = useQueryClient(); // Initialize queryClient
