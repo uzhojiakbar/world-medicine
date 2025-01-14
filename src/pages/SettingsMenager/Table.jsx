@@ -132,7 +132,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                     {/* Directly use districtName */}
                     <td>
                       {translate("Создан")}{" "}
-                      {DatFormatter(row?.dateOfBirth || "2025-05-23")}
+                      {DatFormatter(row?.dateOfBirth || "2025-05-25")}
                     </td>
                     <td colSpan={2}>
                       <div className="progressKPI">{row?.progress}</div>
