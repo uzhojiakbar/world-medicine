@@ -17,6 +17,7 @@ import { useLanguage } from "../../../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import IconPlusChange from "../../../../assets/svg/IconPlusChange";
+import ModalUsloviyaPrescription from "./ModalUsloviya";
 
 const Usloviya = () => {
   const { translate } = useLanguage();
@@ -26,21 +27,30 @@ const Usloviya = () => {
     { first: "<=60%", second: "30%" },
     { first: "<=60%" },
   ]);
+  const [openModal, setOpenModal] = useState(false);
 
   const information = {
-    title: "Условия",
-    titles: ["Рецепт", "СУ", "СБ", "ГЗ", "Кабинет вакцинации"],
-    kvota: "Квота",
-    infoTitles: [
-      { title: "Доступный %СУ", value: "30%" },
-      { title: "Доступный %СБ", value: "30%" },
-      { title: "Доступный %ГЗ", value: "30%" },
+    title: translate("Условия"),
+    titles: [
+      translate("Рецепт"),
+      translate("СУ"),
+      translate("СБ"),
+      translate("ГЗ"),
+      translate("Кабинет вакцинации"),
     ],
-    time: "Срок сдачи",
-    subtitle: "Доступный процент суммы",
+    kvota: translate("Квота"),
+    infoTitles: [
+      { title: translate("Доступный %СУ"), value: "30%" },
+      { title: translate("Доступный %СБ"), value: "30%" },
+      { title: translate("Доступный %ГЗ"), value: "30%" },
+    ],
+    time: translate("Срок сдачи"),
+    subtitle: translate("Доступный процент суммы"),
   };
   return (
     <Container>
+      <ModalUsloviyaPrescription id={openModal} setId={setOpenModal} />
+
       <Title className="titlee">
         {information.title}
         <Button onClick={() => nav("../")} icon={<IconPlus />}>
@@ -92,14 +102,20 @@ const Usloviya = () => {
               return (
                 <MiniItemWrapper>
                   <MiniItem>{v?.first}</MiniItem>
-                  <MiniItem btn="true" onClick={() => {}}>
+                  <MiniItem
+                    btn="true"
+                    onClick={() => {
+                      setOpenModal(1);
+                      console.log("hi");
+                    }}
+                  >
                     <IconPlusChange />
                   </MiniItem>
                 </MiniItemWrapper>
               );
             } else
               return (
-                <MiniItemWrapper>
+                <MiniItemWrapper key={i}>
                   <MiniItem>{v?.first}</MiniItem>
                   <MiniItem>{v?.second}</MiniItem>
                 </MiniItemWrapper>
@@ -108,7 +124,13 @@ const Usloviya = () => {
           {mavjudFoizlar[mavjudFoizlar.length - 1].first &&
           mavjudFoizlar[mavjudFoizlar.length - 1].second ? (
             <MiniItemWrapper>
-              <MiniItem btn="true" onClick={() => {}}>
+              <MiniItem
+                btn="true"
+                onClick={() => {
+                  setOpenModal(1);
+                  console.log("hi");
+                }}
+              >
                 <IconPlusChange />
               </MiniItem>
             </MiniItemWrapper>

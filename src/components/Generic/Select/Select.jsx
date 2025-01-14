@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 
-const StyledFormControl = styled(FormControl)(({ borderRadius }) => ({
+const StyledFormControl = styled(FormControl)(({ borderRadius, bgColor }) => ({
   width: "100%",
   height: "60px",
   ".MuiOutlinedInput-root": {
@@ -16,7 +16,7 @@ const StyledFormControl = styled(FormControl)(({ borderRadius }) => ({
     height: "100%",
     display: "flex",
     alignItems: "center",
-    backgroundColor: "#F7F8FC", // Background color
+    backgroundColor: bgColor || "#F7F8FC", // Background color
     "& fieldset": {
       borderColor: "transparent", // Border color
     },
@@ -38,14 +38,24 @@ const StyledFormControl = styled(FormControl)(({ borderRadius }) => ({
   },
 }));
 
-const PrimarySelect = ({ def, borderRadius, options, onValueChange }) => {
+const PrimarySelect = ({
+  def,
+  borderRadius,
+  options,
+  onValueChange,
+  bgColor,
+}) => {
   const handleValueChange = (event) => {
-    const value = event.target.value;
-    if (onValueChange) onValueChange(value);
+    let value = event;
+    if (!Array.isArray(event)) {
+      value = event.target?.value;
+    }
+
+    if (onValueChange && value) onValueChange(value);
   };
 
   return (
-    <StyledFormControl borderRadius={borderRadius}>
+    <StyledFormControl borderRadius={borderRadius} bgColor={bgColor}>
       <InputLabel>{def}</InputLabel>
       <Select
         onChange={handleValueChange}

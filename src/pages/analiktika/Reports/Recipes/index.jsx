@@ -165,7 +165,15 @@ const Recipes = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let name,
+      value = "";
+    if (!Array.isArray(e)) {
+      name = e.target.name;
+      value = e.target.value;
+    } else {
+      name = e[0];
+      value = e[1];
+    }
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -218,7 +226,7 @@ const Recipes = () => {
             />
             <PrimarySelect
               def={information.inputData.preparation}
-              options={[]}
+              options={Viloyatlar}
               onValueChange={(value) => handleChange(["preparation", value])}
             />
             <DateRangePicker />
