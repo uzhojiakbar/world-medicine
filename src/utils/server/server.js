@@ -315,6 +315,30 @@ const Server = {
   },
 };
 
+const fetchDistrict = async (districtId) => {
+  try {
+    const response = await Instance.get(
+      `/v1/auth/district?districtId=${districtId}`
+    );
+    console.log(response?.data);
+    return response?.data; // Region nomini qaytaradi
+  } catch (error) {
+    console.error("Error fetching region data", error);
+    return null;
+  }
+};
+
+const fetchRegion = async (regionId) => {
+  try {
+    const response = await Instance.get(`/v1/auth/region?regionId=${regionId}`);
+    console.log(response?.data);
+    return response?.data; // Region nomini qaytaradi
+  } catch (error) {
+    console.error("Error fetching region data", error);
+    return null;
+  }
+};
+
 export const useGetNewConnecting = (page) => {
   return useQuery({
     queryKey: ["newConnecting", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
@@ -323,7 +347,17 @@ export const useGetNewConnecting = (page) => {
         const data = await Instance.get(
           `/v1/admin/doctors/not-declined-not-enabled?page=${page}&size=10`
         );
-        return data?.data;
+
+        const content = await Promise.all(
+          data?.data?.content.map(async (doctor) => {
+            const districtInfo = await fetchDistrict(doctor?.districtId);
+            const fetchRegionInfo = await fetchRegion(districtInfo?.regionId);
+
+            return { ...doctor, districtInfo, regioninfo: fetchRegionInfo }; // Region nomini doctorga qo'shamiz
+          })
+        );
+
+        return { ...data?.data, content: content };
       } catch (error) {
         console.error("Error fetching data", error);
         throw error; // xatolikni qaytarish
@@ -402,72 +436,54 @@ export const useGetManagers = () => {
   });
 };
 
-// NOTE GET DISTRICTS BY REGION ID
-export const useGetDistrictsByRegionId = () => {
-  return useMutation(async (regionId) => {
-    try {
-      const { data } = await Instance.get(
-        `/v1/auth/districts?regionId=${regionId}`
-      );
-
-      console.log("DAATA", data);
-      return data;
-    } catch (error) {
-      console.error("Error fetching districts data", error);
-      throw error;
-    }
-  });
-};
-
 // NOTE GET DISTRICT BY REGION ID  AND DISTRICT ID
-export const useGetDistrictById = () => {
-  const {
-    mutate: getDistricts,
-    isLoading,
-    isError,
-  } = useGetDistrictsByRegionId();
-
-  return useMutation(async ({ regionId, districtId }) => {
-    // Region bo'yicha districtlarni olish
-    const districts = await getDistricts(1); // regionIdni yuborib districtlarni olish
-
-    // Districtni topish
-    const district = districts.find(
-      (district) => district.districtId === districtId
-    );
-    if (!district) throw new Error("District not found");
-
-    return district;
+export const useGetDistrictById = (districtId) => {
+  return useQuery({
+    queryKey: ["districtInfo", districtId],
+    queryFn: async () => {
+      const { data } = await Instance.get(
+        `/v1/auth/district?districtId=${districtId}`
+      );
+      return data;
+    },
+    staleTime: 1000 * 60 * 10, // 10 minutes
   });
 };
 
-// NOTE MANAGERS WITH DISTRICT NAME
-export const useGetManagersWithDistrictName = () => {
-  const regionId = 1; // Region 1 bo'ladi
-  const { data: districts, isLoading: isDistrictsLoading } =
-    useGetDistrictsByRegionId(regionId);
-
+export const useGetRegionById = (regionId) => {
   return useQuery({
-    queryKey: ["GetManagersWithDistrictName"], // queryKey - bu ham array bo'lishi kerak
+    queryKey: ["regionInfo", regionId],
     queryFn: async () => {
-      if (isDistrictsLoading || !districts) return []; // Agar districtlar yuklanayotgan bo'lsa yoki ma'lumotlar yo'q bo'lsa, bo'sh array qaytarish
-
-      const { data: managers } = await Instance.get(`/v1/user/managers`);
-
-      // Districtlarni managerlar bilan birlashtirish
-      const managersWithDistricts = managers.map((manager) => {
-        const district = districts.find(
-          (d) => d?.districtId === manager?.districtId
-        );
-        return {
-          ...manager,
-          districtName: district ? district.name : "Unknown District",
-        };
-      });
-
-      return managersWithDistricts;
+      const { data } = await Instance.get(
+        `/v1/auth/region?regionId=${regionId}`
+      );
+      return data;
     },
-    staleTime: 1000 * 60 * 10, // Ma'lumotlar eskirish vaqti
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  });
+};
+
+export const useGetRegionAndDistrict = (districtId) => {
+  return useQuery({
+    queryKey: ["regionAndDistrictInfo", districtId],
+    queryFn: async () => {
+      const { data: districtData } = await Instance.get(
+        `/v1/auth/district?districtId=${districtId}`
+      );
+      console.log(districtData);
+
+      const { regionId } = await districtData;
+      // const { data: regionData } = await Instance.get(
+      //   `/v1/auth/region?regionId=${regionId}`
+      // );
+
+      // return {
+      //   districtInfo: regionData.name,
+      //   districtName: districtData.name,
+      //   combinedName: `${regionData.name}, ${districtData.name}`,
+      // };
+    },
+    staleTime: 1000 * 60 * 10, // 10 minutes
   });
 };
 

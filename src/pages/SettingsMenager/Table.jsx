@@ -9,7 +9,6 @@ import RightArrow from "../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal";
 import { useLanguage } from "../../context/LanguageContext";
-import { useGetDistrictById } from "../../utils/server/server"; // Import to'g'ri qilingan
 import Instance from "../../utils/Instance";
 import { DatFormatter } from "../../utils/DatFormatter";
 
@@ -25,7 +24,6 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data.length / itemsPerPage);
-  const { mutate, data: ResponseData, isError } = useGetDistrictById();
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
