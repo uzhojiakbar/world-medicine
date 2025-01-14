@@ -321,7 +321,7 @@ const fetchDistrict = async (districtId) => {
       `/v1/auth/district?districtId=${districtId}`
     );
     console.log(response?.data);
-    return response?.data; // NOTE region infor (uz ru eng crylic)
+    return response?.data; // Region nomini qaytaradi
   } catch (error) {
     console.error("Error fetching region data", error);
     return null;
