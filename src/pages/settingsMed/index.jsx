@@ -6,14 +6,17 @@ import { useNavigate } from "react-router-dom";
 import Table from "./Table.jsx";
 import { Doctors } from "../../mock/doctors";
 import { useLanguage } from "../../context/LanguageContext";
+import DisabledPage from "../../components/DisabledPage/index.jsx";
+import { Container } from "../admin/settingSystemAdmin/style.js";
 
 const SettingsMed = () => {
   const nav = useNavigate();
   const { translate } = useLanguage();
 
   return (
-    <>
+    <Container>
       <Title>
+        <DisabledPage />
         <span>{translate("Управление_мед_представителями")}</span>
         <Button onClick={() => nav("../create-med-rep")} icon={<IconPlus />}>
           {translate("Добавить_врача")}
@@ -21,7 +24,7 @@ const SettingsMed = () => {
       </Title>
 
       <Table data={Doctors || []} />
-    </>
+    </Container>
   );
 };
 

@@ -4,6 +4,7 @@ import { media } from "../../../utils/media";
 
 // Generic Button Styling
 const ButtonStyled = styled.button`
+  user-select: none;
   display: inline-flex;
   align-items: center; /* Vertikal hizalash */
   justify-content: center; /* Gorizontal hizalash */

@@ -12,7 +12,6 @@ export const DisabledPageContainer = styled.div`
 
   z-index: 1;
 
-  border-radius: 40px;
   justify-content: center;
   align-items: center;
   padding: 30px;
