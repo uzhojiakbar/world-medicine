@@ -12,14 +12,14 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://192.168.23.100:8080/api", // Backend manzili
+        target: "http://209.38.109.22:8080/api", // Backend manzili
         changeOrigin: true,
         secure: false,
       },
     },
-    port: 5000,
+    port: 3000,
   },
   preview: {
-    port: 5000,
+    port: 3000,
   },
 });

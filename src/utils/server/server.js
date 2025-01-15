@@ -1,4 +1,3 @@
-import axios from "axios";
 import Cookie from "js-cookie";
 import Instance from "../Instance";
 import { jwtDecode } from "jwt-decode";
@@ -534,4 +533,40 @@ export const useGetManagersWithDistrictName = () => {
   });
 };
 
+// NOTE ADD MANAGER
+export const useRegisterManager = () => {
+  const { translate } = useLanguage();
+  return useMutation({
+    mutationFn: async (managerData) => {
+      console.log("managerData", managerData);
+      const response = await Instance.post(
+        "/v1/user/register-manager",
+        managerData.requestData
+      );
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      variables.onSuccess();
+    },
+    onError: (error, variables) => {
+      variables.onError();
+    },
+  });
+};
+
+export const useGetRegions = () => {
+  return useQuery({
+    queryKey: ["Regions"],
+    queryFn: async () => {
+      try {
+        const data = await Instance.get(`/v1/auth/regions`);
+        return data?.data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
 export default Server;

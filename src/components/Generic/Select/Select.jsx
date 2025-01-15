@@ -44,14 +44,29 @@ const PrimarySelect = ({
   options,
   onValueChange,
   bgColor,
+  onlyOption = 0,
 }) => {
   const handleValueChange = (event) => {
     let value = event;
+    const selectedValue = event.target.value;
+    const selectedOption = options.find(
+      (option) => option.value === selectedValue
+    );
     if (!Array.isArray(event)) {
       value = event.target?.value;
     }
 
-    if (onValueChange && value) onValueChange(value);
+    if (onlyOption) {
+      if (onValueChange && value) onValueChange(selectedOption);
+    } else {
+      if (onValueChange && value) onValueChange(value);
+    }
+
+    // console.log(selectedOption);
+
+    // if (onValueChange && selectedOption) {
+    //   onValueChange(selectedOption); // Pass the full object
+    // }
   };
 
   return (

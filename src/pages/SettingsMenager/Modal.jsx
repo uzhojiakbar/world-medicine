@@ -10,9 +10,7 @@ import {
 } from "../../root/Modal";
 import { MiniTitleSmall, Title, TitleSmall } from "../../root/style";
 import { Managers } from "../../mock/managers";
-import { message } from "antd";
 import EditableInput from "../../components/Generic/EditableInput/EditableInput";
-import GenericDatePicker from "../../components/Generic/GenericCalendar/GenericCalendar";
 
 const ModalManager = ({ id = 122, setId = () => {} }) => {
   let userId = Managers.filter((v) => {

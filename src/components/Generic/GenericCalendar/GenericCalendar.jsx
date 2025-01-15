@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DatePicker } from "antd";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { StyledDatePicker } from "./style";
 import CalendarIcon from "../../../assets/svg/CalendarIcon";
+import { useLanguage } from "../../../context/LanguageContext";
 
 const GenericDatePicker = ({
   value,
@@ -15,31 +16,35 @@ const GenericDatePicker = ({
   borderR,
 }) => {
   const [tempValue, setTempValue] = useState(value); // Vaqtinchalik qiymatni saqlash uchun
+  const { translate } = useLanguage();
+
+  useEffect(() => {
+    setTempValue(value); // Tashqaridan kelgan qiymat o'zgarsa, yangilash
+  }, [value]);
 
   const handleDateChange = (date) => {
-    if (date) {
-      setTempValue(dayjs(date).format(format)); // Faqat vaqtinchalik o'zgarish
-    } else {
-      setTempValue(null); // Sana o'chirilgan
-    }
+    setTempValue(date ? dayjs(date).format(format) : null); // Faqat vaqtinchalik o'zgarish
+    onChange && onChange(date ? dayjs(date).format(format) : null); // Foydalanuvchi hodisasini chaqirish
   };
 
-  const handleDateSelect = () => {
-    // Faqat tanlanganda qiymatni onChange orqali uzatadi
-    if (tempValue) {
-      onChange(tempValue);
-    }
+  if (placeholder === "Выберите дату") {
+    placeholder = translate ? translate("Выберите_дату") : placeholder;
+  }
+
+  const disabledDate = (current) => {
+    // Bugungi kun va undan oldingi kunlar uchun false, kelajakdagi kunlar uchun true
+    return current && current > dayjs().endOf("day");
   };
 
   return (
     <StyledDatePicker
       value={tempValue ? dayjs(tempValue, format) : null} // Vaqtinchalik qiymatni ko'rsatish
       onChange={handleDateChange}
-      onOk={handleDateSelect} // Sana tanlanganda tasdiqlash
       format={format} // Ko'rsatish uchun format
       placeholder={placeholder}
-      suffixIcon={showicon ? icon : ""} // Custom ikonka
+      suffixIcon={showicon ? icon : null} // Custom ikonka yoki hech narsa
       borderR={borderR}
+      disabledDate={disabledDate} // disabledDate funksiyasini qo'shish
     />
   );
 };

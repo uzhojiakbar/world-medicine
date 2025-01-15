@@ -12,6 +12,7 @@ const Input2 = ({
 }) => {
   return (
     <InputWrapper
+      autoComplete="off"
       name={name}
       maxLength={maxLength}
       type={type}

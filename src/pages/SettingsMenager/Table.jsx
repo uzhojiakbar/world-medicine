@@ -87,6 +87,8 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
     }
   }, [currentData, currentPage]); // currentData yoki districtInfo.length o'zgarganda qayta ishlaydi
 
+  console.log(currentPageData);
+
   return (
     <Container>
       {isLoading || !districtInfo.length ? (
@@ -119,9 +121,8 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                   <tr key={row?.userId}>
                     <td>№{row?.id || index + 1}</td>
                     <td className="idfixed">
-                      {row?.firstName + " "}
+                      {row?.lastName ?? " "} {row?.firstName + " "}
                       {(row?.middleName ?? "") + " "}
-                      {row?.lastName ?? ""}
                     </td>
                     <td>
                       {language === "en" ? row?.districtName?.name : ""}
