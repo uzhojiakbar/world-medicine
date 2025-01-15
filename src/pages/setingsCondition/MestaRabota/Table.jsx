@@ -7,9 +7,7 @@ import {
 import LeftArrow from "../../../assets/svg/LeftArrow";
 import RightArrow from "../../../assets/svg/RightArrow";
 import styled from "styled-components";
-import ModalManager from "./Modal.jsx";
 import { useLanguage } from "../../../context/LanguageContext";
-import Server from "../../../utils/server/server";
 import Input from "../../../components/Generic/Input/Input"; // Import your Input component
 
 const Container = styled.div`

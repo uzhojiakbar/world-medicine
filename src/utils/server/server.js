@@ -372,9 +372,7 @@ export const useGetWorkPlaces = (page) => {
     queryKey: ["newConnecting", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
     queryFn: async () => {
       try {
-        // const data = await Instance.get(
-        //   `/v1/admin/doctors/not-declined-not-enabled?page=${page}&size=10`
-        // );
+        const data = await Instance.get(`/v1/auth/workplaces`);
 
         // const content = await Promise.all(
         //   data?.data?.content.map(async (doctor) => {
@@ -385,8 +383,8 @@ export const useGetWorkPlaces = (page) => {
         //   })
         // );
 
-        // return { ...data?.data, content: content };
-        return {};
+        return data?.data;
+        // return {};
       } catch (error) {
         console.error("Error fetching data", error);
         throw error; // xatolikni qaytarish
