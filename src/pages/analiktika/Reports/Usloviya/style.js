@@ -58,6 +58,22 @@ const Info = styled.div`
 const InfoWrapper = styled.div`
   display: flex;
   gap: 10px;
+  align-items: ${({ edit }) => edit && "center"};
+
+  > .checkIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    padding: 5px;
+
+    background-color: #216bf4;
+    &:hover {
+      background-color: rgb(56, 122, 245);
+    }
+  }
 `;
 
 const InfoCard = styled.div`
@@ -101,8 +117,12 @@ const MiniItem = styled.div`
 `;
 
 const Input = styled.input`
-  padding: 5px;
+  width: 100%;
+  padding: 7px;
   border-radius: 8px;
+  font-size: 16px;
+  border: 1px solid rgb(205, 204, 204);
+  outline: none;
 `;
 
 export {

@@ -18,7 +18,6 @@ import { useLanguage } from "../../../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import IconPlusChange from "../../../../assets/svg/IconPlusChange";
-import ModalUsloviyaPrescription from "./ModalUsloviya";
 import ModalDogovor from "./ModalDogovor";
 
 const Usloviya = () => {
@@ -75,22 +74,6 @@ const Usloviya = () => {
     setValues(updatedValues);
   };
 
-  const handleClickOutside = (e) => {
-    if (e.target.tagName == "P" || e.target.tagName === "INPUT") {
-      // Boshqa joy bosilganda tahrirni tugatadi
-    } else setEditingIndex(null);
-  };
-
-  React.useEffect(() => {
-    // Hodisani faollashtirish
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      // Hodisani tozalash
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
   return (
     <Container>
       <ModalDogovor id={openModal} setId={setOpenModal} />
@@ -128,13 +111,29 @@ const Usloviya = () => {
               <InfoCard>
                 <p>{v.title}</p>
                 {editingIndex === index && titleChange ? (
-                  <Input
-                    type="text"
-                    value={values[index]}
-                    onChange={(e) => handleChange(e, index)}
-                    autoFocus
-                    required
-                  />
+                  <InfoWrapper edit="true">
+                    <Input
+                      type="text"
+                      value={values[index]}
+                      onChange={(e) => handleChange(e, index)}
+                      autoFocus
+                      required
+                    />
+                    <div
+                      className="checkIcon"
+                      onClick={() => setEditingIndex(null)}
+                    >
+                      <svg
+                        width="24px"
+                        height="24px"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                        fill="white"
+                      >
+                        <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                      </svg>
+                    </div>
+                  </InfoWrapper>
                 ) : (
                   <p onClick={() => handleEdit(index)}>{values[index]}</p>
                 )}
