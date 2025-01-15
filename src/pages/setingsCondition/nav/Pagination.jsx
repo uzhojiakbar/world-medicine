@@ -155,7 +155,7 @@ const Pagination = () => {
             icon: <PredojiIcon />,
           },
         ]
-      : Cookies.get("role") === "SUPERADMIN"
+      : Cookies.get("role") === "MANAGER"
       ? [
           {
             id: 0,

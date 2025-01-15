@@ -16,6 +16,7 @@ import {
   NavbarBurgerMenu,
   navbarData,
   NavbarDataAdmin,
+  NavbarDataManager,
   NavbarDataSuperAdmin,
 } from "../../../utils/navbar";
 
@@ -41,6 +42,8 @@ const AdminNavbar = () => {
         ? NavbarDataAdmin
         : userRole === "ADMIN"
         ? NavbarDataSuperAdmin
+        : userRole === "MANAGER"
+        ? NavbarDataManager
         : navbarData;
 
     setData(

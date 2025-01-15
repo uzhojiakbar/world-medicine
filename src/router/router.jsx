@@ -89,32 +89,9 @@ const Router = () => {
   else if (currentUserRole === "MANAGER") {
     return (
       <Suspense fallback={<Loader />}>
-        <Routes>
-          {/* <Route
-            path="/"
-            element={
-              <PrivateRoute role={currentUserRole} allowedRoles={["MANAGER"]}>
-                <h1>MANAGER HOME</h1>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/analiktika"
-            element={
-              <PrivateRoute role={currentUserRole} allowedRoles={["MANAGER"]}>
-                <h1>MANAGER ANALIKTIKA</h1>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute role={currentUserRole} allowedRoles={["MANAGER"]}>
-                <h1>MANAGER ANALIKTIKA</h1>
-              </PrivateRoute>
-            }
-          /> */}
+        <AdminNavbar />
 
+        <Routes>
           {NavbarDataManager.map(({ id, path, element, child }) => {
             if (child.length) {
               return <Route key={id} path={path} element={element} />;

@@ -367,6 +367,35 @@ export const useGetNewConnecting = (page) => {
   });
 };
 
+export const useGetWorkPlaces = (page) => {
+  return useQuery({
+    queryKey: ["newConnecting", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
+    queryFn: async () => {
+      try {
+        // const data = await Instance.get(
+        //   `/v1/admin/doctors/not-declined-not-enabled?page=${page}&size=10`
+        // );
+
+        // const content = await Promise.all(
+        //   data?.data?.content.map(async (doctor) => {
+        //     const districtInfo = await fetchDistrict(doctor?.districtId);
+        //     const fetchRegionInfo = await fetchRegion(districtInfo?.regionId);
+
+        //     return { ...doctor, districtInfo, regioninfo: fetchRegionInfo }; // Region nomini doctorga qo'shamiz
+        //   })
+        // );
+
+        // return { ...data?.data, content: content };
+        return {};
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+
 export const useGetProfileInfo = (userId) => {
   return useQuery({
     queryKey: ["ProfileInfo", userId],
@@ -376,6 +405,8 @@ export const useGetProfileInfo = (userId) => {
 
         const userId = jwtDecode(token)?.sub; // To'g'ri ishlatilmoqda
         const data = await Instance.get(`/v1/user/${userId}`);
+        console.log(data);
+
         return data?.data;
       } catch (error) {
         console.error("Error fetching data", error);
