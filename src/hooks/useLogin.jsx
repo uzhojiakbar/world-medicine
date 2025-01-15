@@ -1,7 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import Instance from "../utils/Instance";
 import getNotify from "./useNotify";
-import Server from "../utils/server/server";
 
 const { notify } = getNotify();
 
@@ -29,12 +28,21 @@ export const useSignIn = () => {
 
       // API so'rovi
       const response = await Instance.post("/v1/auth/login", reqData);
-      const role = jwtDecode(response?.data?.access_token)?.role;
-      notify("ok", `${role}, добро пожаловать!`);
+      console.log("response", response?.data);
+
+      const userId = jwtDecode(response?.data?.access_token)?.sub;
+      console.log(userId);
       onSuccess(response?.data);
 
-      console.log("API Response:", response);
-      console.log("Response Data:", response.data);
+      const data = await Instance.get(`/v1/user/${userId}`);
+      console.log(data?.data);
+
+      notify(
+        "ok",
+        `${
+          data?.data?.firstName + " " + data?.data?.lastName
+        }, добро пожаловать!`
+      );
 
       // Tokenlarni ajratib olish (javobni to'g'ri tuzish)
 
