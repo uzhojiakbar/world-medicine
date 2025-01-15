@@ -99,6 +99,12 @@ const ModalDogovor = ({ id = 454, setId = () => {} }) => {
   const [activeTab, setActiveTab] = useState("Рецепт");
 
   const { translate } = useLanguage();
+  const [preparat, setPreparat] = useState([
+    translate("Алтикам"),
+    translate("Ампилин"),
+    translate("Артокол мазь"),
+    translate("Артокол уколы"),
+  ]);
 
   const titles = [
     translate("Рецепт"),
@@ -106,13 +112,6 @@ const ModalDogovor = ({ id = 454, setId = () => {} }) => {
     translate("СБ"),
     translate("ГЗ"),
     translate("КВ"),
-  ];
-
-  const prepat = [
-    translate("Алтикам"),
-    translate("Ампилин"),
-    translate("Артокол мазь"),
-    translate("Артокол уколы"),
   ];
 
   return (
@@ -152,9 +151,9 @@ const ModalDogovor = ({ id = 454, setId = () => {} }) => {
       <ModalDefinitionWrapper>
         <ModalBody>
           <ButtonWrapper>
-            {titles.map((tab) => (
+            {titles.map((tab, i) => (
               <Item
-                key={tab}
+                key={i}
                 active={activeTab === tab ? "true" : ""}
                 onClick={() => setActiveTab(tab)}
               >
@@ -165,11 +164,18 @@ const ModalDogovor = ({ id = 454, setId = () => {} }) => {
           <ModalDefinitionWrapper>
             <TitleSmall>{translate("Выбранные препараты")}</TitleSmall>
             <Wrap>
-              {prepat.map((v) => {
+              {preparat.map((v, index) => {
                 return (
                   <ModalDefinition>
                     <MiniTitleSmall>{v}</MiniTitleSmall>
-                    <div className="closeIcon">
+                    <div
+                      className="closeIcon"
+                      onClick={() => {
+                        setPreparat((prevPreparat) =>
+                          prevPreparat.filter((v, i) => i !== index)
+                        );
+                      }}
+                    >
                       <svg
                         width="24"
                         height="24"
