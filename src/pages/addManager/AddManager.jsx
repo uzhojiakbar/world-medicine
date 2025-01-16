@@ -27,7 +27,6 @@ import Button from "../../components/Generic/Button/Button.jsx";
 import { formatPhoneNumberForBackend } from "../../utils/phoneFormatterForBackend.js";
 import GenericDatePicker from "../../components/Generic/GenericCalendar/GenericCalendar.jsx";
 import { message } from "antd";
-import { load } from "npm";
 
 const AddMeneger = () => {
   const { translate, language } = useLanguage();
@@ -38,7 +37,7 @@ const AddMeneger = () => {
 
   const mutation = useRegisterManager();
 
-  console.log(loading);
+  console.log(loading, "loadingloadingloadingloading");
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -131,6 +130,7 @@ const AddMeneger = () => {
     if (missingFields.length > 0) {
       message.error(translate("fill_req_error"));
     } else {
+      setLoading(true);
       const requestData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -148,8 +148,12 @@ const AddMeneger = () => {
       mutation.mutate({
         requestData: requestData,
         onSuccess: () => {
-          setLoading(false);
           message.success(translate("Manager qo'shildi!"));
+          setTimeout(() => {
+            setLoading(false);
+
+            document.location.reload();
+          }, 500);
         },
         onError: () => {
           setLoading(false);

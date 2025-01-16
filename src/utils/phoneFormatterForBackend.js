@@ -11,7 +11,7 @@ export const formatPhoneNumberForBackend = (phoneNumber) => {
   // Return three formats
   return {
     phonePrefix: countryCode,
-    phoneNumber: cleanedNumber,
+    phoneNumber: areaAndLocal,
     number: countryCode + areaAndLocal,
   };
 };

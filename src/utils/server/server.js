@@ -535,13 +535,12 @@ export const useGetManagersWithDistrictName = () => {
 
 // NOTE ADD MANAGER
 export const useRegisterManager = () => {
-  const { translate } = useLanguage();
   return useMutation({
     mutationFn: async (managerData) => {
       console.log("managerData", managerData);
       const response = await Instance.post(
         "/v1/user/register-manager",
-        managerData.requestData
+        managerData?.requestData
       );
       return response.data;
     },
