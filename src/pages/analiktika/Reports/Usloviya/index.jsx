@@ -9,6 +9,7 @@ import {
   Item,
   MiniItem,
   MiniItemWrapper,
+  TableWrapper,
   Wrap,
 } from "./style";
 import { Title, TitleSmall } from "../../../../root/style";
@@ -19,6 +20,64 @@ import { useNavigate } from "react-router-dom";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import IconPlusChange from "../../../../assets/svg/IconPlusChange";
 import ModalDogovor from "./ModalDogovor";
+import Table from "./Table";
+
+const data = [
+  {
+    id: 1,
+    preparation: "Аналгин",
+    xSum: "12000",
+    x: "7",
+    su: ["42", "1450"],
+    sb: ["29", "2100"],
+    gz: ["12", "10500"],
+  },
+  {
+    id: 2,
+    preparation: "Аналгин",
+    xSum: "12000",
+    x: "7",
+    su: ["42", "1450"],
+    sb: ["29", "2100"],
+    gz: ["12", "10500"],
+  },
+  {
+    id: 3,
+    preparation: "Аналгин",
+    xSum: "12000",
+    x: "7",
+    su: ["42", "1450"],
+    sb: ["29", "2100"],
+    gz: ["12", "10500"],
+  },
+  {
+    id: 4,
+    preparation: "Аналгин",
+    xSum: "12000",
+    x: "7",
+    su: ["42", "1450"],
+    sb: ["29", "2100"],
+    gz: ["12", "10500"],
+  },
+  {
+    id: 5,
+    preparation: "Аналгин",
+    xSum: "12000",
+    x: "7",
+    su: ["42", "1450"],
+    sb: ["29", "2100"],
+    gz: ["12", "10500"],
+  },
+  {
+    id: 6,
+    preparation: "Аналгин",
+    xSum: "12000",
+    x: "7",
+    su: ["42", "1450"],
+    sb: ["29", "2100"],
+    gz: ["12", "10500"],
+  },
+];
 
 const Usloviya = () => {
   const titleChange = 1;
@@ -190,6 +249,10 @@ const Usloviya = () => {
           )}
         </InfoWrapper>
       </Wrap>
+      <TableWrapper>
+        <TitleSmall>{translate("Наименование товара")}</TitleSmall>
+        <Table data={data} />
+      </TableWrapper>
     </Container>
   );
 };

@@ -125,6 +125,15 @@ const Input = styled.input`
   outline: none;
 `;
 
+const TableWrapper = styled.div`
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  border-radius: 27px;
+`;
+
 export {
   Container,
   ButtonWrapper,
@@ -136,4 +145,5 @@ export {
   MiniItem,
   MiniItemWrapper,
   Input,
+  TableWrapper,
 };
