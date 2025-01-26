@@ -51,18 +51,15 @@ const AnalitikaManagerPage = () => {
       price: "Кол-во сотрудников",
     },
     tbody: [
-      { id: 1, viloyat: "Ташкентская", price: "1" },
+      { id: 1, viloyat: "Ташкентская", price: "5" },
       { id: 2, viloyat: "Сырдарьинская", price: "1" },
-      { id: 3, viloyat: "Навоийская", price: "1" },
-      { id: 4, viloyat: "Ферганская", price: "1" },
-      { id: 5, viloyat: "Андижанская", price: "1" },
-      { id: 6, viloyat: "Бухарская", price: "1" },
-      { id: 7, viloyat: "Хорезмская", price: "1" },
+      { id: 3, viloyat: "Навоийская", price: "3" },
+      { id: 4, viloyat: "Ферганская", price: "6" },
+      { id: 5, viloyat: "Андижанская", price: "2" },
+      { id: 6, viloyat: "Бухарская", price: "8" },
+      { id: 7, viloyat: "Хорезмская", price: "4" },
       { id: 8, viloyat: "Кашкадарьинская", price: "1" },
-      { id: 9, viloyat: "Навоийская", price: "1" },
-      { id: 10, viloyat: "Ферганская", price: "1" },
-      { id: 11, viloyat: "Андижанская", price: "1" },
-      { id: 12, viloyat: "Бухарская", price: "1" },
+      { id: 9, viloyat: "Навоийская", price: "4" },
     ],
   };
 
@@ -121,6 +118,14 @@ const AnalitikaManagerPage = () => {
                 <Title size={"38px"}>70%</Title>
               </InfoItem>
             </InfoContainer>
+          </FilterWrapper>
+          <FilterWrapper>
+            <GenericAnalitikaTable data={tableData} />
+          </FilterWrapper>
+        </ItemWrapper>
+        <ItemWrapper>
+          <FilterWrapper>
+            <GenericAnalitikaTable data={tableData} />
           </FilterWrapper>
           <FilterWrapper>
             <GenericAnalitikaTable data={tableData} />

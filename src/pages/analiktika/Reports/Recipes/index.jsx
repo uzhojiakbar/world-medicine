@@ -8,6 +8,8 @@ import DateRangePicker from "../../../../components/Generic/DataRangePicker/Data
 import GenericTable from "../../../../components/Generic/GenericTable/GenericTable.jsx";
 import { useLanguage } from "../../../../context/LanguageContext.jsx";
 import Table from "./Table.jsx";
+import AnalitikaManagerPage from "../../../../Asadbek/Analitika /index.jsx";
+
 const TableData = [
   {
     fio: "Иванов Дмитрий Евгеньевич",
@@ -189,6 +191,7 @@ const Recipes = () => {
 
   return (
     <Wrapper>
+      <AnalitikaManagerPage />
       <Header>
         <Title>{information.title}</Title>
         <FiltrContainer>
