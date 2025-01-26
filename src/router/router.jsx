@@ -30,13 +30,6 @@ const Loader = () => (
 );
 
 const Router = () => {
-  // const { role } = useAuth();
-  const role = getCookie("role");
-  const location = useLocation();
-  const isAdmin = role == "CHIEF";
-
-  const lastPage = localStorage.getItem("lastPage");
-
   const currentUserRole = Cookies.get("role");
   console.log("HOZIRGI ROLE: ", currentUserRole);
 

@@ -18,6 +18,7 @@ import AddPm from "../pages/addPm/AddPm";
 import AddDoctor from "../pages/addDoctor/AddDoctor";
 import MestaRabota from "../pages/setingsCondition/MestaRabota";
 import MestaRabotaManager from "../pages/setingsCondition/MestaRabota/manager/manager";
+import MainPage from "../Asadbek/main";
 
 export const navbarData = () => {
   return [
@@ -401,7 +402,7 @@ export const NavbarDataManager = [
     path: "/",
     element: (
       <MainContainer>
-        <AdminPage />
+        <MainPage />
       </MainContainer>
     ),
     child: [],
