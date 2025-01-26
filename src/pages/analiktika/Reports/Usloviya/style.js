@@ -10,6 +10,10 @@ const Container = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 7px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Item = styled.div`
@@ -73,6 +77,10 @@ const InfoWrapper = styled.div`
     &:hover {
       background-color: rgb(56, 122, 245);
     }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
   }
 `;
 
