@@ -151,7 +151,26 @@ const ImgContainer = styled.div`
     display: flex;
     gap: 10px;
     `
+const KvotaContainer = styled.div`
+  background-color: blue;
+  display: grid;
+  grid-template-columns:repeat(3,1fr) ;
+  color: white;
+  padding: 16px;
+  gap: 20px;
+  border-radius: 10px;
+`
+const KvotaCard = styled.div`
 
+  p{
+    font-size: 24px;
+    font-weight: 700;
+  }
+  h2{
+    font-size:38px;
+    font-weight: 700
+  }
+`
 
 
 ///////////////////////////////////////////////
@@ -230,10 +249,77 @@ const Comments = styled.div`
 
 
 
+//MODAL3
+const PageContainer = styled.div`
+  margin-top: 20px;
+`;
 
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Card = styled.div`
+  background: #f7f8fc;
+  border-radius: 10px;
+  padding: 5px 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+
+  h2 {
+    color: #007bff;
+    font-size: 2rem;
+    margin-top: 10px;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  p {
+    font-size: 1rem;
+    margin: 10px 0 0;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+    }
+  }
+`
+const SubTitle = styled.h1`
+  font-size: 24px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
+const RemoveSection = styled.div`
+  text-align: center;
+  margin-top: 24px;
+
+  button {
+    padding: 17px 20px;
+    border: none;
+    border-radius: 50px;
+    background-color: #FB3748;
+    color: white;
+    cursor: pointer;
+  }
+`;
 export {
-    Container, Header, Grid, Subtext, Field, Fotercontainer, FooterButtons, IMG, ImgContainer, HR, PackageList, GridItem, Btn,
+  Container, Header, Grid, Subtext, Field, Fotercontainer, FooterButtons, IMG, ImgContainer, HR, PackageList, GridItem, Btn,
+  KvotaContainer, KvotaCard,
+  // modal 2
+  Grid2, GridItem2, Container2, Header2, Comments, Table,
+  //modal 3,
+  PageContainer, GridContainer,
+  Card, SubTitle, RemoveSection
 
-    // modal 2
-    Grid2, GridItem2, Container2, Header2, Comments, Table
+
 }
