@@ -8,7 +8,7 @@ import { Modal } from "antd";
 import ModalLogin from "./modalLogin";
 import GoalSection from "./GoalSection";
 import { modal1Data } from "./modalData";
-import { modal3data } from "./modalData";
+import { modal3Data } from "./modalData";
 const StyledModal = styled(Modal)`
   .ant-modal-content {
     border-radius: 16px;
@@ -17,7 +17,9 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const Modal3 = ({ isOpen, onClose }) => {
+const Modal5 = ({ isOpen, onClose }) => {
+
+
 
     const kvotadata = [
         {
@@ -75,7 +77,7 @@ const Modal3 = ({ isOpen, onClose }) => {
                         <SubTitle>Выполнение KPI</SubTitle>
 
                         <GridContainer>
-                            {modal3data.map((item, index) => (
+                            {modal3Data.map((item, index) => (
                                 <Card key={index}>
                                     <p>{item.title}</p>
                                     <h2>
@@ -91,9 +93,9 @@ const Modal3 = ({ isOpen, onClose }) => {
 
                     <HR />
                     <Fotercontainer>
-                        <h2> Удаление менеджера</h2>
+                        <h2> Удаление мед. представилетя</h2>
                         <RemoveSection>
-                            <button>Удалить менеджера</button>
+                            <button>Удалить мед. представилетя</button>
                         </RemoveSection>
                     </Fotercontainer>
                 </Container>
@@ -102,5 +104,5 @@ const Modal3 = ({ isOpen, onClose }) => {
     );
 };
 
-export default Modal3;
+export default Modal5;
 
