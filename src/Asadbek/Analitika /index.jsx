@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import {
+  AllChartContainer,
+  AppointmentWrapper,
+  ChartContainer,
+  Child,
   Container,
   FilterWrapper,
   Form,
   InfoContainer,
   InfoItem,
+  Item,
   ItemWrapper,
   Wrapper,
 } from "./style";
@@ -15,11 +20,16 @@ import PrimarySelect from "../../components/Generic/Select/Select";
 import { Tumanlar } from "../../mock/data";
 import Input2 from "../../components/Generic/Input/Input2";
 import GenericAnalitikaTable from "./GenericTable";
+import PieDiagram from "../../components/PieDiagram/PieDiagream2";
+import ChartBar from "../../components/ChartBar";
+import HorizontalChart from "../../components/HorizontalBar";
+import SalesChart from "./SelesChart";
 
 const AnalitikaManagerPage = () => {
   const { translate } = useLanguage();
 
   const [selectedTuman, setSelectedTuman] = useState("");
+  const [active, setActive] = useState(1);
 
   const [formData, setFormData] = useState({
     district: selectedTuman || "",
@@ -62,6 +72,15 @@ const AnalitikaManagerPage = () => {
       { id: 9, viloyat: "Навоийская", price: "4" },
     ],
   };
+
+  const назначению = [
+    { title: "1 Ношпа", price: "110" },
+    { title: "4 Гастал", price: "110" },
+    { title: "2 АЦЦ", price: "110" },
+    { title: "5 Нафтизин", price: "110" },
+    { title: "3 Терафлю", price: "110" },
+    { title: "6 Марганцовка", price: "110" },
+  ];
 
   return (
     <Container>
@@ -132,6 +151,66 @@ const AnalitikaManagerPage = () => {
           </FilterWrapper>
         </ItemWrapper>
       </Wrapper>
+
+      <AllChartContainer>
+        <ChartContainer>
+          <AppointmentWrapper>
+            <Title size={"24px"}>
+              {translate("Топ")} {назначению.length}{" "}
+              {translate("по назначению")}
+            </Title>
+            {назначению.map((v) => {
+              return (
+                <Item>
+                  <div>{v.title}</div>
+                  <div>
+                    {v.price} {translate("шт")}.
+                  </div>
+                </Item>
+              );
+            })}
+          </AppointmentWrapper>
+          <AppointmentWrapper>
+            <SalesChart title={"Статистика продаж"} active={active} />
+          </AppointmentWrapper>
+        </ChartContainer>
+
+        <ChartContainer>
+          <AppointmentWrapper gap={"20px"}>
+            <Child>
+              <PieDiagram
+                item={["Рецепт", "СБ", "СУ", "ГЭ"]}
+                bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
+                title="По упаковкам"
+              />
+              <PieDiagram
+                item={["Рецепт", "СБ", "СУ", "ГЭ"]}
+                bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
+                title="По сумме"
+              />
+            </Child>
+            <Child>
+              <Child>
+                <SalesChart
+                  title={"Статистика выполнение задач"}
+                  active={active}
+                />
+              </Child>
+              <Child>
+                <PieDiagram
+                  item={["Рецепт", "СБ", "СУ", "ГЭ"]}
+                  bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
+                  title="По в месяц"
+                />
+              </Child>
+            </Child>
+            <Child>
+              <HorizontalChart title={"Продажа препаратов по регионам"} />
+              <ChartBar title={"Активность врачей"} active={active} />
+            </Child>
+          </AppointmentWrapper>
+        </ChartContainer>
+      </AllChartContainer>
     </Container>
   );
 };
