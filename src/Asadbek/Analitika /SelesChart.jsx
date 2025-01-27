@@ -36,7 +36,7 @@ export const TitleText = styled.h2`
   font-family: "Vela Sans GX", sans-serif;
   font-weight: 600;
   color: #1e1e1e;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const CHartLine = styled.div`
@@ -44,7 +44,46 @@ const CHartLine = styled.div`
   width: 100%;
   max-width: 100%; /* Mobilda tashqariga chiqmasligi uchun cheklash */
 `;
-const SalesChart = ({ admin = 0, active = 1, title }) => {
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+`;
+
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 16px;
+  .belgi {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #216bf4;
+  }
+
+  .belgi2 {
+    background-color: red;
+  }
+`;
+
+const Wrap = styled.div`
+  height: 300px;
+  width: 100%;
+  max-width: 100%;
+  padding-left: 30px;
+`;
+
+const SalesChart = ({
+  admin = 0,
+  active = 1,
+  title,
+  seles = ["Продажа", "Квота"],
+}) => {
   const numsFull = {
     1: [
       31555, 56216, 11294, 15027, 12974, 64116, 18768, 46218, 15762, 66912,
@@ -76,15 +115,15 @@ const SalesChart = ({ admin = 0, active = 1, title }) => {
     ],
     datasets: [
       {
-        label: "Выполнено",
+        label: seles[0],
         data: nums || [],
-        borderColor: admin ? "#216bf4" : "#1E40AF",
+        borderColor: admin ? "#32518b" : "#1E40AF",
         backgroundColor: "rgba(30, 64, 175, 0.1)",
         tension: 0.4,
         pointRadius: 0,
       },
       {
-        label: "Цели",
+        label: seles[1],
         data: [
           8000, 38000, 44000, 50000, 55000, 46000, 47000, 48000, 49000, 50000,
           55000, 62000,
@@ -105,6 +144,7 @@ const SalesChart = ({ admin = 0, active = 1, title }) => {
       legend: {
         display: false,
       },
+
       tooltip: {
         callbacks: {
           label: (context) => `$${context.parsed.y.toLocaleString()}`,
@@ -130,9 +170,21 @@ const SalesChart = ({ admin = 0, active = 1, title }) => {
   return (
     <CardContainer>
       <TitleText>{title || "Статистика выполнения задач"}</TitleText>
-      <CHartLine>
-        <Line data={data} options={options} />
-      </CHartLine>
+      <IconWrapper>
+        <Item>
+          <div className="belgi"></div>
+          <div>{seles[0]}</div>
+        </Item>
+        <Item>
+          <div className="belgi belgi2"></div>
+          <div>{seles[1]}</div>
+        </Item>
+      </IconWrapper>
+      <Wrap>
+        <CHartLine>
+          <Line data={data} options={options} />
+        </CHartLine>
+      </Wrap>
     </CardContainer>
   );
 };
