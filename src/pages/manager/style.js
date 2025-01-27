@@ -30,6 +30,12 @@ const InfoWrapper = styled.div`
   gap: 10px;
   background-color: white;
   border-radius: 10px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+    background-color: #f7f8fc;
+  }
 `;
 
 const Item = styled.div`
@@ -54,6 +60,8 @@ const TitleSmall = styled.div`
   font-size: ${({ size }) => (size ? size : "24px")};
   font-weight: 700;
   font-family: "Vela Sans GX", sans-serif;
+  color: #000;
+  z-index: 1;
 
   display: flex;
   justify-content: space-between;
