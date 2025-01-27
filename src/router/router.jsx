@@ -11,6 +11,7 @@ import { getCookie } from "../hooks/useCookie";
 import PrivateRoute from "../components/Navigate/PrivateRoute";
 import Cookies from "js-cookie";
 import AdminNavbar from "../components/navbar/admin/navbar";
+import ManagerNavbar from "../components/navbar/manager/navbar";
 
 // Components
 const NotAuth = lazy(() => import("../components/Navigate/notAuth"));
@@ -82,7 +83,7 @@ const Router = () => {
   else if (currentUserRole === "MANAGER") {
     return (
       <Suspense fallback={<Loader />}>
-        <AdminNavbar />
+        <ManagerNavbar />
 
         <Routes>
           {NavbarDataManager.map(({ id, path, element, child }) => {
