@@ -27,6 +27,8 @@ import { Dropdown } from "antd";
 
 import Cookies from "js-cookie";
 import { useLanguage } from "../../../context/LanguageContext";
+import NotificationModal from "./notificationModal";
+import Buttontest from "./notificationModal";
 
 const ManagerNavbar = () => {
   const nav = useCustomNavigate();
@@ -37,6 +39,8 @@ const ManagerNavbar = () => {
   const userRole = Cookies.get("role");
 
   const [data, setData] = useState([]);
+
+  const [notification, setNotification] = useState(false);
 
   useEffect(() => {
     const CurrentData =
@@ -113,9 +117,18 @@ const ManagerNavbar = () => {
             <ChangeLanguage className={"inactive"}>{lang1}</ChangeLanguage>
           </Dropdown>
 
-          <BellBtnContainer>
-            <BellBtn />
-          </BellBtnContainer>
+          <NotificationModal
+            type="primary"
+            open={notification}
+            onClick={() => setNotification(!notification)}
+          />
+
+          {/* <Buttontest>
+            <BellBtnContainer onClick={() => setNotification(!notification)}>
+              <BellBtn />
+            </BellBtnContainer>
+          </Buttontest> */}
+
           <ProfieBtn to={`/profile`}>
             <i className="fa-solid fa-user"></i>
           </ProfieBtn>

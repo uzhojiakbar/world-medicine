@@ -12,6 +12,14 @@ export const ModalContainer = styled(Modal)`
   }
 `;
 
+export const ModalNotificationCon = styled(Modal)`
+  width: 400px;
+
+  .ant-modal-close {
+    display: none !important;
+  }
+`;
+
 export const ModalHeader = styled.div`
   display: flex;
   align-items: center;
