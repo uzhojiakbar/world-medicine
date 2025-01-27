@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ModalWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   background: #fff;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
