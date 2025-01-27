@@ -16,13 +16,13 @@ const NotificationModal = () => {
   const modalRef = useRef(null);
 
   const handleButtonClick = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setModalPosition({
-        top: rect.bottom + window.scrollY + 10,
-        right: 40,
-      });
-    }
+    // if (buttonRef.current) {
+    //   const rect = buttonRef.current.getBoundingClientRect();
+    //   setModalPosition({
+    //     top: rect.bottom + window.scrollY + 10,
+    //     right: 40,
+    //   });
+    // }
     setIsOpen(!isOpen);
   };
 
