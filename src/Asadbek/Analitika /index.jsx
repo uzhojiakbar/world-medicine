@@ -194,6 +194,7 @@ const AnalitikaManagerPage = () => {
                 <SalesChart
                   title={"Статистика выполнение задач"}
                   active={active}
+                  seles={["Выполнено", "Квота"]}
                 />
               </Child>
               <Child>
