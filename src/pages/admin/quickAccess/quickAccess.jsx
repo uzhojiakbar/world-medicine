@@ -5,11 +5,11 @@ import SystemIcon from "../../../assets/svg/SystemIcon";
 import BDIcon from "../../../assets/svg/BDIcon";
 import { useLanguage } from "../../../context/LanguageContext";
 
-const QuickAccess = ({ data = [] }) => {
+const QuickAccess = ({ data = [], count = 3 }) => {
   const { translate } = useLanguage();
 
   return (
-    <QuickAccessPContainer>
+    <QuickAccessPContainer count={count}>
       {data.map((v) => {
         return (
           <QAccessButton onClick={v.onclick} key={v.id}>
