@@ -43,6 +43,13 @@ const Links = styled.div`
   }
 `;
 
+export const NavButtons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+`;
+
 const Logo = styled.img`
   cursor: pointer;
   user-select: none;

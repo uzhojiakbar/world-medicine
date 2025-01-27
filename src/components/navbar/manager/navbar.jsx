@@ -10,6 +10,7 @@ import {
   NavBigContainer,
   BellBtn,
   BellBtnContainer,
+  NavButtons,
 } from "./style";
 
 // *IMG
@@ -117,21 +118,17 @@ const ManagerNavbar = () => {
             <ChangeLanguage className={"inactive"}>{lang1}</ChangeLanguage>
           </Dropdown>
 
-          <NotificationModal
-            type="primary"
-            open={notification}
-            onClick={() => setNotification(!notification)}
-          />
+          <NavButtons>
+            <NotificationModal
+              type="primary"
+              open={notification}
+              onClick={() => setNotification(!notification)}
+            />
 
-          {/* <Buttontest>
-            <BellBtnContainer onClick={() => setNotification(!notification)}>
-              <BellBtn />
-            </BellBtnContainer>
-          </Buttontest> */}
-
-          <ProfieBtn to={`/profile`}>
-            <i className="fa-solid fa-user"></i>
-          </ProfieBtn>
+            <ProfieBtn to={`/profile`}>
+              <i className="fa-solid fa-user"></i>
+            </ProfieBtn>
+          </NavButtons>
         </Links>
 
         {/* Burger menu dropdown */}
