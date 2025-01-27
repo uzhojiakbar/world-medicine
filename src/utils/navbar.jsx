@@ -21,6 +21,7 @@ import MestaRabotaManager from "../pages/setingsCondition/MestaRabota/manager/ma
 import MainPage from "../Asadbek/main";
 import ManagerHome from "../pages/manager";
 import Rahmadjon from "../Rahmadjon";
+import CreateDogovorMain from "../pages/manager/createDogovor";
 
 export const navbarData = () => {
   return [
@@ -440,20 +441,20 @@ export const NavbarDataManager = [
     onlyAdmin: false,
     icon: false,
   },
-  // {
-  //   id: 2,
-  //   title: "navbar_admin_upr_sis",
-  //   path: "upravleniya-sistemoy",
-  //   element: (
-  //     <MainContainer>
-  //       <SettingsSystemAdmin />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: true,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
+  {
+    id: 2,
+    title: "navbar_admin_upr_sis",
+    path: "upravleniya-sistemoy",
+    element: (
+      <MainContainer>
+        <SettingsSystemAdmin />
+      </MainContainer>
+    ),
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
   // {
   //   id: 3,
   //   title: "Настройка_условий",
@@ -481,6 +482,21 @@ export const NavbarDataManager = [
     element: (
       <MainContainer>
         <Profile />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 6,
+    title: "Добавить менеджера",
+    path: "create-contract",
+    element: (
+      <MainContainer>
+        {/* <AddMeneger /> */}
+        <CreateDogovorMain />
       </MainContainer>
     ),
     child: [],

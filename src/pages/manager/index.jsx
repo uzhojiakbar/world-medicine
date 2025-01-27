@@ -14,6 +14,7 @@ import QuickAccess from "../admin/quickAccess/quickAccess";
 import EyeIcon from "../../assets/svg/Eye";
 import SystemIcon from "../../assets/svg/SystemIcon";
 import { useNavigate } from "react-router-dom";
+import AnalitikaManagerPage from "./analiktika";
 
 const ManagerHome = () => {
   const { translate } = useLanguage();
@@ -61,7 +62,7 @@ const ManagerHome = () => {
         </svg>
       ),
       onclick: () => {
-        nav("nastroyka-usloviya");
+        nav("create-contract");
       },
     },
     {
@@ -97,7 +98,53 @@ const ManagerHome = () => {
     <Container>
       <Title>{translate("Быстрый доступ")}</Title>
       <QuickAccess data={data} count={4} />
-      {/* <Wrap>
+
+      <SellWrap>
+        <Title>{translate("Цель")}</Title>
+        <Wrap>
+          <InfoWrapper>
+            <TitleSmall size={"18px"}> {translate("Охват врачей")}</TitleSmall>
+            <Item className="itemInner">
+              <Highlight foiz={"20%"} />
+
+              <TitleSmall size={"12px"}>{translate("Гинеколог")}</TitleSmall>
+              <TitleSmall size={"12px"}>12 из 20</TitleSmall>
+            </Item>
+            <Item className="itemInner">
+              <Highlight foiz={"60%"} />
+
+              <TitleSmall size={"12px"}>{translate("Гинеколог")}</TitleSmall>
+              <TitleSmall size={"12px"}>12 из 20</TitleSmall>
+            </Item>
+          </InfoWrapper>
+          <InfoWrapper>
+            <TitleSmall size={"18px"}>
+              {" "}
+              {translate("Заключение договоров")}
+            </TitleSmall>
+            <Item className="itemInner">
+              <Highlight foiz={"40%"} />
+
+              <TitleSmall size={"12px"}>{translate("Алтикам")}</TitleSmall>
+              <TitleSmall size={"12px"}>12 из 20</TitleSmall>
+            </Item>
+            <Item className="itemInner">
+              <Highlight foiz={"20%"} />
+              <TitleSmall size={"12px"}>{translate("Амлипин")}</TitleSmall>
+              <TitleSmall size={"12px"}>45 из 100</TitleSmall>
+            </Item>
+          </InfoWrapper>
+        </Wrap>
+      </SellWrap>
+      <AnalitikaManagerPage />
+    </Container>
+  );
+};
+
+export default ManagerHome;
+
+{
+  /* <Wrap>
         <CardWrapper>
           <TitleSmall size={"20px"}>{translate("Просмотр отчетов")}</TitleSmall>
           <div>
@@ -198,46 +245,5 @@ const ManagerHome = () => {
             </svg>
           </div>
         </CardWrapper>
-      </Wrap> */}
-      <SellWrap>
-        <Title>{translate("Цель")}</Title>
-        <Wrap>
-          <InfoWrapper>
-            <TitleSmall size={"18px"}> {translate("Охват врачей")}</TitleSmall>
-            <Item className="itemInner">
-              <Highlight foiz={"20%"} />
-
-              <TitleSmall size={"12px"}>{translate("Гинеколог")}</TitleSmall>
-              <TitleSmall size={"12px"}>12 из 20</TitleSmall>
-            </Item>
-            <Item className="itemInner">
-              <Highlight foiz={"60%"} />
-
-              <TitleSmall size={"12px"}>{translate("Гинеколог")}</TitleSmall>
-              <TitleSmall size={"12px"}>12 из 20</TitleSmall>
-            </Item>
-          </InfoWrapper>
-          <InfoWrapper>
-            <TitleSmall size={"18px"}>
-              {" "}
-              {translate("Заключение договоров")}
-            </TitleSmall>
-            <Item className="itemInner">
-              <Highlight foiz={"40%"} />
-
-              <TitleSmall size={"12px"}>{translate("Алтикам")}</TitleSmall>
-              <TitleSmall size={"12px"}>12 из 20</TitleSmall>
-            </Item>
-            <Item className="itemInner">
-              <Highlight foiz={"20%"} />
-              <TitleSmall size={"12px"}>{translate("Амлипин")}</TitleSmall>
-              <TitleSmall size={"12px"}>45 из 100</TitleSmall>
-            </Item>
-          </InfoWrapper>
-        </Wrap>
-      </SellWrap>
-    </Container>
-  );
-};
-
-export default ManagerHome;
+      </Wrap> */
+}
