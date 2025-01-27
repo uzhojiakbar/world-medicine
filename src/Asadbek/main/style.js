@@ -57,7 +57,6 @@ const TitleSmall = styled.div`
 
   display: flex;
   justify-content: space-between;
-  z-index: 999;
   > .rightBtn {
     cursor: pointer;
     padding: 0 5px;
