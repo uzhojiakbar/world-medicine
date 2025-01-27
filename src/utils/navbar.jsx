@@ -20,6 +20,7 @@ import MestaRabota from "../pages/setingsCondition/MestaRabota";
 import MestaRabotaManager from "../pages/setingsCondition/MestaRabota/manager/manager";
 import MainPage from "../Asadbek/main";
 import ManagerHome from "../pages/manager";
+import Rahmadjon from "../Rahmadjon";
 
 export const navbarData = () => {
   return [
@@ -418,6 +419,20 @@ export const NavbarDataManager = [
     element: (
       <MainContainer>
         <AnaliktikaPage />
+      </MainContainer>
+    ),
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 2,
+    title: "Rahmadjon",
+    path: "Rahmadjon",
+    element: (
+      <MainContainer>
+        <Rahmadjon />
       </MainContainer>
     ),
     child: [],
