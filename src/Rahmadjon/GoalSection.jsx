@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Btn, GridItem, HR } from "./Style";
 
 const Container = styled.div`
   display: flex;
@@ -59,10 +60,17 @@ const ProgresBar = styled.div`
   /* width: ${({ progres }) => progres && `${progres}%`}; */
   background-color: green;
 `
+const GolaCrad = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content:space-between;
+  
+`
 
 
 
-const GoalSection = () => {
+const GoalSection = ({ btn }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const data = {
@@ -72,6 +80,8 @@ const GoalSection = () => {
         items: [
           { name: "Гинеколог", current: 12, total: 20 },
           { name: "Травматолог", current: 100, total: 100 },
+          { name: "Гинеколог", current: 12, total: 20 },
+          { name: "Травматолог", current: 100, total: 100 },
         ],
       },
       {
@@ -79,6 +89,8 @@ const GoalSection = () => {
         items: [
           { name: "Алтикам", current: 70, total: 100 },
           { name: "Ампилин", current: 45, total: 100 },
+          { name: "Гинеколог", current: 12, total: 20 },
+          { name: "Травматолог", current: 100, total: 100 },
         ],
       },
       {
@@ -110,6 +122,17 @@ const GoalSection = () => {
     ],
   };
 
+  const goalData = {
+    doctorName: "Евгений Александрович Усачев",
+    workplace: "Ташкент, Салар, MClinic",
+    registrationDate: "12.11.2021",
+    contact: "+998 (97) 123 12 21",
+    condition: "СУ",
+    period: "С 29/11/2024",
+    goal: "Шаг",
+    km: `1.740.000`,
+  };
+
   return (
     <Container>
       <Header onClick={() => setIsExpanded(!isExpanded)}>
@@ -117,6 +140,7 @@ const GoalSection = () => {
       </Header>
       {isExpanded && (
         <>
+          {btn && <Btn>Условие работы {data.condition}</Btn>}
           <Grid>
             {data.goals.map((goal, index) => (
               <Card key={index}>
@@ -126,17 +150,18 @@ const GoalSection = () => {
                   <ProgressBarContainer key={idx}>
                     <span>{item.name}</span>
                     <span >
-                      <ProgresBar progres={(+item.total / item.current)*50} />
+                      <ProgresBar progres={(+item.total / item.current) * 50} />
                       {item.current} из {item.total}
                     </span>
                   </ProgressBarContainer>
 
                 ))}
+                  
+
               </Card>
             ))}
           </Grid>
 
-         
         </>
       )}
     </Container>

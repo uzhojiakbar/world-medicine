@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import {
-    Container, Header, Grid, Subtext, Field, Fotercontainer, FooterButtons, IMG, ImgContainer, HR, PageContainer, GridContainer,
-    Card, SubTitle, RemoveSection, KvotaContainer, KvotaCard
+    Container, Header, Grid, Subtext, Field, Fotercontainer, IMG, ImgContainer, HR,
+    RemoveSection,
+
 } from './Style'
 import styled from "styled-components";
 import { Modal } from "antd";
 import ModalLogin from "./modalLogin";
 import GoalSection from "./GoalSection";
+import PieDiagram from "./PieDiagram";
+import SalesChart from "./SelesChart";
 import { modal1Data } from "./modalData";
-import { modal3data } from "./modalData";
 const StyledModal = styled(Modal)`
   .ant-modal-content {
     border-radius: 16px;
@@ -17,24 +19,14 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const Modal3 = ({ isOpen, onClose }) => {
+const Modal4 = ({ isOpen, onClose }) => {
 
-    const kvotadata = [
-        {
-            id: 1, title: "Квота", name: "500 000",
-        },
-        {
-            id: 2, title: "Продажи", name: "400 000",
-        }, {
-            id: 3, title: "%", name: "70%",
-        },
-    ]
 
     return (
         <Modal title="Modal 1" open={isOpen} onOk={onClose} onCancel={onClose} footer={null}>
             <StyledModal title={null} open={isOpen} onCancel={onClose} footer={null} width={800}>
                 <Container>
-                    <Header>Запрос на договор</Header>
+                    <Header>Запрос на договор 4</Header>
 
                     <Grid>
                         <Field>
@@ -57,43 +49,17 @@ const Modal3 = ({ isOpen, onClose }) => {
                             <Subtext>{modal1Data.contact} <i className="fa-solid fa-pen"></i></Subtext>
                         </Field>
                     </Grid>
-
-                    <HR />
-
                     <ModalLogin />
 
-                    <KvotaContainer>
-                        {kvotadata.map((item) => (
-                            <KvotaCard key={item.id}>
-                                <p>{item.title}</p>
-                                <h2>{item.name}</h2>
-                            </KvotaCard>
-                        ))}
-                    </KvotaContainer>
-
-                    <PageContainer>
-                        <SubTitle>Выполнение KPI</SubTitle>
-
-                        <GridContainer>
-                            {modal3data.map((item, index) => (
-                                <Card key={index}>
-                                    <p>{item.title}</p>
-                                    <h2>
-                                        {item.value}
-                                    </h2>
-                                </Card>
-                            ))}
-                        </GridContainer>
-                    </PageContainer>
                     <HR />
+                    <GoalSection btn={'btn'} />
+                   <SalesChart/>
+                    <PieDiagram />
 
-                    <GoalSection />
-
-                    <HR />
                     <Fotercontainer>
-                        <h2> Удаление менеджера</h2>
+                        <h2>Удаление </h2>
                         <RemoveSection>
-                            <button>Удалить менеджера</button>
+                            <button>Удалить врача</button>
                         </RemoveSection>
                     </Fotercontainer>
                 </Container>
@@ -102,5 +68,5 @@ const Modal3 = ({ isOpen, onClose }) => {
     );
 };
 
-export default Modal3;
+export default Modal4;
 
