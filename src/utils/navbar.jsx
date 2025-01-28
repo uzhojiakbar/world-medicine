@@ -414,7 +414,7 @@ export const NavbarDataManager = [
     icon: false,
   },
   {
-    id: 1,
+    id: 2,
     title: "navbar_admin_analiktika",
     path: "analiktika",
     element: (
@@ -442,7 +442,7 @@ export const NavbarDataManager = [
     icon: false,
   },
   {
-    id: 2,
+    id: 3,
     title: "navbar_admin_upr_sis",
     path: "upravleniya-sistemoy",
     element: (
