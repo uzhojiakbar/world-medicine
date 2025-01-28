@@ -17,12 +17,7 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <LanguageProvider>
           <QueryClientProvider client={queryClient}>
-            {/* <Root /> */}
-          
-          
-            <Otchot/>
-
-
+            <Root />
             <Toaster />
           </QueryClientProvider>
         </LanguageProvider>
