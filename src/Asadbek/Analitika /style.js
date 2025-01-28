@@ -19,6 +19,10 @@ const Wrapper = styled.div`
 const ItemWrapper = styled.div`
   display: flex;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const FilterWrapper = styled.div`
