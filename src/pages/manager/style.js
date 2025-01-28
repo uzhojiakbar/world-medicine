@@ -5,6 +5,10 @@ const Wrap = styled.div`
   display: flex;
   gap: 20px;
   margin-top: 20px;
+
+  @media (max-width: 605px) {
+    flex-direction: column;
+  }
 `;
 
 const CardWrapper = styled.div`

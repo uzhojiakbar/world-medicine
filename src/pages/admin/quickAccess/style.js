@@ -6,7 +6,7 @@ const QuickAccessPContainer = styled.div`
   width: 100%;
   gap: 20px;
   grid-auto-rows: auto; /* Bu qator balandligini avtomatik ravishda moslashtiradi */
-
+  margin-top: 20px;
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
