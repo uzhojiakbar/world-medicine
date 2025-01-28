@@ -60,7 +60,6 @@ const ResponsiveTableAdmin = styled.div`
     height: 100%;
 
     background-color: white; /* Jadval uyalarining default foni */
-
     .empty {
       height: 400px;
       background-color: var(--bg-color);
@@ -87,7 +86,6 @@ const ResponsiveTableAdmin = styled.div`
     background-color: #f7f8fc; /* Jadval uyalarining default foni */
     padding: 18px 12px;
     height: 100%;
-    border-radius: 10px;
   }
   tr:hover {
     td {
@@ -100,7 +98,7 @@ const ResponsiveTableAdmin = styled.div`
     height: 100%;
   }
   tbody tr {
-    border-bottom: 10px solid #f1f1f1;
+    border-bottom: 10px solid #f7f8fc;
     /* border-radius: 10px; */
   }
 

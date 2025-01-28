@@ -12,8 +12,9 @@ import {
   Item,
   ItemWrapper,
   Wrapper,
+  Title,
 } from "./style";
-import { Title } from "../../../root/style";
+// import { Title } from "../../../root/style";
 import { useLanguage } from "../../../context/LanguageContext";
 import DateRangePicker from "../../../components/Generic/DataRangePicker/DataRangePicker";
 import PrimarySelect from "../../../components/Generic/Select/Select";
@@ -128,16 +129,22 @@ const AnalitikaManagerPage = () => {
             </Form>
             <InfoContainer>
               <InfoItem>
-                <Title size={"24px"}>{translate("Квота")}</Title>
-                <Title size={"38px"}>500 000</Title>
+                <Title size={"24"}>{translate("Квота")}</Title>
+                <Title size={"38"} title="true">
+                  500 000
+                </Title>
               </InfoItem>
               <InfoItem>
-                <Title size={"24px"}>{translate("Продажи")}</Title>
-                <Title size={"38px"}>400 000</Title>
+                <Title size={"24"}>{translate("Продажи")}</Title>
+                <Title size={"38"} title="true">
+                  400 000
+                </Title>
               </InfoItem>
               <InfoItem>
-                <Title size={"24px"}>%</Title>
-                <Title size={"38px"}>70%</Title>
+                <Title size={"24"}>%</Title>
+                <Title size={"38"} title="true">
+                  70%
+                </Title>
               </InfoItem>
             </InfoContainer>
           </FilterWrapper>
@@ -158,7 +165,7 @@ const AnalitikaManagerPage = () => {
       <AllChartContainer>
         <ChartContainer>
           <AppointmentWrapper>
-            <Title size={"24px"}>
+            <Title size={"24"}>
               {translate("Топ")} {назначению.length}{" "}
               {translate("по назначению")}
             </Title>

@@ -4,6 +4,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: 40px;
 `;
 
 const Wrapper = styled.div`
@@ -19,6 +20,10 @@ const Wrapper = styled.div`
 const ItemWrapper = styled.div`
   display: flex;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const FilterWrapper = styled.div`
@@ -26,6 +31,41 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   flex: 1;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
+`;
+
+const Title = styled.div`
+  font-size: ${({ size }) => (size ? `${size}px` : "36px")};
+  font-weight: 800;
+
+  font-family: "Vela Sans GX", sans-serif;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  @media (max-width: 605px) {
+    font-size: ${({ size, title }) => {
+      if (size && title) {
+        return `${size - 18}px`;
+      } else {
+        return `${size - 8}px`;
+      }
+    }};
+  }
+
+  @media (max-width: 400px) {
+    font-size: ${({ size, title }) => {
+      if (size && title) {
+        return `${size - 24}px`;
+      } else {
+        return `${size - 8}px`;
+      }
+    }};
+  }
 `;
 
 const Form = styled.form`
@@ -60,6 +100,10 @@ const ChartContainer = styled.div`
   padding: 20px;
   background-color: white;
   border-radius: 30px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const AppointmentWrapper = styled.div`
@@ -75,6 +119,10 @@ const Child = styled.div`
 
   gap: 20px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Item = styled.div`
@@ -88,6 +136,7 @@ const Item = styled.div`
 `;
 
 export {
+  Title,
   Container,
   Wrapper,
   ItemWrapper,
