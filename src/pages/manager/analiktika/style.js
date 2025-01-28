@@ -30,7 +30,7 @@ const FilterWrapper = styled.div`
 
 const Form = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ row }) => (row ? "row" : "column")};
   gap: 10px;
 `;
 

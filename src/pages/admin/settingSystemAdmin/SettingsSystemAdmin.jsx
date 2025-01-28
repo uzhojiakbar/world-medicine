@@ -38,12 +38,6 @@ const SettingsSystemAdmin = () => {
 
   return (
     <Container>
-      <NewConnect
-        title={translate("new_connect")}
-        data={posts || []}
-        loading={false}
-      />
-
       {/* // REVIEW   Waiting API  */}
 
       <NoviyPaket
