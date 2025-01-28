@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { DatePicker } from "antd";
 
 export const DateContainer = styled.div`
-  background-color: var(--bg-color);
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : "var(--bg-color)")};
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -21,7 +21,7 @@ export const DisplayText = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--bg-color);
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : "var(--bg-color)")};
   border-radius: 10px;
   padding: 0 10px;
   height: 40px;
@@ -31,6 +31,11 @@ export const DisplayText = styled.div`
   /* Placeholder uchun ochroq rang */
   .placeholder {
     color: #a0a0a0; /* Ochroq rang */
+  }
+
+  > div {
+    background-color: ${({ bgColor }) =>
+      bgColor ? bgColor : "var(--bg-color)"};
   }
 `;
 

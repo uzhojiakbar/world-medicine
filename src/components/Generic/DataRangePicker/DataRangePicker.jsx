@@ -7,7 +7,7 @@ import { useLanguage } from "../../../context/LanguageContext";
 // icon = <CalendarIcon />,
 // suffixIcon={icon} // Custom ikonka
 
-const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
+const DateRangePicker = ({ icon = <CalendarIcon />, bgColor }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlarini boshqarish
@@ -42,11 +42,11 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
   );
 
   return (
-    <DateContainer>
+    <DateContainer bgColor={bgColor}>
       {/* Default holatda ko'rinish: "С {startDate} по {endDate}" */}
 
       {!openPicker ? (
-        <DisplayText>
+        <DisplayText bgColor={bgColor}>
           <div>
             <span> {translate("С")} </span>
             <span onClick={() => setOpenPicker("start")}>
@@ -70,6 +70,7 @@ const DateRangePicker = ({ icon = <CalendarIcon /> }) => {
           onOpenChange={(open) => !open && setOpenPicker(null)}
           format="DD.MM.YYYY"
           placeholder={translate("Дата_начала")}
+          bgColor={bgColor}
         />
       )}
 
