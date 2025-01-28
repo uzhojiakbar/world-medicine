@@ -13,20 +13,22 @@ import {
   ItemWrapper,
   Wrapper,
 } from "./style";
-import { Title } from "../../root/style";
-import { useLanguage } from "../../context/LanguageContext";
-import DateRangePicker from "../../components/Generic/DataRangePicker/DataRangePicker";
-import PrimarySelect from "../../components/Generic/Select/Select";
-import { Tumanlar } from "../../mock/data";
-import Input2 from "../../components/Generic/Input/Input2";
+import { Title } from "../../../root/style";
+import { useLanguage } from "../../../context/LanguageContext";
+import DateRangePicker from "../../../components/Generic/DataRangePicker/DataRangePicker";
+import PrimarySelect from "../../../components/Generic/Select/Select";
+import { Tumanlar } from "../../../mock/data";
+import Input2 from "../../../components/Generic/Input/Input2";
 import GenericAnalitikaTable from "./GenericTable";
-import PieDiagram from "../../components/PieDiagram/PieDiagream2";
-import ChartBar from "../../components/ChartBar";
-import HorizontalChart from "../../components/HorizontalBar";
+import PieDiagram from "../../../components/PieDiagram/PieDiagream2";
+import ChartBar from "../../../components/ChartBar";
+import HorizontalChart from "../../../components/HorizontalBar";
 import SalesChart from "./SelesChart";
+import NewConnect from "../../admin/settingSystemAdmin/NewConnect";
 
 const AnalitikaManagerPage = () => {
   const { translate } = useLanguage();
+  const [posts, setPosts] = useState([]);
 
   const [selectedTuman, setSelectedTuman] = useState("");
   const [active, setActive] = useState(1);
@@ -55,6 +57,7 @@ const AnalitikaManagerPage = () => {
       [name]: value, // formData ichidagi qiymatni yangilash
     }));
   };
+
   const tableData = {
     thead: {
       viloyat: "Регион",

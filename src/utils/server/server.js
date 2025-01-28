@@ -365,6 +365,31 @@ export const useGetNewConnecting = (page) => {
     staleTime: 1000 * 60 * 10,
   });
 };
+export const useGetNewContract = (page) => {
+  return useQuery({
+    queryKey: ["newContract", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
+    queryFn: async () => {
+      try {
+        const data = await Instance.get(`v1/db/contracts?page=${page}&size=10`);
+
+        const content = await Promise.all(
+          data?.data?.content.map(async (doctor) => {
+            const districtInfo = await fetchDistrict(doctor?.districtId);
+            const fetchRegionInfo = await fetchRegion(districtInfo?.regionId);
+
+            return { ...doctor, districtInfo, regioninfo: fetchRegionInfo }; // Region nomini doctorga qo'shamiz
+          })
+        );
+
+        return { ...data?.data, content: content };
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
 
 export const useGetWorkPlaces = (page) => {
   return useQuery({

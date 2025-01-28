@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { TitleSmall } from "../../root/style";
+import { TitleSmall } from "../../../root/style";
 
 import styled from "styled-components";
-import { useLanguage } from "../../context/LanguageContext";
+import { useLanguage } from "../../../context/LanguageContext";
 
 const Container = styled.div`
   position: relative;

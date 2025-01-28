@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const QuickAccessPContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(${({ count }) => (count ? count : 3)}, 1fr);
   width: 100%;
   gap: 20px;
   grid-auto-rows: auto; /* Bu qator balandligini avtomatik ravishda moslashtiradi */
