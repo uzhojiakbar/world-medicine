@@ -27,7 +27,7 @@ const ManagerHome = () => {
       name: translate("Отчеты"),
       icon: <EyeIcon />,
       onclick: () => {
-        nav("analiktika");
+        nav("/reports");
       },
     },
     {
@@ -35,7 +35,7 @@ const ManagerHome = () => {
       name: translate("Администрирование"),
       icon: <SystemIcon />,
       onclick: () => {
-        nav("upravleniya-sistemoy#administration");
+        nav("/database");
         console.log("button clickd");
       },
     },
@@ -88,7 +88,7 @@ const ManagerHome = () => {
         </svg>
       ),
       onclick: () => {
-        nav("upravleniya-sistemoy#administration");
+        nav("pupose-med-agent");
         console.log("button clickd");
       },
     },

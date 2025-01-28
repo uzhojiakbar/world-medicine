@@ -16,16 +16,16 @@ import {
   Wrap,
   Wrapper,
 } from "./style";
-import { Title } from "../../../root/style";
-import { useLanguage } from "../../../context/LanguageContext";
-import Man from "../../../assets/svg/Man";
-import DateRangePicker from "../../../components/Generic/DataRangePicker/DataRangePicker";
-import DatePicker from "../DatePicker/";
-import PrimarySelect from "../../../components/Generic/Select/Select";
-import Button from "../../../components/Generic/Button/Button";
-import IconPlus from "../../../assets/svg/IconPlus";
+import { Title } from "../../root/style";
+import { useLanguage } from "../../context/LanguageContext";
+import Man from "../../assets/svg/Man";
+import DateRangePicker from "../../components/Generic/DataRangePicker/DataRangePicker";
+import DatePicker from "./DatePicker";
+import PrimarySelect from "../../components/Generic/Select/Select";
+import Button from "../../components/Generic/Button/Button";
+import IconPlus from "../../assets/svg/IconPlus";
 
-const CreateDogovorMain = () => {
+const CreateMedAgent = () => {
   const { translate } = useLanguage();
 
   const [activeTab, setActiveTab] = useState("Рецепт");
@@ -117,8 +117,8 @@ const CreateDogovorMain = () => {
                     <Child>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
+                        width="20"
+                        height="20"
                         viewBox="0 0 16 16"
                         fill="none"
                       >
@@ -180,4 +180,4 @@ const CreateDogovorMain = () => {
   );
 };
 
-export default CreateDogovorMain;
+export default CreateMedAgent;

@@ -22,6 +22,7 @@ import MainPage from "../Asadbek/main";
 import ManagerHome from "../pages/manager";
 import Rahmadjon from "../Rahmadjon";
 import CreateDogovorMain from "../pages/manager/createDogovor";
+import CreateMedAgent from "../pages/createMedAgent/";
 
 export const navbarData = () => {
   return [
@@ -415,8 +416,8 @@ export const NavbarDataManager = [
   },
   {
     id: 2,
-    title: "navbar_admin_analiktika",
-    path: "analiktika",
+    title: "База",
+    path: "database",
     element: (
       <MainContainer>
         <AnaliktikaPage />
@@ -429,11 +430,11 @@ export const NavbarDataManager = [
   },
   {
     id: 2,
-    title: "Rahmadjon",
-    path: "Rahmadjon",
+    title: "Отчет",
+    path: "reports",
     element: (
       <MainContainer>
-        <Rahmadjon />
+        <h1>Reports</h1>
       </MainContainer>
     ),
     child: [],
@@ -442,19 +443,47 @@ export const NavbarDataManager = [
     icon: false,
   },
   {
-    id: 3,
-    title: "navbar_admin_upr_sis",
-    path: "upravleniya-sistemoy",
+    id: 2,
+    title: "Цель мед. представителю",
+    path: "pupose-med-agent",
     element: (
       <MainContainer>
-        <SettingsSystemAdmin />
+        <CreateMedAgent />
       </MainContainer>
     ),
     child: [],
-    visible: true,
+    visible: false,
     onlyAdmin: false,
     icon: false,
   },
+  // {
+  //   id: 2,
+  //   title: "Rahmadjon",
+  //   path: "Rahmadjon",
+  //   element: (
+  //     <MainContainer>
+  //       <Rahmadjon />
+  //     </MainContainer>
+  //   ),
+  //   child: [],
+  //   visible: true,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
+  // {
+  //   id: 3,
+  //   title: "navbar_admin_upr_sis",
+  //   path: "upravleniya-sistemoy",
+  //   element: (
+  //     <MainContainer>
+  //       <SettingsSystemAdmin />
+  //     </MainContainer>
+  //   ),
+  //   child: [],
+  //   visible: true,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
   // {
   //   id: 3,
   //   title: "Настройка_условий",
