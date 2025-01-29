@@ -47,4 +47,52 @@ const Main = styled.div`
   border-radius: 27px;
 `;
 
-export { Container, InfoWrapper, Info, TitleWrap, Main };
+const Item = styled.div`
+  display: flex;
+  gap: 7px;
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-self: center;
+
+  padding: 17px 18px;
+  border-radius: 17px;
+  background-color: white;
+
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: rgb(229, 235, 245);
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (max-width: 400px) {
+    padding: 14px 15px;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    gap: 10px;
+  }
+`;
+
+export {
+  Container,
+  InfoWrapper,
+  Info,
+  TitleWrap,
+  Main,
+  Item,
+  IconWrapper,
+  Header,
+};
