@@ -23,6 +23,7 @@ import ManagerHome from "../pages/manager";
 import Rahmadjon from "../Rahmadjon";
 import CreateDogovorMain from "../pages/manager/createDogovor";
 import CreateMedAgent from "../pages/createMedAgent/";
+import ReportsClient from "../pages/manager/reportsClient";
 
 export const navbarData = () => {
   return [
@@ -431,10 +432,10 @@ export const NavbarDataManager = [
   {
     id: 2,
     title: "Отчет",
-    path: "reports",
+    path: "reports-client",
     element: (
       <MainContainer>
-        <h1>Reports</h1>
+        <ReportsClient />
       </MainContainer>
     ),
     child: [],
@@ -456,20 +457,20 @@ export const NavbarDataManager = [
     onlyAdmin: false,
     icon: false,
   },
-  // {
-  //   id: 2,
-  //   title: "Rahmadjon",
-  //   path: "Rahmadjon",
-  //   element: (
-  //     <MainContainer>
-  //       <Rahmadjon />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: true,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
+  {
+    id: 2,
+    title: "Rahmadjon",
+    path: "Rahmadjon",
+    element: (
+      <MainContainer>
+        <Rahmadjon />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
   // {
   //   id: 3,
   //   title: "navbar_admin_upr_sis",
