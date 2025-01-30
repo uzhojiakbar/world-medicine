@@ -415,4 +415,5 @@ export const NavbarDataSuperAdmin = [
   //   icon: false,
   // },
 ];
+
 export const NavbarDataManager = [...RoutingManager];

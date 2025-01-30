@@ -16,7 +16,7 @@ import Table2 from "./Table2Mini";
 
 const dataRet = {};
 
-const ModalPrescription = ({ id = 454, setId = () => {} }) => {
+const ModalPrescription = ({ id = 454, setId = () => { } }) => {
   const handleSave = (value) => {
     console.log("Saved value:", value);
   };
