@@ -140,6 +140,10 @@ const AddMeneger = () => {
         workPlaceId: 1,
         districtId: formData.district,
         birthDate: formData.birthDate,
+        fieldName: "NEUROLOGIST",
+        position: "string",
+        gender: "MALE",
+        role: "CHIEF",
         ...formatPhoneNumberForBackend(formData?.phone),
       };
 

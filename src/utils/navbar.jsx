@@ -123,7 +123,7 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 1,
+    id: 2,
     title: "navbar_admin_analiktika",
     path: "analiktika",
     element: (
@@ -137,7 +137,7 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 2,
+    id: 3,
     title: "navbar_admin_upr_sis",
     path: "upravleniya-sistemoy",
     element: (
@@ -151,7 +151,7 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 3,
+    id: 4,
     title: "Настройка_условий",
     path: "nastroyka-usloviya",
     element: (
@@ -172,7 +172,7 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 5,
+    id: 6,
     title: "Profile",
     path: "profile",
     element: (
@@ -186,7 +186,7 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 6,
+    id: 7,
     title: "Добавить менеджера",
     path: "create-manager",
     element: (
@@ -200,7 +200,7 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 7,
+    id: 8,
     title: "Добавление МП",
     path: "create-med-rep",
     element: (
@@ -214,12 +214,26 @@ export const NavbarDataAdmin = [
     icon: false,
   },
   {
-    id: 8,
+    id: 9,
     title: "Добавление МП",
     path: "create-doctor",
     element: (
       <MainContainer>
         <AddDoctor />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 10,
+    title: "Цель мед. представителю",
+    path: "pupose-med-agent",
+    element: (
+      <MainContainer>
+        <CreateMedAgent />
       </MainContainer>
     ),
     child: [],
