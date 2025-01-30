@@ -110,7 +110,7 @@ export const NavbarBurgerMenu = () => {
 export const NavbarDataAdmin = [
   {
     id: 1,
-    title: "Main Page Admin",
+    title: "Главная",
     path: "/",
     element: (
       <MainContainer>
@@ -118,7 +118,7 @@ export const NavbarDataAdmin = [
       </MainContainer>
     ),
     child: [],
-    visible: false,
+    visible: true,
     onlyAdmin: false,
     icon: false,
   },
