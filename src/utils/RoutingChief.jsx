@@ -149,20 +149,20 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   },
-  {
-    id: 9,
-    title: "Добавление МП",
-    path: "create-doctor",
-    element: (
-      <MainContainer>
-        <AddDoctor />
-      </MainContainer>
-    ),
-    child: [],
-    visible: false,
-    onlyAdmin: false,
-    icon: false,
-  },
+  // {
+  //   id: 9,
+  //   title: "Добавление МП",
+  //   path: "create-doctor",
+  //   element: (
+  //     <MainContainer>
+  //       <AddDoctor />
+  //     </MainContainer>
+  //   ),
+  //   child: [],
+  //   visible: false,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
   {
     id: 10,
     title: "Цель мед. представителю",
@@ -191,21 +191,21 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   },
-  {
-    id: 897,
-    title: "Reports",
-    path: "reports",
-    element: (
-      <MainContainer>
-        {/* <h1>Not Found</h1> */}
-        <AnaliktikaPage />
-      </MainContainer>
-    ),
-    child: [],
-    visible: false,
-    onlyAdmin: false,
-    icon: false,
-  },
+  // {
+  //   id: 897,
+  //   title: "Reports",
+  //   path: "reports",
+  //   element: (
+  //     <MainContainer>
+  //       {/* <h1>Not Found</h1> */}
+  //       <AnaliktikaPage />
+  //     </MainContainer>
+  //   ),
+  //   child: [],
+  //   visible: false,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
   {
     id: 2,
     title: "Отчет",
