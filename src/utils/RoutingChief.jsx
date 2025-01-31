@@ -1,5 +1,7 @@
 import AdminPage from "../rolls/chief/chief";
 import { MainContainer } from "../root/style";
+import Profile from "../pages/profile/admin";
+import BaseChief from "../rolls/chief/base";
 
 export const RoutingChief = [
   {
@@ -15,7 +17,35 @@ export const RoutingChief = [
     visible: true,
     onlyAdmin: false,
     icon: false,
+  }, // ! API
+  {
+    id: 2,
+    title: "База",
+    path: "database",
+    element: (
+      <MainContainer>
+        <BaseChief />
+      </MainContainer>
+    ),
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
   },
+  {
+    id: 6,
+    title: "Profile",
+    path: "profile",
+    element: (
+      <MainContainer>
+        <Profile />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  }, // * READY
   // {
   //   id: 2,
   //   title: "navbar_admin_analiktika",
