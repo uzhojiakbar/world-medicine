@@ -1,6 +1,7 @@
 import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
 import CreateMedAgent from "../pages/createMedAgent";
 import ManagerHome from "../pages/manager";
+import AddDoctor from "../pages/manager/addDoctor/AddDoctor";
 import CreateDogovorMain from "../pages/manager/createDogovor";
 import PurposeMedAgent from "../pages/manager/PurposeMedAgent";
 import ReportsClient from "../pages/manager/reportsClient";
@@ -99,7 +100,6 @@ export const RoutingManager = [
     path: "create-contract",
     element: (
       <MainContainer>
-        {/* <AddMeneger /> */}
         <CreateDogovorMain />
       </MainContainer>
     ),
@@ -108,4 +108,19 @@ export const RoutingManager = [
     onlyAdmin: false,
     icon: false,
   },
+  {
+    id: 7,
+    title: "Добавить врача",
+    path: "add-doctor",
+    element: (
+      <MainContainer>
+        <AddDoctor />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+
 ];
