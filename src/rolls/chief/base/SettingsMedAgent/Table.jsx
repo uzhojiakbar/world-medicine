@@ -19,7 +19,6 @@ const Container = styled.div`
 `;
 
 const Table = ({ title = "", data = [], isLoading = false }) => {
-  const [openModalId, setOpenModalId] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [districtInfo, setDistrictInfo] = useState({});
   const { translate, language } = useLanguage();
@@ -28,10 +27,6 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const [activeModal, setActiveModal] = useState(null);
-
-  const openModal = (modalId) => {
-    setActiveModal(modalId);
-  };
 
   const closeModal = () => {
     setActiveModal(null);
@@ -93,10 +88,8 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
               <tr>
                 <th>№</th>
                 <th className="idfixed">{translate("Fullname_doctor")}</th>
-                <th>{translate("Зона_отвественности")}</th>
                 <th>{translate("Дата_назначения")}</th>
-                <th colSpan={2}>{translate("Выполнение_KPI")}</th>
-                <th>{translate("Открыть")}</th>
+                <th>{translate("Редактировать")}</th>
               </tr>
             </thead>
             <tbody>
@@ -108,7 +101,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                       {row?.lastName ?? " "} {row?.firstName ?? ""}{" "}
                       {row?.middleName ?? ""}
                     </td>
-                    <td>
+                    {/* <td>
                       {language === "en"
                         ? districtInfo[row.districtId]?.name
                         : ""}
@@ -118,14 +111,14 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                       {language === "uz"
                         ? districtInfo[row.districtId]?.nameUzLatin
                         : ""}
-                    </td>
+                    </td> */}
                     <td>
                       {translate("Создан")}{" "}
                       {DatFormatter(row?.dateOfBirth || "2025-05-25")}
                     </td>
-                    <td colSpan={2}>
+                    {/* <td colSpan={2}>
                       <div className="progressKPI">{row?.progress}</div>
-                    </td>
+                    </td> */}
                     <td>
                       <button
                         onClick={() => setActiveModal(true)}

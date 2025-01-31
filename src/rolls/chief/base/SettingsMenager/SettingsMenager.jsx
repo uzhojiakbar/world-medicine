@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
-import { Title, TitleSmall } from "../../../../root/style";
+import { MainWrapperGap, Title, TitleSmall } from "../../../../root/style";
 import Button from "../../../../components/Generic/Button/Button";
 import IconPlus from "../../../../assets/svg/IconPlus";
 import Input from "../../../../components/Generic/Input/Input";
@@ -32,7 +32,7 @@ const SettingsMenager = ({ id }) => {
   });
 
   return (
-    <div id={id || "administration"}>
+    <MainWrapperGap id={id || "administration"}>
       <Title>
         <span>{translate("Управление_менеджерами")}</span>
         <Button onClick={() => nav("../create-manager")} icon={<IconPlus />}>
@@ -71,8 +71,8 @@ const SettingsMenager = ({ id }) => {
         </div>
       </FilterCardsWrapper>
 
-      <Table data={Managers || []} isLoading={isLoading} />
-    </div>
+      <Table title="Менеджеры" data={Managers || []} isLoading={isLoading} />
+    </MainWrapperGap>
   );
 };
 
