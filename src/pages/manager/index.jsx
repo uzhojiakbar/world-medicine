@@ -27,7 +27,7 @@ const ManagerHome = () => {
       name: translate("Отчеты"),
       icon: <EyeIcon />,
       onclick: () => {
-        nav("/reports");
+        nav("/reports-client");
       },
     },
     {
@@ -88,7 +88,7 @@ const ManagerHome = () => {
         </svg>
       ),
       onclick: () => {
-        nav("pupose-med-agent");
+        nav("purpose-med-agent");
         console.log("button clickd");
       },
     },

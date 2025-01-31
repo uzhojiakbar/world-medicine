@@ -2,6 +2,7 @@ import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
 import CreateMedAgent from "../pages/createMedAgent";
 import ManagerHome from "../pages/manager";
 import CreateDogovorMain from "../pages/manager/createDogovor";
+import PurposeMedAgent from "../pages/manager/PurposeMedAgent";
 import ReportsClient from "../pages/manager/reportsClient";
 import Profile from "../pages/profile/admin";
 import Rahmadjon from "../Rahmadjon";
@@ -53,10 +54,10 @@ export const RoutingManager = [
   {
     id: 2,
     title: "Цель мед. представителю",
-    path: "pupose-med-agent",
+    path: "purpose-med-agent",
     element: (
       <MainContainer>
-        <CreateMedAgent />
+        <PurposeMedAgent />
       </MainContainer>
     ),
     child: [],
