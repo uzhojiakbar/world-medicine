@@ -27,6 +27,16 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
+  const [activeModal, setActiveModal] = useState(null);
+
+  const openModal = (modalId) => {
+    setActiveModal(modalId);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+  };
+
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -72,7 +82,8 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
         </div>
       )}
 
-      <ModalManager id={openModalId} setId={setOpenModalId} />
+      <ModalManager isOpen={activeModal} onClose={closeModal} />
+      {/* {activeModal === 5 && <Modal5  />} */}
 
       <WhiteWrapper>
         <TitleSmall>{title}</TitleSmall>
@@ -116,7 +127,10 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                       <div className="progressKPI">{row?.progress}</div>
                     </td>
                     <td>
-                      <button className="Viewbutton">
+                      <button
+                        onClick={() => setActiveModal(true)}
+                        className="Viewbutton"
+                      >
                         <svg
                           width="24"
                           height="24"
