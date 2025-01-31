@@ -370,7 +370,9 @@ export const useGetNewContract = (page) => {
     queryKey: ["newContract", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
     queryFn: async () => {
       try {
-        const data = await Instance.get(`v1/db/contracts?page=${page}&size=10`);
+        const data = await Instance.get(
+          `v1/admin/contracts/pending-review?page=${page}&size=10`
+        );
 
         const content = await Promise.all(
           data?.data?.content.map(async (doctor) => {
