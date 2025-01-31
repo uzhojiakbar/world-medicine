@@ -20,7 +20,7 @@ const ChiefAnaliktika = () => {
       name: translate("Администрирование"),
       icon: <SystemIcon />,
       onclick: () => {
-        nav("upravleniya-sistemoy#administration");
+        nav("database#administration");
         console.log("button clickd");
       },
     },

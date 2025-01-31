@@ -7,6 +7,7 @@ import NewConnect from "../../../../pages/admin/settingSystemAdmin/NewConnect";
 import NewContract from "../../../../pages/NewContract";
 import { useLanguage } from "../../../../context/LanguageContext";
 import SettingsMenager from "../SettingsMenager/SettingsMenager";
+import SettingsMedAgent from "../SettingsMedAgent/SettingsMedAgent";
 // import SettingsMenager from "../../../../pages/SettingsMenager/SettingsMenager";
 
 const BaseControl = () => {
@@ -52,6 +53,7 @@ const BaseControl = () => {
         loading={false}
       />
       <SettingsMenager />
+      <SettingsMedAgent />
     </Wrapper>
   );
 };
