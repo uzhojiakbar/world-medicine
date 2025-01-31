@@ -24,12 +24,15 @@ import DatePicker from "../DatePicker/";
 import PrimarySelect from "../../../components/Generic/Select/Select";
 import Button from "../../../components/Generic/Button/Button";
 import IconPlus from "../../../assets/svg/IconPlus";
+import ModalSuccessful from "./ModalSuccessful";
 
 const CreateDogovorMain = () => {
   const { translate } = useLanguage();
 
   const [activeTab, setActiveTab] = useState("Рецепт");
   const [value, setValue] = useState(0);
+
+  const [isOpen, setOpen] = useState(false)
   const titles = [
     translate("Рецепт"),
     translate("СУ"),
@@ -56,7 +59,7 @@ const CreateDogovorMain = () => {
     <Container>
       <Wrapper>
         <Title>{translate("Создание договора")}</Title>
-
+        <ModalSuccessful setOpen={setOpen} isOpen={isOpen} />
         <ButtonWrapper>
           {titles.map((tab) => (
             <Item
@@ -148,7 +151,7 @@ const CreateDogovorMain = () => {
                     </Child>
                     <Child>
                       <span>{v.number}</span>
-                      <EditIconCon onClick={() => {}}>
+                      <EditIconCon onClick={() => { }}>
                         <svg
                           width="16"
                           height="16"
@@ -174,7 +177,9 @@ const CreateDogovorMain = () => {
             </Wrap>
           </InfoContainer>
         </InfoWrapper>
-        <Button icon={<IconPlus />}>{translate("Создать договор")}</Button>
+        <Button icon={<IconPlus />} onClick={() => {
+          setOpen(true)
+        }}>{translate("Создать договор")}</Button>
       </Wrapper>
     </Container>
   );
