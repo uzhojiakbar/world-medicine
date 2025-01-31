@@ -20,6 +20,13 @@ export const transformRegionsForSelect = (regions = [], lang = "eng") => {
     })),
   }));
 };
+export const transformWorkplacesForSelect = (wrkplc = [], lang = "eng") => {
+  return wrkplc.map((region) => ({
+    value: region?.name,
+    label: region.name,
+    id: region.id,
+  }));
+};
 
 // {language === "en" ? row?.districtName?.name : ""}
 // {language === "ru" ? row?.districtName?.nameRussian : ""}
