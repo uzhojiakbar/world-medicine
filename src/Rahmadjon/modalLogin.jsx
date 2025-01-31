@@ -92,78 +92,78 @@ const Button = styled.button`
   }
 `;
 
-
-
 const ModalLogin = () => {
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const [formData, setFormData] = useState({
-        login: "",
-        email: "",
-        password: "",
-    });
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    login: "",
+    email: "",
+    password: "",
+  });
 
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible);
-    };
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Submitted Form Data:", formData);
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted Form Data:", formData);
+  };
 
-   
-    return (
-        <form onSubmit={handleSubmit}>
-             
-            <Container>
-                <InputContainer>
-                    <Label>Логин</Label>
-                    <Input
-                        type="text"
-                        name="login"
-                        value={formData.login}
-                        onChange={handleChange}
-                        placeholder="Введите логин"
-                    />
-                </InputContainer>
+  return (
+    <form onSubmit={handleSubmit}>
+      <Container>
+        <InputContainer>
+          <Label>Логин</Label>
+          <Input
+            type="text"
+            name="login"
+            value={formData.login}
+            onChange={handleChange}
+            placeholder="Введите логин"
+          />
+        </InputContainer>
 
-                <InputContainer>
-                    <Label>Почта</Label>
-                    <Input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Введите почту"
-                    />
-                </InputContainer>
+        <InputContainer>
+          <Label>Почта</Label>
+          <Input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Введите почту"
+          />
+        </InputContainer>
 
-                <InputContainer>
-                    <Label>Пароль</Label>
-                    <Input
-                        type={passwordVisible ? "text" : "password"}
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder="Введите пароль"
-                    />
-                    <PasswordToggle onClick={togglePasswordVisibility}>
-                        {passwordVisible ? <i class="fa-solid fa-eye"></i> :<i className="fa-solid fa-eye-slash"></i>}
-                    </PasswordToggle>
-                </InputContainer>
+        <InputContainer>
+          <Label>Пароль</Label>
+          <Input
+            type={passwordVisible ? "text" : "password"}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Введите пароль"
+          />
+          <PasswordToggle onClick={togglePasswordVisibility}>
+            {passwordVisible ? (
+              <i class="fa-solid fa-eye"></i>
+            ) : (
+              <i className="fa-solid fa-eye-slash"></i>
+            )}
+          </PasswordToggle>
+        </InputContainer>
 
-                <InputContainer>
-                    <Label>Сбросить пароль</Label>
-                    <Button type="submit">Получить новый пароль</Button>
-                </InputContainer>
-            </Container>
-        </form>
-    );
+        <InputContainer>
+          <Label>Сбросить пароль</Label>
+          <Button type="submit">Получить новый пароль</Button>
+        </InputContainer>
+      </Container>
+    </form>
+  );
 };
 
 export default ModalLogin;
