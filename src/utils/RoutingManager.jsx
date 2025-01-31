@@ -79,40 +79,6 @@ export const RoutingManager = [
     onlyAdmin: false,
     icon: false,
   },
-  // {
-  //   id: 3,
-  //   title: "navbar_admin_upr_sis",
-  //   path: "upravleniya-sistemoy",
-  //   element: (
-  //     <MainContainer>
-  //       <SettingsSystemAdmin />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: true,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
-  // {
-  //   id: 3,
-  //   title: "Настройка_условий",
-  //   path: "nastroyka-usloviya",
-  //   element: (
-  //     <MainContainer>
-  //       <SettingsCondition />
-  //     </MainContainer>
-  //   ),
-  //   child: (
-  //     <>
-  //       <Route path="" element={<Arxiv />} />
-  //       <Route path="Preparad" element={<Preparat />} />
-  //       <Route path="Mestrabotaya" element={<MestaRabotaManager />} />
-  //     </>
-  //   ),
-  //   visible: true,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
   {
     id: 5,
     title: "Profile",
@@ -142,75 +108,4 @@ export const RoutingManager = [
     onlyAdmin: false,
     icon: false,
   },
-  // {
-  //   id: 6,
-  //   title: "Добавить менеджера",
-  //   path: "create-manager",
-  //   element: (
-  //     <MainContainer>
-  //       <AddMeneger />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
-  // {
-  //   id: 7,
-  //   title: "Добавление МП",
-  //   path: "create-med-rep",
-  //   element: (
-  //     <MainContainer>
-  //       <AddPm />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
-  // {
-  //   id: 8,
-  //   title: "Добавление МП",
-  //   path: "create-doctor",
-  //   element: (
-  //     <MainContainer>
-  //       <AddDoctor />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
-  // {
-  //   id: 999,
-  //   title: "NOT FOUND PAGE",
-  //   path: "*",
-  //   element: (
-  //     <MainContainer>
-  //       <h1>Not Found</h1>
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
-  // {
-  //   id: 897,
-  //   title: "Reports",
-  //   path: "reports",
-  //   element: (
-  //     <MainContainer>
-  //       {/* <h1>Not Found</h1> */}
-  //       <AnaliktikaPage />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
 ];

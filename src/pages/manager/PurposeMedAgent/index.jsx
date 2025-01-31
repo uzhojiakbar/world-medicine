@@ -24,6 +24,7 @@ import PrimarySelect from "../../../components/Generic/Select/Select";
 import Button from "../../../components/Generic/Button/Button";
 import IconPlus from "../../../assets/svg/IconPlus";
 import { Tumanlar } from "../../../mock/data";
+import ModalSuccessful from "../createDogovor/ModalSuccessful";
 
 const PurposeMedAgent = () => {
   const { translate } = useLanguage();
@@ -38,7 +39,7 @@ const PurposeMedAgent = () => {
     { name: "Амлипин", number: "20" },
   ])
 
-
+  const [isOpen, setOpen] = useState(false)
 
 
   const handleEdit = (i) => {
@@ -47,6 +48,7 @@ const PurposeMedAgent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setOpen(true)
 
     // Backendga POST so'rovi yuborish
     // fetch('https://your-backend-api.com/submitData', {
@@ -262,7 +264,8 @@ const PurposeMedAgent = () => {
             </InfoContainer>
           </InfoContainer>
         </InfoWrapper>
-        <Button icon={<IconPlus />} onClick={handleSubmit}>{translate("Создать договор")}</Button>
+        <ModalSuccessful isOpen={isOpen} setOpen={setOpen} />
+        <Button icon={<IconPlus />} onClick={handleSubmit}>{translate("Назначить задачу")}</Button>
       </Wrapper >
     </Container >
   );
