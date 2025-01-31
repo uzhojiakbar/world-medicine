@@ -3,6 +3,7 @@ import { MainContainer } from "../root/style";
 import Profile from "../pages/profile/admin";
 import BaseChief from "../rolls/chief/base";
 import SettingsSystemAdmin from "../pages/admin/settingSystemAdmin/SettingsSystemAdmin";
+import AddMeneger from "../pages/addManager/AddManager";
 
 export const RoutingChief = [
   {
@@ -47,6 +48,20 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   }, // * READY
+  {
+    id: 7,
+    title: "Добавить менеджера",
+    path: "create-manager",
+    element: (
+      <MainContainer>
+        <AddMeneger />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
   // {
   //   id: 2,
   //   title: "navbar_admin_analiktika",
@@ -110,20 +125,7 @@ export const RoutingChief = [
   //   onlyAdmin: false,
   //   icon: false,
   // },
-  // {
-  //   id: 7,
-  //   title: "Добавить менеджера",
-  //   path: "create-manager",
-  //   element: (
-  //     <MainContainer>
-  //       <AddMeneger />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
+
   // {
   //   id: 8,
   //   title: "Добавление МП",
