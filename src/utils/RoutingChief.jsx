@@ -2,6 +2,7 @@ import AdminPage from "../rolls/chief/chief";
 import { MainContainer } from "../root/style";
 import Profile from "../pages/profile/admin";
 import BaseChief from "../rolls/chief/base";
+import SettingsSystemAdmin from "../pages/admin/settingSystemAdmin/SettingsSystemAdmin";
 
 export const RoutingChief = [
   {
