@@ -50,7 +50,7 @@ const NewConnect = ({ title = "" }) => {
     try {
       setMainLoading(true);
       const response = await Instance.patch(
-        `http://209.38.109.22:8080/api/v1/admin/${userId}/enable`
+        `http://209.38.109.22:8080/api/v1/admin/${userId}/user-enable`
       );
       // Invalidate and refetch the query to get updated data
       queryClient.invalidateQueries(["newConnecting", currentPage]);
@@ -68,7 +68,7 @@ const NewConnect = ({ title = "" }) => {
     try {
       setMainLoading(true);
       const response = await Instance.patch(
-        `http://209.38.109.22:8080/api/v1/admin/${userId}/decline`
+        `http://209.38.109.22:8080/api/v1/admin/${userId}/user-decline`
       );
       queryClient.invalidateQueries(["newConnecting", currentPage]);
 
