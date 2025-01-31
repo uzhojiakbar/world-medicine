@@ -138,7 +138,7 @@ export const RoutingChief = [
   {
     id: 8,
     title: "Добавление МП",
-    path: "create-med-rep",
+    path: "create-med-agent",
     element: (
       <MainContainer>
         <AddPm />
