@@ -475,7 +475,22 @@ export const useEnableDoctor = () => {
 };
 
 // NOTE Get managers
-
+export const useGetWorkplaces = () => {
+  return useQuery({
+    queryKey: ["getWorkplacec"],
+    queryFn: async () => {
+      try {
+        const { data } = await Instance.get("/v1/auth/workplaces", {});
+        return data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+// NOTE Get managers
 export const useGetManagers = ({
   creatorId,
   countryId,
@@ -626,6 +641,25 @@ export const useRegisterManager = () => {
       const response = await Instance.post(
         "/v1/user/register-manager",
         managerData?.requestData
+      );
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      variables.onSuccess();
+    },
+    onError: (error, variables) => {
+      variables.onError();
+    },
+  });
+};
+// NOTE ADD MedAgent
+export const useRegisterMedAgent = () => {
+  return useMutation({
+    mutationFn: async (medagentdata) => {
+      console.log("medagentdata", medagentdata);
+      const response = await Instance.post(
+        "/v1/user/register-medagent",
+        medagentdata?.requestData
       );
       return response.data;
     },

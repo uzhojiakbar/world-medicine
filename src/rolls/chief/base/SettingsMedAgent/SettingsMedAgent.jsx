@@ -35,7 +35,7 @@ const SettingsMedAgent = ({ id }) => {
     <MainWrapperGap id={id || "administration"}>
       <Title>
         <span>{translate("Мед_представители")}</span>
-        <Button onClick={() => nav("../create-manager")} icon={<IconPlus />}>
+        <Button onClick={() => nav("../create-med-agent")} icon={<IconPlus />}>
           {translate("Добавить_мед_представителя")}
         </Button>
       </Title>
