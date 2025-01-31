@@ -475,16 +475,38 @@ export const useEnableDoctor = () => {
 };
 
 // NOTE Get managers
-export const useGetManagers = () => {
+
+export const useGetManagers = ({
+  creatorId,
+  countryId,
+  regionId,
+  workplaceId,
+  nameQuery,
+}) => {
   return useQuery({
-    queryKey: ["GetManagers"],
+    queryKey: [
+      "GetManagers",
+      creatorId,
+      countryId,
+      regionId,
+      workplaceId,
+      nameQuery,
+    ],
     queryFn: async () => {
       try {
-        const data = await Instance.get(`/v1/user/managers`);
-        return data?.data;
+        const { data } = await Instance.get("/v1/user/managers", {
+          params: {
+            creatorId,
+            countryId,
+            regionId,
+            workplaceId,
+            nameQuery,
+          },
+        });
+        return data;
       } catch (error) {
         console.error("Error fetching data", error);
-        throw error; // REVIEW xatolikni qaytarish
+        throw error;
       }
     },
     staleTime: 1000 * 60 * 10,
