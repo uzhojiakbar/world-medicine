@@ -117,6 +117,13 @@ export const TitleSmall = styled.div`
     color: #0025a2;
   }
 `;
+
+export const MainWrapperGap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ gap }) => (gap ? gap : "20px")};
+`;
+
 export const MiniTitleSmall = styled.div`
   font-size: 18px;
   font-weight: 700;

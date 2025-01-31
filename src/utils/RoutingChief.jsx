@@ -206,6 +206,20 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   },
+  {
+    id: 2,
+    title: "Отчет",
+    path: "reports-client",
+    element: (
+      <MainContainer>
+        <ReportsClient />
+      </MainContainer>
+    ),
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
 
   // // {
   // //   id: 4,

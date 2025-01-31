@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
-import { Title, TitleSmall } from "../../../../root/style";
+import { MainWrapperGap, Title, TitleSmall } from "../../../../root/style";
 import Button from "../../../../components/Generic/Button/Button";
 import IconPlus from "../../../../assets/svg/IconPlus";
 import Input from "../../../../components/Generic/Input/Input";
@@ -9,7 +9,7 @@ import PrimarySelect from "../../../../components/Generic/Select/Select";
 import { Viloyatlar, Tumanlar, MestaRabot } from "../../../../mock/data";
 import Table from "./Table";
 import { useLanguage } from "../../../../context/LanguageContext";
-import { useGetManagers } from "../../../../utils/server/server";
+import { useGetMedAgents } from "../../../../utils/server/server";
 import { FilterCardsWrapper } from "../../../../pages/admin/settingSystemAdmin/style";
 
 const SettingsMedAgent = ({ id }) => {
@@ -23,7 +23,7 @@ const SettingsMedAgent = ({ id }) => {
   const [checked, setChecked] = useState(false);
 
   // Filterlar asosida ma'lumot olish
-  const { data: Managers, isLoading } = useGetManagers({
+  const { data: MedAgents, isLoading } = useGetMedAgents({
     creatorId: checked ? "currentUserId" : null, // Agarda checkbox bosilgan bo'lsa, foydalanuvchi ID sini qo'shish
     countryId: null, // Agar kerak bo'lsa, qo'shish
     regionId: selectedViloyat || null,
@@ -32,7 +32,7 @@ const SettingsMedAgent = ({ id }) => {
   });
 
   return (
-    <div id={id || "administration"}>
+    <MainWrapperGap id={id || "administration"}>
       <Title>
         <span>{translate("Мед_представители")}</span>
         <Button onClick={() => nav("../create-manager")} icon={<IconPlus />}>
@@ -71,8 +71,8 @@ const SettingsMedAgent = ({ id }) => {
         </div>
       </FilterCardsWrapper>
 
-      <Table data={Managers || []} isLoading={isLoading} />
-    </div>
+      <Table title="Врачи" data={MedAgents || []} isLoading={isLoading} />
+    </MainWrapperGap>
   );
 };
 

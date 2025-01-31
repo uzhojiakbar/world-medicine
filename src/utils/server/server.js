@@ -512,6 +512,42 @@ export const useGetManagers = ({
     staleTime: 1000 * 60 * 10,
   });
 };
+export const useGetMedAgents = ({
+  creatorId,
+  countryId,
+  regionId,
+  workplaceId,
+  nameQuery,
+}) => {
+  return useQuery({
+    queryKey: [
+      "GetMedAgents",
+      creatorId,
+      countryId,
+      regionId,
+      workplaceId,
+      nameQuery,
+    ],
+    queryFn: async () => {
+      try {
+        const { data } = await Instance.get("/v1/user/medagents", {
+          params: {
+            creatorId,
+            countryId,
+            regionId,
+            workplaceId,
+            nameQuery,
+          },
+        });
+        return data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
 
 // NOTE GET DISTRICTS BY REGION ID
 export const useGetDistrictsByRegionId = () => {
