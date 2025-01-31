@@ -80,6 +80,29 @@ export const Title = styled.div`
   }
 `;
 
+export const TitleSpan = styled.span`
+  font-size: ${({ size }) => (size ? size : "36px")};
+  font-weight: 800;
+
+  font-family: "Vela Sans GX", sans-serif;
+
+  ${media.mobileL} {
+    font-size: 28px;
+  }
+`;
+export const InformationTitleSpan = styled.span`
+  font-size: ${({ size }) => (size ? size : "18px")};
+
+  font-weight: 800;
+  color: #7c7c7e;
+
+  font-family: "Vela Sans GX", sans-serif;
+
+  ${media.mobileL} {
+    font-size: 28px;
+  }
+`;
+
 export const TitleSmall = styled.div`
   font-size: ${({ size }) => (size ? size : "24px")};
   font-weight: 700;
