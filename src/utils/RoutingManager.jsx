@@ -1,4 +1,4 @@
-import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
+import ManagerBase from "../rolls/manager/base/ManagerBase";
 import ManagerHome from "../rolls/manager";
 import AddDoctor from "../rolls/manager/addDoctor/AddDoctor";
 import CreateDogovorMain from "../rolls/manager/createDogovor";
@@ -29,7 +29,7 @@ export const RoutingManager = [
     path: "database",
     element: (
       <MainContainer>
-        <AnaliktikaPage />
+        <ManagerBase />
       </MainContainer>
     ),
     child: [],
