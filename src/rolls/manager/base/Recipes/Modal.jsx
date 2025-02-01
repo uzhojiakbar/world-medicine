@@ -13,14 +13,8 @@ import { useLanguage } from "../../../../context/LanguageContext";
 import CalendarIcon from "../../../../assets/svg/CalendarIcon";
 import Table2 from "./Table2Mini";
 
-const dataRet = {};
 
 const ModalPrescription = ({ id = 454, setId = () => { } }) => {
-  const handleSave = (value) => {
-    console.log("Saved value:", value);
-  };
-
-  const user = dataRet;
 
   const { translate } = useLanguage();
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import PenIcon from "../../../assets/svg/penIcon";
 import { Input } from "antd";
-import UsloviyaModal from "./Modal";
+import UsloviyaModal from "./Modal/Modal";
 
 const Wrapper = styled.div`
   display: flex;
