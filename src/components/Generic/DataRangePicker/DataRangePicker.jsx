@@ -2,57 +2,46 @@ import React, { useState } from "react";
 import { DateContainer, DisplayText, StyledDatePicker } from "./style";
 import dayjs from "dayjs";
 import CalendarIcon from "../../../assets/svg/CalendarIcon";
-import { useLanguage } from "../../../context/LanguageContext";
 
-// icon = <CalendarIcon />,
-// suffixIcon={icon} // Custom ikonka
-
-const DateRangePicker = ({ icon = <CalendarIcon />, bgColor }) => {
+const DateRangePicker = ({
+  icon = <CalendarIcon />,
+  bgColor,
+  onDateChange = () => {},
+}) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlarini boshqarish
-
-  const { translate } = useLanguage();
+  const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlari
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
-    setOpenPicker(null); // Boshlanish sanasi tanlangandan keyin kalendar yopiladi
+    onDateChange({ startDate: date, endDate }); // Ikkita sanani qaytarish
+    setOpenPicker(null);
   };
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
-    setOpenPicker(null); // Tugash sanasi tanlangandan so'ng kalendar yopiladi
+    onDateChange({ startDate, endDate: date }); // Ikkita sanani qaytarish
+    setOpenPicker(null);
   };
 
-  // Default ko'rinish uchun qisqa formatlangan sanalar yoki ochroq matn
-  const formattedStartDate = startDate ? (
-    dayjs(startDate).format("DD.MM.YY")
-  ) : openPicker === "start" ? (
-    "" // Start date ochilganda matn bo'sh bo'ladi
-  ) : (
-    <span className="placeholder">{translate("Дата_начала")}</span>
-  );
+  const formattedStartDate = startDate
+    ? dayjs(startDate).format("YYYY-DD-MM")
+    : "Дата начала";
 
-  const formattedEndDate = endDate ? (
-    dayjs(endDate).format("DD.MM.YY")
-  ) : openPicker === "end" ? (
-    "" // End date ochilganda matn bo'sh bo'ladi
-  ) : (
-    <span className="placeholder">{translate("Дата_окончания")}</span>
-  );
+  const formattedEndDate = endDate
+    ? dayjs(endDate).format("YYYY-DD-MM")
+    : "Дата окончания";
 
   return (
     <DateContainer bgColor={bgColor}>
-      {/* Default holatda ko'rinish: "С {startDate} по {endDate}" */}
-
       {!openPicker ? (
         <DisplayText bgColor={bgColor}>
           <div>
-            <span> {translate("С")} </span>
+            <span> С </span>
             <span onClick={() => setOpenPicker("start")}>
               {formattedStartDate}
             </span>
-            <span> {translate("по")} </span>
+            <span> по </span>
             <span onClick={() => setOpenPicker("end")}>{formattedEndDate}</span>
           </div>
           <div onClick={() => setOpenPicker("start")}>{icon}</div>
@@ -61,28 +50,25 @@ const DateRangePicker = ({ icon = <CalendarIcon />, bgColor }) => {
         ""
       )}
 
-      {/* Start Date Picker */}
       {openPicker === "start" && (
         <StyledDatePicker
           open
           value={startDate}
           onChange={handleStartDateChange}
           onOpenChange={(open) => !open && setOpenPicker(null)}
-          format="DD.MM.YYYY"
-          placeholder={translate("Дата_начала")}
-          bgColor={bgColor}
+          format="YYYY-DD-MM"
+          placeholder="Дата начала"
         />
       )}
 
-      {/* End Date Picker */}
       {openPicker === "end" && (
         <StyledDatePicker
           open
           value={endDate}
           onChange={handleEndDateChange}
           onOpenChange={(open) => !open && setOpenPicker(null)}
-          format="DD.MM.YYYY"
-          placeholder={translate("Дата_окончания")}
+          format="YYYY-DD-MM."
+          placeholder="Дата окончания"
         />
       )}
     </DateContainer>

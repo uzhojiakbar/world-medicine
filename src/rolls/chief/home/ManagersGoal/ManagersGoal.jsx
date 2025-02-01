@@ -15,21 +15,23 @@ import { transformRegionsForSelect } from "../../../../utils/transformRegionsFor
 import { useLanguage } from "../../../../context/LanguageContext";
 import EditableSelect from "../../../../components/Generic/EditableSelect/EditableSelect";
 import Man from "../../../../assets/svg/Man";
+import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 
 const ManagersGoal = () => {
   const [region, setRegion] = useState(null);
+  const [data, setData] = useState(null);
   const [specialist, setSpecialist] = useState({
     value: "",
     label: "",
   });
 
   const { data: Regions, isLoading } = useGetRegions();
-  const { translate, language } = useLanguage();
-  const regionsTranslate = transformRegionsForSelect(Regions, language);
-
   const { data: managers } = useGetManagers({
     regionId: region || null,
   });
+
+  const { translate, language } = useLanguage();
+  const regionsTranslate = transformRegionsForSelect(Regions, language);
 
   const managerOptions = managers
     ? managers.map((manager) => ({
@@ -76,21 +78,23 @@ const ManagersGoal = () => {
               <EditableSelect
                 options={managerOptions}
                 initialValue={specialist}
-                placeholder={translate("Выберите менеджера")}
+                placeholder={translate("Выберите_менеджера")}
                 onValueChange={(value) => setSpecialist(value)}
                 isEditable={false}
-                def={specialist.label || translate("Выберите менеджера")}
+                def={specialist.label || translate("Выберите_менеджера")}
                 disabled={!region}
               />
             </SectionInner>
 
             <DirectionFlexGap>
               <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
-              <PrimarySelect
-                def={translate("Выберите_регион")}
-                options={regionsTranslate}
-                onValueChange={(e) => handleChangeRegion(e)}
-                onlyOption={1}
+
+              <DateRangePicker
+                onDateChange={({ startDate, endDate }) => {
+                  console.log("Boshlanish sanasi:", startDate);
+                  console.log("Tugash sanasi:", endDate);
+                }}
+                bgColor={"white"}
               />
             </DirectionFlexGap>
           </SectionOuter>
