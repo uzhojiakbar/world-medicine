@@ -26,6 +26,7 @@ import CreateDogovorMain from "../pages/manager/createDogovor";
 import CreateMedAgent from "../pages/createMedAgent/";
 import ReportsClient from "../pages/manager/reportsClient";
 import { RoutingManager } from "./RoutingManager";
+import ManagersGoal from "../rolls/chief/home/ManagersGoal/ManagersGoal";
 
 export const RoutingChief = [
   {
@@ -77,6 +78,20 @@ export const RoutingChief = [
     element: (
       <MainContainer>
         <AddMeneger />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },
+  {
+    id: 8,
+    title: "Цель менеджеру",
+    path: "managers-goal",
+    element: (
+      <MainContainer>
+        <ManagersGoal />
       </MainContainer>
     ),
     child: [],
