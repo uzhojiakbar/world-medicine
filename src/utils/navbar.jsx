@@ -12,18 +12,7 @@ import { MainContainer } from "../root/style";
 import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
 import SettingsCondition from "../pages/setingsCondition";
 import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
-import AddPreporad from "../pages/setingsCondition/Predoji";
-import Preparat from "../pages/setingsCondition/Preprat";
-import AddPm from "../pages/addPm/AddPm";
-import AddDoctor from "../pages/addDoctor/AddDoctor";
-import MestaRabota from "../pages/setingsCondition/MestaRabota";
-import MestaRabotaManager from "../pages/setingsCondition/MestaRabota/manager/manager";
-import MainPage from "../Asadbek/main";
-import ManagerHome from "../pages/manager";
-import Rahmadjon from "../Rahmadjon";
-import CreateDogovorMain from "../pages/manager/createDogovor";
-import CreateMedAgent from "../pages/createMedAgent/";
-import ReportsClient from "../pages/manager/reportsClient";
+
 import { RoutingManager } from "./RoutingManager";
 import { RoutingChief } from "./RoutingChief";
 

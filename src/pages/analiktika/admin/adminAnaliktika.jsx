@@ -17,7 +17,7 @@ import SystemIcon from "../../../assets/svg/SystemIcon";
 import BDIcon from "../../../assets/svg/BDIcon";
 import { useNavigate } from "react-router-dom";
 import { useGetDrugs } from "../../../utils/server/server";
-import AnalitikaManagerPage from "../../manager/analiktika";
+import AnalitikaManagerPage from "../../../rolls/manager/analiktika";
 
 const AdminAnaliktika = () => {
   const [selectedViloyat, setSelectedViloyat] = useState("");

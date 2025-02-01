@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { css } from "@emotion/react";
 import { MiniTitleSmall } from "../../../../../root/style.js";
 import { useLanguage } from "../../../../../context/LanguageContext.jsx";
 import { FiltrWrapper } from "../Reports/style.js";
-import { Form } from "../../../../../pages/manager/analiktika/style.js";
+import { Form } from "../../../../manager/analiktika/style.js";
 import Input2 from "../../../../../components/Generic/Input/Input2.jsx";
 import PrimarySelect from "../../../../../components/Generic/Select/Select.jsx";
 import DateRangePicker from "../../../../../components/Generic/DataRangePicker/DataRangePicker.jsx";
