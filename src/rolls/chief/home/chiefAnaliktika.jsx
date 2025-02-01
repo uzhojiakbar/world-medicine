@@ -48,7 +48,7 @@ const ChiefAnaliktika = () => {
         </svg>
       ),
       onclick: () => {
-        nav("pupose-med-agent");
+        nav("managers-goal");
         console.log("button clickd");
       },
     },
