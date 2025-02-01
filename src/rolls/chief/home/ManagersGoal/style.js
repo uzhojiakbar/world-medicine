@@ -71,9 +71,20 @@ const Section = styled.div`
     flex-direction: ${({ now }) => !now && "column"};
   }
 `;
+
 export const SectionInner = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
+  margin-bottom: ${({ mb }) => (mb ? mb : "0")};
+
+  /* @media (max-width: 768px) {
+    flex-direction: ${({ now }) => !now && "column"};
+  } */
+`;
+export const SectionOuter = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 
   /* @media (max-width: 768px) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Select,
   MenuItem,
@@ -6,29 +6,28 @@ import {
   OutlinedInput,
   ListSubheader,
 } from "@mui/material";
-import { borderColor, styled } from "@mui/system";
+import { styled } from "@mui/system";
 import { useLanguage } from "../../../context/LanguageContext";
+import { message } from "antd";
 
 const StyledFormControl = styled(FormControl)(({ borderRadius, bgColor }) => ({
   width: "100%",
-  borderRadius: borderRadius || "30px", // Yumaloq burchaklar
+  borderRadius: borderRadius || "30px",
   backgroundColor: bgColor || "#F7F8FC",
-  borderColor: "red",
   ".MuiOutlinedInput-root": {
-    borderRadius: "30px", // Yumaloq burchaklar
+    borderRadius: "30px",
     padding: "5px",
     backgroundColor: "#F7F8FC",
   },
   ".MuiSelect-select": {
     fontWeight: 600,
     padding: "12px 16px",
-    borderColor: "transparent",
     fontSize: "16px",
   },
 }));
 
 const StyledSearchInput = styled(OutlinedInput)({
-  height: "35px", // Kichikroq balandlik
+  height: "35px",
   borderRadius: "20px",
   backgroundColor: "#ffffff",
   fontSize: "14px",
@@ -46,34 +45,41 @@ const StyledSearchInput = styled(OutlinedInput)({
 const EditableSelectWithSearch = ({
   def,
   borderRadius,
-  options,
-  initialValue = "",
+  options = [],
+  initialValue = {},
   onValueChange,
   bgColor,
+  disabled,
 }) => {
   const [value, setValue] = useState(initialValue);
-  const [searchTerm, setSearchTerm] = useState("");
+  const searchTermRef = useRef(""); // Qidiruv termi uchun ref
   const { translate } = useLanguage();
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    searchTermRef.current = event.target.value; // Faqat refni yangilaymiz
   };
 
   const handleValueChange = (event) => {
-    const selectedValue = event.target.value;
-    setValue(selectedValue);
-    if (onValueChange) onValueChange(selectedValue);
+    const selectedOption = options.find(
+      (option) => option.value === event.target.value
+    );
+    setValue(selectedOption);
+    if (onValueChange) onValueChange(selectedOption); // To‘liq ma’lumotni qaytaradi
   };
 
+  // Filter options based on search term
   const filteredOptions = options.filter((option) =>
-    option.value.toLowerCase().includes(searchTerm.toLowerCase())
+    option?.label?.toLowerCase().includes(searchTermRef.current.toLowerCase())
   );
 
   return (
     <StyledFormControl borderRadius={borderRadius} bgColor={bgColor}>
       <Select
-        value={value}
+        value={value?.value || ""}
         onChange={handleValueChange}
+        onClick={() =>
+          disabled ? message.error(translate("Сначала_выберите_регион")) : ""
+        }
         displayEmpty
         input={<OutlinedInput />}
         MenuProps={{
@@ -81,18 +87,19 @@ const EditableSelectWithSearch = ({
             style: {
               maxHeight: 220,
               width: 250,
-              borderRadius: "20px", // Dropdown uchun yumaloq burchaklar
+              borderRadius: "20px",
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             },
           },
         }}
-        renderValue={(selected) => (selected ? selected : def)}
+        renderValue={(selected) => (selected ? value.label || def : def)}
+        disabled={disabled}
       >
         {/* Search Field Inside Dropdown */}
         <ListSubheader>
           <StyledSearchInput
             placeholder="Поиск..."
-            value={searchTerm}
+            defaultValue={searchTermRef.current}
             onChange={handleSearchChange}
             fullWidth
           />
@@ -106,7 +113,7 @@ const EditableSelectWithSearch = ({
             </MenuItem>
           ))
         ) : (
-          <MenuItem disabled> {translate("notInformation")}</MenuItem>
+          <MenuItem disabled>{translate("notInformation")}</MenuItem>
         )}
       </Select>
     </StyledFormControl>
