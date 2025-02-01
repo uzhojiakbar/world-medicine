@@ -1,10 +1,9 @@
 import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
-import CreateMedAgent from "../pages/createMedAgent";
-import ManagerHome from "../pages/manager";
-import AddDoctor from "../pages/manager/addDoctor/AddDoctor";
-import CreateDogovorMain from "../pages/manager/createDogovor";
-import PurposeMedAgent from "../pages/manager/PurposeMedAgent";
-import ReportsClient from "../pages/manager/reportsClient";
+import ManagerHome from "../rolls/manager";
+import AddDoctor from "../rolls/manager/addDoctor/AddDoctor";
+import CreateDogovorMain from "../rolls/manager/createDogovor";
+import PurposeMedAgent from "../rolls/manager/PurposeMedAgent";
+import ReportsClient from "../rolls/manager/reportsClient";
 import Profile from "../pages/profile/admin";
 import Rahmadjon from "../Rahmadjon";
 import { MainContainer } from "../root/style";

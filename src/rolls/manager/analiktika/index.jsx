@@ -25,7 +25,6 @@ import PieDiagram from "../../../components/PieDiagram/PieDiagream2";
 import ChartBar from "../../../components/ChartBar";
 import HorizontalChart from "../../../components/HorizontalBar";
 import SalesChart from "./SelesChart";
-import NewConnect from "../../admin/settingSystemAdmin/NewConnect";
 
 const AnalitikaManagerPage = () => {
   const { translate } = useLanguage();

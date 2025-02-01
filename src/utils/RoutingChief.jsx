@@ -4,28 +4,17 @@ import Profile from "../pages/profile/admin";
 import BaseChief from "../rolls/chief/base";
 import SettingsSystemAdmin from "../pages/admin/settingSystemAdmin/SettingsSystemAdmin";
 import AddMeneger from "../pages/addManager/AddManager";
-import { Link, Route } from "react-router-dom";
-import Analiktika from "../pages/analiktika/analiktika";
-import AdminAnaliktika from "../pages/analiktika/admin/adminAnaliktika";
-import SettingsConditionAdmin from "../pages/setingsCondition/admin/index";
-import AdminCreateContract from "../pages/createContract/admin/adminCreateContract";
-import { useLanguage } from "../context/LanguageContext";
-import AnaliktikaPage from "../pages/analiktika/analiktikaPage";
+import { Route } from "react-router-dom";
+
 import SettingsCondition from "../pages/setingsCondition";
 import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
 import AddPreporad from "../pages/setingsCondition/Predoji";
 import Preparat from "../pages/setingsCondition/Preprat";
 import AddPm from "../pages/addPm/AddPm";
-import AddDoctor from "../pages/addDoctor/AddDoctor";
 import MestaRabota from "../pages/setingsCondition/MestaRabota";
-import MestaRabotaManager from "../pages/setingsCondition/MestaRabota/manager/manager";
-import MainPage from "../Asadbek/main";
-import ManagerHome from "../pages/manager";
-import Rahmadjon from "../Rahmadjon";
-import CreateDogovorMain from "../pages/manager/createDogovor";
+
 import CreateMedAgent from "../pages/createMedAgent/";
-import ReportsClient from "../pages/manager/reportsClient";
-import { RoutingManager } from "./RoutingManager";
+import ReportsClient from "../rolls/manager/reportsClient";
 import ManagersGoal from "../rolls/chief/home/ManagersGoal/ManagersGoal";
 
 export const RoutingChief = [
