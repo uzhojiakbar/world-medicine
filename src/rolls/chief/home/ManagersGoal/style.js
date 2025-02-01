@@ -43,6 +43,11 @@ export const FormSectionWithGrid = styled.div`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
+export const DirectionFlexGap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
 
 const SubTitle = styled.div`
   font-size: 24px;
@@ -65,6 +70,15 @@ const Section = styled.div`
   @media (max-width: 768px) {
     flex-direction: ${({ now }) => !now && "column"};
   }
+`;
+export const SectionInner = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  /* @media (max-width: 768px) {
+    flex-direction: ${({ now }) => !now && "column"};
+  } */
 `;
 
 const IconWrapper = styled.div`
