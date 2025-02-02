@@ -11,7 +11,7 @@ const specializations = [
   { id: 7, value: "ENDOCRINOLOGIST", label: "ENDOCRINOLOGIST" },
   { id: 8, value: "GASTROENTEROLOGIST", label: "GASTROENTEROLOGIST" },
   { id: 9, value: "TRAUMATOLOGIST", label: "TRAUMATOLOGIST" },
-  { id: 10, value: "NONE", label: "NONE" },
+  // { id: 10, value: "NONE", label: "NONE" },
 ];
 
 const FieldnamesManager = () => {

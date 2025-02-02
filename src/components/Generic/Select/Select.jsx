@@ -69,8 +69,6 @@ const PrimarySelect = ({
     // }
   };
 
-  console.log(options);
-
   return (
     <StyledFormControl borderRadius={borderRadius} bgColor={bgColor}>
       <InputLabel>{def}</InputLabel>

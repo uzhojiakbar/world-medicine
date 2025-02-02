@@ -32,7 +32,7 @@ const CreateDogovorMain = () => {
   const [activeTab, setActiveTab] = useState("Рецепт");
   const [value, setValue] = useState(0);
 
-  const [isOpen, setOpen] = useState(false)
+  const [isOpen, setOpen] = useState(false);
   const titles = [
     translate("Рецепт"),
     translate("СУ"),
@@ -151,7 +151,7 @@ const CreateDogovorMain = () => {
                     </Child>
                     <Child>
                       <span>{v.number}</span>
-                      <EditIconCon onClick={() => { }}>
+                      <EditIconCon onClick={() => {}}>
                         <svg
                           width="16"
                           height="16"
@@ -177,9 +177,14 @@ const CreateDogovorMain = () => {
             </Wrap>
           </InfoContainer>
         </InfoWrapper>
-        <Button icon={<IconPlus />} onClick={() => {
-          setOpen(true)
-        }}>{translate("Создать договор")}</Button>
+        <Button
+          icon={<IconPlus />}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          {translate("Создать договор")}
+        </Button>
       </Wrapper>
     </Container>
   );
