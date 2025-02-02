@@ -17,20 +17,13 @@ const TitleWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.span`
-  font-weight: 800;
-  font-size: 45px;
-  /* line-height: 65.57px; */
-  @media (max-width: 768px) {
-    font-size: 24px;
-    line-height: 45px;
+const Title = styled.div`
+  font-size: ${({ size }) => (size ? size : "24px")};
+  font-weight: 700;
+  @media (max-width: 765px) {
+    font-size: 18px;
   }
-`;
-
-const Datails = styled.span`
-  @media (max-width: 768px) {
-    display: none;
-  }
+  /* width: 339px; */
 `;
 
 const ButtonWrapper = styled.div`
@@ -60,6 +53,16 @@ const Item = styled.div`
   &:hover {
     background-color: ${(props) => (props.active ? "#0056b3" : "#e9ecef")};
   }
+
+  font-size: ${({ size }) => (size ? size : "24px")};
+  font-weight: 700;
+  @media (max-width: 765px) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+  }
+  width: 339px;
 `;
 
 const InfoPage = styled.div`
