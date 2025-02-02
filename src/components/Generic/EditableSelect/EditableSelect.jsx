@@ -50,6 +50,7 @@ const EditableSelectWithSearch = ({
   onValueChange,
   bgColor,
   disabled,
+  onClick = () => {},
 }) => {
   const [value, setValue] = useState(initialValue);
   const searchTermRef = useRef(""); // Qidiruv termi uchun ref
@@ -77,9 +78,7 @@ const EditableSelectWithSearch = ({
       <Select
         value={value?.value || ""}
         onChange={handleValueChange}
-        onClick={() =>
-          disabled ? message.error(translate("Сначала_выберите_регион")) : ""
-        }
+        onClick={onClick}
         displayEmpty
         input={<OutlinedInput />}
         MenuProps={{
