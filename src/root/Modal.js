@@ -35,7 +35,10 @@ export const ModalHeader = styled.div`
   }
 `;
 
-export const ModalBody = styled.div``;
+export const ModalBody = styled.div`
+  display: flex;
+  gap: 10px;
+`;
 
 export const ModalBodyHeader = styled.div`
   display: grid;

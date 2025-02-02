@@ -138,7 +138,6 @@ const FormWrapper = styled.div`
 
 const Section = styled.div`
   width: 100%;
-  cursor: ${({ btn }) => btn && "pointer"};
 `;
 
 const InputWrapper = styled.div`
@@ -194,22 +193,38 @@ const Input = styled.input`
   }
 `;
 
+const Input2 = styled.input`
+  width: 100%;
+  height: 60px;
+  border-radius: 30px;
+  background-color: ${(bgcolor) => (bgcolor ? bgcolor : "inherit")};
+  border: 1px solid #d9d9d9;
+
+  padding: 0 20px;
+  outline: none;
+
+  @media (max-width: 768px) {
+    height: 20px;
+    padding: 0 15px;
+  }
+`;
+
 const ResetPassword = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 55px;
-  background-color: #fb3748;
-  background-color: ${({ bgcolor }) => (bgcolor ? bgcolor : "red")};
+  background-color: ${({ bgcolor }) =>
+    typeof bgcolor == "string" ? bgcolor : "#fb3748"};
   padding: 0 20px;
   font-size: 14px;
   line-height: 21px;
   font-weight: 600;
-  color: #ffffff;
+  color: ${({ color }) => (color ? color : "white")};
   border-radius: 50px;
   margin-top: 10px;
-
+  cursor: pointer;
   @media (max-width: 768px) {
     height: 45px;
     font-size: 12px;
@@ -235,4 +250,5 @@ export {
   Section,
   ResetPassword,
   Item,
+  Input2,
 };
