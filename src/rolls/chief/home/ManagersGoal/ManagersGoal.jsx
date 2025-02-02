@@ -16,130 +16,113 @@ import { useLanguage } from "../../../../context/LanguageContext";
 import EditableSelect from "../../../../components/Generic/EditableSelect/EditableSelect";
 import Man from "../../../../assets/svg/Man";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
-import { message } from "antd";
 import FieldnamesManager from "../../../../utils/fieldnamesManager";
 
 const ManagersGoal = () => {
   const [region, setRegion] = useState(null);
-  const [date, setData] = useState({ startDate: "", endDate: "" });
-  const [specialist, setSpecialist] = useState({ value: "", label: "" });
+  const [date, setDate] = useState({ startDate: "", endDate: "" });
+  const [specialist, setSpecialist] = useState({});
   const [selectedSpecializations, setSelectedSpecializations] = useState([]);
+  const { translate } = useLanguage();
+
   console.log("selectedSpecializations", selectedSpecializations);
 
-  const { translate, language } = useLanguage();
-  const filendnames = FieldnamesManager();
-
-  const { data: Regions, isLoading } = useGetRegions();
-  const { data: managers, isLoading: isLoadingManager } = useGetManagers({
+  const { data: Regions, isLoading: isLoadingRegions } = useGetRegions();
+  const { data: managers, isLoading: isLoadingManagers } = useGetManagers({
     regionId: region || null,
   });
 
   const regionsTranslate = useMemo(
-    () => transformRegionsForSelect(Regions, language),
-    [Regions, language]
+    () => transformRegionsForSelect(Regions, translate),
+    [Regions, translate]
   );
-
   const managerOptions = useMemo(
     () =>
-      managers
-        ? managers.map((manager) => ({
-            value: manager.userId,
-            label: `${manager.firstName} ${manager.lastName}`,
-            id: manager.userId,
-          }))
-        : [],
+      managers?.map((manager) => ({
+        value: manager.userId,
+        label: `${manager.firstName} ${manager.lastName}`,
+        id: manager.userId,
+      })) || [],
     [managers]
   );
 
-  const handleChangeRegion = useCallback(
-    (e) => {
-      setRegion(e.id);
-      setSpecialist({ value: "", label: translate("Выберите менеджера") });
-    },
-    [translate]
-  );
-
-  const handleDateChange = useCallback(({ startDate, endDate }) => {
-    setData({ ...data, startDate: startDate, endDate: endDate });
+  const handleChangeRegion = useCallback((selected) => {
+    setRegion(selected.value);
+    setSpecialist({});
   }, []);
 
-  // Tanlangan mutaxassislikni qo‘shish va selectdan olib tashlash
-  const onSpecializationSelect = (selectedOption) => {
-    setSelectedSpecializations((prev) => [...prev, selectedOption]);
+  const handleDateChange = useCallback((dates) => setDate(dates), []);
 
-    // Select uchun qolgan variantlarni qayta hosil qilish
-    setSpecializations((prev) =>
-      prev.filter((option) => option.value !== selectedOption.value)
-    );
-  };
+  const handleSpecializationSelect = useCallback(
+    (selected) => {
+      const newEntry = {
+        id: selected.id,
+        fieldName: selected.label,
+        quote: 0,
+        managerGoalId: 0,
+      };
+      if (
+        !selectedSpecializations.find((s) => s.fieldName === selected.label)
+      ) {
+        setSelectedSpecializations((prev) => [...prev, newEntry]);
+      }
+    },
+    [selectedSpecializations]
+  );
 
   const availableSpecializations = useMemo(
     () =>
-      filendnames.filter(
+      FieldnamesManager().filter(
         (spec) =>
-          !selectedSpecializations.some((sel) => sel.value === spec.value)
+          !selectedSpecializations.some((s) => s.fieldName === spec.label)
       ),
-    [selectedSpecializations, filendnames]
+    [selectedSpecializations]
   );
 
   return (
     <Wrapper>
-      {isLoading || isLoadingManager ? (
-        <div className="loaderParent">
-          <div className="loader"></div>
-        </div>
+      {isLoadingRegions || isLoadingManagers ? (
+        <div className="loading">Loading...</div>
       ) : null}
-      <Title className="titlee">
-        <div>Настройка условий</div>
-      </Title>
-
+      <Title>{translate("Цель_менеджеру")}</Title>
       <FormWrapper>
         <FormSectionWithGrid>
           <SectionOuter>
-            <DirectionFlexGap gap="10px">
+            <DirectionFlexGap>
               <MiniTitleSmall>{translate("Регион")}</MiniTitleSmall>
               <PrimarySelect
                 def={translate("Выберите_регион")}
                 options={regionsTranslate}
                 onValueChange={handleChangeRegion}
-                onlyOption={1}
+                onlyOption
               />
             </DirectionFlexGap>
-
-            <SectionInner mb={"20px"}>
+            <SectionInner>
               <IconWrapper>
                 <Man />
               </IconWrapper>
-
               <EditableSelect
                 options={managerOptions}
                 initialValue={specialist}
                 placeholder={translate("Выберите_менеджера")}
                 onValueChange={setSpecialist}
-                isEditable={false}
                 def={specialist.label || translate("Выберите_менеджера")}
                 disabled={!region}
-                onClick={() =>
-                  !region
-                    ? message.error(translate("Сначала_выберите_регион"))
-                    : ""
-                }
               />
             </SectionInner>
-
-            <DirectionFlexGap gap="10px">
+            <DirectionFlexGap>
               <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
               <DateRangePicker onDateChange={handleDateChange} />
             </DirectionFlexGap>
           </SectionOuter>
           <SectionOuter>
-            <DirectionFlexGap gap="10px">
+            <DirectionFlexGap>
               <MiniTitleSmall>{translate("Охват_врачей")}</MiniTitleSmall>
               <PrimarySelect
                 def={translate("Выберите специальность")}
                 options={availableSpecializations}
-                onValueChange={onSpecializationSelect}
-                onlyOption={1}
+                onValueChange={handleSpecializationSelect}
+                onlyOption
               />
             </DirectionFlexGap>
           </SectionOuter>
