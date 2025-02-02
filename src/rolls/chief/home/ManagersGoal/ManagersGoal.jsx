@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   DirectionFlexGap,
   FormSectionWithGrid,
@@ -19,39 +19,57 @@ import DateRangePicker from "../../../../components/Generic/DataRangePicker/Data
 
 const ManagersGoal = () => {
   const [region, setRegion] = useState(null);
-  const [data, setData] = useState(null);
   const [specialist, setSpecialist] = useState({
     value: "",
     label: "",
   });
 
   const { data: Regions, isLoading } = useGetRegions();
-  const { data: managers } = useGetManagers({
+  const { data: managers, isLoading: isLoadingManagers } = useGetManagers({
     regionId: region || null,
   });
 
   const { translate, language } = useLanguage();
-  const regionsTranslate = transformRegionsForSelect(Regions, language);
 
-  const managerOptions = managers
-    ? managers.map((manager) => ({
-        value: manager.userId,
-        label: `${manager.firstName} ${manager.lastName}`,
-        id: manager.userId,
-      }))
-    : [];
+  const regionsTranslate = useMemo(
+    () => transformRegionsForSelect(Regions, language),
+    [Regions, language]
+  );
 
-  const handleChangeRegion = (e) => {
-    setRegion(e.id);
+  const managerOptions = useMemo(
+    () =>
+      managers
+        ? managers.map((manager) => ({
+            value: manager.userId,
+            label: `${manager.firstName} ${manager.lastName}`,
+            id: manager.userId,
+          }))
+        : [],
+    [managers]
+  );
 
-    // Agar manager tanlangan bo‘lsa, default holatga qaytarish
-    if (specialist?.value) {
+  const handleChangeRegion = useCallback(
+    (e) => {
+      setRegion(e.id);
       setSpecialist({ value: "", label: translate("Выберите менеджера") });
-    }
-  };
+    },
+    [translate]
+  );
+
+  const handleDateChange = useCallback(({ startDate, endDate }) => {
+    console.log("Boshlanish sanasi:", startDate);
+    console.log("Tugash sanasi:", endDate);
+  }, []);
 
   return (
     <Wrapper>
+      {isLoading || isLoadingManagers ? (
+        <div className="loaderParent">
+          <div className="loader"></div>
+        </div>
+      ) : (
+        ""
+      )}
       <Title className="titlee">
         <div>Настройка условий</div>
       </Title>
@@ -64,7 +82,7 @@ const ManagersGoal = () => {
               <PrimarySelect
                 def={translate("Выберите_регион")}
                 options={regionsTranslate}
-                onValueChange={(e) => handleChangeRegion(e)}
+                onValueChange={handleChangeRegion}
                 onlyOption={1}
               />
             </DirectionFlexGap>
@@ -74,12 +92,11 @@ const ManagersGoal = () => {
                 <Man />
               </IconWrapper>
 
-              {/* Editable Select for Managers */}
               <EditableSelect
                 options={managerOptions}
                 initialValue={specialist}
                 placeholder={translate("Выберите_менеджера")}
-                onValueChange={(value) => setSpecialist(value)}
+                onValueChange={setSpecialist}
                 isEditable={false}
                 def={specialist.label || translate("Выберите_менеджера")}
                 disabled={!region}
@@ -88,12 +105,8 @@ const ManagersGoal = () => {
 
             <DirectionFlexGap>
               <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
-
               <DateRangePicker
-                onDateChange={({ startDate, endDate }) => {
-                  console.log("Boshlanish sanasi:", startDate);
-                  console.log("Tugash sanasi:", endDate);
-                }}
+                onDateChange={handleDateChange}
                 bgColor={"white"}
               />
             </DirectionFlexGap>

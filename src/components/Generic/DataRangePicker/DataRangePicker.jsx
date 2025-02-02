@@ -13,23 +13,31 @@ const DateRangePicker = ({
   const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlari
 
   const handleStartDateChange = (date) => {
+    const formattedDate = date ? dayjs(date).format("YYYY-MM-DD") : null;
     setStartDate(date);
-    onDateChange({ startDate: date, endDate }); // Ikkita sanani qaytarish
+    onDateChange({
+      startDate: formattedDate,
+      endDate: dayjs(endDate).format("YYYY-MM-DD"),
+    });
     setOpenPicker(null);
   };
 
   const handleEndDateChange = (date) => {
+    const formattedDate = date ? dayjs(date).format("YYYY-MM-DD") : null;
     setEndDate(date);
-    onDateChange({ startDate, endDate: date }); // Ikkita sanani qaytarish
+    onDateChange({
+      startDate: dayjs(startDate).format("YYYY-MM-DD"),
+      endDate: formattedDate,
+    });
     setOpenPicker(null);
   };
 
   const formattedStartDate = startDate
-    ? dayjs(startDate).format("YYYY-DD-MM")
+    ? dayjs(startDate).format("YYYY-MM-DD")
     : "Дата начала";
 
   const formattedEndDate = endDate
-    ? dayjs(endDate).format("YYYY-DD-MM")
+    ? dayjs(endDate).format("YYYY-MM-DD")
     : "Дата окончания";
 
   return (
@@ -56,7 +64,7 @@ const DateRangePicker = ({
           value={startDate}
           onChange={handleStartDateChange}
           onOpenChange={(open) => !open && setOpenPicker(null)}
-          format="YYYY-DD-MM"
+          format="YYYY-MM-DD"
           placeholder="Дата начала"
         />
       )}
@@ -67,7 +75,7 @@ const DateRangePicker = ({
           value={endDate}
           onChange={handleEndDateChange}
           onOpenChange={(open) => !open && setOpenPicker(null)}
-          format="YYYY-DD-MM."
+          format="YYYY-MM-DD"
           placeholder="Дата окончания"
         />
       )}
