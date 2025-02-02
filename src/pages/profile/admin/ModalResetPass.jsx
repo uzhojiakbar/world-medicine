@@ -4,9 +4,10 @@ import {
 } from "../../../root/Modal";
 import { useLanguage } from "../../../context/LanguageContext";
 import styled from "styled-components";
-import { Input, Input2, ResetPassword } from "./style";
+import { Input, Input2, InputWrapper, ResetPassword } from "./style";
 import { useRef, useState } from "react";
 import { message } from "antd";
+import ForSee from "../../../assets/svg/see";
 
 const InfoContainer = styled.div`
     display: flex;
@@ -43,15 +44,18 @@ const Title = styled.p`
 
 const ModalSuccessful = ({ isOpen, setOpen = () => { } }) => {
     const { translate } = useLanguage();
-    const [pass, setPass] = useState({ newPass: "", curPass: "" })
+    const [pass, setPass] = useState({ newPass: "", curPass: "", newPassType: false, curPassType: false })
     const [check, setCheck] = useState(false)
+    const [inputType, setInputType] = useState(true);
+
 
     const rePassHandle = () => {
-        if (pass.newPass === pass.curPass && pass.newPass.length > 0) {
+        if (pass?.newPass === pass?.curPass && pass?.newPass?.length > 5) {
             setCheck(true)
             setOpen(false)
+            setPass({ newPass: "", curPass: "", newPassType: false, curPassType: false })
         }
-        else message.error(translate("parollar bir xil bolsin"))
+        else message.error(translate("parollar bir xil bolsin va minimal 6 xonadan iborat bolishi kerak"))
 
     }
 
@@ -81,17 +85,29 @@ const ModalSuccessful = ({ isOpen, setOpen = () => { } }) => {
                 </div>
 
                 <div className="inputWrapp">
-                    <Input2 bgcolor="white" placeholder="Новый пароль" onChange={(e) => setPass({ ...pass, newPass: e.target.value })} />
-                    <Input2 bgcolor="white" placeholder="Текущий пароль" onChange={(e) => setPass({ ...pass, curPass: e.target.value })} />
+                    <InputWrapper pad={"none"} bgcolor="white">
+                        <Input type={pass?.newPassType ? "password" : "text"} value={pass?.newPass?.length < 0 ? "" : pass?.newPass} onChange={(e) => setPass({ ...pass, newPass: e.target.value })} placeholder={translate("Текущий пароль")} />
+
+                        <ForSee onClick={() => setPass({ ...pass, newPassType: !pass?.newPassType })} />
+                    </InputWrapper>
+                    <InputWrapper pad={"none"} bgcolor="white">
+                        <Input type={pass?.curPassType ? "password" : "text"} value={pass?.curPass?.length < 0 ? "" : pass.curPass} onChange={(e) => setPass({ ...pass, curPass: e.target.value })} placeholder={translate("Текущий пароль")} />
+
+                        <ForSee onClick={() => setInputType(setPass({ ...pass, curPassType: !pass?.curPassType }))} />
+                    </InputWrapper>
                 </div>
             </InfoContainer>
             <ModalBody>
                 {/* <div> */}
-                <ResetPassword color="black" bgcolor="#F7F8FC" onClick={() => setOpen(false)}>
+                <ResetPassword color="black" bgcolor="#F7F8FC" onClick={() => {
+                    setCheck(true)
+                    setOpen(false)
+                    setPass({ newPass: "", curPass: "", newPassType: false, curPassType: false })
+                }}>
                     {translate("Отменить")}
                 </ResetPassword>
                 <ResetPassword onClick={() => rePassHandle()} bgcolor={
-                    pass.curPass <= 0 || pass.curPass != pass.newPass ? "#f77682" : "#fb3748"
+                    pass?.curPass <= 0 || pass?.curPass != pass?.newPass ? "#f77682" : "#fb3748"
                 } >
                     {translate("Сбросить и получить новый пароль")}
                 </ResetPassword>
