@@ -30,16 +30,16 @@ import { useLanguage } from "../../../context/LanguageContext.jsx";
 import { useGetProfileInfo } from "../../../utils/server/server.js";
 
 import Cookie from "js-cookie";
+import ModalResetPass from "./ModalResetPass.jsx";
 
 const Profile = () => {
   const [inputType, setInputType] = useState(true);
   const { data: info, isLoading } = useGetProfileInfo();
-  console.log(info);
   const [onChange, setOnChange] = useState(false)
   const [value, setValue] = useState("")
   const logout = useLogout();
   const nav = useNavigate();
-
+  const [isOpen, setOpen] = useState(false)
   const handleLogout = () => {
     logout(() => {
       console.log("User logged out successfully");
@@ -99,7 +99,7 @@ const Profile = () => {
           </MainAdminButton>
         </UserSetting>
       </Header>
-
+      <ModalResetPass isOpen={isOpen} setOpen={setOpen} />
       <FormWrapper>
         <MiniTitleSmall>{data.privateData}</MiniTitleSmall>
         <Section>
@@ -118,14 +118,13 @@ const Profile = () => {
         </Section>
         <Text mt={"true"}>
           <Section>
-            <MiniTitleSmall>{data.password}</MiniTitleSmall>
+            <MiniTitleSmall>{onChange ? translate("Текущий пароль") : data.password}</MiniTitleSmall>
             <InputWrapper pad={"none"}>
               {onChange ?
 
                 <Input type={inputType ? "password" : "text"} value={value.length < 0 ? "" : value} onChange={(e) =>
                   setValue(e.target.value)
-
-                } /> : <Input
+                } placeholder={translate("Текущий пароль")} /> : <Input
                   value={UserData.password}
                   type="password"
                   disabled
@@ -134,21 +133,31 @@ const Profile = () => {
               <ForSee onClick={() => setInputType(!inputType)} />
             </InputWrapper>
           </Section>
-          {onchange ?
-            <Section onClick={() => setOnChange(!onChange)} btn="true" >
-              <MiniTitleSmall>{data.restartPassword}</MiniTitleSmall>
-              <ResetPassword pad={"none"} bgcolor="#216BF4">{data.createPassword}</ResetPassword>
-            </Section>
-            :
-            <Section onClick={() => setOnChange(!onChange)} btn="true">
-              <MiniTitleSmall>{data.restartPassword}</MiniTitleSmall>
-              <ResetPassword pad={"none"}>{data.createPassword}</ResetPassword>
-            </Section>
-          }
+
+          <Section btn="true" >
+            <MiniTitleSmall>{data.restartPassword}</MiniTitleSmall>
+            {
+              onChange ?
+
+                <ResetPassword pad={"none"} bgcolor={value.length > 0 ? "#216BF4" : "#4a6eb0"} onClick={() => {
+                  if (value.length > 0) {
+                    setOnChange(!onChange)
+                    setValue("")
+                    setOpen(true)
+                  }
+                }}>{"Установить текущий пароль"}</ResetPassword>
+                : <ResetPassword pad={"none"} onClick={() => setOnChange(true)} >{data.createPassword}</ResetPassword>
+            }
+
+
+          </Section>
+
         </Text>
       </FormWrapper>
-    </Wrapper>
+    </Wrapper >
   );
 };
 
 export default Profile;
+
+
