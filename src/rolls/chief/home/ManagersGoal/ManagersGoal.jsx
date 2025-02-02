@@ -25,7 +25,7 @@ const ManagersGoal = () => {
   });
 
   const { data: Regions, isLoading } = useGetRegions();
-  const { data: managers, isLoading: isLoadingManagers } = useGetManagers({
+  const { data: managers, isLoading: isLoadingManager } = useGetManagers({
     regionId: region || null,
   });
 
@@ -63,7 +63,7 @@ const ManagersGoal = () => {
 
   return (
     <Wrapper>
-      {isLoading || isLoadingManagers ? (
+      {isLoading || isLoadingManager ? (
         <div className="loaderParent">
           <div className="loader"></div>
         </div>
