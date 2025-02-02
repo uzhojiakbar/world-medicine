@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   gap: 25px;
   // margin-top: 171px;
   width: 100%;
-
+  /* overflow: scroll; */
   padding: 0 10px;
 `;
 
@@ -29,6 +29,7 @@ const Title = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 7px;
+  /* width: 100%; */
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -36,10 +37,11 @@ const ButtonWrapper = styled.div`
 
 const Item = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center;
+  justify-content: center; */
   padding: 13px 17px;
   width: 100%;
+  max-width: 100%;
   border-radius: 7px;
 
   font-size: 20px;
@@ -62,7 +64,6 @@ const Item = styled.div`
     text-overflow: ellipsis;
     font-size: 18px;
   }
-  width: 339px;
 `;
 
 const InfoPage = styled.div`
@@ -72,6 +73,10 @@ const InfoPage = styled.div`
   background: #fff;
   gap: 10px;
   border-radius: 27px;
+
+  @media (max-width: 765px) {
+    flex-direction: column;
+  }
 `;
 
 const InfoContainer = styled.div`
@@ -104,6 +109,7 @@ const TableWrapper = styled.div`
   flex-direction: column;
   background-color: white;
   border-radius: 27px;
+  overflow: scroll;
 `;
 
 export {

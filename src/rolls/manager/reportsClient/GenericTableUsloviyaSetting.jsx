@@ -12,7 +12,6 @@ const Wrapper = styled.div`
 `;
 
 const TableStyled = styled.table`
-overflow-x: auto;
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 10px;
@@ -54,12 +53,19 @@ const TableRow = styled.tr`
   height: 60px;
   border-radius: 27px;
   background-color: ${({ background }) => background || "#F7F8FC"};
+
+  > .isOpen{
+    position: sticky;
+    right: -13px;
+    background-color: ${({ background }) => background || "#F7F8FC"};
+  }
 `;
 
 const IsOpen = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 7px;
   padding: 8px 0;
   border-radius: 3px;
@@ -147,6 +153,7 @@ const Item = styled.td`
   color: ${({ textcolor }) => textcolor || "black"};
   width: 350px;
 
+
   @media (max-width: 760px) {
     font-size: 12px;
     padding: 6px;
@@ -157,6 +164,7 @@ const Item = styled.td`
     padding: 4px;
     width: 1500px;
   }
+  
 `;
 
 const ChangeInput = styled(Input)`
@@ -226,7 +234,7 @@ const GenericTable = ({ thead = [], data = [] }) => {
                     </Item>
                   );
                 })}
-                <td className="isOpen">
+                <td className="isOpen" background={col}>
                   {
                     <IsOpen
                       color={row.colors.iconbgcolor}
