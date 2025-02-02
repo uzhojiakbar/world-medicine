@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const TableStyled = styled.table`
+overflow-x: auto;
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 10px;
