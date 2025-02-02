@@ -148,7 +148,7 @@ const InputWrapper = styled.div`
   padding: ${({ pad }) => !pad && "19px 20px"};
   padding-right: ${({ pad }) => pad && "15px"};
   margin-top: 10px;
-  background-color: #f7f8fc;
+  background-color: ${({ bgcolor }) => (bgcolor ? bgcolor : "#f7f8fc")};
   border-radius: 50px;
   font-size: 14px;
   font-weight: 600;
@@ -225,6 +225,12 @@ const ResetPassword = styled.div`
   border-radius: 50px;
   margin-top: 10px;
   cursor: pointer;
+  transition: filter 0.3s ease;
+
+  &:hover {
+    filter: brightness(85%);
+  }
+
   @media (max-width: 768px) {
     height: 45px;
     font-size: 12px;

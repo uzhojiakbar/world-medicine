@@ -31,6 +31,7 @@ import { useGetProfileInfo } from "../../../utils/server/server.js";
 
 import Cookie from "js-cookie";
 import ModalResetPass from "./ModalResetPass.jsx";
+import { message } from "antd";
 
 const Profile = () => {
   const [inputType, setInputType] = useState(true);
@@ -69,7 +70,7 @@ const Profile = () => {
     userName: "koptleulovarslan111",
     email: "koptleulovarss@gmail.com",
     phoneNumber: "998993223222",
-    password: "qwerty123",
+    password: "1",
   };
 
   return (
@@ -119,7 +120,7 @@ const Profile = () => {
         <Text mt={"true"}>
           <Section>
             <MiniTitleSmall>{onChange ? translate("Текущий пароль") : data.password}</MiniTitleSmall>
-            <InputWrapper pad={"none"}>
+            <InputWrapper pad={"none"} >
               {onChange ?
 
                 <Input type={inputType ? "password" : "text"} value={value.length < 0 ? "" : value} onChange={(e) =>
@@ -140,11 +141,14 @@ const Profile = () => {
               onChange ?
 
                 <ResetPassword pad={"none"} bgcolor={value.length > 0 ? "#216BF4" : "#4a6eb0"} onClick={() => {
-                  if (value.length > 0) {
+
+                  if (value.length > 0 && value == UserData.password) {
+
+
                     setOnChange(!onChange)
                     setValue("")
                     setOpen(true)
-                  }
+                  } else message.error("Parol hato!")
                 }}>{"Установить текущий пароль"}</ResetPassword>
                 : <ResetPassword pad={"none"} onClick={() => setOnChange(true)} >{data.createPassword}</ResetPassword>
             }
