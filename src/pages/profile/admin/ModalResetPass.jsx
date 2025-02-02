@@ -54,6 +54,7 @@ const ModalSuccessful = ({ isOpen, setOpen = () => { } }) => {
             setCheck(true)
             setOpen(false)
             setPass({ newPass: "", curPass: "", newPassType: false, curPassType: false })
+            message.success("Parol muvaffaqiyatli o`zgartirildi.")
         }
         else message.error(translate("parollar bir xil bolsin va minimal 6 xonadan iborat bolishi kerak"))
 
