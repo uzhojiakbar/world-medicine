@@ -37,6 +37,7 @@ const FormWrapper = styled.form`
 
 export const FormSectionWithGrid = styled.div`
   display: grid;
+  gap: 20px;
   grid-template-columns: repeat(2, 1fr);
 
   ${media.tablet} {
@@ -46,7 +47,7 @@ export const FormSectionWithGrid = styled.div`
 export const DirectionFlexGap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: ${({ gap }) => (gap ? gap : "20px")};
 `;
 
 const SubTitle = styled.div`
