@@ -99,7 +99,6 @@ const ModalSuccessful = ({ isOpen, setOpen = () => { } }) => {
                 </div>
             </InfoContainer>
             <ModalBody>
-                {/* <div> */}
                 <ResetPassword color="black" bgcolor="#F7F8FC" onClick={() => {
                     setCheck(true)
                     setOpen(false)
@@ -112,7 +111,6 @@ const ModalSuccessful = ({ isOpen, setOpen = () => { } }) => {
                 } >
                     {translate("Сбросить и получить новый пароль")}
                 </ResetPassword>
-                {/* </div> */}
 
             </ModalBody>
         </ModalContainer>
