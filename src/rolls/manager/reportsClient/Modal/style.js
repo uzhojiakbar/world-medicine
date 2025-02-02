@@ -21,14 +21,25 @@ const ModalContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+
   gap: 10px;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
 `;
 
 const FilterContainer = styled.div`
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+
   margin-bottom: 20px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Select = styled.select`
@@ -42,18 +53,34 @@ const StatsContainer = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Stat = styled.div`
-  background: ${(props) => (props.active ? "#ffd700" : "#f5f5f5")};
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  padding: 17px 20px;
+  width: 100%;
+
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  background: #f7f8fc;
+
+  transition: all 0.3s;
+  &:hover {
+    background-color: #e7e7e7;
+  }
 `;
 
 const TableStyled = styled.table`
+  overflow-y: auto;
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;
+  border: none;
   border-spacing: 0 10px;
 
   th {
@@ -75,7 +102,8 @@ const TableStyled = styled.table`
   }
 
   @media (max-width: 760px) {
-    th {
+    th,
+    td {
       font-size: 12px;
       padding: 6px;
     }
@@ -86,6 +114,7 @@ const TableStyled = styled.table`
       font-size: 10px;
       padding: 4px;
     }
+    overflow: auto;
   }
 `;
 
@@ -93,6 +122,10 @@ const TableRow = styled.tr`
   height: 60px;
   border-radius: 27px;
   background-color: ${({ background }) => background || "#F7F8FC"};
+  transition: all 0.3s;
+  &:hover {
+    filter: brightness(85%);
+  }
 `;
 
 const CloseButton = styled.button`
@@ -100,7 +133,16 @@ const CloseButton = styled.button`
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* float: right; */
+  transition: all 0.3s;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 const Item = styled.td`
@@ -108,6 +150,8 @@ const Item = styled.td`
   padding: 8px;
   color: ${({ textcolor }) => textcolor || "black"};
   width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   @media (max-width: 760px) {
     font-size: 12px;
@@ -121,6 +165,18 @@ const Item = styled.td`
   }
 `;
 
+const Title = styled.div`
+  font-size: ${({ size }) => (size ? size : "24px")};
+  font-weight: 700;
+  @media (max-width: 765px) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+  }
+  width: 339px;
+`;
+
 export {
   ModalOverlay,
   ModalContainer,
@@ -132,4 +188,5 @@ export {
   TableRow,
   CloseButton,
   Item,
+  Title,
 };
