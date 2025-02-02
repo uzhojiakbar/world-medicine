@@ -35,7 +35,7 @@ const Profile = () => {
   const [inputType, setInputType] = useState(true);
   const { data: info, isLoading } = useGetProfileInfo();
   console.log(info);
-
+  const [onChange, setOnChange] = useState(false)
   const logout = useLogout();
   const nav = useNavigate();
 
