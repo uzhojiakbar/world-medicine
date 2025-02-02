@@ -138,6 +138,7 @@ const FormWrapper = styled.div`
 
 const Section = styled.div`
   width: 100%;
+  cursor: ${({ btn }) => btn && "pointer"};
 `;
 
 const InputWrapper = styled.div`
@@ -200,6 +201,7 @@ const ResetPassword = styled.div`
   width: 100%;
   height: 55px;
   background-color: #fb3748;
+  background-color: ${({ bgcolor }) => (bgcolor ? bgcolor : "red")};
   padding: 0 20px;
   font-size: 14px;
   line-height: 21px;

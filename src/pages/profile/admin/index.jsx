@@ -36,6 +36,7 @@ const Profile = () => {
   const { data: info, isLoading } = useGetProfileInfo();
   console.log(info);
   const [onChange, setOnChange] = useState(false)
+  const [value, setValue] = useState("")
   const logout = useLogout();
   const nav = useNavigate();
 
@@ -119,17 +120,31 @@ const Profile = () => {
           <Section>
             <MiniTitleSmall>{data.password}</MiniTitleSmall>
             <InputWrapper pad={"none"}>
-              <Input
-                defaultValue={UserData.password}
-                type={inputType ? "password" : "text"}
-              />
+              {onChange ?
+
+                <Input type={inputType ? "password" : "text"} value={value.length < 0 ? "" : value} onChange={(e) =>
+                  setValue(e.target.value)
+
+                } /> : <Input
+                  value={UserData.password}
+                  type="password"
+                  disabled
+                />
+              }
               <ForSee onClick={() => setInputType(!inputType)} />
             </InputWrapper>
           </Section>
-          <Section>
-            <MiniTitleSmall>{data.restartPassword}</MiniTitleSmall>
-            <ResetPassword pad={"none"}>{data.createPassword}</ResetPassword>
-          </Section>
+          {onchange ?
+            <Section onClick={() => setOnChange(!onChange)} btn="true" >
+              <MiniTitleSmall>{data.restartPassword}</MiniTitleSmall>
+              <ResetPassword pad={"none"} bgcolor="#216BF4">{data.createPassword}</ResetPassword>
+            </Section>
+            :
+            <Section onClick={() => setOnChange(!onChange)} btn="true">
+              <MiniTitleSmall>{data.restartPassword}</MiniTitleSmall>
+              <ResetPassword pad={"none"}>{data.createPassword}</ResetPassword>
+            </Section>
+          }
         </Text>
       </FormWrapper>
     </Wrapper>
