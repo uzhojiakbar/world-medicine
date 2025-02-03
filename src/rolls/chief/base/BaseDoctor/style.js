@@ -7,13 +7,25 @@ export const BaseDoctorCon = styled.div`
 
   .cards {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 10px;
 
     padding: 20px;
     border-radius: 30px;
     border: 1px solid #fafafa;
     background: #fff;
+  }
+
+  @media (max-width: 1440px) {
+    .cards {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
   }
 `;
 

@@ -14,6 +14,7 @@ import {
 } from "../../../../utils/server/server";
 import FieldnamesManager from "../../../../utils/fieldnamesManager";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
+import Table from "./Table";
 
 const information = {
   all: 500,
@@ -46,16 +47,25 @@ const BaseDoctor = () => {
   const [filteredDoctors, setFilteredDoctors] = useState();
 
   useEffect(() => {
-    if (selectedViloyat) {
-      setSelectedTuman(""); // Reset tuman when viloyat changes
-    }
-    if (selectedSpecialization) {
-      const filtered = doctors.filter(
-        (doc) => doc.fieldName === selectedSpecialization
-      );
-      setFilteredDoctors(filtered);
-    }
-  }, [selectedViloyat, selectedSpecialization]);
+    setSelectedTuman(""); // Reset tuman when viloyat changes
+  }, [selectedViloyat]);
+
+  useEffect(() => {
+    // Assuming doctors are refetched from the server when `selectedTuman` changes
+    setFilteredDoctors(doctors);
+  }, [selectedTuman, doctors]);
+
+  useEffect(() => {
+    // Filter doctors based on selected specialization
+    const filtered = doctors?.filter(
+      (doc) =>
+        (!selectedSpecialization || doc.fieldName === selectedSpecialization) &&
+        (!date.startDate ||
+          (new Date(doc.dateOfBirth) >= new Date(date.startDate) &&
+            new Date(doc.dateOfBirth) <= new Date(date.endDate)))
+    );
+    setFilteredDoctors(filtered);
+  }, [selectedSpecialization, date, doctors]);
 
   const getOptions = (items, language) => {
     console.log(items);
@@ -76,16 +86,13 @@ const BaseDoctor = () => {
 
   const handleDateChange = useCallback((dates) => setDate(dates), []);
 
-  console.log("doctors", doctors);
-  console.log("filteredDoctors", filteredDoctors);
-  console.log("date", date);
   return (
     <BaseDoctorCon>
-      {isLoadingDoctors || isLoadingDistricts || isLoadingRegions ? (
-        <div className="loaderWindow">
+      {/* {isLoadingDoctors || isLoadingDistricts || isLoadingRegions ? (
+        <div className="loaderParent">
           <div className="loader"></div>
         </div>
-      ) : null}
+      ) : null} */}
       <NavTitleSection>
         <div className="section1">
           <TitleSpan>База врачей</TitleSpan>
@@ -125,7 +132,7 @@ const BaseDoctor = () => {
           onValueChange={setSelectedMestaRabot}
         />
         <PrimarySelect
-          def="Select Specialization"
+          def="Специальность"
           options={specializations}
           onValueChange={(value) => setSelectedSpecialization(value.label)}
           onlyOption={1}
@@ -135,13 +142,29 @@ const BaseDoctor = () => {
           options={MestaRabot[selectedTuman] || []}
           onValueChange={setSelectedMestaRabot}
         />
+
         <DateRangePicker onDateChange={handleDateChange} />
+        <PrimarySelect
+          def={translate("Все")}
+          options={[]}
+          onValueChange={(v) => {}}
+        />
       </div>
-      {filteredDoctors?.map((doctor) => (
-        <div key={doctor.userId}>
-          Doctor ID: {doctor.userId}, Specialization: {doctor.fieldName}
-        </div>
-      ))}
+
+      <Table
+        title="Врачи"
+        isLoading={isLoadingDoctors}
+        data={filteredDoctors}
+      />
+      {/* {doctors?.length > 0 ? (
+        doctors?.map((doctor) => (
+          <div key={doctor.userId}>
+            Doctor ID: {doctor.userId}, Specialization: {doctor.fieldName}
+          </div>
+        ))
+      ) : (
+        <p>no inf</p>
+      )} */}
     </BaseDoctorCon>
   );
 };
