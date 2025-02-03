@@ -182,7 +182,7 @@ const ManagersGoal = () => {
       {isLoadingRegions ||
         isLoadingManagers ||
         (isLoadingDrugs && <div className="loading">Loading...</div>)}
-      <Title>{translate("Цель_менеджеру")}</Title>
+      <Title className="titlee">{translate("Цель_менеджеру")}</Title>
       <FormWrapper>
         <FormSectionWithGrid>
           <SectionOuter>
