@@ -27,6 +27,13 @@ export const transformWorkplacesForSelect = (wrkplc = [], lang = "eng") => {
     id: region.id,
   }));
 };
+export const transformDrugsForSelect = (drugs = [], lang = "eng") => {
+  return drugs.map((region) => ({
+    value: region?.name,
+    label: region.name,
+    id: region.id,
+  }));
+};
 
 // {language === "en" ? row?.districtName?.name : ""}
 // {language === "ru" ? row?.districtName?.nameRussian : ""}
