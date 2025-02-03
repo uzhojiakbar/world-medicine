@@ -45,7 +45,7 @@ const ManagerNavbar = () => {
 
   useEffect(() => {
     const CurrentData =
-      userRole === "CHIEF"
+      userRole === "SUPERADMIN"
         ? NavbarDataAdmin
         : userRole === "ADMIN"
         ? NavbarDataSuperAdmin

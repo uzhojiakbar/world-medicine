@@ -10,7 +10,7 @@ const OnlyAdmin = ({ children, toHome = 0 }) => {
     return <Navigate to={`/login`} />;
   }
 
-  if (role === "CHIEF") {
+  if (role === "SUPERADMIN") {
     return children;
   }
 };
