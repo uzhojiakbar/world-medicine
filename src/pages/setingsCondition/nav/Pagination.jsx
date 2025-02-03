@@ -128,7 +128,7 @@ const Pagination = () => {
   };
 
   const data =
-    Cookies.get("role") === "SUPERADMIN"
+    Cookies.get("role") === "SUPERADMIN" || Cookies.get("role") === "CHIEF"
       ? [
           {
             id: 0,
