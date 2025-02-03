@@ -86,7 +86,7 @@ export const SectionInner = styled.div`
 export const SectionOuter = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 
   /* @media (max-width: 768px) {
     flex-direction: ${({ now }) => !now && "column"};
@@ -143,6 +143,46 @@ const Datails = styled.span`
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+export const ItemContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 17px 20px;
+  border-radius: 15px;
+
+  background-color: #f7f8fc;
+`;
+
+export const Child = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+
+  > svg {
+    cursor: pointer;
+  }
+`;
+
+export const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 150px;
+  overflow: auto;
+`;
+
+export const EditIconCon = styled.div`
+  height: 16px;
+  cursor: pointer;
+`;
+
+export const RightItemMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export {
