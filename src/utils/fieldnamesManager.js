@@ -25,5 +25,5 @@ const FieldnamesManager = () => {
 
   return translatedSpecializations;
 };
-
+export { specializations };
 export default FieldnamesManager;

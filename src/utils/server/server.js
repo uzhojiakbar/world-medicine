@@ -370,20 +370,21 @@ export const useGetNewContract = (page) => {
     queryKey: ["newContract", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
     queryFn: async () => {
       try {
-        const data = await Instance.get(
-          `v1/admin/contracts/pending-review?page=${page}&size=10`
-        );
+        // const data = await Instance.get(
+        //   `v1/admin/contracts/pending-review?page=${page}&size=10`
+        // );
+        // const data = {};
 
-        const content = await Promise.all(
-          data?.data?.content.map(async (doctor) => {
-            const districtInfo = await fetchDistrict(doctor?.districtId);
-            const fetchRegionInfo = await fetchRegion(districtInfo?.regionId);
+        // const content = await Promise.all(
+        //   data?.data?.content?.map(async (doctor) => {
+        //     const districtInfo = await fetchDistrict(doctor?.districtId);
+        //     const fetchRegionInfo = await fetchRegion(districtInfo?.regionId);
 
-            return { ...doctor, districtInfo, regioninfo: fetchRegionInfo }; // Region nomini doctorga qo'shamiz
-          })
-        );
+        //     return { ...doctor, districtInfo, regioninfo: fetchRegionInfo }; // Region nomini doctorga qo'shamiz
+        //   })
+        // );
 
-        return { ...data?.data, content: content };
+        return {};
       } catch (error) {
         console.error("Error fetching data", error);
         throw error; // xatolikni qaytarish
@@ -679,6 +680,58 @@ export const useGetRegions = () => {
       try {
         const data = await Instance.get(`/v1/auth/regions`);
         return data?.data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+
+export const useGetDoctors = (filters = {}) => {
+  // Filterlarni tozalash: null yoki undefined qiymatlarni olib tashlash
+  const cleanFilters = Object.entries(filters).reduce((acc, [key, value]) => {
+    if (value != null) {
+      // null yoki undefined bo'lmagan qiymatlarni qo'shish
+      acc[key] = value;
+    }
+    return acc;
+  }, {});
+
+  const hasFilters = Object.keys(cleanFilters).length > 0;
+
+  return useQuery({
+    queryKey: ["Doctors", cleanFilters], // Cache key
+    queryFn: async () => {
+      const queryParameters = new URLSearchParams(cleanFilters).toString(); // Converts the clean filters object into a query string
+      const url = `/v1/user/doctors${hasFilters ? "?" + queryParameters : ""}`; // Append the query string to the URL
+      try {
+        const { data } = await Instance.get(url);
+        return data;
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+        throw error; // Continue throwing the error to handle it in the component
+      }
+    },
+    enabled: hasFilters, // Faqat cleanFilters mavjud bo'lganda so'rov yuboriladi
+    staleTime: 1000 * 60 * 10, // Optionally adjust the cache time as necessary
+  });
+};
+
+export const useGetDistricts = (regionId = null) => {
+  return useQuery({
+    queryKey: ["Districts", regionId],
+    queryFn: async () => {
+      try {
+        if (regionId) {
+          const data = await Instance.get(
+            `/v1/auth/districts?regionId=${regionId}`
+          );
+          return data?.data;
+        } else {
+          return [];
+        }
       } catch (error) {
         console.error("Error fetching data", error);
         throw error; // xatolikni qaytarish
