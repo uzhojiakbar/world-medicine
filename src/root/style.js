@@ -97,9 +97,10 @@ export const InformationTitleSpan = styled.span`
   color: #7c7c7e;
 
   font-family: "Vela Sans GX", sans-serif;
+  font-size: 16px;
+  padding-bottom: 4px;
 
   ${media.mobileL} {
-    font-size: 28px;
   }
 `;
 
