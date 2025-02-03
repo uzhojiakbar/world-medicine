@@ -35,7 +35,7 @@ const Router = () => {
   console.log("HOZIRGI ROLE: ", currentUserRole);
 
   // ADMIN ROUTES
-  if (currentUserRole === "SUPERADMIN") {
+  if (currentUserRole === "SUPERADMIN" || currentUserRole === "CHIEF") {
     return (
       <Suspense fallback={<Loader />}>
         <AdminNavbar />
