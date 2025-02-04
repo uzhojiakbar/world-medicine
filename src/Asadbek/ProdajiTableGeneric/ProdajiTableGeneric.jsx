@@ -108,7 +108,7 @@ export const ResponsiveTableAdmin = styled.div`
     background-color: white; /* Header fon rangi */
     font-weight: 700; /* Qalin matn */
 
-    color: #216bf480;
+    color: rgba(0, 0, 0, 0.50);
     font-family: "Vela Sans GX", sans-serif;
     font-weight: 600;
 
@@ -183,8 +183,13 @@ export const ResponsiveTableAdmin = styled.div`
       opacity: 1;
       transform: scale(1.01);
     }
-  }
 
+  }
+.color {
+    color: #216BF4;
+
+;
+}
   .colorBlue {
     color: #216bf4;
     height: 100%;
@@ -299,7 +304,7 @@ export const WhiteWrapper = styled.div`
 
 
 
-const UsloviyaProductTable = ({
+const ProdajiTableGeneric = ({
     data,
     loading = true,
     setLoading = () => { },
@@ -385,31 +390,19 @@ const UsloviyaProductTable = ({
                                 <tr>
                                     {
                                         thead?.map((v, i) => {
-
-                                            if (typeof (v) == "string") {
-                                                return <th className={i == 0 && "idfixed"} >{v}</th>
-                                            } else {
+                                            if (v == "%") {
                                                 return <>
+                                                    <th className={i == 0 && "idfixed"} >{v}</th>
                                                     <td>
                                                         <Line />
                                                     </td>
-                                                    <th colSpan={2}>
-
-                                                        <Article>
-                                                            <div>{v?.title}</div>
-                                                            <div className="flex">
-                                                                {v?.child && v.child.map(v => <p key={v}>{v}</p>)}
-                                                            </div>
-                                                        </Article>
-                                                    </th>
-
                                                 </>
                                             }
+                                            return <th className={i == 0 && "idfixed"} >{v}</th>
+
                                         })
                                     }
-                                    <td>
-                                        <Line />
-                                    </td>
+
 
                                     <th></th>
                                 </tr>
@@ -426,54 +419,23 @@ const UsloviyaProductTable = ({
 
                                                     Object.keys(row)?.map((v, i) => {
                                                         if (v == "id") return ""
-                                                        if (row[v]?.Балл) {
-
+                                                        if (v == "%") {
                                                             return <>
-                                                                {editId == row.id ? (
-                                                                    <>
-                                                                        <td>
-                                                                            <Line />
-                                                                        </td>
-                                                                        <td>
-                                                                            <Input
-                                                                                type="number"
-                                                                                name="Лимит"
-                                                                                value={row[v]?.Лимит}
-                                                                                onChange={(value) => handleInputChange(v, value, index, "Лимит")}
-                                                                                placeholder="Лимит"
-                                                                                height={"50px"}
-                                                                            />
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <Input
-                                                                                type="number"
-                                                                                name="Балл"
-                                                                                value={row[v]?.Балл}
-                                                                                onChange={(value) => handleInputChange(v, value, index, "Балл")}
-                                                                                placeholder="Балл"
-                                                                                height={"50px"}
-                                                                            />
-                                                                        </td>
-                                                                    </>
-                                                                ) : <>
-                                                                    <td>
-                                                                        <Line />
-                                                                    </td>
-                                                                    <td>
-                                                                        {row[v]?.Лимит}
-                                                                    </td>
-                                                                    <td>
-                                                                        {row[v]?.Балл}
-                                                                    </td>
-
-                                                                </>
-                                                                }
+                                                                <td className={i == 0 && "idfixed"} >
+                                                                    <p className={i > 1 && i <= 4 && "color"}>
+                                                                        {row[v]}
+                                                                    </p></td>
+                                                                <td>
+                                                                    <Line />
+                                                                </td>
                                                             </>
-                                                        } else {
+                                                        }
+                                                        else {
 
                                                             return editId !== row.id ? <td key={v.id} className={i == 1 && "idfixed"}>
-                                                                {row[v]}
+                                                                <p className={i > 1 && i <= 4 && "color"}>
+                                                                    {row[v]}
+                                                                </p>
                                                             </td> : <td>
                                                                 <Input
                                                                     type="text"
@@ -487,9 +449,7 @@ const UsloviyaProductTable = ({
                                                         }
                                                     })
                                                 }
-                                                <td>
-                                                    <Line />
-                                                </td>
+
                                                 <td className="buttons">
                                                     {
 
@@ -609,4 +569,4 @@ const UsloviyaProductTable = ({
     );
 }
 
-export default UsloviyaProductTable
+export default ProdajiTableGeneric
