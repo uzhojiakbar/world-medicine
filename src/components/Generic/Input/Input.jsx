@@ -7,7 +7,8 @@ const Input = ({
   maxLength = 256,
   type,
   value = "",
-  onChange = () => {},
+  height,
+  onChange = () => { },
 }) => {
   return (
     <InputWrapper
@@ -17,6 +18,7 @@ const Input = ({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder || ""}
       defaultValue={value}
+      height={height}
     />
   );
 };
