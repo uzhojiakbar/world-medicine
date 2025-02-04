@@ -6,7 +6,7 @@ export const InputWrapper = styled(Input)`
 
   border-radius: 10px;
   display: inline-block;
-  height: 60px;
+  height: ${({ height }) => (height ? height : "60px")};
   border: none !important;
 
   width: 100%;

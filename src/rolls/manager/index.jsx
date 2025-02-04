@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Highlight,
@@ -15,6 +15,7 @@ import EyeIcon from "../../assets/svg/Eye";
 import SystemIcon from "../../assets/svg/SystemIcon";
 import { useNavigate } from "react-router-dom";
 import AnalitikaManagerPage from "./analiktika";
+import UsloviyaProductTable from "../../Asadbek/usloviyaProductTable.jsx";
 
 const ManagerHome = () => {
   const { translate } = useLanguage();
@@ -94,8 +95,188 @@ const ManagerHome = () => {
     },
   ];
 
+  const [loading, setLoading] = useState(false);
+
+
+
+  const [tableData, settableData] = useState({
+
+    thead: ["Препарат", "CIP", "Не более", "Рецептурник",
+      {
+        title: "СУ",
+        child: ["Лимит", "Балл"]
+      },
+      {
+        title: "СУ",
+        child: ["Лимит", "Балл"]
+      },
+      {
+        title: "СУ",
+        child: ["Лимит", "Балл"]
+      },
+      {
+        title: "СУ",
+        child: ["Лимит", "Балл"]
+      },
+
+    ],
+    tbody: [
+      {
+        id: 1,
+        name: " Амлипин таблетки 5/10 мг",
+        cip: "12 000",
+        nebolshe: "-?%",
+        Рецептурник: "7",
+        СУ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        СБ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+
+        ГЗ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        КВ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+      },
+      {
+        id: 2,
+        name: " Амлипин таблетки 5/10 мг",
+        cip: "12 000",
+        nebolshe: "-?%",
+        Рецептурник: "7",
+        СУ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        СБ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+
+        ГЗ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        КВ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+      },
+      {
+        id: 3,
+        name: " Амлипин таблетки 5/10 мг",
+        cip: "12 000",
+        nebolshe: "-?%",
+        Рецептурник: "7",
+        СУ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        СБ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+
+        ГЗ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        КВ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+      },
+      {
+        id: 4,
+        name: " Амлипин таблетки 5/10 мг",
+        cip: "12 000",
+        nebolshe: "-?%",
+        Рецептурник: "7",
+        СУ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        СБ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+
+        ГЗ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+        КВ: {
+          child: {
+            Лимит: "11",
+            Балл: "5"
+          },
+
+        },
+      },
+    ]
+  });
   return (
     <Container>
+
+      <UsloviyaProductTable
+        title={translate("Наименование_товара")}
+        loading={loading}
+        setLoading={setLoading}
+        data={tableData} setData={settableData}
+      />
+
       <Title>{translate("Быстрый доступ")}</Title>
       <QuickAccess data={data} count={4} />
 
