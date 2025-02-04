@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import axios from "axios";
+import { useState, useEffect } from "react";
 import {
   ExitIcon,
   FormWrapper,
@@ -28,19 +28,21 @@ import useLogout from "../../../hooks/useLogOut.jsx";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext.jsx";
 import { useGetProfileInfo } from "../../../utils/server/server.js";
-
 import Cookie from "js-cookie";
 import ModalResetPass from "./ModalResetPass.jsx";
 import { message } from "antd";
+import Instance from "../../../utils/Instance.js";
 
 const Profile = () => {
   const [inputType, setInputType] = useState(true);
   const { data: info, isLoading } = useGetProfileInfo();
-  const [onChange, setOnChange] = useState(false)
-  const [value, setValue] = useState("")
+  const [onChange, setOnChange] = useState(false);
+  const [value, setValue] = useState("");
   const logout = useLogout();
   const nav = useNavigate();
-  const [isOpen, setOpen] = useState(false)
+  const [isOpen, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleLogout = () => {
     logout(() => {
       console.log("User logged out successfully");
@@ -48,9 +50,8 @@ const Profile = () => {
     });
   };
 
-  const userRole = info?.role || Cookie.get("role");
-
   const { translate } = useLanguage();
+  const userRole = info?.role || Cookie.get("role"); // Bu yerda info obyekti ichidan role olinadi
 
   const data = {
     CHIEF: translate("Главный_администратор"),
@@ -66,16 +67,32 @@ const Profile = () => {
     createPassword: translate("Установить_новый_пароль"),
   };
 
-  const UserData = {
-    userName: "koptleulovarslan111",
-    email: "koptleulovarss@gmail.com",
-    phoneNumber: "998993223222",
-    password: "1",
+  // Parolni tekshirish va modal ochish
+  const checkPassword = async () => {
+    setLoading(true);
+    try {
+      const response = await Instance.get(
+        `v1/user/password-compare?userId=${info?.userId}&password=${value}`
+      );
+      if (response.data === true) {
+        localStorage.setItem("currentPassword", value);
+        setOpen(true);
+        setLoading(false);
+        message.success(translate("пароль_правильный"));
+      } else {
+        message.error(translate("Пароль_неверный"));
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error(translate("Проверка_пароля_не_удалась"), error);
+      message.error(translate("Проверка_пароля_не_удалась"));
+      setLoading(false);
+    }
   };
 
   return (
     <Wrapper>
-      {isLoading ? (
+      {isLoading || loading ? (
         <div className="loaderParent">
           <div className="loader"></div>
         </div>
@@ -86,7 +103,7 @@ const Profile = () => {
         <UserDate>
           <ProfileImg src={img} alt="no img" />
           <UserName>
-            {info?.firstName || data.status} <br />{" "}
+            {info?.firstName || data.status} <br />
             {info?.lastName || data.status}
           </UserName>
         </UserDate>
@@ -95,7 +112,7 @@ const Profile = () => {
             <Exit />
           </ExitIcon>
           <MainAdminButton>
-            <MainAdmin />{" "}
+            <MainAdmin />
             <Item> {userRole ? data?.[userRole] : data?.status}</Item>
           </MainAdminButton>
         </UserSetting>
@@ -119,49 +136,46 @@ const Profile = () => {
         </Section>
         <Text mt={"true"}>
           <Section>
-            <MiniTitleSmall>{onChange ? translate("Текущий пароль") : data.password}</MiniTitleSmall>
-            <InputWrapper pad={"none"} >
-              {onChange ?
-
-                <Input type={inputType ? "password" : "text"} value={value.length < 0 ? "" : value} onChange={(e) =>
-                  setValue(e.target.value)
-                } placeholder={translate("Текущий пароль")} /> : <Input
-                  value={UserData.password}
-                  type="password"
-                  disabled
+            <MiniTitleSmall>
+              {onChange ? translate("Текущий пароль") : data.password}
+            </MiniTitleSmall>
+            <InputWrapper pad={"none"}>
+              {onChange ? (
+                <Input
+                  type={inputType ? "password" : "text"}
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder={translate("Текущий пароль")}
                 />
-              }
+              ) : (
+                <Input value={value} type="password" disabled />
+              )}
               <ForSee onClick={() => setInputType(!inputType)} />
             </InputWrapper>
           </Section>
 
-          <Section btn="true" >
+          <Section btn="true">
             <MiniTitleSmall>{data.restartPassword}</MiniTitleSmall>
-            {
-              onChange ?
-
-                <ResetPassword pad={"none"} bgcolor={value.length > 0 ? "#216BF4" : "#4a6eb0"} onClick={() => {
-
-                  if (value.length > 0 && value == UserData.password) {
-
-
-                    setOnChange(!onChange)
-                    setValue("")
-                    setOpen(true)
-                  } else message.error("Parol hato!")
-                }}>{"Установить текущий пароль"}</ResetPassword>
-                : <ResetPassword pad={"none"} onClick={() => setOnChange(true)} >{data.createPassword}</ResetPassword>
-            }
-
-
+            {onChange ? (
+              <ResetPassword
+                pad={"none"}
+                bgcolor={value.length > 0 ? "#216BF4" : "#4a6eb0"}
+                onClick={() => {
+                  checkPassword();
+                }}
+              >
+                {"Установить текущий пароль"}
+              </ResetPassword>
+            ) : (
+              <ResetPassword pad={"none"} onClick={() => setOnChange(true)}>
+                {data.createPassword}
+              </ResetPassword>
+            )}
           </Section>
-
         </Text>
       </FormWrapper>
-    </Wrapper >
+    </Wrapper>
   );
 };
 
 export default Profile;
-
-
