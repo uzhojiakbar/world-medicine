@@ -5,7 +5,7 @@ import Pagination from "./Pagination";
 import { Outlet } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext";
 
-const AdminHomePage = () => {
+const NastroykaUsloviya = () => {
     const { translate } = useLanguage();
     return (
         <AnaliktikaCon>
@@ -18,4 +18,4 @@ const AdminHomePage = () => {
     );
 };
 
-export default AdminHomePage;
+export default NastroykaUsloviya;
