@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import {
   NavbarDataAdmin,
@@ -12,6 +12,7 @@ import PrivateRoute from "../components/Navigate/PrivateRoute";
 import Cookies from "js-cookie";
 import AdminNavbar from "../components/navbar/admin/navbar";
 import ManagerNavbar from "../components/navbar/manager/navbar";
+import DisabledPage from "../components/DisabledPage/Outer";
 
 // Components
 const NotAuth = lazy(() => import("../components/Navigate/notAuth"));
@@ -34,10 +35,26 @@ const Router = () => {
   const currentUserRole = Cookies.get("role");
   console.log("HOZIRGI ROLE: ", currentUserRole);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // ADMIN ROUTES
   if (currentUserRole === "SUPERADMIN" || currentUserRole === "CHIEF") {
     return (
       <Suspense fallback={<Loader />}>
+        {isMobile ? (
+          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
+        ) : (
+          ""
+        )}
         <AdminNavbar />
 
         <Routes>
@@ -61,6 +78,11 @@ const Router = () => {
   else if (currentUserRole === "ADMIN") {
     return (
       <Suspense fallback={<Loader />}>
+        {isMobile ? (
+          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
+        ) : (
+          ""
+        )}
         <AdminNavbar />
 
         <Routes>
@@ -83,6 +105,11 @@ const Router = () => {
   else if (currentUserRole === "MANAGER") {
     return (
       <Suspense fallback={<Loader />}>
+        {isMobile ? (
+          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
+        ) : (
+          ""
+        )}
         <ManagerNavbar />
 
         <Routes>
@@ -108,6 +135,11 @@ const Router = () => {
   else {
     return (
       <Suspense fallback={<Loader />}>
+        {isMobile ? (
+          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
+        ) : (
+          ""
+        )}
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
