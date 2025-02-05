@@ -15,6 +15,7 @@ import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
 
 import { RoutingManager } from "./RoutingManager";
 import { RoutingChief } from "./RoutingChief";
+import { RoutingAdmin } from "./RoutingAdmin";
 
 export const navbarData = () => {
   return [
@@ -99,7 +100,7 @@ export const NavbarBurgerMenu = () => {
 };
 
 // export const NavbarDataAdmin = [
-export const NavbarDataAdmin = [...RoutingChief];
+export const NavbarDataAdmin = [...RoutingAdmin];
 
 export const NavbarDataSuperAdmin = [...RoutingChief];
 
