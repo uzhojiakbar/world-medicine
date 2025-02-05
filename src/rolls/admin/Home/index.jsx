@@ -9,8 +9,10 @@ const AdminHomePage = () => {
     const { translate } = useLanguage();
     return (
         <AnaliktikaCon>
-            <Title>{translate("Управление_базой_данных")}</Title>
-            <Pagination />
+            <div className="conn">
+                <Title>{translate("Управление_базой_данных")}</Title>
+                <Pagination />
+            </div>
             <Outlet />
         </AnaliktikaCon>
     );
