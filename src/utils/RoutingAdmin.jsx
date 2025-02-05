@@ -16,7 +16,7 @@ import MestaRabota from "../pages/setingsCondition/MestaRabota";
 import CreateMedAgent from "../pages/createMedAgent/";
 import ReportsClient from "../rolls/manager/reportsClient";
 import ManagersGoal from "../rolls/chief/home/ManagersGoal/ManagersGoal";
-import AdminHomePage from "../rolls/admin/Home";
+import NastroykaUsloviya from "../rolls/admin/NastroykaUsloviya";
 import AdminArxiv from "../rolls/admin/AdminArxiv/Arxiv";
 import AdminPreparat from "../rolls/admin/Preprat";
 import AdminMestaRabota from "../rolls/admin/MestaRabota";
@@ -113,7 +113,7 @@ export const RoutingAdmin = [
         path: "/nastroyka-usloviya",
         element: (
             <MainContainer>
-                <AdminHomePage />
+                <NastroykaUsloviya />
             </MainContainer>
         ),
         child: (
