@@ -5,6 +5,8 @@ import { MainContainer } from "../root/style";
 import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
 import Preparat from "../pages/setingsCondition/Preprat";
 
+// admin routing data
+
 export const RoutingAdmin = [
     {
         id: 4,
