@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import { TopTitle } from "../../pages/login/style";
 
 export const DisabledPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(10px);
 
   width: 100% !important;
 
@@ -36,4 +37,30 @@ export const DisabledPageContainer = styled.div`
     height: 100%;
     justify-content: space-evenly;
   }
+`;
+
+export const DisabledPageContainerOuter = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  min-width: 100vw !important;
+
+  min-height: 100vh !important;
+  height: 100vh !important;
+
+  z-index: 999999999999;
+
+  border-radius: 40px;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+`;
+export const TopTitleDisabled = styled(TopTitle)`
+  color: red;
 `;

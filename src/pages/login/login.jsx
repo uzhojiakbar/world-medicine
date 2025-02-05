@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "antd";
 import { useSignIn } from "../../hooks/useLogin.jsx";
 import { useNavigate } from "react-router-dom";
@@ -28,12 +28,15 @@ import { useLanguage } from "../../context/LanguageContext"; // Tarjima uchun ko
 import LoginFInished from "./LoginFInished.jsx";
 
 import Cookies from "js-cookie";
+import DisabledPage from "../../components/DisabledPage/index.jsx";
 
 const Login = () => {
   const signIn = useSignIn();
   const [loading, setLoading] = useState(false);
   const [isSucces, setSucces] = useState("1");
   const nav = useNavigate();
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const Back = () => {
     if (isSucces == "1") {
@@ -42,6 +45,15 @@ const Login = () => {
       setSucces("1");
     }
   };
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const { translate, setLanguage } = useLanguage(); // Tarjima funksiyasi
 
@@ -130,6 +142,7 @@ const Login = () => {
       ) : (
         ""
       )}
+
       <LoginWrapper
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}

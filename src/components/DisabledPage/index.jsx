@@ -1,11 +1,11 @@
 import React from "react";
-import { DisabledPageContainer } from "./style";
+import { DisabledPageContainer, TopTitleDisabled } from "./style";
 import { TopTitle } from "../../pages/login/style";
 
-const DisabledPage = () => {
+const DisabledPage = ({ title = "Sahifa API ulanishini kutmoqda..." }) => {
   return (
     <DisabledPageContainer>
-      <TopTitle>Sahifa API ulanishini kutmoqda...</TopTitle>
+      <TopTitleDisabled>{title}</TopTitleDisabled>
     </DisabledPageContainer>
   );
 };
