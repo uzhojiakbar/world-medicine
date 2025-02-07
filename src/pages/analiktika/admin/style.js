@@ -4,8 +4,13 @@ import { media } from "../../../utils/media";
 const AnaliktikaCon = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 50px;
   width: 100%;
+  > .conn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 const Analiktika__Cards = styled.div`
