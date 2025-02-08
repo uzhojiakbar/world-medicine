@@ -10,6 +10,7 @@ import MainTable from "./Table";
 import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
 import Server from "../../../utils/server/server";
+import ProdajiTableGeneric from "./ProdajiTableGeneric/ProdajiTableGeneric";
 
 const exportToExcel = (data) => {
   // 1. Jadval ma'lumotlarini tayyorlash
@@ -176,7 +177,7 @@ function AddPreporad() {
           </Clear>
         </Box>
       </Container1>
-      <MainTable loading={loading} setLoading={setLoading} data={data} />
+      <ProdajiTableGeneric loading={loading} setLoading={setLoading} data={data} setData={setData} />
     </>
   );
 }

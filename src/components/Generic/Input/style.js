@@ -11,7 +11,6 @@ export const InputWrapper = styled(Input)`
 
   width: 100%;
   font-size: 16px;
-
   font-family: "Vela Sans GX";
 
   &::placeholder {
