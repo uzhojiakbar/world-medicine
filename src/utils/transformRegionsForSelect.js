@@ -1,5 +1,5 @@
 export const transformRegionsForSelect = (regions = [], lang = "eng") => {
-  return regions.map((region) => ({
+  return regions?.map((region) => ({
     value: (function name(params) {
       if (lang === "ru") return region?.nameRussian;
       else if (lang === "en") return region?.name;
@@ -8,7 +8,7 @@ export const transformRegionsForSelect = (regions = [], lang = "eng") => {
     })(),
     label: region.name,
     id: region?.id,
-    districts: region.districts.map((district) => ({
+    districts: region?.districts?.map((district) => ({
       value: (function name(params) {
         if (lang === "ru") return district?.nameRussian;
         else if (lang === "en") return district?.name;
@@ -18,6 +18,18 @@ export const transformRegionsForSelect = (regions = [], lang = "eng") => {
       label: district.name,
       id: district?.districtId,
     })),
+  }));
+};
+export const transformDistrictsForSelect = (districts = [], lang = "eng") => {
+  return districts?.map((dstrc) => ({
+    value: (function name(params) {
+      if (lang === "ru") return dstrc?.nameRussian;
+      else if (lang === "en") return dstrc?.name;
+      else if (lang === "uz") return dstrc?.nameUzLatin;
+      else return dstrc?.nameRussian;
+    })(),
+    label: dstrc.name,
+    districtId: dstrc?.districtId,
   }));
 };
 export const transformWorkplacesForSelect = (wrkplc = [], lang = "eng") => {

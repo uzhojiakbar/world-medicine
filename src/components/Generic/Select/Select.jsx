@@ -11,6 +11,7 @@ import { styled } from "@mui/system";
 const StyledFormControl = styled(FormControl)(({ borderRadius, bgColor }) => ({
   width: "100%",
   height: "60px",
+
   ".MuiOutlinedInput-root": {
     borderRadius: borderRadius || "10px",
     height: "100%",
@@ -36,6 +37,9 @@ const StyledFormControl = styled(FormControl)(({ borderRadius, bgColor }) => ({
     fontSize: "22px",
     color: "#000",
   },
+  "& .MuiOutlinedInput-notchedOutline": {
+    border: "none",
+  },
 }));
 
 const PrimarySelect = ({
@@ -44,6 +48,8 @@ const PrimarySelect = ({
   options,
   onValueChange,
   bgColor,
+  disabled,
+  onClick = () => {},
   onlyOption = 0,
 }) => {
   const handleValueChange = (event) => {
@@ -76,6 +82,8 @@ const PrimarySelect = ({
         onChange={handleValueChange}
         displayEmpty
         input={<OutlinedInput />}
+        disabled={disabled}
+        onClick={onClick}
       >
         <MenuItem value="" disabled>
           {def}

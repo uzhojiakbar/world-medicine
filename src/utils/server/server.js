@@ -423,7 +423,7 @@ export const useGetWorkPlaces = (page) => {
 
 export const useGetProfileInfo = (userId) => {
   return useQuery({
-    queryKey: ["ProfileInfo", userId],
+    queryKey: ["ProfileInfo", Cookie.get("access_token")],
     queryFn: async () => {
       try {
         const token = Cookie.get("access_token") || "";
@@ -738,6 +738,25 @@ export const useGetDistricts = (regionId = null) => {
       }
     },
     staleTime: 1000 * 60 * 10,
+  });
+};
+
+export const useAddAdminManagerGoal = () => {
+  return useMutation({
+    mutationFn: async (managerGoalData) => {
+      console.log("AddAdminManagerGoal", managerGoalData);
+      const response = await Instance.post(
+        "/v1/admin/manager/new-goal",
+        managerGoalData?.requestData
+      );
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      variables.onSuccess();
+    },
+    onError: (error, variables) => {
+      variables.onError();
+    },
   });
 };
 export default Server;
