@@ -126,53 +126,29 @@ const Pagination = () => {
         );
     };
 
-    const data =
-        Cookies.get("role") === "SUPERADMIN" || Cookies.get("role") === "CHIEF"
-            ? [
-                {
-                    id: 0,
-                    name: translate("Архив_договоров"),
-                    path: "",
-                    icon: <ArchiveIcon />,
-                },
-                {
-                    id: 1,
-                    name: translate("Препараты"),
-                    path: "Preparad",
-                    icon: <PreparadIcon />,
-                },
-                {
-                    id: 2,
-                    name: translate("Места работы"),
-                    path: "Mestrabotaya",
-                    icon: <MestarabotayaIcon />,
-                },
 
-            ]
-            : Cookies.get("role") === "MANAGER"
-                ? [
-                    {
-                        id: 0,
-                        name: translate("Архив_договоров"),
-                        path: "",
-                        icon: <ArchiveIcon />,
-                    },
-                    {
-                        id: 1,
-                        name: translate("Препараты"),
-                        path: "Preparad",
-                        icon: <PreparadIcon />,
-                    },
-                    {
-                        id: 2,
-                        name: translate("Места работы"),
-                        path: "Mestrabotaya",
-                        icon: <MestarabotayaIcon />,
-                    },
-                ]
-                : [];
 
-    const navdata = data;
+    const navdata = [
+        {
+            id: 0,
+            name: translate("Архив_договоров"),
+            path: "",
+            icon: <ArchiveIcon />,
+        },
+        {
+            id: 1,
+            name: translate("Препараты"),
+            path: "Preparad",
+            icon: <PreparadIcon />,
+        },
+        {
+            id: 2,
+            name: translate("Места работы"),
+            path: "Mestrabotaya",
+            icon: <MestarabotayaIcon />,
+        },
+
+    ];
 
     useEffect(() => {
         const pathSegments = location.pathname.split("/");

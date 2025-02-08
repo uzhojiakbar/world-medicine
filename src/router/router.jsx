@@ -58,7 +58,7 @@ const Router = () => {
         <AdminNavbar />
 
         <Routes>
-          {NavbarDataAdmin.map(({ id, path, element, child }) => {
+          {NavbarDataSuperAdmin.map(({ id, path, element, child }) => {
             if (child.length) {
               return <Route key={id} path={path} element={element} />;
             } else {
@@ -86,7 +86,7 @@ const Router = () => {
         <AdminNavbar />
 
         <Routes>
-          {NavbarDataSuperAdmin.map(({ id, path, element, child }) => {
+          {NavbarDataAdmin.map(({ id, path, element, child }) => {
             if (child.length) {
               return <Route key={id} path={path} element={element} />;
             } else {
