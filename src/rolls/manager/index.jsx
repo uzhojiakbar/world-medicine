@@ -90,7 +90,7 @@ const ManagerHome = () => {
         </svg>
       ),
       onclick: () => {
-        nav("purpose-med-agent");
+        nav("goal-med-rep");
         console.log("button clickd");
       },
     },

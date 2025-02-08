@@ -7,6 +7,7 @@ import ReportsClient from "../rolls/manager/reportsClient";
 import Profile from "../pages/profile/admin";
 import Rahmadjon from "../Rahmadjon";
 import { MainContainer } from "../root/style";
+import MedRepGoal from "../rolls/manager/home/MedRepGoal/ManagersGoal";
 
 export const RoutingManager = [
   {
@@ -54,10 +55,10 @@ export const RoutingManager = [
   {
     id: 2,
     title: "Цель мед. представителю",
-    path: "purpose-med-agent",
+    path: "goal-med-rep",
     element: (
       <MainContainer>
-        <PurposeMedAgent />
+        <MedRepGoal />
       </MainContainer>
     ),
     child: [],
@@ -121,5 +122,4 @@ export const RoutingManager = [
     onlyAdmin: false,
     icon: false,
   },
-
 ];

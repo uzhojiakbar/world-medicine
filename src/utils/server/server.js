@@ -319,7 +319,6 @@ const fetchDistrict = async (districtId) => {
     const response = await Instance.get(
       `/v1/auth/district?districtId=${districtId}`
     );
-    console.log(response?.data);
     return response?.data; // Region nomini qaytaradi
   } catch (error) {
     console.error("Error fetching region data", error);
@@ -330,7 +329,6 @@ const fetchDistrict = async (districtId) => {
 const fetchRegion = async (regionId) => {
   try {
     const response = await Instance.get(`/v1/auth/region?regionId=${regionId}`);
-    console.log(response?.data);
     return response?.data; // Region nomini qaytaradi
   } catch (error) {
     console.error("Error fetching region data", error);

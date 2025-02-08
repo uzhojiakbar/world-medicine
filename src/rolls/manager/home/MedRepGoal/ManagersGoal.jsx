@@ -20,6 +20,7 @@ import {
   useGetDistricts,
   useGetDrugs,
   useGetManagers,
+  useGetMedAgents,
   useGetProfileInfo,
   useGetRegions,
 } from "../../../../utils/server/server";
@@ -40,7 +41,7 @@ import { message } from "antd";
 import Button from "../../../../components/Generic/Button/Button";
 import IconPlus from "../../../../assets/svg/IconPlus";
 
-const ManagersGoal = () => {
+const MedRepGoal = () => {
   const [region, setRegion] = useState(null);
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [specialist, setSpecialist] = useState({});
@@ -56,14 +57,17 @@ const ManagersGoal = () => {
   const { translate, language } = useLanguage();
   const { data: Regions, isLoading: isLoadingRegions } = useGetRegions();
   const { data: drugs, isLoading: isLoadingDrugs } = useGetDrugs();
-  const { data: districts, isLoading: isLoadingDistrcts } =
-    useGetDistricts(region);
-  const { data: managers, isLoading: isLoadingManagers } = useGetManagers({
-    regionId: region,
-  });
+  const { data: districts, isLoading: isLoadingDistrcts } = useGetDistricts(1);
+  const { data: managers, isLoading: isLoadingManagers } = useGetMedAgents({});
 
   const { data: profileInfo, isLoading: IsLoadingProfileInfo } =
     useGetProfileInfo();
+
+  const getAllDistricts = (regions) => {
+    return Regions?.flatMap((region) => region.districts || []);
+  };
+
+  console.log("ALL DISTRICTS", getAllDistricts());
 
   const mutation = useAddAdminManagerGoal();
 
@@ -76,8 +80,8 @@ const ManagersGoal = () => {
     [drugs, translate]
   );
   const districtsTranslate = useMemo(
-    () => transformDistrictsForSelect(districts, language),
-    [districts, translate]
+    () => transformDistrictsForSelect(getAllDistricts(), language),
+    [Regions, translate]
   );
 
   const managerOptions = useMemo(
@@ -345,13 +349,7 @@ const ManagersGoal = () => {
         <FormSectionWithGrid>
           <SectionOuter>
             <DirectionFlexGap gap="10px">
-              <MiniTitleSmall>{translate("Регион")}</MiniTitleSmall>
-              <PrimarySelect
-                def={translate("Выберите_регион")}
-                options={regionsTranslate}
-                onValueChange={handleChangeRegion}
-                onlyOption
-              />
+              <MiniTitleSmall>{translate("Кому")}</MiniTitleSmall>
             </DirectionFlexGap>
             <SectionInner>
               <IconWrapper>
@@ -360,19 +358,40 @@ const ManagersGoal = () => {
               <EditableSelect
                 options={managerOptions}
                 initialValue={specialist}
-                onClick={() => {
-                  !region &&
-                    message.error(translate("Сначала_выберите_регион"));
-                }}
-                placeholder={translate("Выберите_менеджера")}
+                // onClick={() => {
+                //   !region &&
+                //     message.error(translate("Сначала_выберите_регион"));
+                // }}
+                placeholder={translate("Выберите_представителя")}
                 onValueChange={setSpecialist}
-                def={specialist.label || translate("Выберите_менеджера")}
-                disabled={!region}
+                def={specialist.label || translate("Выберите_представителя")}
+                // disabled={!region}
               />
             </SectionInner>
+
             <DirectionFlexGap gap="10px">
               <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
               <DateRangePicker onDateChange={handleDateChange} />
+            </DirectionFlexGap>
+
+            <DirectionFlexGap gap="10px">
+              <MiniTitleSmall>{translate("Выберите_Район_")}</MiniTitleSmall>
+              <PrimarySelect
+                def={translate("Выберите_Район_")}
+                options={districtsTranslate}
+                onValueChange={handleSpecializationSelect}
+                onlyOption
+              />
+            </DirectionFlexGap>
+
+            <DirectionFlexGap gap="10px">
+              <MiniTitleSmall>{translate("Выбрать_договор")}</MiniTitleSmall>
+              <PrimarySelect
+                def={translate("Выбрать_договор")}
+                options={availableSpecializations}
+                onValueChange={handleSpecializationSelect}
+                onlyOption
+              />
             </DirectionFlexGap>
           </SectionOuter>
           <SectionOuter>
@@ -476,63 +495,6 @@ const ManagersGoal = () => {
                 ))}
               </Wrap>
             </RightItemMenu>
-            <RightItemMenu>
-              <DirectionFlexGap gap="10px">
-                <MiniTitleSmall>{translate("Охват_района")}</MiniTitleSmall>
-                <PrimarySelect
-                  def={translate("Выберите_Район_")}
-                  options={districtsTranslate}
-                  onValueChange={handleDistrictSelect}
-                  onlyOption
-                  disabled={!region}
-                  onClick={() => {
-                    !region &&
-                      message.error(translate("Сначала_выберите_регион"));
-                  }}
-                />
-              </DirectionFlexGap>
-              <Wrap>
-                {selectedDistrict.map((v) => (
-                  <ItemContainer key={v.districtId}>
-                    <Child>
-                      <EditIconCon
-                        onClick={() => handelDeleteDistrict(v.districtId)}
-                      >
-                        <DeleteIcon />
-                      </EditIconCon>
-                      <span>{v?.districtName}</span>
-                    </Child>
-                    <Child>
-                      {editingDistrId === v.districtId ? (
-                        <>
-                          <input
-                            type="number"
-                            value={editValue}
-                            onChange={(e) => setEditValue(e.target.value)}
-                          />
-                          <EditIconCon
-                            onClick={() => handleEditSaveDistrict(v.districtId)}
-                          >
-                            <SaveIcon />
-                          </EditIconCon>
-                        </>
-                      ) : (
-                        <>
-                          <span>{v.quote}</span>
-                          <EditIconCon
-                            onClick={() =>
-                              handleEditInitDist(v.districtId, v.quote)
-                            }
-                          >
-                            <EditIcon />
-                          </EditIconCon>
-                        </>
-                      )}
-                    </Child>
-                  </ItemContainer>
-                ))}
-              </Wrap>
-            </RightItemMenu>
           </SectionOuter>
         </FormSectionWithGrid>
         <Button w={"100%"} icon={<IconPlus />} onClick={prepareRequestData}>
@@ -543,4 +505,4 @@ const ManagersGoal = () => {
   );
 };
 
-export default ManagersGoal;
+export default MedRepGoal;
