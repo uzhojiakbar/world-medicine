@@ -753,8 +753,50 @@ export const useAddAdminManagerGoal = () => {
       variables.onSuccess();
     },
     onError: (error, variables) => {
+      variables.onError(error);
+    },
+  });
+};
+
+export const useAddAdminMedAgentGoal = () => {
+  return useMutation({
+    mutationFn: async (medAgentGoalData) => {
+      console.log("AddAdminManagerGoal", medAgentGoalData);
+      const response = await Instance.post(
+        "/v1/admin/med-agent/new-contract",
+        medAgentGoalData?.requestData
+      );
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      variables.onSuccess();
+    },
+    onError: (error, variables) => {
       variables.onError();
     },
   });
 };
+
+export const useGetManagerGoalId = (id) => {
+  // Filterlarni tozalash: null yoki undefined qiymatlarni olib tashlash
+
+  return useQuery({
+    queryKey: ["useGetManagerGoalId", id], // Cache key
+    queryFn: async () => {
+      const url = `/v1/admin/manager/goal/manager-id/${id}`; // Append the query string to the URL
+      try {
+        const { data } = await Instance.get(url);
+        console.log("data", data);
+
+        return data;
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+        throw error; // Continue throwing the error to handle it in the component
+      }
+    },
+    enabled: hasFilters, // Faqat cleanFilters mavjud bo'lganda so'rov yuboriladi
+    staleTime: 1000 * 60 * 10, // Optionally adjust the cache time as necessary
+  });
+};
+
 export default Server;

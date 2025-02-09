@@ -16,10 +16,9 @@ import {
 import { MiniTitleSmall, Title } from "../../../../root/style";
 import PrimarySelect from "../../../../components/Generic/Select/Select";
 import {
-  useAddAdminManagerGoal,
+  useAddAdminMedAgentGoal,
   useGetDistricts,
   useGetDrugs,
-  useGetManagers,
   useGetMedAgents,
   useGetProfileInfo,
   useGetRegions,
@@ -42,22 +41,19 @@ import Button from "../../../../components/Generic/Button/Button";
 import IconPlus from "../../../../assets/svg/IconPlus";
 
 const MedRepGoal = () => {
-  const [region, setRegion] = useState(null);
   const [date, setDate] = useState({ startDate: "", endDate: "" });
   const [specialist, setSpecialist] = useState({});
   const [selectedSpecializations, setSelectedSpecializations] = useState([]);
   const [selectedDrugs, setSelectedDrugs] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [editingSpecializationId, setEditingSpecializationId] = useState(null);
   const [editingDrugId, setEditingDrugId] = useState(null);
-  const [editingDistrId, setEditingDistrId] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { translate, language } = useLanguage();
   const { data: Regions, isLoading: isLoadingRegions } = useGetRegions();
   const { data: drugs, isLoading: isLoadingDrugs } = useGetDrugs();
-  const { data: districts, isLoading: isLoadingDistrcts } = useGetDistricts(1);
   const { data: managers, isLoading: isLoadingManagers } = useGetMedAgents({});
 
   const { data: profileInfo, isLoading: IsLoadingProfileInfo } =
@@ -67,14 +63,8 @@ const MedRepGoal = () => {
     return Regions?.flatMap((region) => region.districts || []);
   };
 
-  console.log("ALL DISTRICTS", getAllDistricts());
+  const mutation = useAddAdminMedAgentGoal();
 
-  const mutation = useAddAdminManagerGoal();
-
-  const regionsTranslate = useMemo(
-    () => transformRegionsForSelect(Regions, language),
-    [Regions, translate]
-  );
   const drugsTranslate = useMemo(
     () => transformDrugsForSelect(drugs, translate),
     [drugs, translate]
@@ -104,13 +94,8 @@ const MedRepGoal = () => {
     [drugs]
   );
 
-  console.log(drugs, DrugsOptions);
+  console.log(selectedDistrict);
   // console.log("districtsTranslate", districtsTranslate);
-
-  const handleChangeRegion = useCallback((selected) => {
-    setRegion(selected.id);
-    setSpecialist({});
-  }, []);
 
   const handleDateChange = useCallback((dates) => setDate(dates), []);
 
@@ -121,11 +106,6 @@ const MedRepGoal = () => {
 
   const handleEditInitDrug = useCallback((id, quote) => {
     setEditingDrugId(id);
-    setEditValue(quote);
-  }, []);
-
-  const handleEditInitDist = useCallback((id, quote) => {
-    setEditingDistrId(id);
     setEditValue(quote);
   }, []);
 
@@ -155,36 +135,12 @@ const MedRepGoal = () => {
     [editValue]
   );
 
-  const handleEditSaveDistrict = useCallback(
-    (id) => {
-      setSelectedDistrict((prev) =>
-        prev.map((dist) =>
-          dist.districtId === id
-            ? {
-                ...dist,
-                quote: +editValue,
-              }
-            : dist
-        )
-      );
-      setEditingDistrId(null);
-      setEditValue("");
-    },
-    [editValue]
-  );
-
   const handleDeleteSpecialization = useCallback((id) => {
     setSelectedSpecializations((prev) => prev.filter((spec) => spec.id !== id));
   }, []);
 
   const handleDeleteDrug = useCallback((id) => {
     setSelectedDrugs((prev) => prev.filter((drug) => drug.id !== id));
-  }, []);
-
-  const handelDeleteDistrict = useCallback((id) => {
-    setSelectedDistrict((prev) =>
-      prev.filter((dist) => dist.districtId !== id)
-    );
   }, []);
 
   const handleSpecializationSelect = useCallback(
@@ -221,25 +177,6 @@ const MedRepGoal = () => {
     [selectedDrugs]
   );
 
-  const handleDistrictSelect = useCallback(
-    (selected) => {
-      if (!selectedDistrict.some((d) => d.districtName === selected.label)) {
-        setSelectedDistrict((prev) => [
-          ...prev,
-          {
-            id: selected.districtId,
-            districtId: selected.districtId,
-            districtName: selected.label,
-            quote: 0,
-          },
-        ]);
-      }
-
-      console.log("selectedselected: ", selected);
-    },
-    [selectedDistrict]
-  );
-
   const availableSpecializations = useMemo(
     () =>
       FieldnamesManager().filter(
@@ -249,17 +186,10 @@ const MedRepGoal = () => {
     [selectedSpecializations]
   );
 
-  console.log(districts);
-
-  const prepareRequestData = () => {
-    if (!region) {
-      console.error(translate("Регион_не_выбран"));
-      message.warning(translate("Регион_не_выбран"));
-      return;
-    }
+  const prepareRequestData = (adminId = "asdasd") => {
     if (!specialist?.id) {
-      console.error(translate("менеджера_не_найден"));
-      message.warning(translate("менеджера_не_найден"));
+      console.error(translate("представитель_не_найден"));
+      message.warning(translate("представитель_не_найден"));
       return;
     }
     if (!date?.startDate || !date?.endDate) {
@@ -277,43 +207,43 @@ const MedRepGoal = () => {
       message.warning(translate("Препараты_не_выбраны"));
       return;
     }
-    if (!selectedDistrict.length) {
-      console.error(translate("Районы_не_выбраны"));
-      message.warning(translate("Районы_не_выбраны"));
+    console.log(selectedDistrict);
+
+    if (!selectedDistrict?.districtId) {
+      console.error(translate("Пожалуйста_выберите_один_из_районов"));
+      message.warning(translate("Пожалуйста_выберите_один_из_районов"));
       return;
     }
 
     if (!profileInfo?.userId) {
-      console.error(translate("Ошибка_поиска_АДМИНА"));
-      message.warning(translate("Ошибка_поиска_АДМИНА"));
+      console.error("Admin ID topilmadi");
       return;
     }
 
     const requestData = {
+      createdAt: new Date().toISOString().split("T")[0],
+      startDate: date.startDate,
+      endDate: date.endDate,
+      medAgentId: specialist.id,
       managerId: specialist.id,
-      fieldGoalQuantities: selectedSpecializations.map((spec) => ({
-        fieldName: spec.fieldName,
-        quote: spec.quote,
-      })),
-      medicineGoalQuantities: selectedDrugs.map((drug) => ({
+      districtId: selectedDistrict?.districtId || 0,
+      medicineWithQuantityDTOS: selectedDrugs.map((drug) => ({
         medicineId: drug.id,
         medicineName: drug.fieldName,
         quote: drug.quote,
       })),
-      districtGoalQuantities: selectedDistrict.map((dist) => ({
-        districtId: dist.districtId,
-        districtName: dist.districtName,
-        quote: dist.quote,
+      fieldWithQuantityDTOS: selectedSpecializations.map((spec) => ({
+        id: spec.id,
+        fieldName: spec.fieldName,
+        quote: spec.quote,
       })),
-      startDate: date.startDate,
-      endDate: date.endDate,
-      adminId: profileInfo.userId,
+      managerId: profileInfo.userId,
     };
 
     mutation.mutate({
       requestData: requestData,
       onSuccess: () => {
-        message.success(translate("Добавлена_​​цель_для_менеджера"));
+        message.success(translate("Добавлена_​​цель_для_представителю"));
         setTimeout(() => {
           setLoading(false);
 
@@ -322,12 +252,11 @@ const MedRepGoal = () => {
       },
       onError: () => {
         setLoading(false);
-        message.error(translate("Ошибка_добавления_цели_для_менеджера"));
+        message.error(translate("Ошибка_добавления_цели_для_представителю"));
       },
     });
     console.log("mutation.status", mutation.status);
 
-    console.log("requestData", requestData);
     console.log("Request Data:", requestData);
     return requestData;
   };
@@ -338,13 +267,12 @@ const MedRepGoal = () => {
         isLoadingRegions ||
         isLoadingManagers ||
         isLoadingDrugs ||
-        isLoadingDistrcts ||
         IsLoadingProfileInfo) && (
         <div className="loaderParent">
           <div className="loader"></div>
         </div>
       )}
-      <Title className="titlee">{translate("Цель_менеджеру")}</Title>
+      <Title className="titlee">{translate("Цель_мед_представителю")}</Title>
       <FormWrapper>
         <FormSectionWithGrid>
           <SectionOuter>
@@ -371,7 +299,7 @@ const MedRepGoal = () => {
 
             <DirectionFlexGap gap="10px">
               <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
-              <DateRangePicker onDateChange={handleDateChange} />
+              <DateRangePicker onlyFuture={1} onDateChange={handleDateChange} />
             </DirectionFlexGap>
 
             <DirectionFlexGap gap="10px">
@@ -379,32 +307,20 @@ const MedRepGoal = () => {
               <PrimarySelect
                 def={translate("Выберите_Район_")}
                 options={districtsTranslate}
-                onValueChange={handleSpecializationSelect}
-                onlyOption
-              />
-            </DirectionFlexGap>
-
-            <DirectionFlexGap gap="10px">
-              <MiniTitleSmall>{translate("Выбрать_договор")}</MiniTitleSmall>
-              <PrimarySelect
-                def={translate("Выбрать_договор")}
-                options={availableSpecializations}
-                onValueChange={handleSpecializationSelect}
+                onValueChange={setSelectedDistrict}
                 onlyOption
               />
             </DirectionFlexGap>
           </SectionOuter>
           <SectionOuter>
             <RightItemMenu>
-              <DirectionFlexGap gap="10px">
-                <MiniTitleSmall>{translate("Охват_врачей")}</MiniTitleSmall>
-                <PrimarySelect
-                  def={translate("Выберите специальность")}
-                  options={availableSpecializations}
-                  onValueChange={handleSpecializationSelect}
-                  onlyOption
-                />
-              </DirectionFlexGap>
+              <MiniTitleSmall>{translate("Охват_врачей")}</MiniTitleSmall>
+              <PrimarySelect
+                def={translate("Выберите специальность")}
+                options={availableSpecializations}
+                onValueChange={handleSpecializationSelect}
+                onlyOption
+              />
               <Wrap>
                 {selectedSpecializations.map((v) => (
                   <ItemContainer key={v.id}>
@@ -497,10 +413,15 @@ const MedRepGoal = () => {
             </RightItemMenu>
           </SectionOuter>
         </FormSectionWithGrid>
-        <Button w={"100%"} icon={<IconPlus />} onClick={prepareRequestData}>
-          {translate("Назначить_задачу")}
-        </Button>
       </FormWrapper>
+      <Button
+        mw={"1000px"}
+        w={"100%"}
+        icon={<IconPlus />}
+        onClick={prepareRequestData}
+      >
+        {translate("Назначить_задачу")}
+      </Button>
     </Wrapper>
   );
 };

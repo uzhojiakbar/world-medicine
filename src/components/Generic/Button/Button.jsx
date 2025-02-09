@@ -34,6 +34,7 @@ const ButtonStyled = styled.button`
   }
 
   width: ${({ w }) => (w ? w : "fit-content")};
+  max-width: ${({ mw }) => (mw ? mw : "100%")};
   height: ${({ h }) => (h ? h : "fit-content")};
 
   ${media.mobileL} {
@@ -59,9 +60,10 @@ const Button = ({
   disabled,
   w,
   h,
+  mw,
 }) => {
   return (
-    <ButtonStyled w={w} h={h} onClick={onClick} disabled={disabled}>
+    <ButtonStyled mw={mw} w={w} h={h} onClick={onClick} disabled={disabled}>
       {icon && <span>{icon}</span>} {/* Icon ko‘rsatish */}
       <span className={`child ${MobilehiddenText ? "hidden" : ""}`}>
         {children}

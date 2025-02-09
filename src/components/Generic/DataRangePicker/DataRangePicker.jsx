@@ -7,10 +7,15 @@ const DateRangePicker = ({
   icon = <CalendarIcon />,
   bgColor,
   onDateChange = () => {},
+  onlyFuture = false,
 }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [openPicker, setOpenPicker] = useState(null); // "start" yoki "end" holatlari
+
+  const disablePastDates = (current) => {
+    return current && current < dayjs().startOf("day");
+  };
 
   const handleStartDateChange = (date) => {
     const formattedDate = date ? dayjs(date).format("YYYY-MM-DD") : null;
@@ -66,6 +71,7 @@ const DateRangePicker = ({
           onOpenChange={(open) => !open && setOpenPicker(null)}
           format="YYYY-MM-DD"
           placeholder="Дата начала"
+          disabledDate={onlyFuture && disablePastDates}
         />
       )}
 
@@ -77,6 +83,7 @@ const DateRangePicker = ({
           onOpenChange={(open) => !open && setOpenPicker(null)}
           format="YYYY-MM-DD"
           placeholder="Дата окончания"
+          disabledDate={onlyFuture && disablePastDates}
         />
       )}
     </DateContainer>

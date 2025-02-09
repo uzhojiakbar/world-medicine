@@ -64,7 +64,7 @@ const ManagerHome = () => {
         </svg>
       ),
       onclick: () => {
-        nav("create-contract");
+        nav("goal-med-rep");
       },
     },
     {

@@ -316,14 +316,20 @@ const ManagersGoal = () => {
           document.location.reload();
         }, 500);
       },
-      onError: () => {
+      onError: (err) => {
+        console.log("erre", err);
+
         setLoading(false);
-        message.error(translate("Ошибка_добавления_цели_для_менеджера"));
+        if (
+          err?.response?.data?.error.includes("Manager has already assigned")
+        ) {
+          message.error(translate("Цель_для_менеджера_уже_поставлена"));
+          console.log(1);
+        } else {
+          message.error(translate("Ошибка_добавления_цели_для_менеджера"));
+        }
       },
     });
-    console.log("mutation.status", mutation.status);
-
-    console.log("requestData", requestData);
     console.log("Request Data:", requestData);
     return requestData;
   };
@@ -372,7 +378,7 @@ const ManagersGoal = () => {
             </SectionInner>
             <DirectionFlexGap gap="10px">
               <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
-              <DateRangePicker onDateChange={handleDateChange} />
+              <DateRangePicker onlyFuture={1} onDateChange={handleDateChange} />
             </DirectionFlexGap>
           </SectionOuter>
           <SectionOuter>
@@ -431,7 +437,7 @@ const ManagersGoal = () => {
             <RightItemMenu>
               <DirectionFlexGap gap="10px">
                 <MiniTitleSmall>
-                  {translate("Выберите_препарат")}
+                  {translate("Заключение_договоров")}
                 </MiniTitleSmall>
                 <PrimarySelect
                   def={translate("Выберите_препарат")}
@@ -535,10 +541,15 @@ const ManagersGoal = () => {
             </RightItemMenu>
           </SectionOuter>
         </FormSectionWithGrid>
-        <Button w={"100%"} icon={<IconPlus />} onClick={prepareRequestData}>
-          {translate("Назначить_задачу")}
-        </Button>
       </FormWrapper>
+      <Button
+        mw={"1000px"}
+        w={"100%"}
+        icon={<IconPlus />}
+        onClick={prepareRequestData}
+      >
+        {translate("Назначить_задачу")}
+      </Button>
     </Wrapper>
   );
 };
