@@ -7,7 +7,7 @@ import {
 import LeftArrow from "../../../assets/svg/LeftArrow";
 import RightArrow from "../../../assets/svg/RightArrow";
 import styled from "styled-components";
-import ModalManager from "./Modal";
+import Modal from "./Modal";
 import { useLanguage } from "../../../context/LanguageContext";
 import Server from "../../../utils/server/server";
 
@@ -71,7 +71,7 @@ const Table = ({ title = "" }) => {
         ""
       )}
 
-      <ModalManager id={openModalId} setId={setOpenModalId} />
+      <Modal id={openModalId} setId={setOpenModalId} data={currentData} />
 
       <WhiteWrapper>
         <ResponsiveTableAdmin>
