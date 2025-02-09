@@ -66,20 +66,7 @@ export const RoutingManager = [
     onlyAdmin: false,
     icon: false,
   },
-  {
-    id: 2,
-    title: "Rahmadjon",
-    path: "Rahmadjon",
-    element: (
-      <MainContainer>
-        <Rahmadjon />
-      </MainContainer>
-    ),
-    child: [],
-    visible: false,
-    onlyAdmin: false,
-    icon: false,
-  },
+
   {
     id: 5,
     title: "Profile",
@@ -97,10 +84,10 @@ export const RoutingManager = [
   {
     id: 6,
     title: "Добавить менеджера",
-    path: "create-contract",
+    path: "med-agent-create-contract",
     element: (
       <MainContainer>
-        <CreateDogovorMain />
+        <MedRepGoal />
       </MainContainer>
     ),
     child: [],
