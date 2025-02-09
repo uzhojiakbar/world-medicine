@@ -19,6 +19,7 @@ import {
   useAddAdminMedAgentGoal,
   useGetDistricts,
   useGetDrugs,
+  useGetManagerGoalId,
   useGetMedAgents,
   useGetProfileInfo,
   useGetRegions,
@@ -59,6 +60,10 @@ const MedRepGoal = () => {
   const { data: profileInfo, isLoading: IsLoadingProfileInfo } =
     useGetProfileInfo();
 
+  const { data: goal, isLoading: isLoadingGoal } = useGetManagerGoalId(
+    profileInfo?.userId
+  );
+
   const getAllDistricts = (regions) => {
     return Regions?.flatMap((region) => region.districts || []);
   };
@@ -94,7 +99,6 @@ const MedRepGoal = () => {
     [drugs]
   );
 
-  console.log(selectedDistrict);
   // console.log("districtsTranslate", districtsTranslate);
 
   const handleDateChange = useCallback((dates) => setDate(dates), []);
@@ -187,24 +191,34 @@ const MedRepGoal = () => {
   );
 
   const prepareRequestData = (adminId = "asdasd") => {
+    setLoading(1);
+
     if (!specialist?.id) {
       console.error(translate("представитель_не_найден"));
       message.warning(translate("представитель_не_найден"));
+      setLoading(0);
+
       return;
     }
     if (!date?.startDate || !date?.endDate) {
       message.warning(translate("Дата_начала_или_окончания_не_указана"));
       console.log(translate("Дата_начала_или_окончания_не_указана"));
+      setLoading(0);
+
       return;
     }
     if (!selectedSpecializations.length) {
       console.error(translate("Выбранные_специализации_недоступны"));
       message.warning(translate("Выбранные_специализации_недоступны"));
+      setLoading(0);
+
       return;
     }
     if (!selectedDrugs.length) {
       console.error(translate("Препараты_не_выбраны"));
       message.warning(translate("Препараты_не_выбраны"));
+      setLoading(0);
+
       return;
     }
     console.log(selectedDistrict);
@@ -212,11 +226,21 @@ const MedRepGoal = () => {
     if (!selectedDistrict?.districtId) {
       console.error(translate("Пожалуйста_выберите_один_из_районов"));
       message.warning(translate("Пожалуйста_выберите_один_из_районов"));
+      setLoading(0);
+
       return;
     }
 
     if (!profileInfo?.userId) {
       console.error("Admin ID topilmadi");
+      setLoading(0);
+
+      return;
+    }
+    if (!goal?.goalId) {
+      console.error("Цель_для_менеджера_уже_поставлена");
+      setLoading(0);
+
       return;
     }
 
@@ -225,8 +249,9 @@ const MedRepGoal = () => {
       startDate: date.startDate,
       endDate: date.endDate,
       medAgentId: specialist.id,
-      managerId: specialist.id,
       districtId: selectedDistrict?.districtId || 0,
+      managerId: profileInfo.userId,
+      managerGoalId: goal?.goalId || 0,
       medicineWithQuantityDTOS: selectedDrugs.map((drug) => ({
         medicineId: drug.id,
         medicineName: drug.fieldName,
@@ -237,9 +262,8 @@ const MedRepGoal = () => {
         fieldName: spec.fieldName,
         quote: spec.quote,
       })),
-      managerId: profileInfo.userId,
     };
-
+    // *! IT NEED MANAGER GOAL ID
     mutation.mutate({
       requestData: requestData,
       onSuccess: () => {
@@ -250,14 +274,13 @@ const MedRepGoal = () => {
           document.location.reload();
         }, 500);
       },
-      onError: () => {
+      onError: (error) => {
         setLoading(false);
+        console.log("error", error);
+
         message.error(translate("Ошибка_добавления_цели_для_представителю"));
       },
     });
-    console.log("mutation.status", mutation.status);
-
-    console.log("Request Data:", requestData);
     return requestData;
   };
 

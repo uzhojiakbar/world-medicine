@@ -772,7 +772,9 @@ export const useAddAdminMedAgentGoal = () => {
       variables.onSuccess();
     },
     onError: (error, variables) => {
-      variables.onError();
+      console.log("error", error);
+
+      variables.onError(error);
     },
   });
 };
@@ -786,7 +788,6 @@ export const useGetManagerGoalId = (id) => {
       const url = `/v1/admin/manager/goal/manager-id/${id}`; // Append the query string to the URL
       try {
         const { data } = await Instance.get(url);
-        console.log("data", data);
 
         return data;
       } catch (error) {
@@ -794,7 +795,6 @@ export const useGetManagerGoalId = (id) => {
         throw error; // Continue throwing the error to handle it in the component
       }
     },
-    enabled: hasFilters, // Faqat cleanFilters mavjud bo'lganda so'rov yuboriladi
     staleTime: 1000 * 60 * 10, // Optionally adjust the cache time as necessary
   });
 };
