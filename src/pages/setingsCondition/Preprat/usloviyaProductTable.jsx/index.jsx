@@ -105,7 +105,7 @@ export const ResponsiveTableAdmin = styled.div`
     background-color: white; /* Header fon rangi */
     font-weight: 700; /* Qalin matn */
 
-    color: rgba(0, 0, 0, 0.50);
+    color: rgba(0, 0, 0, 0.5);
     font-family: "Vela Sans GX", sans-serif;
     font-weight: 600;
 
@@ -307,16 +307,17 @@ const InputWrapper = styled(Input)`
   }
 `;
 
-
 const UsloviyaProductTable = ({
   data,
   loading = true,
-  setLoading = () => { },
+  setLoading = () => {},
   title = "",
 }) => {
   let { thead, tbody } = data;
   const [editId, setEditId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+
+  console.log("dataInnerTable", tbody);
 
   const [editedRow, setEditedRow] = useState([...tbody]);
   const [changeRow, setChangeRow] = useState([]);
@@ -375,6 +376,10 @@ const UsloviyaProductTable = ({
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
+
+  useEffect(() => {
+    setEditedRow([...tbody]);
+  }, [tbody]);
 
   return (
     <Container>
@@ -496,10 +501,8 @@ const UsloviyaProductTable = ({
                                   name={row[v]}
                                   defaultValue={row[v]}
                                   onChange={(e) => {
-
-                                    handleInputChange(v, e.target.value, index)
-                                  }
-                                  }
+                                    handleInputChange(v, e.target.value, index);
+                                  }}
                                   placeholder={v}
                                   height={"50px"}
                                 />

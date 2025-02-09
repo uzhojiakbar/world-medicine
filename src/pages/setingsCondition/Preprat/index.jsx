@@ -9,7 +9,7 @@ import MainTable from "./Table";
 
 import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
-import Server from "../../../utils/server/server";
+import Server, { useGetDrugs } from "../../../utils/server/server";
 import Filter from "./filter/Filter";
 import UsloviyaProductTable from "./usloviyaProductTable.jsx";
 import Info from "./Info/Info.jsx";
@@ -75,81 +75,133 @@ const exportToExcel = (data) => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Продажи");
 
     // 4. Faylni saqlash
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(blob, "Препараты.xlsx");
   };
-
 };
 
 function Preparat() {
-  const [data, setData] = useState({
-    thead: ["Препарат", "CIP", "Не более", "Рецептурник",
-      {
-        title: "СУ",
-        child: ["Лимит", "Балл"]
-      },
-      {
-        title: "СУ",
-        child: ["Лимит", "Балл"]
-      },
-      {
-        title: "СУ",
-        child: ["Лимит", "Балл"]
-      },
-      {
-        title: "СУ",
-        child: ["Лимит", "Балл"]
-      },
+  const { data: dataDrugs, isLoading: loadingDrugs } = useGetDrugs();
 
+  console.log(dataDrugs);
+
+  const [data, setData] = useState({
+    thead: [
+      "Препарат",
+      "CIP",
+      "Не более",
+      "Рецептурник",
+      {
+        title: "СУ",
+        child: ["Лимит", "Балл"],
+      },
+      {
+        title: "СБ",
+        child: ["Лимит", "Балл"],
+      },
+      {
+        title: "ГЗ",
+        child: ["Лимит", "Балл"],
+      },
+      {
+        title: "КВ",
+        child: ["Лимит", "Балл"],
+      },
     ],
     tbody: [
-      {
-        id: 1,
-        name: " Амлипин таблетки 5/10 мг",
-        cip: "12 000",
-        nebolshe: "-?%",
-        Рецептурник: "7",
-        СУ: {
-          Лимит: "11",
-          Балл: "5"
-        },
-        СБ: {
-          Лимит: "11",
-          Балл: "5"
-        },
-
-        ГЗ: {
-          Лимит: "11",
-          Балл: "5"
-        },
-        КВ: {
-          Лимит: "11",
-          Балл: "5"
-        },
-      },
-
-    ]
+      // {
+      //   id: 1,
+      //   name: " Амлипин таблетки 5/10 мг",
+      //   cip: "12 000",
+      //   nebolshe: "-?%",
+      //   Рецептурник: "7",
+      //   СУ: {
+      //     Лимит: "11",
+      //     Балл: "5",
+      //   },
+      //   СБ: {
+      //     Лимит: "11",
+      //     Балл: "5",
+      //   },
+      //   ГЗ: {
+      //     Лимит: "11",
+      //     Балл: "5",
+      //   },
+      //   КВ: {
+      //     Лимит: "11",
+      //     Балл: "5",
+      //   },
+      // },
+      // {
+      //   "id": 1,
+      //   "name": "Ношпа",
+      //   "imageUrl": "string",
+      //   "cip": 1,
+      //   "quantity": 2,
+      //   "prescription": 3,
+      //   "volume": "4444",
+      //   "type": "ITEM",
+      //   "suPercentage": 5,
+      //   "suLimit": 6,
+      //   "suBall": 8,
+      //   "sbPercentage": 10,
+      //   "sbLimit": 12,
+      //   "sbBall": 13,
+      //   "gzPercentage": 124,
+      //   "gzLimit": 15,
+      //   "gzBall": 16,
+      //   "kbPercentage": 17,
+      //   "kbLimit": 18,
+      //   "kbBall": 22
+      // },
+    ],
   });
 
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      setTimeout(async () => {
-        const data = await Server.getPreparat();
-        // setData(data || []);
-        setLoading(false);
-      }, 300);
-    } catch (err) {
-      console.error(err);
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (!loadingDrugs) {
+      const formattedTbody = dataDrugs.map((drug) => ({
+        id: drug.id,
+        name: drug.name,
+        cip: drug.cip,
+        nebolshe: "-?%",
+        Рецептурник: drug.prescription,
+        СУ: {
+          Процент: drug.suPercentage,
+          Лимит: drug.suLimit,
+          Балл: drug.suBall,
+        },
+        СБ: {
+          Процент: drug.sbPercentage,
+          Лимит: drug.sbLimit,
+          Балл: drug.sbBall,
+        },
+        ГЗ: {
+          Процент: drug.gzPercentage,
+          Лимит: drug.gzLimit,
+          Балл: drug.gzBall,
+        },
+        КВ: {
+          Процент: drug.kbPercentage,
+          Лимит: drug.kbLimit,
+          Балл: drug.kbBall,
+        },
+      }));
+
+      setData((prevData) => ({
+        ...prevData,
+        tbody: formattedTbody,
+      }));
+
+      console.log("formatted", formattedTbody);
+      console.log("data", data);
+    }
+  }, [dataDrugs]);
 
   const Container1 = styled.div`
     display: flex;
@@ -231,7 +283,6 @@ function Preparat() {
       <Info />
       <Container1>
         <Title>{translate("Условия на продукты")}</Title>
-
       </Container1>
       {/* <MainTable
         title={translate("Наименование_товара")}
@@ -240,11 +291,9 @@ function Preparat() {
         data={data}
       /> */}
 
-
       <UsloviyaProductTable
         title={translate("Наименование_товара")}
-        loading={loading}
-        setLoading={setLoading}
+        loading={loadingDrugs}
         data={data}
       />
     </>
