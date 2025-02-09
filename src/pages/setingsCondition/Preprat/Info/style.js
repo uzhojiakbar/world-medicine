@@ -9,7 +9,7 @@ export const Container = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* gap: 20px; */
 
   @media (max-width: 768px) {
     margin: 15px 30px;
@@ -19,13 +19,29 @@ export const Container = styled.div`
     margin: 10px 15px;
     padding: 10px;
   }
+
+  .div {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .inner {
+    width: 100%;
+  }
 `;
 
 export const FilterSection = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  margin-bottom: 10px;
   gap: 10px;
+  > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -65,5 +81,27 @@ export const FilterInput = styled.input`
   @media (max-width: 480px) {
     padding: 8px;
     font-size: 12px;
+  }
+`;
+
+export const Details = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 17px 20px;
+  border-radius: 10px;
+  background-color: #f7f8fc;
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+`;
+
+export const Figcaption = styled.div`
+  display: flex;
+  justify-content: space-between;
+  .info {
+    color: rgba(0, 0, 0, 0.5);
   }
 `;

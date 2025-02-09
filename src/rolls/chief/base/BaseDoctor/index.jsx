@@ -147,7 +147,7 @@ const BaseDoctor = () => {
         <PrimarySelect
           def={translate("Все")}
           options={[]}
-          onValueChange={(v) => {}}
+          onValueChange={(v) => { }}
         />
       </div>
 

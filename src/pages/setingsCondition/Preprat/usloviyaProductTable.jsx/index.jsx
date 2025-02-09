@@ -105,7 +105,7 @@ export const ResponsiveTableAdmin = styled.div`
     background-color: white; /* Header fon rangi */
     font-weight: 700; /* Qalin matn */
 
-    color: #216bf480;
+    color: rgba(0, 0, 0, 0.50);
     font-family: "Vela Sans GX", sans-serif;
     font-weight: 600;
 
@@ -278,7 +278,6 @@ export const WhiteWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  justify-content: space-between;
 
   background-color: #ffffff;
   border-radius: 30px;

@@ -16,6 +16,7 @@ import MestaRabota from "../pages/setingsCondition/MestaRabota";
 import CreateMedAgent from "../pages/createMedAgent/";
 import ReportsClient from "../rolls/manager/reportsClient";
 import ManagersGoal from "../rolls/chief/home/ManagersGoal/ManagersGoal";
+import Lpu from "../pages/setingsCondition/LPU";
 
 export const RoutingChief = [
   {
@@ -114,10 +115,10 @@ export const RoutingChief = [
     ),
     child: (
       <>
-        <Route path="" element={<Arxiv />} />
-        <Route path="Preparad" element={<Preparat />} />
-        <Route path="Mestrabotaya" element={<MestaRabota />} />
+        <Route path="" element={<Preparat />} />
         <Route path="Predoji" element={<AddPreporad />} />{" "}
+        <Route path="Arxiv" element={<Arxiv />} />
+        <Route path="lpu" element={<Lpu />} />
       </>
     ),
     visible: true,

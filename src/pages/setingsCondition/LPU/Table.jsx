@@ -97,7 +97,8 @@ const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
             <thead>
               <tr>
                 <th className="idfixed">{translate("Ф_Врача")}</th>
-                <th className="idfixed">{translate("Город")}</th>
+                <th className="idfixed">{translate("Форма учреждения")}</th>
+                <th className="idfixed">{translate("Регион")}</th>
                 <th className="idfixed">{translate("Район")}</th>
                 <th>{translate("Actions")}</th>
               </tr>
@@ -119,20 +120,33 @@ const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
                         row?.["Ф.И.О. Врача"]
                       )}
                     </td>
+                    <td className="idfixed">
+                      {editId === row.id ? (
+                        <InputWrapper
+                          type="text"
+                          name="name"
+                          defaultValue={editedRow["Форма учреждения"]}
+                          onChange={(e) => handleInputChange("Форма учреждения", e.target.value)}
+                          placeholder="Форма учреждения"
+                        />
+                      ) : (
+                        row?.["Форма учреждения"]
+                      )}
+                    </td>
                     <td>
                       {editId === row.id ? (
                         <InputWrapper
                           type="text"
-                          name="Город"
-                          defaultValue={editedRow.Город}
+                          name="Регион"
+                          defaultValue={editedRow.Регион}
                           onChange={(e) =>
-                            handleInputChange("Город", e.target.value)
+                            handleInputChange("Регион", e.target.value)
                           }
-                          placeholder={translate("Город")}
+                          placeholder={translate("Регион")}
 
                         />
                       ) : (
-                        row?.Город
+                        row?.Регион
                       )}
                     </td>
                     <td>

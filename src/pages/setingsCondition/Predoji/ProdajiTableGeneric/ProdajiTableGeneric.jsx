@@ -260,7 +260,7 @@ export const WhiteWrapper = styled.div`
 `;
 
 const ProdajiTableGeneric = ({
-  data,
+  data = [],
   setData = () => { },
   loading = true,
   setLoading = () => { },
@@ -273,7 +273,7 @@ const ProdajiTableGeneric = ({
   const [changeRow, setChangeRow] = useState([]);
 
 
-  const thead = ['Препарат', 'Прод.', 'Таш.', 'Сам.', 'Бух.', 'Анж.', 'Фер.', 'Нам.', 'Каш.', 'Сур.', 'Джи.', 'Сыр.', 'Таш_об.', 'Хор.']
+  const thead = ['Препарат', 'Прод.', "Квота", "%", 'Таш.', 'Сам.', 'Бух.', 'Анж.', 'Фер.', 'Нам.', 'Каш.', 'Сур.', 'Джи.', 'Сыр.', 'Таш_об.', 'Хор.']
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data?.length / itemsPerPage);
 
@@ -297,6 +297,8 @@ const ProdajiTableGeneric = ({
         } else return v;
       })
     );
+    console.log(changeRow);
+
   };
 
   const handleCancel = () => {
@@ -307,7 +309,8 @@ const ProdajiTableGeneric = ({
     // Update logic goes here
     // Example: await Server.updateProdaji(data);
     setEditId(null);
-    setData(changeRow);
+    if (changeRow.length > 0)
+      setData(changeRow);
     // Optionally refetch data
   };
 
@@ -344,7 +347,7 @@ const ProdajiTableGeneric = ({
               <thead>
                 <tr>
                   {thead?.map((v, i) => {
-                    if (i == "1") {
+                    if (i == "3") {
                       return (
                         <>
                           <th className={i == 0 && "idfixed"}>{v}</th>
@@ -368,13 +371,26 @@ const ProdajiTableGeneric = ({
                       <tr key={row.id}>
                         {Object.keys(row)?.map((v, i) => {
                           if (v == "id") return "";
-                          if (i == 2) {
+                          if (i == 4) {
                             return (
                               <>
-                                <td className={i == 0 && "idfixed"}>
-                                  <p className={i > 1 && i <= 4 && "color"}>
-                                    {row[v]}
-                                  </p>
+                                <td>
+                                  {
+                                    editId == row.id ?
+                                      <Input
+                                        type="text"
+                                        name={row[v]}
+                                        value={row[v]}
+                                        onChange={(value) =>
+                                          handleInputChange(v, value, index)
+                                        }
+                                        placeholder={v}
+                                        height={"50px"}
+                                      /> :
+                                      <p className={i > 1 && i <= 4 && "color"}>
+                                        {row[v]}
+                                      </p>
+                                  }
                                 </td>
                                 <td>
                                   <Line />
