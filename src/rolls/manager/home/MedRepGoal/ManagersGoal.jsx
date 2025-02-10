@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import {
   Child,
   DirectionFlexGap,
@@ -51,6 +51,8 @@ const MedRepGoal = () => {
   const [editingDrugId, setEditingDrugId] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentAxvot, setCurrentAxvot] = useState([]);
+  const [currentDrugs, setCurrentDrugs] = useState([]);
 
   const { translate, language } = useLanguage();
   const { data: Regions, isLoading: isLoadingRegions } = useGetRegions();
@@ -60,23 +62,61 @@ const MedRepGoal = () => {
   const { data: profileInfo, isLoading: IsLoadingProfileInfo } =
     useGetProfileInfo();
 
+  const [allDistricts, setAllDistricts] = useState([]);
+
   const { data: goal, isLoading: isLoadingGoal } = useGetManagerGoalId(
     profileInfo?.userId
   );
 
+  console.log("goal12:", goal);
+  console.log("drugs:", drugs);
+  console.log("drugsD:", allDistricts);
+
   const getAllDistricts = (regions) => {
-    return Regions?.flatMap((region) => region.districts || []);
+    return goal?.districtGoalQuantities?.map((item) => ({
+      districtId: item?.regionDistrictDTO?.districtId,
+      name: item?.regionDistrictDTO?.districtName,
+      nameUzCyrillic: item?.regionDistrictDTO?.districtNameUzCyrillic,
+      nameUzLatin: item?.regionDistrictDTO?.districtNameUzLatin,
+      nameRussian: item?.regionDistrictDTO?.districtNameRussian,
+      regionId: item?.regionDistrictDTO?.regionId,
+    }));
   };
+
+  useEffect(() => {
+    setAllDistricts(getAllDistricts(goal?.districtGoalQuantities));
+    setCurrentAxvot(
+      goal?.fieldGoalQuantities
+        ?.filter(
+          (spec) =>
+            !selectedSpecializations?.some((s) => s?.fieldName === spec?.label)
+        )
+        ?.map((v) => {
+          return {
+            id: v?.id,
+            value: translate(v?.fieldName),
+            label: v?.fieldName,
+          };
+        })
+    );
+    setCurrentDrugs(
+      goal?.medicineGoalQuantities?.map((v) => {
+        return {
+          ...v.medicine,
+        };
+      })
+    );
+  }, [goal]);
 
   const mutation = useAddAdminMedAgentGoal();
 
   const drugsTranslate = useMemo(
-    () => transformDrugsForSelect(drugs, translate),
-    [drugs, translate]
+    () => transformDrugsForSelect(currentDrugs, translate),
+    [currentDrugs, translate]
   );
   const districtsTranslate = useMemo(
-    () => transformDistrictsForSelect(getAllDistricts(), language),
-    [Regions, translate]
+    () => transformDistrictsForSelect(allDistricts, language),
+    [allDistricts, translate]
   );
 
   const managerOptions = useMemo(
@@ -87,16 +127,6 @@ const MedRepGoal = () => {
         id: manager.userId,
       })) || [],
     [managers]
-  );
-
-  const DrugsOptions = useMemo(
-    () =>
-      drugs?.map((drug) => ({
-        value: drug.id,
-        label: drug.name,
-        id: drug.id,
-      })) || [],
-    [drugs]
   );
 
   // console.log("districtsTranslate", districtsTranslate);
@@ -179,15 +209,6 @@ const MedRepGoal = () => {
       }
     },
     [selectedDrugs]
-  );
-
-  const availableSpecializations = useMemo(
-    () =>
-      FieldnamesManager().filter(
-        (spec) =>
-          !selectedSpecializations.some((s) => s.fieldName === spec.label)
-      ),
-    [selectedSpecializations]
   );
 
   const prepareRequestData = (adminId = "asdasd") => {
@@ -340,7 +361,7 @@ const MedRepGoal = () => {
               <MiniTitleSmall>{translate("Охват_врачей")}</MiniTitleSmall>
               <PrimarySelect
                 def={translate("Выберите специальность")}
-                options={availableSpecializations}
+                options={currentAxvot}
                 onValueChange={handleSpecializationSelect}
                 onlyOption
               />
