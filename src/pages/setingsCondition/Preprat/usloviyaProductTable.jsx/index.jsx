@@ -61,9 +61,9 @@ import RightArrow from "../../../../assets/svg/RightArrow.jsx";
 import styled from "styled-components";
 // import ModalManager from "./Modal.jsx";
 import { useLanguage } from "../../../../context/LanguageContext.jsx";
-import Server from "../../../../utils/server/server.js";
+import Server, { useDeleteDrug } from "../../../../utils/server/server.js";
 import { isArray } from "chart.js/helpers";
-import { Input } from "antd";
+import { Input, message } from "antd";
 
 const Container = styled.div`
   position: relative;
@@ -307,15 +307,12 @@ const InputWrapper = styled(Input)`
   }
 `;
 
-const UsloviyaProductTable = ({
-  data,
-  loading = true,
-  setLoading = () => {},
-  title = "",
-}) => {
+const UsloviyaProductTable = ({ data, loading = true, title = "" }) => {
   let { thead, tbody } = data;
   const [editId, setEditId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [loadingIn, setLoadingIn] = useState(0);
+  const deleteDrug = useDeleteDrug();
 
   console.log("dataInnerTable", tbody);
 
@@ -330,7 +327,9 @@ const UsloviyaProductTable = ({
   const { translate } = useLanguage();
 
   const handleEditClick = (row) => {
-    setEditId(row.id);
+    console.log("EDIT:", row);
+
+    // setEditId(row.id);
   };
 
   const handleInputChange = (name, value, index, subKey) => {
@@ -361,8 +360,23 @@ const UsloviyaProductTable = ({
     // Optionally refetch data
   };
 
-  const handleDelete = (id) => {
-    setEditedRow(editedRow.filter((v) => v.id !== id));
+  const handleDelete = (id, name) => {
+    deleteDrug.mutate(id, {
+      onError: (error) => {
+        console.error("Failed to delete the drug:", error);
+        message.error("Dorini o‘chirishda xatolik yuz berdi.");
+        setLoadingIn(0);
+      },
+      onSuccess: () => {
+        message.success("Dori muvaffaqiyatli o‘chirildi.");
+        setLoadingIn(0);
+      },
+    });
+
+    setLoadingIn(1);
+    console.log(id);
+
+    // setEditedRow(editedRow.filter((v) => v.id !== id));
   };
 
   const handleNext = () => {
@@ -383,10 +397,12 @@ const UsloviyaProductTable = ({
 
   return (
     <Container>
-      {loading && (
+      {loading || loadingIn ? (
         <div className="loaderParent">
           <div className="loader"></div>
         </div>
+      ) : (
+        ""
       )}
 
       {/* <ModalManager id={openModalId} setId={setOpenModalId} /> */}

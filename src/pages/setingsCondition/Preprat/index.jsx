@@ -216,65 +216,6 @@ function Preparat() {
     }
   `;
 
-  const Box = styled.div`
-    display: flex;
-    gap: 20px;
-    align-items: center;
-
-    @media (max-width: 768px) {
-      align-items: center;
-      justify-content: center;
-
-      flex-wrap: wrap;
-
-      gap: 15px;
-    }
-  `;
-
-  const Text = styled.p`
-    background: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 500;
-    display: flex;
-    gap: 10px;
-    cursor: pointer;
-    align-items: center;
-
-    @media (max-width: 480px) {
-      padding: 8px 16px;
-      font-size: 14px;
-    }
-
-    user-select: none;
-
-    &:hover {
-      opacity: 0.5;
-    }
-  `;
-
-  const Clear = styled.div`
-    background: white;
-    padding: 20px;
-    cursor: pointer;
-    border-radius: 20px;
-
-    color: #216bf4;
-
-    user-select: none;
-
-    @media (max-width: 480px) {
-      padding: 8px;
-      font-size: 14px;
-    }
-
-    &:hover {
-      opacity: 0.8;
-    }
-  `;
-
-  const nav = useNavigate();
-
   const { translate } = useLanguage();
 
   return (

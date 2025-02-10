@@ -1,7 +1,7 @@
 import Cookie from "js-cookie";
 import Instance from "../Instance";
 import { jwtDecode } from "jwt-decode";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "../../context/LanguageContext";
 import { message } from "antd";
 
@@ -453,6 +453,25 @@ export const useGetDrugs = () => {
       }
     },
     staleTime: 1000 * 60 * 10,
+  });
+};
+
+export const useDeleteDrug = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id) => {
+      try {
+        await Instance.delete(`/v1/db/medicine/${id}`);
+      } catch (error) {
+        console.error("Error deleting drug", error);
+        throw error; // Xatolikni qaytarish
+      }
+    },
+    onSuccess: () => {
+      // Dori o‘chirildi, endi dorilar ro‘yxatini yangilaymiz
+      queryClient.invalidateQueries(["Drugs"]);
+    },
   });
 };
 
