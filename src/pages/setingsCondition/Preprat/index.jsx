@@ -301,3 +301,27 @@ function Preparat() {
 }
 
 export default Preparat;
+
+// {
+//   "createdAt": "2025-02-10",
+//   "startDate": "2025-02-10",
+//   "endDate": "2025-02-28",
+//   "medAgentId": "375d9960-2a6a-4b34-a05a-4924763ab55b",
+//   "districtId": 15,
+//   "managerId": "1d9eb290-6780-47ad-8854-aa7659bb55b7",
+//   "managerGoalId": 19,
+//   "medicineWithQuantityDTOS": [
+//     {
+//       "medicineId": 17,
+//       "medicineName": "Ношпа",
+//       "quote": "50"
+//     }
+//   ],
+//   "fieldWithQuantityDTOS": [
+//     {
+//       "id": 22,
+//       "fieldName": "NEUROLOGIST",
+//       "quote": "50"
+//     }
+//   ]
+// }
