@@ -9,8 +9,13 @@ import MainTable from "./Table";
 
 import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
-import Server from "../../../utils/server/server";
+import Server, {
+  useGetDistrcitById,
+  useGetWorkplaces,
+} from "../../../utils/server/server";
 import Filter from "./filter/Filter";
+import Instance from "../../../utils/Instance";
+import { useQueryClient } from "@tanstack/react-query";
 
 const exportToExcel = (data) => {
   // 1. Jadval ma'lumotlarini tayyorlash
@@ -28,30 +33,107 @@ const exportToExcel = (data) => {
   saveAs(blob, "Места работы.xlsx");
 };
 
+// {
+//   "id": 7,
+//   "name": "Namangan Med",
+//   "address": "Namangan",
+//   "description": "Namangan",
+//   "phone": null,
+//   "email": null,
+//   "medicalInstitutionType": "STATE_HOSPITAL",
+//   "chiefDoctorId": "57b0aba9-020b-4ea0-8fa3-62cc0957ef09",
+//   "districtId": 1
+// }
+
 function Lpu() {
   const [data, setData] = useState([
     {
       id: 1,
       "Ф.И.О. Врача": "1 Городская общественная больница",
       "Форма учреждения": "Гос. стационар",
-      "Регион": "Ташкент",
-      "Район": "Шайхантахурский район"
+      Регион: "Ташкент",
+      Район: "Шайхантахурский район",
     },
     {
       id: 1,
       "Ф.И.О. Врача": "1 Городская общественная больница",
       "Форма учреждения": "Гос. стационар",
-      "Регион": "Ташкент",
-      "Район": "Шайхантахурский район"
+      Регион: "Ташкент",
+      Район: "Шайхантахурский район",
     },
     {
       id: 1,
       "Ф.И.О. Врача": "1 Городская общественная больница",
       "Форма учреждения": "Гос. стационар",
-      "Регион": "Ташкент",
-      "Район": "Шайхантахурский район"
+      Регион: "Ташкент",
+      Район: "Шайхантахурский район",
     },
   ]);
+
+  const [loading1, setLoading1] = useState(false);
+
+  const [currentworlplacesData, setCurrentWorkplaceeData] = useState([]);
+
+  // {
+  //   id: 1,
+  //   "Ф.И.О. Врача": "1 Городская общественная больница",
+  //   "Форма учреждения": "Гос. стационар",
+  //   Регион: "Ташкент",
+  //   Район: "Шайхантахурский район",
+  // },
+  const { data: workplaces, isLoading: isloadingWorkplaces } =
+    useGetWorkplaces();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const fetchDistrictInfo = async () => {
+      setLoading1(1);
+
+      try {
+        const updatedData = await Promise.all(
+          workplaces?.map(async (workplace) => {
+            const { data: districtData } = await Instance.get(
+              `v1/auth/district?districtId=${workplace.districtId}`
+            );
+            const { data: RegionData } = await Instance.get(
+              `v1/auth/region?regionId=${districtData?.regionId}`
+            );
+
+            console.log(RegionData);
+
+            return {
+              id: workplace?.id,
+              "Ф.И.О. Врача": workplace?.name,
+              "Форма учреждения": workplace?.name,
+              Регион: RegionData,
+              Район: districtData,
+            };
+          })
+        );
+
+        setCurrentWorkplaceeData(updatedData);
+        setLoading1(0);
+      } catch (error) {
+        console.error("District ma'lumotlarini olishda xatolik:", error);
+        setLoading1(0);
+      }
+    };
+
+    if (workplaces?.length) {
+      fetchDistrictInfo();
+    }
+  }, [workplaces]);
+
+  console.log("currentworlplacesData: ", currentworlplacesData);
+
+  const handleRefresh = () => {
+    setLoading1(1);
+    queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
+    setTimeout(() => {
+      setLoading1(0);
+    }, 100);
+  };
+
   const [loading, setLoading] = useState(false);
 
   // const fetchData = async () => {
@@ -87,7 +169,6 @@ function Lpu() {
     }
   `;
   const TitleContainer = styled.div`
-  
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -99,7 +180,7 @@ function Lpu() {
       justify-content: center;
       gap: 15px;
     }
-    `
+  `;
 
   const Box = styled.div`
     display: flex;
@@ -158,8 +239,6 @@ function Lpu() {
     }
   `;
 
-  const nav = useNavigate();
-
   const { translate } = useLanguage();
 
   return (
@@ -167,10 +246,9 @@ function Lpu() {
       <Container1>
         <Filter />
         <TitleContainer>
-
           <Title>{translate("ЛПУ")}</Title>
           <Box>
-            <Text onClick={() => { }}>
+            <Text onClick={() => handleRefresh()}>
               <svg
                 width="24"
                 height="24"
@@ -220,7 +298,10 @@ function Lpu() {
           </Box>
         </TitleContainer>
       </Container1>
-      <MainTable loading={loading} setLoading={setLoading} data={data} />
+      <MainTable
+        loading={isloadingWorkplaces || loading1}
+        data={currentworlplacesData}
+      />
     </>
   );
 }

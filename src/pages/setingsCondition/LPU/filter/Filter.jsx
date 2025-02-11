@@ -3,16 +3,17 @@ import { Container, FilterSection, FilterInput } from "./style.js";
 import { TitleSmall } from "../../../../root/style.js";
 import Input from "../../../../components/Generic/Input/Input.jsx";
 import PrimarySelect from "../../../../components/Generic/Select/Select.jsx";
-import { useGetDistricts, useGetRegions } from "../../../../utils/server/server.js";
+import {
+  useGetDistricts,
+  useGetRegions,
+} from "../../../../utils/server/server.js";
 import { useLanguage } from "../../../../context/LanguageContext.jsx";
 
 const Filter = () => {
   const { translate, language } = useLanguage();
 
-
   const [selectedViloyat, setSelectedViloyat] = useState("");
   const [selectedTuman, setSelectedTuman] = useState("");
-
 
   const { data: regions, isLoading: isLoadingRegions } = useGetRegions();
   const { data: districts, isLoading: isLoadingDistricts } =
@@ -22,10 +23,7 @@ const Filter = () => {
     setSelectedTuman(""); // Reset tuman when viloyat changes
   }, [selectedViloyat]);
 
-
   const getOptions = (items, language) => {
-    console.log(items);
-
     return items?.map((item) => ({
       id: item.id,
       value: item["name"], // Using template literals to dynamically access properties based on language
@@ -33,8 +31,6 @@ const Filter = () => {
   };
 
   const getOptionsDistricts = (items, language) => {
-    console.log(items);
-
     return items?.map((item) => ({
       id: item?.districtId,
       value: item["name"], // Using template literals to dynamically access properties based on language
@@ -56,10 +52,7 @@ const Filter = () => {
           onValueChange={(value) => setSelectedTuman(value.id)}
           onlyOption={1}
         />
-        <PrimarySelect
-          def={translate("ЛПУ")}
-          options={[]}
-        />
+        <PrimarySelect def={translate("ЛПУ")} options={[]} />
       </FilterSection>
     </Container>
   );

@@ -32,7 +32,7 @@ const InputWrapper = styled(Input)`
   }
 `;
 
-const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
+const Table = ({ data = [], loading = true }) => {
   const [openModalId, setOpenModalId] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   //   const [data, setData] = useState([]);
@@ -74,13 +74,9 @@ const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
     setEditId(null);
     setEditedRow({});
   };
-  console.log(editedRow);
 
   const handleSave = async () => {
-    // Update logic goes here
-    // Example: await Server.updateProdaji(editedRow);
     setEditId(null);
-    // Optionally refetch data
   };
 
   return (
@@ -97,9 +93,9 @@ const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
             <thead>
               <tr>
                 <th className="idfixed">{translate("Ф_Врача")}</th>
-                <th className="idfixed">{translate("Форма учреждения")}</th>
-                <th className="idfixed">{translate("Регион")}</th>
-                <th className="idfixed">{translate("Район")}</th>
+                <th>{translate("Форма учреждения")}</th>
+                <th>{translate("Регион")}</th>
+                <th>{translate("Район")}</th>
                 <th>{translate("Actions")}</th>
               </tr>
             </thead>
@@ -113,20 +109,27 @@ const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
                           type="text"
                           name="name"
                           defaultValue={editedRow["Ф.И.О. Врача"]}
-                          onChange={(e) => handleInputChange("name", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("name", e.target.value)
+                          }
                           placeholder="Enter name"
                         />
                       ) : (
                         row?.["Ф.И.О. Врача"]
                       )}
                     </td>
-                    <td className="idfixed">
+                    <td>
                       {editId === row.id ? (
                         <InputWrapper
                           type="text"
                           name="name"
                           defaultValue={editedRow["Форма учреждения"]}
-                          onChange={(e) => handleInputChange("Форма учреждения", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange(
+                              "Форма учреждения",
+                              e.target.value
+                            )
+                          }
                           placeholder="Форма учреждения"
                         />
                       ) : (
@@ -138,15 +141,14 @@ const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
                         <InputWrapper
                           type="text"
                           name="Регион"
-                          defaultValue={editedRow.Регион}
+                          defaultValue={editedRow.Регион?.name}
                           onChange={(e) =>
                             handleInputChange("Регион", e.target.value)
                           }
                           placeholder={translate("Регион")}
-
                         />
                       ) : (
-                        row?.Регион
+                        row?.Регион?.name
                       )}
                     </td>
                     <td>
@@ -154,15 +156,14 @@ const Table = ({ data = [], loading = true, setLoading = () => { } }) => {
                         <InputWrapper
                           type="text"
                           name="Район"
-                          defaultValue={editedRow.Район}
+                          defaultValue={editedRow["Район"]?.name}
                           onChange={(e) =>
                             handleInputChange("Район", e.target.value)
                           }
                           placeholder={translate("Район")}
-
                         />
                       ) : (
-                        row?.Район
+                        row["Район"]?.name
                       )}
                     </td>
 

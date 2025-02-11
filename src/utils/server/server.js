@@ -508,6 +508,40 @@ export const useGetWorkplaces = () => {
     staleTime: 1000 * 60 * 10,
   });
 };
+export const useGetDistrcitById = (id = null) => {
+  return useQuery({
+    queryKey: ["getWorkplacec", id],
+    queryFn: async () => {
+      try {
+        const { data } = await Instance.get(
+          `v1/auth/district?districtId=${id}`
+        );
+        console.log(data);
+
+        return data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+export const useGetWorkplacesFilter = () => {
+  return useQuery({
+    queryKey: ["getWorkplacec"],
+    queryFn: async () => {
+      try {
+        const { data } = await Instance.get("/v1/auth/workplaces", {});
+        return data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
 // NOTE Get managers
 export const useGetManagers = ({
   creatorId,
