@@ -166,30 +166,30 @@ function Preparat() {
   useEffect(() => {
     if (!loadingDrugs) {
       const formattedTbody = dataDrugs.map((drug) => ({
-        id: drug.id,
-        name: drug.name,
-        cip: drug.cip,
+        id: drug?.id,
+        name: drug?.name,
+        cip: drug?.cip,
         nebolshe: "-?%",
-        Рецептурник: drug.prescription,
+        Рецептурник: drug?.prescription,
         СУ: {
-          Процент: drug.suPercentage,
-          Лимит: drug.suLimit,
-          Балл: drug.suBall,
+          Процент: drug?.suPercentage,
+          Лимит: drug?.suLimit,
+          Балл: drug?.suBall,
         },
         СБ: {
-          Процент: drug.sbPercentage,
-          Лимит: drug.sbLimit,
-          Балл: drug.sbBall,
+          Процент: drug?.sbPercentage,
+          Лимит: drug?.sbLimit,
+          Балл: drug?.sbBall,
         },
         ГЗ: {
-          Процент: drug.gzPercentage,
-          Лимит: drug.gzLimit,
-          Балл: drug.gzBall,
+          Процент: drug?.gzPercentage,
+          Лимит: drug?.gzLimit,
+          Балл: drug?.gzBall,
         },
         КВ: {
-          Процент: drug.kbPercentage,
-          Лимит: drug.kbLimit,
-          Балл: drug.kbBall,
+          Процент: drug?.kbPercentage,
+          Лимит: drug?.kbLimit,
+          Балл: drug?.kbBall,
         },
       }));
 
@@ -218,6 +218,8 @@ function Preparat() {
 
   const { translate } = useLanguage();
 
+  console.log("data",data)
+  console.log("data",data)
   return (
     <>
       <Filter />

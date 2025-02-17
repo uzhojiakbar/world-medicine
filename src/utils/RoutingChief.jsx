@@ -48,7 +48,7 @@ export const RoutingChief = [
     icon: false,
   },
   {
-    id: 6,
+    id: 3,
     title: "Profile",
     path: "profile",
     element: (
@@ -62,7 +62,7 @@ export const RoutingChief = [
     icon: false,
   }, // * READY
   {
-    id: 7,
+    id: 4,
     title: "Добавить менеджера",
     path: "create-manager",
     element: (
@@ -76,7 +76,7 @@ export const RoutingChief = [
     icon: false,
   },
   {
-    id: 8,
+    id: 5,
     title: "Цель менеджеру",
     path: "managers-goal",
     element: (
@@ -89,23 +89,9 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   },
-  // {
-  //   id: 2,
-  //   title: "navbar_admin_analiktika",
-  //   path: "analiktika",
-  //   element: (
-  //     <MainContainer>
-  //       <AnaliktikaPage />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: true,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
 
   {
-    id: 4,
+    id: 6,
     title: "Настройка_условий",
     path: "nastroyka-usloviya",
     element: (
@@ -125,23 +111,9 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   },
-  // {
-  //   id: 6,
-  //   title: "Profile",
-  //   path: "profile",
-  //   element: (
-  //     <MainContainer>
-  //       <Profile />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
 
   {
-    id: 8,
+    id: 7,
     title: "Добавление МП",
     path: "create-med-agent",
     element: (
@@ -154,22 +126,9 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   },
-  // {
-  //   id: 9,
-  //   title: "Добавление МП",
-  //   path: "create-doctor",
-  //   element: (
-  //     <MainContainer>
-  //       <AddDoctor />
-  //     </MainContainer>
-  //   ),
-  //   child: [],
-  //   visible: false,
-  //   onlyAdmin: false,
-  //   icon: false,
-  // },
+
   {
-    id: 10,
+    id: 8,
     title: "Цель мед. представителю",
     path: "pupose-med-agent",
     element: (
@@ -196,6 +155,22 @@ export const RoutingChief = [
     onlyAdmin: false,
     icon: false,
   },
+
+  {
+    id: 9,
+    title: "Отчет",
+    path: "reports-client",
+    element: (
+      <MainContainer>
+        <ReportsClient />
+      </MainContainer>
+    ),
+    child: [],
+    visible: true,
+    onlyAdmin: false,
+    icon: false,
+  },
+
   // {
   //   id: 897,
   //   title: "Reports",
@@ -211,20 +186,50 @@ export const RoutingChief = [
   //   onlyAdmin: false,
   //   icon: false,
   // },
-  {
-    id: 2,
-    title: "Отчет",
-    path: "reports-client",
-    element: (
-      <MainContainer>
-        <ReportsClient />
-      </MainContainer>
-    ),
-    child: [],
-    visible: true,
-    onlyAdmin: false,
-    icon: false,
-  },
+
+  // {
+  //   id: 9,
+  //   title: "Добавление МП",
+  //   path: "create-doctor",
+  //   element: (
+  //     <MainContainer>
+  //       <AddDoctor />
+  //     </MainContainer>
+  //   ),
+  //   child: [],
+  //   visible: false,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
+  // {
+  //   id: 2,
+  //   title: "navbar_admin_analiktika",
+  //   path: "analiktika",
+  //   element: (
+  //     <MainContainer>
+  //       <AnaliktikaPage />
+  //     </MainContainer>
+  //   ),
+  //   child: [],
+  //   visible: true,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
+
+  // {
+  //   id: 6,
+  //   title: "Profile",
+  //   path: "profile",
+  //   element: (
+  //     <MainContainer>
+  //       <Profile />
+  //     </MainContainer>
+  //   ),
+  //   child: [],
+  //   visible: false,
+  //   onlyAdmin: false,
+  //   icon: false,
+  // },
 
   // // {
   // //   id: 4,
