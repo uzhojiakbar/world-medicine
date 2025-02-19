@@ -741,10 +741,10 @@ export const useGetRegions = () => {
 };
 
 export const useGetDoctors = (filters = {}) => {
-  // Filterlarni tozalash: null yoki undefined qiymatlarni olib tashlash
+  // Filterlarni tozladim: null yoki undefined qiymatlarni olib tashladim
   const cleanFilters = Object.entries(filters).reduce((acc, [key, value]) => {
     if (value != null) {
-      // null yoki undefined bo'lmagan qiymatlarni qo'shish
+      // menga kelgan qiymatlarni qo'shdim (null yoki undefined bu yerda qoshilmaydi)
       acc[key] = value;
     }
     return acc;
@@ -816,7 +816,7 @@ export const useAddAdminMedAgentGoal = () => {
     mutationFn: async (medAgentGoalData) => {
       console.log("AddAdminManagerGoal", medAgentGoalData);
       const response = await Instance.post(
-        "/v1/admin/med-agent/new-contract",
+        "/v1/admin/med-agent/new-goal",
         medAgentGoalData?.requestData
       );
       return response.data;
