@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { InformationTitleSpan, TitleSpan } from "../../../../root/style";
 import { BaseDoctorCon, Line, NavTitleSection } from "./style";
 import { useLanguage } from "../../../../context/LanguageContext";
-import { Checkbox } from "antd";
+import { Checkbox} from "antd";
 import Input from "../../../../components/Generic/Input/Input";
 import PrimarySelect from "../../../../components/Generic/Select/Select";
 import { Viloyatlar, Tumanlar, MestaRabot } from "../../../../mock/data";
@@ -15,6 +15,8 @@ import {
 import FieldnamesManager from "../../../../utils/fieldnamesManager";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import Table from "./Table";
+import Button from "../../../../components/Generic/Button/Button.jsx";
+import IconPlus from "../../../../assets/svg/IconPlus.jsx";
 
 const information = {
   all: 500,
@@ -107,6 +109,14 @@ const BaseDoctor = () => {
           <InformationTitleSpan>
             {translate("Новых")} {information.new} вр
           </InformationTitleSpan>
+        </div>
+        <div className="section1">
+         <Button
+             onClick={() => nav("../create-doctor")}
+             icon={<IconPlus />}
+         >
+           {translate("Добавить_врача")}
+         </Button>
         </div>
       </NavTitleSection>
       <div className="cards">

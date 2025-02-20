@@ -36,7 +36,7 @@ const SettingsMenager = ({ id }) => {
       <Title>
         <span>{translate("Управление_менеджерами")}</span>
         <Button onClick={() => nav("../create-manager")} icon={<IconPlus />}>
-          {translate("Добавить менеджера")}
+          {translate("Добавить_менеджера")}
         </Button>
       </Title>
 

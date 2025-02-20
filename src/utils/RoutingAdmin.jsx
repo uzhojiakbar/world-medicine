@@ -109,7 +109,7 @@ export const RoutingAdmin = [
 
     {
         id: 4,
-        title: "Настройка условий",
+        title: "Настройка_условий",
         path: "/nastroyka-usloviya",
         element: (
             <MainContainer>
@@ -216,7 +216,7 @@ export const RoutingAdmin = [
     // },
     {
         id: 2,
-        title: "Отчет",
+        title: "Отчеты",
         path: "reports-client",
         element: (
             <MainContainer>

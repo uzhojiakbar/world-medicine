@@ -57,13 +57,21 @@ const Section = styled.div`
   }
 `;
 
+export const DataLayoutGrid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+`;
+
 const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  border-radius: 20px;
+
+  width: 140px;
+  height: 120px;
   background-color: #f7f8fc;
   @media (max-width: 768px) {
     width: 70px;
