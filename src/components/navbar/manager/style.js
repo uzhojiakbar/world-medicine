@@ -50,14 +50,17 @@ export const NavButtons = styled.div`
   gap: 2px;
 `;
 
-const Logo = styled.img`
+
+const Logo = styled.div`
   cursor: pointer;
+
+  font-family: "Vela Sans GX";
+  font-size: 24px;
   user-select: none;
   ${media.tablet} {
     width: 150px;
   }
 `;
-
 const Link = styled(NavLink)`
   text-decoration: none;
   color: var(--black);

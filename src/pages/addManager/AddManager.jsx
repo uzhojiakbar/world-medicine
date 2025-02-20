@@ -102,7 +102,7 @@ const AddMeneger = () => {
     };
 
     const SendData = () => {
-        const requiredFields = ["firstName", "lastName", "middleName", "mail", "temporaryPassword", "district", "birthDate", "phone",];
+        const requiredFields = ["firstName", "lastName", "mail", "temporaryPassword", "district", "birthDate", "phone",];
 
         const missingFields = requiredFields.filter((field) => !formData[field]);
 

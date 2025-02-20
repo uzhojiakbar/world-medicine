@@ -27,7 +27,7 @@ const ChiefAnaliktika = () => {
 
     {
       id: 4,
-      name: translate("Цель_представителю"),
+      name: translate("Цель_менеджеру"),
       icon: (
         <svg
           width="48"

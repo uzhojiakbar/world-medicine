@@ -124,7 +124,6 @@ const AddMeneger = () => {
     const requiredFields = [
       "firstName",
       "lastName",
-      "middleName",
       "mail",
       "temporaryPassword",
       "district",

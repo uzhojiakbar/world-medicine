@@ -18,6 +18,7 @@ import ReportsClient from "../rolls/manager/reportsClient";
 import ManagersGoal from "../rolls/chief/home/ManagersGoal/ManagersGoal";
 import Lpu from "../pages/setingsCondition/LPU";
 import AddDoctor from "../pages/addDoctor/AddDoctor.jsx";
+import ExcelUploader from "../components/FileUploader.jsx";
 
 export const RoutingChief = [
     {
@@ -62,7 +63,6 @@ export const RoutingChief = [
         onlyAdmin: false,
         icon: false,
     }, // * READY
-
     // create mng
     {
         id: 4,
@@ -108,7 +108,6 @@ export const RoutingChief = [
         onlyAdmin: false,
         icon: false,
     },
-
     {
         id: 6,
         title: "Настройка_условий",
@@ -130,7 +129,20 @@ export const RoutingChief = [
         onlyAdmin: false,
         icon: false,
     },
-
+    // {
+    //     id: 77,
+    //     title: "fileuploader",
+    //     path: "upload",
+    //     element: (
+    //         <MainContainer>
+    //             <ExcelUploader/>
+    //         </MainContainer>
+    //     ),
+    //     child: false,
+    //     visible: true,
+    //     onlyAdmin: false,
+    //     icon: false,
+    // },
     {
         id: 7,
         title: "Добавление МП",
@@ -145,7 +157,6 @@ export const RoutingChief = [
         onlyAdmin: false,
         icon: false,
     },
-
     {
         id: 8,
         title: "Цель мед. представителю",
@@ -174,7 +185,6 @@ export const RoutingChief = [
         onlyAdmin: false,
         icon: false,
     },
-
     // otchot
     {
         id: 9,
@@ -190,7 +200,6 @@ export const RoutingChief = [
         onlyAdmin: false,
         icon: false,
     },
-
     // {
     //   id: 897,
     //   title: "Reports",
@@ -206,7 +215,6 @@ export const RoutingChief = [
     //   onlyAdmin: false,
     //   icon: false,
     // },
-
     // {
     //   id: 9,
     //   title: "Добавление МП",
@@ -235,7 +243,6 @@ export const RoutingChief = [
     //   onlyAdmin: false,
     //   icon: false,
     // },
-
     // {
     //   id: 6,
     //   title: "Profile",
@@ -250,7 +257,6 @@ export const RoutingChief = [
     //   onlyAdmin: false,
     //   icon: false,
     // },
-
     // // {
     // //   id: 4,
     // //   title: "Создать договор",

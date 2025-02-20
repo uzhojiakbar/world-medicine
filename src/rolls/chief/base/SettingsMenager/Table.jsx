@@ -91,11 +91,9 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
           <table>
             <thead>
               <tr>
-                <th>№</th>
                 <th className="idfixed">{translate("Fullname_doctor")}</th>
                 <th>{translate("Зона_отвественности")}</th>
                 <th>{translate("Дата_назначения")}</th>
-                <th colSpan={2}>{translate("Выполнение_KPI")}</th>
                 <th>{translate("Открыть")}</th>
               </tr>
             </thead>
@@ -103,10 +101,15 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
               {currentData.length > 0 ? (
                 currentData.map((row, index) => (
                   <tr key={row?.userId}>
-                    <td>№{row?.id || index + 1}</td>
                     <td className="idfixed">
+                      <span>
+                        №{row?.id || index + 1}
+                      </span>
+                      <span>
+
                       {row?.lastName ?? " "} {row?.firstName ?? ""}{" "}
                       {row?.middleName ?? ""}
+                      </span>
                     </td>
                     <td>
                       {language === "en"
@@ -123,9 +126,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                       {translate("Создан")}{" "}
                       {DatFormatter(row?.dateOfBirth || "2025-05-25")}
                     </td>
-                    <td colSpan={2}>
-                      <div className="progressKPI">{row?.progress}</div>
-                    </td>
+
                     <td>
                       <button
                         onClick={() => setActiveModal(true)}

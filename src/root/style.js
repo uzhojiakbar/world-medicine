@@ -73,6 +73,10 @@ export const Title = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  span{
+    font-family: "Vela Sans GX", sans-serif;
+  }
 
   ${media.mobileL} {
     font-size: 28px;

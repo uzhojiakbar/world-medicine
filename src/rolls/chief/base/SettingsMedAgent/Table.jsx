@@ -88,7 +88,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
               <tr>
                 <th>№</th>
                 <th className="idfixed">{translate("Fullname_doctor")}</th>
-                <th>{translate("Дата_назначения")}</th>
+                <th>{translate("Дата_создания")}</th>
                 <th>{translate("Редактировать")}</th>
               </tr>
             </thead>
@@ -122,7 +122,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                     <td>
                       <button
                         onClick={() => setActiveModal(true)}
-                        className="Viewbutton"
+                        className="Viewbutton viewButtonSmall"
                       >
                         <svg
                           width="24"

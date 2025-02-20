@@ -188,12 +188,12 @@ const AnalitikaChiefPage = () => {
               <PieDiagram
                 item={["Рецепт", "СБ", "СУ", "ГЭ"]}
                 bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                title="По упаковкам"
+                title={translate("Инвестиции_по_упаковкам")}
               />
               <PieDiagram
                 item={["Рецепт", "СБ", "СУ", "ГЭ"]}
                 bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                title="По сумме"
+                title={translate("Инвестиции_по_сумме")}
               />
             </Child>
             <Child>
@@ -208,14 +208,14 @@ const AnalitikaChiefPage = () => {
                 <PieDiagram
                   item={["Рецепт", "СБ", "СУ", "ГЭ"]}
                   bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                  title="По в месяц"
+                  title={translate("Рецептов_в_месяц")}
                 />
               </Child>
             </Child>
-            <Child>
-              <HorizontalChart title={"Продажа препаратов по регионам"} />
-              <ChartBar title={"Активность врачей"} active={active} />
-            </Child>
+            {/*<Child>*/}
+            {/*  <HorizontalChart title={"Продажа препаратов по регионам"} />*/}
+            {/*  <ChartBar title={"Активность врачей"} active={active} />*/}
+            {/*</Child>*/}
           </AppointmentWrapper>
         </ChartContainer>
       </AllChartContainer>

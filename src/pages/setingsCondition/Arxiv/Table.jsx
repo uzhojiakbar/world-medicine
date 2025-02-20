@@ -11,11 +11,17 @@ import ModalManager from "./Modal";
 import { useLanguage } from "../../../context/LanguageContext";
 import Server from "../../../utils/server/server";
 
+import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
+import * as XLSX from "xlsx";
+
 const Container = styled.div`
   position: relative;
 
   transition: all 0.2s ease-in-out;
 `;
+
+
+
 
 const Table = ({ title = "" }) => {
   const [loading, setLoading] = useState(0);
@@ -78,14 +84,14 @@ const Table = ({ title = "" }) => {
           <table>
             <thead>
               <tr>
-                <th>№</th>
                 <th className="idfixed">{translate("Препарат")}</th>
-                <th>{translate("oltimish")}</th>
                 <th>{translate("квота")}</th>
-                <th>{translate("Спецусловия")}</th>
-                <th>{translate("Спецбал")}</th>
-                <th>{translate("Госзакуп")}</th>
-                <th>{translate("Каб. вакцинации")}</th>
+                <th>{translate("Выписано")}</th>
+                <th>{translate("Рецептурник")}</th>
+                <th>{translate("СУ")}</th>
+                <th>{translate("СБ")}</th>
+                <th>{translate("ГЗ")}</th>
+                <th>{translate("КВ")}</th>
                 <th>{translate("Подробнее")}</th>
               </tr>
             </thead>

@@ -20,6 +20,7 @@ import NastroykaUsloviya from "../rolls/admin/NastroykaUsloviya";
 import AdminArxiv from "../rolls/admin/AdminArxiv/Arxiv";
 import AdminPreparat from "../rolls/admin/Preprat";
 import AdminMestaRabota from "../rolls/admin/MestaRabota";
+import ExcelUploader from "../components/FileUploader.jsx";
 
 export const RoutingAdmin = [
     {
@@ -228,6 +229,20 @@ export const RoutingAdmin = [
         onlyAdmin: false,
         icon: false,
     },
+    // {
+    //     id: 77,
+    //     title: "fileuploader",
+    //     path: "upload",
+    //     element: (
+    //         <MainContainer>
+    //             <ExcelUploader/>
+    //         </MainContainer>
+    //     ),
+    //     child: false,
+    //     visible: true,
+    //     onlyAdmin: false,
+    //     icon: false,
+    // },
 
     // // {
     // //   id: 4,

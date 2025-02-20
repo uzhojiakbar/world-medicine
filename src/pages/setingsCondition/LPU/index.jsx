@@ -181,6 +181,11 @@ function Lpu() {
       gap: 15px;
     }
   `;
+  const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  `
 
   const Box = styled.div`
     display: flex;
@@ -242,7 +247,7 @@ function Lpu() {
   const { translate } = useLanguage();
 
   return (
-    <>
+    <Wrapper>
       <Container1>
         <Filter />
         <TitleContainer>
@@ -272,7 +277,7 @@ function Lpu() {
             </Text>
 
             <Button onClick={() => exportToExcel(data)} icon={<IconPlus />}>
-              {translate("Загрузить_продажи_за_месяц")}
+              {translate("Добавить_лпу")}
             </Button>
             <Clear onClick={() => exportToExcel(data)}>
               <svg
@@ -302,7 +307,7 @@ function Lpu() {
         loading={isloadingWorkplaces || loading1}
         data={currentworlplacesData}
       />
-    </>
+    </Wrapper>
   );
 }
 

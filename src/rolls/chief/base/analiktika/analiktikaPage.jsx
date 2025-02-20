@@ -8,6 +8,7 @@ import NewContract from "../../../../pages/NewContract";
 import { useLanguage } from "../../../../context/LanguageContext";
 import SettingsMenager from "../SettingsMenager/SettingsMenager";
 import SettingsMedAgent from "../SettingsMedAgent/SettingsMedAgent";
+import DisabledPage from "../../../../components/DisabledPage/index.jsx";
 // import SettingsMenager from "../../../../pages/SettingsMenager/SettingsMenager";
 
 const BaseControl = () => {
@@ -42,11 +43,16 @@ const BaseControl = () => {
       `}
     >
       <FilterAnaliktika />
+
+      <div className="relative">
+
       <NewConnect
         title={translate("new_connect")}
         data={posts || []}
         loading={false}
       />
+      </div>
+
       <NewContract
         title={translate("Новые договора")}
         data={posts || []}

@@ -40,38 +40,7 @@ const SettingsMedAgent = ({ id }) => {
         </Button>
       </Title>
 
-      <FilterCardsWrapper>
-        <TitleSmall>{translate("врача_по_фильтрам")}</TitleSmall>
-        <div className="cards">
-          <PrimarySelect
-            def={translate("область")}
-            options={Viloyatlar}
-            onValueChange={setSelectedViloyat}
-          />
-          <PrimarySelect
-            def={translate("Район")}
-            options={Tumanlar[selectedViloyat] || []}
-            onValueChange={setSelectedTuman}
-          />
-          <PrimarySelect
-            def={translate("Место_работы")}
-            options={MestaRabot[selectedTuman] || []}
-            onValueChange={setSelectedMestaRabot}
-          />
-          <Input
-            onChange={setNameSurname}
-            placeholder={translate("Fullname_doctor")}
-          />
-          <Checkbox
-            onChange={(e) => setChecked(e.target.checked)}
-            checked={checked}
-          >
-            {translate("Назначен_мною")}
-          </Checkbox>
-        </div>
-      </FilterCardsWrapper>
-
-      <Table title="Врачи" data={MedAgents || []} isLoading={isLoading} />
+      <Table title={translate("Мед_представители")} data={MedAgents || []} isLoading={isLoading} />
     </MainWrapperGap>
   );
 };
