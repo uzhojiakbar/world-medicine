@@ -158,7 +158,7 @@ const Login = () => {
             >
               <img
                 src={LogoImg}
-                alt="World Medicine Logo"
+                alt=" Logo"
                 width="120"
                 height="40"
               />

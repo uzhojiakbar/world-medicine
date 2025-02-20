@@ -115,7 +115,7 @@ const ForgetPassword = () => {
             >
               <img
                 src={LogoImg}
-                alt="World Medicine logo"
+                alt=" logo"
                 width="120"
                 height="40"
               />

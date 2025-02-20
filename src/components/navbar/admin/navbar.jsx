@@ -90,7 +90,9 @@ const AdminNavbar = () => {
   return (
     <NavBigContainer>
       <NavContainer>
-        <Logo onClick={ToHome} src={LogoMain} />
+        <Logo onClick={ToHome} src={LogoMain} >
+          LOGO
+        </Logo>
         <Links>
           {data.map(
             (v) =>

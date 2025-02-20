@@ -42,8 +42,11 @@ const Links = styled.div`
   }
 `;
 
-const Logo = styled.img`
+const Logo = styled.div`
   cursor: pointer;
+  
+  font-family: "Vela Sans GX";
+  font-size: 24px;
   user-select: none;
   ${media.tablet} {
     width: 150px;

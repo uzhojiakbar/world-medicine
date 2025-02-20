@@ -124,7 +124,7 @@ const ModalManager = ({ id = 122, setId = () => {} }) => {
             <MiniTitleSmall>Почта</MiniTitleSmall>
             <ModalInnerSection>
               <EditableInput
-                initialValue="saratovmolev@wm.uz"
+                initialValue="saratovmolev@email.uz"
                 isInput={0}
                 inputType="text"
                 isEditable={false}
