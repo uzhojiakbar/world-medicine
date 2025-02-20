@@ -1,4 +1,4 @@
-import ProfilePic1 from "../assets/img/profile/profile1.jpeg";
+import ProfilePic1 from "../assets/img/profile/profile2.svg";
 
 export const Managers = [
   {

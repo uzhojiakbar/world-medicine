@@ -81,11 +81,11 @@ const Table = ({ data = [], loading = true }) => {
 
   return (
     <Container>
-      {loading && (
+      {loading ? (
         <div className="loaderParent">
           <div className="loader"></div>
         </div>
-      )}
+      ) : ""}
 
       <WhiteWrapper>
         <ResponsiveTableAdmin>

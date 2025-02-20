@@ -1,10 +1,11 @@
 import { Modal } from "antd";
 import styled from "styled-components";
-import ProfilePic1 from "../assets/img/profile/profile1.jpeg";
+import ProfilePic1 from "../assets/img/profile/profile2.svg";
 
 export const ModalContainer = styled(Modal)`
   width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
   max-height: 90vh !important;
+    max-width: 1440px !important;
   overflow: auto;
 
   .ant-modal-close {

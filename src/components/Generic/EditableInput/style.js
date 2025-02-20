@@ -15,7 +15,6 @@ export const Container = styled.div`
   padding-right: ${({ rightIcon }) => (rightIcon ? "50px" : "0")};
   > .rightIcon {
     padding: 10px;
-    border: 1px solid red;
 
     display: flex;
     align-items: center;

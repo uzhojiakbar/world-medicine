@@ -7,7 +7,7 @@ import {
 import LeftArrow from "../../../../assets/svg/LeftArrow";
 import RightArrow from "../../../../assets/svg/RightArrow";
 import styled from "styled-components";
-import ModalManager from "../SettingsMedAgent/Modal";
+import ModalManager from "./Modal.jsx";
 import { useLanguage } from "../../../../context/LanguageContext";
 import { useGetDistrictById } from "../../../../utils/server/server"; // Import to'g'ri qilingan
 import Instance from "../../../../utils/Instance";
@@ -29,6 +29,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
   const [activeModal, setActiveModal] = useState(null);
 
   const closeModal = () => {
+    console.log("closeModal")
     setActiveModal(null);
   };
 
@@ -69,6 +70,8 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
     (currentPage + 1) * itemsPerPage
   );
 
+  console.log("currentData", currentData)
+
   return (
     <Container>
       {isLoading && (
@@ -77,7 +80,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
         </div>
       )}
 
-      <ModalManager isOpen={activeModal} onClose={closeModal} />
+      <ModalManager isOpen={!!activeModal} onClose={closeModal} doctorId={activeModal} />
       {/* {activeModal === 5 && <Modal5  />} */}
 
       <WhiteWrapper>
@@ -123,7 +126,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                     </td>
                     <td>
                       <button
-                        onClick={() => setActiveModal(true)}
+                        onClick={() => setActiveModal(row?.userId)}
                         className="Viewbutton"
                       >
                         <svg

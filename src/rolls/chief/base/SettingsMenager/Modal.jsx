@@ -63,7 +63,6 @@ const ModalManager = ({ isOpen, onClose }) => {
     >
       <Container>
         <Header>Запрос на договор</Header>
-
         <Grid>
           <Field>
             <p>Врач</p>
@@ -92,11 +91,8 @@ const ModalManager = ({ isOpen, onClose }) => {
             </Subtext>
           </Field>
         </Grid>
-
         <HR />
-
         <ModalLogin />
-
         <KvotaContainer>
           {kvotadata.map((item) => (
             <KvotaCard key={item.id}>
@@ -105,7 +101,6 @@ const ModalManager = ({ isOpen, onClose }) => {
             </KvotaCard>
           ))}
         </KvotaContainer>
-
         <PageContainer>
           <SubTitle>Выполнение KPI</SubTitle>
 
@@ -119,9 +114,7 @@ const ModalManager = ({ isOpen, onClose }) => {
           </GridContainer>
         </PageContainer>
         <HR />
-
         <GoalSection />
-
         <HR />
         <Fotercontainer>
           <h2> Удаление мед. представилетя</h2>

@@ -440,6 +440,25 @@ export const useGetProfileInfo = (userId) => {
   });
 };
 
+export const useGetUserInfo = (userId) => {
+  return useQuery({
+    queryKey: ["ProfileInfo", userId],
+    queryFn: async () => {
+      try {
+        const data = await Instance.get(`/v1/user/${userId}`);
+        console.log("userId", userId);
+        console.log("UserData", data);
+
+        return data?.data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error; // xatolikni qaytarish
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+
 export const useGetDrugs = () => {
   return useQuery({
     queryKey: ["Drugs"],
@@ -527,6 +546,7 @@ export const useGetDistrcitById = (id = null) => {
     staleTime: 1000 * 60 * 10,
   });
 };
+
 export const useGetWorkplacesFilter = () => {
   return useQuery({
     queryKey: ["getWorkplacec"],
@@ -542,6 +562,24 @@ export const useGetWorkplacesFilter = () => {
     staleTime: 1000 * 60 * 10,
   });
 };
+
+export const useGetWorkplacesById = (id) => {
+  return useQuery({
+    queryKey: ["workplace",id],
+    queryFn: async () => {
+      try {
+        const { data } = await Instance.get(`/v1/db/workplaces/${id}`, {});
+        return data;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+};
+
+
 // NOTE Get managers
 export const useGetManagers = ({
   creatorId,
@@ -579,6 +617,8 @@ export const useGetManagers = ({
     staleTime: 1000 * 60 * 10,
   });
 };
+
+
 export const useGetMedAgents = ({
   creatorId,
   countryId,
