@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {LoginContainer, TopTitle} from "../../pages/login/style";
+import {motion} from "framer-motion";
 
 export const DisabledPageContainer = styled(LoginContainer)`
     z-index: 999;
@@ -82,7 +83,7 @@ export const TopTitleDisabled = styled(TopTitle)`
   color: red;
 `;
 
-export const Footer = styled.div`
+export const Footer = styled(motion.div)`
     display: flex;
     gap: 20px;
     width: 100%;
