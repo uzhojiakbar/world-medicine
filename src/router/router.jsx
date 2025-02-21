@@ -1,18 +1,19 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import React, {lazy, Suspense, useEffect, useState} from "react";
+import {Navigate, Route, Routes, useLocation} from "react-router-dom";
 import {
-  NavbarDataAdmin,
-  NavbarDataManager,
-  NavbarDataSuperAdmin,
+    NavbarDataAdmin,
+    NavbarDataManager,
+    NavbarDataSuperAdmin,
 } from "../utils/navbar";
-import { useAuth } from "../context/AuthContext/AuthContext";
-import { MainContainer } from "../root/style";
-import { getCookie } from "../hooks/useCookie";
+import {useAuth} from "../context/AuthContext/AuthContext";
+import {MainContainer} from "../root/style";
+import {getCookie} from "../hooks/useCookie";
 import PrivateRoute from "../components/Navigate/PrivateRoute";
 import Cookies from "js-cookie";
 import AdminNavbar from "../components/navbar/admin/navbar";
 import ManagerNavbar from "../components/navbar/manager/navbar";
 import DisabledPage from "../components/DisabledPage/Outer";
+import MobileAndTabletError from "../components/MobileAndTabledError/index.jsx";
 
 // Components
 const NotAuth = lazy(() => import("../components/Navigate/notAuth"));
@@ -26,129 +27,133 @@ const SettingsCondition = lazy(() => import("../pages/setingsCondition/index"));
 
 // Loader
 const Loader = () => (
-  <div className="loaderWindow">
-    <div className="loader" />
-  </div>
+    <div className="loaderWindow">
+        <div className="loader"/>
+    </div>
 );
 
 const Router = () => {
-  const currentUserRole = Cookies.get("role");
-  console.log("HOZIRGI ROLE: ", currentUserRole);
+    const currentUserRole = Cookies.get("role");
+    console.log("HOZIRGI ROLE: ", currentUserRole);
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  useEffect(() => {
-    function handleResize() {
-      setIsMobile(window.innerWidth < 768);
+    // useEffect(() => {
+    //     function handleResize() {
+    //         setIsMobile(window.innerWidth < 768);
+    //     }
+    //
+    //     window.addEventListener("resize", handleResize);
+    //     return () => window.removeEventListener("resize", handleResize);
+    // }, []);
+
+
+    if (isMobile) {
+        return <MobileAndTabletError/>
+    }
+    // ADMIN ROUTES
+    if (currentUserRole === "SUPERADMIN" || currentUserRole === "CHIEF") {
+        return (
+            <Suspense fallback={<Loader/>}>
+                {isMobile ? (
+                    <MobileAndTabletError/>
+                ) : (
+                    ""
+                )}
+                <AdminNavbar/>
+
+                <Routes>
+                    {NavbarDataSuperAdmin.map(({id, path, element, child}) => {
+                        if (child.length) {
+                            return <Route key={id} path={path} element={element}/>;
+                        } else {
+                            return (
+                                <Route key={id} path={path} element={element}>
+                                    {child}
+                                </Route>
+                            );
+                        }
+                    })}
+                </Routes>
+            </Suspense>
+        );
     }
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    // FF
+    else if (currentUserRole === "ADMIN") {
+        return (
+            <Suspense fallback={<Loader/>}>
+                {isMobile ? (
+                    <MobileAndTabletError/>
+                ) : (
+                    ""
+                )}
+                <AdminNavbar/>
 
-  // ADMIN ROUTES
-  if (currentUserRole === "SUPERADMIN" || currentUserRole === "CHIEF") {
-    return (
-      <Suspense fallback={<Loader />}>
-        {isMobile ? (
-          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
-        ) : (
-          ""
-        )}
-        <AdminNavbar />
+                <Routes>
+                    {NavbarDataAdmin.map(({id, path, element, child}) => {
+                        if (child.length) {
+                            return <Route key={id} path={path} element={element}/>;
+                        } else {
+                            return (
+                                <Route key={id} path={path} element={element}>
+                                    {child}
+                                </Route>
+                            );
+                        }
+                    })}
+                </Routes>
+            </Suspense>
+        );
+    }
+    // MANAGER
+    else if (currentUserRole === "MANAGER") {
+        return (
+            <Suspense fallback={<Loader/>}>
+                {isMobile ? (
+                    <MobileAndTabletError/>
+                ) : (
+                    ""
+                )}
+                <ManagerNavbar/>
 
-        <Routes>
-          {NavbarDataSuperAdmin.map(({ id, path, element, child }) => {
-            if (child.length) {
-              return <Route key={id} path={path} element={element} />;
-            } else {
-              return (
-                <Route key={id} path={path} element={element}>
-                  {child}
-                </Route>
-              );
-            }
-          })}
-        </Routes>
-      </Suspense>
-    );
-  }
+                <Routes>
+                    {NavbarDataManager.map(({id, path, element, child}) => {
+                        if (child.length) {
+                            return <Route key={id} path={path} element={element}/>;
+                        } else {
+                            return (
+                                <Route key={id} path={path} element={element}>
+                                    {child}
+                                </Route>
+                            );
+                        }
+                    })}
 
-  // FF
-  else if (currentUserRole === "ADMIN") {
-    return (
-      <Suspense fallback={<Loader />}>
-        {isMobile ? (
-          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
-        ) : (
-          ""
-        )}
-        <AdminNavbar />
+                    <Route path="*" element={<h1>NOT FOUND</h1>}/>
+                </Routes>
+            </Suspense>
+        );
+    }
 
-        <Routes>
-          {NavbarDataAdmin.map(({ id, path, element, child }) => {
-            if (child.length) {
-              return <Route key={id} path={path} element={element} />;
-            } else {
-              return (
-                <Route key={id} path={path} element={element}>
-                  {child}
-                </Route>
-              );
-            }
-          })}
-        </Routes>
-      </Suspense>
-    );
-  }
-  // MANAGER
-  else if (currentUserRole === "MANAGER") {
-    return (
-      <Suspense fallback={<Loader />}>
-        {isMobile ? (
-          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
-        ) : (
-          ""
-        )}
-        <ManagerNavbar />
-
-        <Routes>
-          {NavbarDataManager.map(({ id, path, element, child }) => {
-            if (child.length) {
-              return <Route key={id} path={path} element={element} />;
-            } else {
-              return (
-                <Route key={id} path={path} element={element}>
-                  {child}
-                </Route>
-              );
-            }
-          })}
-
-          <Route path="*" element={<h1>NOT FOUND</h1>} />
-        </Routes>
-      </Suspense>
-    );
-  }
-
-  // Public Routes
-  else {
-    return (
-      <Suspense fallback={<Loader />}>
-        {isMobile ? (
-          <DisabledPage title="TELEFON VA PLANSHETLARDAN KIRISH MUMKIN EMAS!" />
-        ) : (
-          ""
-        )}
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forget-password" element={<CompleteSetup />} />
-          <Route path="*" element={<h1>NOT FOUND</h1>} />
-        </Routes>
-      </Suspense>
-    );
-  }
+    // Public Routes
+    else {
+        return (
+            <Suspense fallback={<Loader/>}>
+                {isMobile ? (
+                    <MobileAndTabletError/>
+                ) : (
+                    ""
+                )}
+                <Routes>
+                    <Route path="/" element={<Login/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/forget-password" element={<CompleteSetup/>}/>
+                    <Route path="*" element={<h1>NOT FOUND</h1>}/>
+                </Routes>
+            </Suspense>
+        );
+    }
 };
 
 export default Router;
@@ -278,22 +283,22 @@ export default Router;
 //               /> */
 
 {
-  /* <Route path="nastroyka-usloviya/" element={<h1>1</h1>} /> */
+    /* <Route path="nastroyka-usloviya/" element={<h1>1</h1>} /> */
 }
 
 {
-  /* <Route
-            path="/nastroyka-usloviya"
-            element={
-              <MainContainer>
-                <SettingsCondition />
-              </MainContainer>
-            }
-          >
-          <Route path="" element={<h1>221</h1>} />
-            <Route path="Preparad" element={<h1>2</h1>} />
-            <Route path="Mestrabotaya" element={<h1>3</h1>} />
-            <Route path="Predoji" element={<h1>4</h1>} />
-            <Route path="*" element={<h1>NOT FOUND</h1>} />
-            </Route> */
+    /* <Route
+              path="/nastroyka-usloviya"
+              element={
+                <MainContainer>
+                  <SettingsCondition />
+                </MainContainer>
+              }
+            >
+            <Route path="" element={<h1>221</h1>} />
+              <Route path="Preparad" element={<h1>2</h1>} />
+              <Route path="Mestrabotaya" element={<h1>3</h1>} />
+              <Route path="Predoji" element={<h1>4</h1>} />
+              <Route path="*" element={<h1>NOT FOUND</h1>} />
+              </Route> */
 }

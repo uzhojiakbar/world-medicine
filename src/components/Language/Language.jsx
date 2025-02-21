@@ -9,7 +9,7 @@ const LanguageIcon = styled.img`
   vertical-align: middle;
 `;
 
-const Language = ({ imgIcon, notext = false, onChange = () => {} }) => {
+const Language = ({ imgIcon,className="", notext = false, onChange = () => {} }) => {
   const [language, setLanguage] = useState(
     localStorage.getItem("lang") || "ru"
   );
@@ -51,6 +51,7 @@ const Language = ({ imgIcon, notext = false, onChange = () => {} }) => {
     <Dropdown menu={{ items }} trigger={["click"]}>
       <div style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
         <LanguageIcon
+            className={className}
           src={selectedLanguage?.icon}
           alt={`${selectedLanguage?.label} icon`}
           notext={notext}

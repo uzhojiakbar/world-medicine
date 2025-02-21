@@ -65,6 +65,7 @@ const CricleButton = ({
   disabled,
   iconRight = false,
   outline = 0,
+                        className,
   htmlType, // Enter tugmasi bosilganda formni yuboradi
 }) => {
   return (
@@ -73,6 +74,7 @@ const CricleButton = ({
       onClick={onClick}
       disabled={disabled}
       type={htmlType ? htmlType : "button"}
+      className={className}
     >
       {icon && !iconRight && <span>{icon}</span>} {/* Icon ko‘rsatish */}
       <span className={`child ${MobilehiddenText ? "hidden" : ""}`}>

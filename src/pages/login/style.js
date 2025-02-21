@@ -213,7 +213,6 @@ const FormSectionBottom = styled.div`
 
 const Title = styled.h2`
   font-size: 28px;
-  font-weight: bold;
   color: #333;
   margin-bottom: 30px;
 
