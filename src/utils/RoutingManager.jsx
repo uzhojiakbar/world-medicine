@@ -8,6 +8,7 @@ import Profile from "../pages/profile/admin";
 import Rahmadjon from "../Rahmadjon";
 import { MainContainer } from "../root/style";
 import MedRepGoal from "../rolls/manager/home/MedRepGoal/ManagersGoal";
+import DoctorAddContact from "../rolls/manager/home/DoctorContract/DoctorAddContact.jsx";
 
 export const RoutingManager = [
   {
@@ -88,6 +89,19 @@ export const RoutingManager = [
     element: (
       <MainContainer>
         <MedRepGoal />
+      </MainContainer>
+    ),
+    child: [],
+    visible: false,
+    onlyAdmin: false,
+    icon: false,
+  },  {
+    id: 48,
+    title: "Создание_договора",
+    path: "doctor-create-contract",
+    element: (
+      <MainContainer>
+        <DoctorAddContact />
       </MainContainer>
     ),
     child: [],
