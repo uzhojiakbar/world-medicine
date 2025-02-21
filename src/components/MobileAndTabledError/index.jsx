@@ -36,6 +36,7 @@ const MobileAndTabletError = () => {
                 transition={{duration: 0.5, delay: 0.2}}
             >
                 <Desc>{translate("mobile-and-tablet-error")}</Desc>
+                <Desc>{translate("mobile-and-tablet-error2")}</Desc>
             </motion.div>
 
             <Footer

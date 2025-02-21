@@ -214,7 +214,8 @@
   "login_error_something": "Nimaidir noto'g'ri ketdi.",
   "Создание_договора": "Shartnoma yaratish",
   "copy-link": "Havolani nusxalash",
-  "mobile-and-tablet-error": "Saytimiz faqat kompyuterdan ishlaydi. Iltimos, to'liq funksionallik uchun uni kompyuter yoki noutbukda oching.",
+  "mobile-and-tablet-error": "Saytimiz faqat kompyuterdan ishlaydi.",
+  "mobile-and-tablet-error2": "Iltimos, to'liq funksionallik uchun uni kompyuter yoki noutbukda oching.",
   "mobile-and-tablet-error-title": "Kirish cheklangan",
   "link-copied": "Havola nusxalandi"
 }

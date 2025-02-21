@@ -214,7 +214,8 @@
   "login_error_something": "Something went wrong.",
   "Создание_договора": "Creating contract",
   "copy-link": "Copy link",
-  "mobile-and-tablet-error": "Our site is only available on a computer. Please open it on a PC or laptop for full functionality.",
+  "mobile-and-tablet-error": "Our site is only available on a computer.",
+  "mobile-and-tablet-error2": "Please open it on a PC or laptop for full functionality.",
   "mobile-and-tablet-error-title": "Access restricted",
   "link-copied": "Link copied"
 }
