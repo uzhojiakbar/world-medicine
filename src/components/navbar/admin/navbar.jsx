@@ -26,6 +26,9 @@ import {Dropdown} from "antd";
 import Cookies from "js-cookie";
 import {useLanguage} from "../../../context/LanguageContext";
 
+import { motion } from "framer-motion";
+
+
 const AdminNavbar = () => {
     const nav = useCustomNavigate();
 
