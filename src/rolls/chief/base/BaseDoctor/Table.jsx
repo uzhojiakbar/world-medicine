@@ -6,11 +6,11 @@ import {
 import LeftArrow from "../../../../assets/svg/LeftArrow";
 import RightArrow from "../../../../assets/svg/RightArrow";
 import styled from "styled-components";
-import ModalManager from "./Modal.jsx";
 import {useLanguage} from "../../../../context/LanguageContext";
 import {useGetDistrictById} from "../../../../utils/server/server"; // Import to'g'ri qilingan
 import Instance from "../../../../utils/Instance";
 import {DatFormatter} from "../../../../utils/DatFormatter";
+import ModalManager from "../SettingsMenager/Modal.jsx";
 
 const Container = styled.div`
     position: relative;
@@ -71,8 +71,10 @@ const Table = ({title = "", data = [], isLoading = false}) => {
             <div className="loader"></div>
         </div>)}
 
-        <ModalManager isOpen={!!activeModal} onClose={closeModal} doctorId={activeModal}/>
+        {/*<ModalManager isOpen={!!activeModal} onClose={closeModal} doctorId={activeModal}/>*/}
         {/* {activeModal === 5 && <Modal5  />} */}
+        <ModalManager isOpen={activeModal} onClose={closeModal} />
+
 
         <WhiteWrapper>
             <TitleSmall>{title}</TitleSmall>

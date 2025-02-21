@@ -37,11 +37,11 @@ const ModalDoctor = ({doctorId, isOpen, onClose}) => {
     console.log("user", user,);
     console.log("district", district,);
     console.log("workplace", workplace,);
-
+    // (isUserLoading || isDistrictLoading || isWorkplaceLoading) ? <div className="loaderParent">
+    //     <div className="loader"></div>
+    // </div> :
     return (
-        (isUserLoading || isDistrictLoading || isWorkplaceLoading) ? <div className="loaderParent">
-            <div className="loader"></div>
-        </div> : <ModalContainer
+         <ModalContainer
             title={
                 <ModalHeader>
                     <Title>{translate("Врач")}</Title>

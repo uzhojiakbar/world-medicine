@@ -362,6 +362,7 @@ export const useGetNewConnecting = (page) => {
     staleTime: 1000 * 60 * 10,
   });
 };
+
 export const useGetNewContract = (page) => {
   return useQuery({
     queryKey: ["newContract", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
@@ -743,6 +744,7 @@ export const useRegisterManager = () => {
     },
   });
 };
+
 // NOTE ADD MedAgent
 export const useRegisterMedAgent = () => {
   return useMutation({
@@ -897,7 +899,7 @@ export const useUploadSales = () => {
       console.log("managerData", uploadData);
       const response = await Instance.post(
           "/v1/db/sales/load-data",
-          uploadData?.requestData
+          uploadData?.uploadData
       );
       return response.data;
     },
@@ -911,7 +913,6 @@ export const useUploadSales = () => {
 };
 // NOTE ADD MedAgent
 
-
 const fetchSalesData = async (page) => {
   try {
     const response = await Instance.get(`/v1/db/sales/data?page=${page}&size=10`);
@@ -921,7 +922,6 @@ const fetchSalesData = async (page) => {
     throw new Error("Failed to fetch sales data");
   }
 };
-
 
 export const useGetSalesData = (page) => {
   return useQuery({
