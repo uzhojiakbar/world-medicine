@@ -891,4 +891,68 @@ export const useGetManagerGoalId = (id) => {
   });
 };
 
+export const useUploadSales = () => {
+  return useMutation({
+    mutationFn: async (uploadData) => {
+      console.log("managerData", uploadData);
+      const response = await Instance.post(
+          "/v1/db/sales/load-data",
+          uploadData?.requestData
+      );
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      variables.onSuccess(data);
+    },
+    onError: (error, variables) => {
+      variables.onError(error);
+    },
+  });
+};
+// NOTE ADD MedAgent
+
+
+const fetchSalesData = async (page) => {
+  try {
+    const response = await Instance.get(`/v1/db/sales/data?page=${page}&size=10`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching sales data:", error);
+    throw new Error("Failed to fetch sales data");
+  }
+};
+
+
+export const useGetSalesData = (page) => {
+  return useQuery({
+    queryKey: ["salesData", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
+    queryFn: async () => {
+      try {
+        const { data } = await Instance.get(`/v1/db/sales/data?page=${page}&size=10`);
+
+        // const content = await Promise.all(
+        //     data.content.map(async (sale) => {
+        //       const districtInfo = sale?.regionDTO?.districtId
+        //           ? await fetchDistrict(sale.regionDTO.districtId)
+        //           : null;
+        //
+        //       const regionInfo = districtInfo?.regionId
+        //           ? await fetchRegion(districtInfo.regionId)
+        //           : null;
+        //
+        //       return { ...sale, districtInfo, regionInfo };
+        //     })
+        // );
+
+        return { ...data };
+      } catch (error) {
+        console.error("Error fetching sales data:", error);
+        throw new Error("Failed to fetch sales data");
+      }
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutgacha yangilanmaydi
+    keepPreviousData: true, // Sahifalar o'zgarganda eski ma'lumotni ushlab turadi
+  });
+};
+
 export default Server;
