@@ -104,7 +104,7 @@ export const ResponsiveTableAdmin = styled.div`
     th {
         background-color: white; /* Header fon rangi */
 
-        color: rgba(0, 0, 0, 0.5);
+        color: #216BF480;
         font-family: "Vela Sans GX", sans-serif;
         font-weight: 600;
 
@@ -272,6 +272,9 @@ export const ResponsiveTableAdmin = styled.div`
     .flex > div > button {
         border: none;
     }
+    .check {
+        cursor: pointer;
+    }
 `;
 
 const Article = styled.div`
@@ -319,14 +322,14 @@ const InputWrapper = styled(Input)`
     }
 `;
 const Checkbox = styled.div`
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border: 2px solid #f1f1f1 ;
     margin: 5px auto;
     border-radius: 4px;
 `
 
-const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = false }) => {
+const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = false, checkData = {}, setCheckData = () => { } }) => {
 
     let { thead, tbody } = data;
     const [editId, setEditId] = useState(null);
@@ -413,16 +416,43 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                                     if (i > 3 && i < 9) {
 
                                         return <>
-                                            <th >
+                                            <th className={isChecked && "check"} onClick={() => {
+                                                if (isChecked) {
+                                                    if (checkData[v])
+                                                        setCheckData({ ...checkData, [v]: !checkData[v] })
+                                                    else {
+                                                        setCheckData({ ...checkData, [v]: true })
+                                                    }
+                                                }
+                                            }} >
                                                 <div>{v}</div>
-                                                <div>{isChecked && <Checkbox />}</div>
-                                            </th>
+                                                {isChecked &&
+                                                    <div className="check">{!checkData[v] ? <Checkbox /> :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.625 22C7.91095 22 5.55393 22 4.08947 20.5355C2.625 19.0711 2.625 16.714 2.625 12C2.625 7.28595 2.625 4.92893 4.08947 3.46447C5.55393 2 7.91095 2 12.625 2C17.339 2 19.6961 2 21.1605 3.46447C22.625 4.92893 22.625 7.28595 22.625 12C22.625 16.714 22.625 19.0711 21.1605 20.5355C19.6961 22 17.339 22 12.625 22ZM16.6553 8.96967C16.9482 9.26256 16.9482 9.73744 16.6553 10.0303L11.6553 15.0303C11.3624 15.3232 10.8876 15.3232 10.5947 15.0303L8.59467 13.0303C8.30178 12.7374 8.30178 12.2626 8.59467 11.9697C8.88756 11.6768 9.36244 11.6768 9.65533 11.9697L11.125 13.4393L15.5947 8.96967C15.8876 8.67678 16.3624 8.67678 16.6553 8.96967Z" fill="#191716" />
+                                                        </svg>}</div>
+                                                }
+                                            </th >
                                             <th><Line /></th>
                                         </>
                                     }
-                                    else return <th className={i == 0 && "idfixed"}>
+                                    else return <th className={i == 0 ? "idfixed" : isChecked ? "check" : ""} onClick={() => {
+                                        if (isChecked) {
+                                            if (checkData[v])
+                                                setCheckData({ ...checkData, [v]: !checkData[v] })
+                                            else {
+                                                setCheckData({ ...checkData, [v]: true })
+                                            }
+                                        }
+                                    }}>
                                         <div>{v}</div>
-                                        <div>{isChecked && i !== 0 && <Checkbox />}</div>
+                                        {
+                                            isChecked && i !== 0 &&
+                                            <div className="check" >{!checkData[v] ? <Checkbox /> : <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.625 22C7.91095 22 5.55393 22 4.08947 20.5355C2.625 19.0711 2.625 16.714 2.625 12C2.625 7.28595 2.625 4.92893 4.08947 3.46447C5.55393 2 7.91095 2 12.625 2C17.339 2 19.6961 2 21.1605 3.46447C22.625 4.92893 22.625 7.28595 22.625 12C22.625 16.714 22.625 19.0711 21.1605 20.5355C19.6961 22 17.339 22 12.625 22ZM16.6553 8.96967C16.9482 9.26256 16.9482 9.73744 16.6553 10.0303L11.6553 15.0303C11.3624 15.3232 10.8876 15.3232 10.5947 15.0303L8.59467 13.0303C8.30178 12.7374 8.30178 12.2626 8.59467 11.9697C8.88756 11.6768 9.36244 11.6768 9.65533 11.9697L11.125 13.4393L15.5947 8.96967C15.8876 8.67678 16.3624 8.67678 16.6553 8.96967Z" fill="#191716" />
+                                            </svg>}</div>
+                                        }
+
                                     </th>
                                 } else {
                                     return (<>
@@ -499,7 +529,7 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                                     }
                                 })}
 
-                                <td className="buttons">
+                                {!isChecked ? <td className="buttons">
                                     {editId === row.id ? (<div className="buttons">
                                         <button
                                             style={{ background: "transparent" }}
@@ -543,7 +573,7 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                                         </button>
 
                                     </>)}
-                                </td>
+                                </td> : <td></td>}
                             </tr>);
                         })) : (<tr>
                             <td className="empty" colSpan="15" style={{ textAlign: "center" }}>
@@ -567,6 +597,6 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                 </button>
             </PaginationButtonsWrapper>
         </WhiteWrapper>
-    </Container>);
+    </Container >);
 };
 export default UsloviyaProductTable;
