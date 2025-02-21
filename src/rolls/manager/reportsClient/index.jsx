@@ -42,7 +42,7 @@ const CheckboxWrapper = styled.div`
 const exportToExcel = (data, checkData) => {
     // 1. Tanlangan ustunlarni filtr qilish
     const selectedHeaders = Object.keys(checkData).filter((key) => checkData[key]);
-
+    console.log(selectedHeaders)
     // 2. Agar tanlangan ustunlar bo'lsa, faqat ularni chiqarish
     const filteredData = selectedHeaders.length > 0
         ? data.map((row) => {

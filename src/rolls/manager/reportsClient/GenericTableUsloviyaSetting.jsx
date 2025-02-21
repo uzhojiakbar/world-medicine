@@ -50,8 +50,8 @@
 //     ]
 //   });
 
-import React, { useEffect, useState } from "react";
-import { MiniTitleSmall, TitleSmall } from "../../../root/style.js";
+import React, {useEffect, useState} from "react";
+import {MiniTitleSmall, TitleSmall} from "../../../root/style.js";
 import {
     PaginationButtonsWrapper, //   ResponsiveTableAdmin,
 } from "../../../components/ResizeTable/ResizeTableAdmin/style.js";
@@ -59,10 +59,10 @@ import LeftArrow from "../../../assets/svg/LeftArrow.jsx";
 import RightArrow from "../../../assets/svg/RightArrow.jsx";
 import styled from "styled-components";
 // import ModalManager from "./Modal.jsx";
-import { useLanguage } from "../../../context/LanguageContext.jsx";
-import Server, { useDeleteDrug } from "../../../utils/server/server.js";
-import { isArray } from "chart.js/helpers";
-import { Input, message } from "antd";
+import {useLanguage} from "../../../context/LanguageContext.jsx";
+import Server, {useDeleteDrug} from "../../../utils/server/server.js";
+import {isArray} from "chart.js/helpers";
+import {Input, message} from "antd";
 
 const Container = styled.div`
     position: relative;
@@ -272,6 +272,7 @@ export const ResponsiveTableAdmin = styled.div`
     .flex > div > button {
         border: none;
     }
+
     .check {
         cursor: pointer;
     }
@@ -305,11 +306,11 @@ export const WhiteWrapper = styled.div`
 `;
 
 const InputWrapper = styled(Input)`
-    background-color: ${({ bgColor }) => (bgColor ? bgColor : "var(--bg-color)")};
+    background-color: ${({bgColor}) => (bgColor ? bgColor : "var(--bg-color)")};
 
     border-radius: 10px;
     display: inline-block;
-    height: ${({ height }) => (height ? height : "60px")};
+    height: ${({height}) => (height ? height : "60px")};
     border: none !important;
 
     width: 100%;
@@ -324,14 +325,22 @@ const InputWrapper = styled(Input)`
 const Checkbox = styled.div`
     width: 20px;
     height: 20px;
-    border: 2px solid #f1f1f1 ;
+    border: 2px solid #f1f1f1;
     margin: 5px auto;
     border-radius: 4px;
 `
 
-const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = false, checkData = {}, setCheckData = () => { } }) => {
+const UsloviyaProductTable = ({
+                                  data,
+                                  loading = true,
+                                  title = "",
+                                  isChecked = false,
+                                  checkData = {},
+                                  setCheckData = () => {
+                                  }
+                              }) => {
 
-    let { thead, tbody } = data;
+    let {thead, tbody} = data;
     const [editId, setEditId] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [loadingIn, setLoadingIn] = useState(0);
@@ -341,7 +350,7 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
     data = editedRow;
     const itemsPerPage = 10;
     const totalPages = Math.ceil(tbody?.length / itemsPerPage);
-    const { translate } = useLanguage();
+    const {translate} = useLanguage();
     const handleEditClick = (row) => {
         console.log("EDIT:", row);
         setEditId(row.id);
@@ -350,7 +359,7 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
 
     const handleInputChange = (name, value, subKey) => {
         setChangeRow((prevRow) => ({
-            ...prevRow, [name]: subKey ? { ...prevRow[name], [subKey]: value } : value,
+            ...prevRow, [name]: subKey ? {...prevRow[name], [subKey]: value} : value,
         }));
     };
     const [isCheck, setIsCheck] = useState(false)
@@ -414,43 +423,49 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                             {thead?.map((v, i) => {
                                 if (typeof v == "string") {
                                     if (i > 3 && i < 9) {
-
                                         return <>
                                             <th className={isChecked && "check"} onClick={() => {
                                                 if (isChecked) {
                                                     if (checkData[v])
-                                                        setCheckData({ ...checkData, [v]: !checkData[v] })
+                                                        setCheckData({...checkData, [v]: !checkData[v]})
                                                     else {
-                                                        setCheckData({ ...checkData, [v]: true })
+                                                        setCheckData({...checkData, [v]: true})
                                                     }
                                                 }
-                                            }} >
+                                            }}>
                                                 <div>{v}</div>
                                                 {isChecked &&
-                                                    <div className="check">{!checkData[v] ? <Checkbox /> :
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.625 22C7.91095 22 5.55393 22 4.08947 20.5355C2.625 19.0711 2.625 16.714 2.625 12C2.625 7.28595 2.625 4.92893 4.08947 3.46447C5.55393 2 7.91095 2 12.625 2C17.339 2 19.6961 2 21.1605 3.46447C22.625 4.92893 22.625 7.28595 22.625 12C22.625 16.714 22.625 19.0711 21.1605 20.5355C19.6961 22 17.339 22 12.625 22ZM16.6553 8.96967C16.9482 9.26256 16.9482 9.73744 16.6553 10.0303L11.6553 15.0303C11.3624 15.3232 10.8876 15.3232 10.5947 15.0303L8.59467 13.0303C8.30178 12.7374 8.30178 12.2626 8.59467 11.9697C8.88756 11.6768 9.36244 11.6768 9.65533 11.9697L11.125 13.4393L15.5947 8.96967C15.8876 8.67678 16.3624 8.67678 16.6553 8.96967Z" fill="#191716" />
+                                                    <div className="check">{!checkData[v] ? <Checkbox/> :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24"
+                                                             viewBox="0 0 25 24" fill="none">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                  d="M12.625 22C7.91095 22 5.55393 22 4.08947 20.5355C2.625 19.0711 2.625 16.714 2.625 12C2.625 7.28595 2.625 4.92893 4.08947 3.46447C5.55393 2 7.91095 2 12.625 2C17.339 2 19.6961 2 21.1605 3.46447C22.625 4.92893 22.625 7.28595 22.625 12C22.625 16.714 22.625 19.0711 21.1605 20.5355C19.6961 22 17.339 22 12.625 22ZM16.6553 8.96967C16.9482 9.26256 16.9482 9.73744 16.6553 10.0303L11.6553 15.0303C11.3624 15.3232 10.8876 15.3232 10.5947 15.0303L8.59467 13.0303C8.30178 12.7374 8.30178 12.2626 8.59467 11.9697C8.88756 11.6768 9.36244 11.6768 9.65533 11.9697L11.125 13.4393L15.5947 8.96967C15.8876 8.67678 16.3624 8.67678 16.6553 8.96967Z"
+                                                                  fill="#191716"/>
                                                         </svg>}</div>
                                                 }
-                                            </th >
-                                            <th><Line /></th>
+                                            </th>
+                                            <th><Line/></th>
                                         </>
-                                    }
-                                    else return <th className={i == 0 ? "idfixed" : isChecked ? "check" : ""} onClick={() => {
-                                        if (isChecked) {
-                                            if (checkData[v])
-                                                setCheckData({ ...checkData, [v]: !checkData[v] })
-                                            else {
-                                                setCheckData({ ...checkData, [v]: true })
-                                            }
-                                        }
-                                    }}>
+                                    } else return <th className={i == 0 ? "idfixed" : isChecked ? "check" : ""}
+                                                      onClick={() => {
+                                                          if (isChecked) {
+                                                              if (checkData[v])
+                                                                  setCheckData({...checkData, [v]: !checkData[v]})
+                                                              else {
+                                                                  setCheckData({...checkData, [v]: true})
+                                                              }
+                                                          }
+                                                      }}>
                                         <div>{v}</div>
                                         {
                                             isChecked && i !== 0 &&
-                                            <div className="check" >{!checkData[v] ? <Checkbox /> : <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.625 22C7.91095 22 5.55393 22 4.08947 20.5355C2.625 19.0711 2.625 16.714 2.625 12C2.625 7.28595 2.625 4.92893 4.08947 3.46447C5.55393 2 7.91095 2 12.625 2C17.339 2 19.6961 2 21.1605 3.46447C22.625 4.92893 22.625 7.28595 22.625 12C22.625 16.714 22.625 19.0711 21.1605 20.5355C19.6961 22 17.339 22 12.625 22ZM16.6553 8.96967C16.9482 9.26256 16.9482 9.73744 16.6553 10.0303L11.6553 15.0303C11.3624 15.3232 10.8876 15.3232 10.5947 15.0303L8.59467 13.0303C8.30178 12.7374 8.30178 12.2626 8.59467 11.9697C8.88756 11.6768 9.36244 11.6768 9.65533 11.9697L11.125 13.4393L15.5947 8.96967C15.8876 8.67678 16.3624 8.67678 16.6553 8.96967Z" fill="#191716" />
-                                            </svg>}</div>
+                                            <div className="check">{!checkData[v] ? <Checkbox/> :
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24"
+                                                     viewBox="0 0 25 24" fill="none">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                          d="M12.625 22C7.91095 22 5.55393 22 4.08947 20.5355C2.625 19.0711 2.625 16.714 2.625 12C2.625 7.28595 2.625 4.92893 4.08947 3.46447C5.55393 2 7.91095 2 12.625 2C17.339 2 19.6961 2 21.1605 3.46447C22.625 4.92893 22.625 7.28595 22.625 12C22.625 16.714 22.625 19.0711 21.1605 20.5355C19.6961 22 17.339 22 12.625 22ZM16.6553 8.96967C16.9482 9.26256 16.9482 9.73744 16.6553 10.0303L11.6553 15.0303C11.3624 15.3232 10.8876 15.3232 10.5947 15.0303L8.59467 13.0303C8.30178 12.7374 8.30178 12.2626 8.59467 11.9697C8.88756 11.6768 9.36244 11.6768 9.65533 11.9697L11.125 13.4393L15.5947 8.96967C15.8876 8.67678 16.3624 8.67678 16.6553 8.96967Z"
+                                                          fill="#191716"/>
+                                                </svg>}</div>
                                         }
 
                                     </th>
@@ -481,7 +496,6 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
 
                                     if (typeof row[v] === "object" && row[v] !== null) {
                                         return (<>
-
                                             {editId === row.id ? (<>
                                                 <td>
                                                     <InputWrapper
@@ -509,7 +523,9 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                                             </>)}
                                         </>);
                                     } else {
-                                        if (i > 3 && i < 9) { }
+                                        if (i > 3 && i < 9) {
+
+                                        }
                                         return <>
                                             {editId !== row.id ? (
                                                 <td key={v} className={i === 1 ? "idfixed" : ""}>
@@ -524,7 +540,7 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                                                     height={"50px"}
                                                 />
                                             </td>)}
-                                            {i > 4 && i < 10 && <td><Line /></td>}
+                                            {i > 4 && i < 10 && <td><Line/></td>}
                                         </>
                                     }
                                 })}
@@ -532,14 +548,14 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                                 {!isChecked ? <td className="buttons">
                                     {editId === row.id ? (<div className="buttons">
                                         <button
-                                            style={{ background: "transparent" }}
+                                            style={{background: "transparent"}}
                                             className="Viewbutton margin10"
                                             onClick={handleSave}
                                         >
                                             <i className="fa-solid fa-floppy-disk colorBlue"></i>
                                         </button>
                                         <button
-                                            style={{ background: "transparent" }}
+                                            style={{background: "transparent"}}
                                             className="Viewbutton margin10 colorBlue"
                                             onClick={handleCancel}
                                         >
@@ -576,7 +592,7 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
                                 </td> : <td></td>}
                             </tr>);
                         })) : (<tr>
-                            <td className="empty" colSpan="15" style={{ textAlign: "center" }}>
+                            <td className="empty" colSpan="15" style={{textAlign: "center"}}>
                                 {loading ? "Loading..." : translate("notInformation")}
                             </td>
                         </tr>)}
@@ -587,16 +603,16 @@ const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = fa
 
             <PaginationButtonsWrapper>
                 <button onClick={handlePrevious} disabled={currentPage === 0}>
-                    <LeftArrow />
+                    <LeftArrow/>
                 </button>
                 <span>
                     {currentPage + 1} {translate("from")} {totalPages}
                 </span>
                 <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
-                    <RightArrow />
+                    <RightArrow/>
                 </button>
             </PaginationButtonsWrapper>
         </WhiteWrapper>
-    </Container >);
+    </Container>);
 };
 export default UsloviyaProductTable;
