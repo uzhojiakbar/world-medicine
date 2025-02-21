@@ -260,6 +260,9 @@ const LanguageContainer = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
+  background: white;
+  padding: 13px;
+  border-radius: 30px;
 `;
 
 const ButtonWrapper = styled.div`

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Form} from "antd";
+import {Form, message} from "antd";
 import {useSignIn} from "../../hooks/useLogin.jsx";
 import {useNavigate} from "react-router-dom";
 import {motion} from "framer-motion";
@@ -120,9 +120,30 @@ const Login = () => {
             setSucces("2");
         };
 
-        const onError = () => {
+        const onError = (error) => {
             setLoading(false);
+
+            if (error?.response) {
+                // API dan kelgan xato (response mavjud)
+                console.log("Server Response Error:", error.response);
+
+                const { status, data } = error.response;
+
+                if (status === 404) {
+                    console.error("❌ Xatolik: User Not Found");
+                    message.error(translate("login_error_user_not_found"));
+                }else if (status === 401) {
+                    message.error(translate("login_password_incorrect"));
+                } else {
+                    message.error(translate("login_error_something"));
+                }
+            } else if (error?.request) {
+                message.error(translate("login_error_something"));
+            } else {
+                message.error(translate("login_error_something"));
+            }
         };
+
 
         // // `signIn`ga `isNumber`ni ham qo'shamiz
         signIn(username, password, isNumber, onSuccess, onError);
