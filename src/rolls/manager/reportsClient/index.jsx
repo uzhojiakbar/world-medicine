@@ -174,15 +174,41 @@ const ReportsClient = () => {
         preparat: "20%",
     });
 
+    const [data2, setData2] = useState({
+        thead: [
+            "Препарат",
+            "Продажа  (отчет. период)",
+            "Лимит",
+            "Факт от продаж",
+            "Рецептурник",
+            "СУ",
+            "СБ",
+            "ГЗ",
+            "КВ",
+        ],
+        tbody: [
+            {
+                id: 1,
+                name: "Амлипин таблетки \n" + "5/10 мг",
+                Продажа: "-?",
+                Лимит: "-?%",
+                Фактпродаж: "12%",
+                Рецептурник: "7",
+                "СУ":  "5",
+                "СБ":  "5",
+                "ГЗ":  "5",
+                "КВ":  "5",
+            },
+        ],
+    });
+
     const handleSave = (key, newValue) => {
         setData((prev) => ({ ...prev, [key]: newValue }));
     };
 
-
     return (<Wrapper>
             <TitleWrapper>
                 <Title size={"36px"}>{information.title}</Title>
-
                 <Flex>
                     <CustomCheckbox
                         checked={isChecked1}
@@ -233,7 +259,6 @@ const ReportsClient = () => {
                     </Clear>
 
                 </Flex>
-
             </TitleWrapper>
 
         <InfoPage>
@@ -252,9 +277,10 @@ const ReportsClient = () => {
             </InfoContainer>
         </InfoPage>
             <TableWrapper>
+
                 <GenericTable
-                    thead={["Препараты", "Выписано", "Дозволено", "Продано"]}
-                    data={tableData}
+                   loading={false}
+                   data={data2}
                 />
             </TableWrapper>
         </Wrapper>);

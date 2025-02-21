@@ -5,6 +5,8 @@ import "./index.css";
 import { MenagerPageContainer } from "../../menager/style";
 import { useLanguage } from "../../../context/LanguageContext";
 import Cookies from "js-cookie";
+
+import {motion} from "framer-motion";
 const Pagination = () => {
   const [active, setActive] = useState("nastroyka-usloviya");
   const location = useLocation(); // React Router'dan location hook
@@ -215,7 +217,22 @@ const Pagination = () => {
   }, [location.pathname]); // document.location o'rniga location.pathname ishlatiladi
 
   return (
-    <>
+    <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+    >
+      <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 },
+            },
+          }}
+      >
       <ContainerItem>
         {navdata?.map((item) => (
           <NavLink
@@ -228,7 +245,13 @@ const Pagination = () => {
                 : "itemInner itemLink"
             }
           >
-            <div>
+            <motion.div
+                key={item.id}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+            >
               <H1>{item.name}</H1>
               <span
                 style={{
@@ -238,11 +261,13 @@ const Pagination = () => {
               >
                 <i>{item.icon}</i>
               </span>
-            </div>
+            </motion.div>
           </NavLink>
         ))}
       </ContainerItem>
-    </>
+
+      </motion.div>
+    </motion.div>
   );
 };
 

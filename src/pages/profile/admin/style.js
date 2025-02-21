@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import {motion} from "framer-motion";
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,7 +16,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -124,7 +125,7 @@ const MainAdminButton = styled.div`
   }
 `;
 
-const FormWrapper = styled.div`
+const FormWrapper = styled(motion.div)`
   max-width: 950px;
   width: 100%;
   border-radius: 24px;
