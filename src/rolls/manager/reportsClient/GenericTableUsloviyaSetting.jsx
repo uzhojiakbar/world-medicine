@@ -50,8 +50,8 @@
 //     ]
 //   });
 
-import React, {useEffect, useState} from "react";
-import {MiniTitleSmall, TitleSmall} from "../../../root/style.js";
+import React, { useEffect, useState } from "react";
+import { MiniTitleSmall, TitleSmall } from "../../../root/style.js";
 import {
     PaginationButtonsWrapper, //   ResponsiveTableAdmin,
 } from "../../../components/ResizeTable/ResizeTableAdmin/style.js";
@@ -59,10 +59,10 @@ import LeftArrow from "../../../assets/svg/LeftArrow.jsx";
 import RightArrow from "../../../assets/svg/RightArrow.jsx";
 import styled from "styled-components";
 // import ModalManager from "./Modal.jsx";
-import {useLanguage} from "../../../context/LanguageContext.jsx";
-import Server, {useDeleteDrug} from "../../../utils/server/server.js";
-import {isArray} from "chart.js/helpers";
-import {Input, message} from "antd";
+import { useLanguage } from "../../../context/LanguageContext.jsx";
+import Server, { useDeleteDrug } from "../../../utils/server/server.js";
+import { isArray } from "chart.js/helpers";
+import { Input, message } from "antd";
 
 const Container = styled.div`
     position: relative;
@@ -92,7 +92,7 @@ export const ResponsiveTableAdmin = styled.div`
 
     thead > tr > td {
         background-color: white !important;
-        
+
     }
 
     th,
@@ -108,7 +108,7 @@ export const ResponsiveTableAdmin = styled.div`
         font-family: "Vela Sans GX", sans-serif;
         font-weight: 600;
 
-        
+
         padding: 10px 12px; /* Yuqoridan va pastdan */
     }
 
@@ -302,11 +302,11 @@ export const WhiteWrapper = styled.div`
 `;
 
 const InputWrapper = styled(Input)`
-    background-color: ${({bgColor}) => (bgColor ? bgColor : "var(--bg-color)")};
+    background-color: ${({ bgColor }) => (bgColor ? bgColor : "var(--bg-color)")};
 
     border-radius: 10px;
     display: inline-block;
-    height: ${({height}) => (height ? height : "60px")};
+    height: ${({ height }) => (height ? height : "60px")};
     border: none !important;
 
     width: 100%;
@@ -318,9 +318,17 @@ const InputWrapper = styled(Input)`
         text-transform: capitalize;
     }
 `;
+const Checkbox = styled.div`
+    width: 18px;
+    height: 18px;
+    border: 2px solid #f1f1f1 ;
+    margin: 5px auto;
+    border-radius: 4px;
+`
 
-const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
-    let {thead, tbody} = data;
+const UsloviyaProductTable = ({ data, loading = true, title = "", isChecked = false }) => {
+
+    let { thead, tbody } = data;
     const [editId, setEditId] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [loadingIn, setLoadingIn] = useState(0);
@@ -330,7 +338,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
     data = editedRow;
     const itemsPerPage = 10;
     const totalPages = Math.ceil(tbody?.length / itemsPerPage);
-    const {translate} = useLanguage();
+    const { translate } = useLanguage();
     const handleEditClick = (row) => {
         console.log("EDIT:", row);
         setEditId(row.id);
@@ -339,10 +347,10 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
 
     const handleInputChange = (name, value, subKey) => {
         setChangeRow((prevRow) => ({
-            ...prevRow, [name]: subKey ? {...prevRow[name], [subKey]: value} : value,
+            ...prevRow, [name]: subKey ? { ...prevRow[name], [subKey]: value } : value,
         }));
     };
-
+    const [isCheck, setIsCheck] = useState(false)
 
     const handleCancel = () => {
         setEditId(null);
@@ -388,160 +396,177 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
         setEditedRow([...tbody]);
     }, [tbody]);
     return (<Container>
-            {loading || loadingIn ? (<div className="loaderParent">
-                    <div className="loader"></div>
-                </div>) : ("")}
+        {loading || loadingIn ? (<div className="loaderParent">
+            <div className="loader"></div>
+        </div>) : ("")}
 
-            {/* <ModalManager id={openModalId} setId={setOpenModalId} /> */}
-            <WhiteWrapper>
-                <div>
-                    <TitleSmall>{title}</TitleSmall>
-                    <ResponsiveTableAdmin>
-                        <table>
-                            <thead>
-                            <tr>
-                                {thead?.map((v, i) => {
-                                    if (typeof v == "string") {
-                                        return <th className={i == 0 && "idfixed"}>{v}</th>;
-                                    } else {
+        {/* <ModalManager id={openModalId} setId={setOpenModalId} /> */}
+        <WhiteWrapper>
+            <div>
+                <TitleSmall>{title}</TitleSmall>
+                <ResponsiveTableAdmin>
+                    <table>
+                        <thead>
+                        <tr>
+                            {thead?.map((v, i) => {
+                                if (typeof v == "string") {
+                                    if (i > 3 && i < 9) {
+
+                                        return <>
+                                            <th >
+                                                <div>{v}</div>
+                                                <div>{isChecked && <Checkbox />}</div>
+                                            </th>
+                                            <th><Line /></th>
+                                        </>
+                                    }
+                                    else return <th className={i == 0 && "idfixed"}>
+                                        <div>{v}</div>
+                                        <div>{isChecked && i !== 0 && <Checkbox />}</div>
+                                    </th>
+                                } else {
+                                    return (<>
+
+                                        <th>
+                                            <Article>
+                                                <div>{v?.title}</div>
+                                                <div className="flex">
+                                                    {v?.child && v.child.map((v) => <p key={v}>{v}</p>)}
+                                                </div>
+                                            </Article>
+                                        </th>
+                                    </>);
+                                }
+                            })}
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {editedRow?.length > 0 ? (editedRow?.map((row, index) => {
+                            return (<tr onDoubleClick={() => handleEditClick(row)}
+                                        key={row.id}>
+                                {Object.keys(row)?.map((v, i) => {
+                                    if (v === "id") return null; // id ni chiqarish shart emas
+
+                                    if (typeof row[v] === "object" && row[v] !== null) {
                                         return (<>
 
-                                                <th>
-                                                    <Article>
-                                                        <div>{v?.title}</div>
-                                                        <div className="flex">
-                                                            {v?.child && v.child.map((v) => <p key={v}>{v}</p>)}
-                                                        </div>
-                                                    </Article>
-                                                </th>
-                                            </>);
+                                            {editId === row.id ? (<>
+                                                <td>
+                                                    <InputWrapper
+                                                        type="number"
+                                                        name="Лимит"
+                                                        defaultValue={row[v]?.Лимит}
+                                                        onChange={(e) => handleInputChange(v, e.target.value, index, "Лимит")}
+                                                        placeholder="Лимит"
+                                                        height={"50px"}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <InputWrapper
+                                                        type="number"
+                                                        name="Балл"
+                                                        defaultValue={row[v]?.Балл}
+                                                        onChange={(e) => handleInputChange(v, e.target.value, index, "Балл")}
+                                                        placeholder="Балл"
+                                                        height={"50px"}
+                                                    />
+                                                </td>
+                                            </>) : (<>
+                                                <td>{row[v]?.Лимит}</td>
+                                                <td>{row[v]?.Балл}</td>
+                                            </>)}
+                                        </>);
+                                    } else {
+                                        if (i > 3 && i < 9) { }
+                                        return <>
+                                            {editId !== row.id ? (
+                                                <td key={v} className={i === 1 ? "idfixed" : ""}>
+                                                    {row[v]}
+                                                </td>) : (<td>
+                                                <InputWrapper
+                                                    type="text"
+                                                    name={v}
+                                                    defaultValue={row[v]}
+                                                    onChange={(e) => handleInputChange(v, e.target.value, index)}
+                                                    placeholder={v}
+                                                    height={"50px"}
+                                                />
+                                            </td>)}
+                                            {i > 4 && i < 10 && <td><Line /></td>}
+                                        </>
                                     }
                                 })}
 
-                            </tr>
-                            </thead>
+                                <td className="buttons">
+                                    {editId === row.id ? (<div className="buttons">
+                                        <button
+                                            style={{ background: "transparent" }}
+                                            className="Viewbutton margin10"
+                                            onClick={handleSave}
+                                        >
+                                            <i className="fa-solid fa-floppy-disk colorBlue"></i>
+                                        </button>
+                                        <button
+                                            style={{ background: "transparent" }}
+                                            className="Viewbutton margin10 colorBlue"
+                                            onClick={handleCancel}
+                                        >
+                                            <i className="fa-solid fa-close colorRed"></i>
+                                        </button>
+                                    </div>) : (<>
+                                        <button
+                                            style={{
+                                                background: "transparent", padding: "0",
+                                            }}
+                                            className="Viewbutton"
+                                            onClick={() => handleEditClick(row)}
+                                        >
+                                            <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    opacity="0.5"
+                                                    d="M20.8487 8.71306C22.3844 7.17735 22.3844 4.68748 20.8487 3.15178C19.313 1.61607 16.8231 1.61607 15.2874 3.15178L14.4004 4.03882C14.4125 4.0755 14.4251 4.11268 14.4382 4.15035C14.7633 5.0875 15.3768 6.31601 16.5308 7.47002C17.6848 8.62403 18.9133 9.23749 19.8505 9.56262C19.888 9.57563 19.925 9.58817 19.9615 9.60026L20.8487 8.71306Z"
+                                                    fill="#216BF4"
+                                                />
+                                                <path
+                                                    d="M14.4386 4L14.4004 4.03819C14.4125 4.07487 14.4251 4.11206 14.4382 4.14973C14.7633 5.08687 15.3768 6.31538 16.5308 7.4694C17.6848 8.62341 18.9133 9.23686 19.8505 9.56199C19.8876 9.57489 19.9243 9.58733 19.9606 9.59933L11.4001 18.1598C10.823 18.7369 10.5343 19.0255 10.2162 19.2737C9.84082 19.5665 9.43469 19.8175 9.00498 20.0223C8.6407 20.1959 8.25351 20.3249 7.47918 20.583L3.39584 21.9442C3.01478 22.0712 2.59466 21.972 2.31063 21.688C2.0266 21.4039 1.92743 20.9838 2.05445 20.6028L3.41556 16.5194C3.67368 15.7451 3.80273 15.3579 3.97634 14.9936C4.18114 14.5639 4.43213 14.1578 4.7249 13.7824C4.97307 13.4643 5.26165 13.1757 5.83874 12.5986L14.4386 4Z"
+                                                    fill="#216BF4"
+                                                />
+                                            </svg>
+                                        </button>
 
-                            <tbody>
-                            {editedRow?.length > 0 ? (editedRow?.map((row, index) => {
-                                    return (<tr onDoubleClick={() => handleEditClick(row)}
-                                                key={row.id}>
-                                            {Object.keys(row)?.map((v, i) => {
-                                                if (v === "id") return null; // id ni chiqarish shart emas
+                                    </>)}
+                                </td>
+                            </tr>);
+                        })) : (<tr>
+                            <td className="empty" colSpan="15" style={{ textAlign: "center" }}>
+                                {loading ? "Loading..." : translate("notInformation")}
+                            </td>
+                        </tr>)}
+                        </tbody>
+                    </table>
+                </ResponsiveTableAdmin>
+            </div>
 
-                                                if (typeof row[v] === "object" && row[v] !== null) {
-                                                    return (<>
-
-                                                            {editId === row.id ? (<>
-                                                                    <td>
-                                                                        <InputWrapper
-                                                                            type="number"
-                                                                            name="Лимит"
-                                                                            defaultValue={row[v]?.Лимит}
-                                                                            onChange={(e) => handleInputChange(v, e.target.value, index, "Лимит")}
-                                                                            placeholder="Лимит"
-                                                                            height={"50px"}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <InputWrapper
-                                                                            type="number"
-                                                                            name="Балл"
-                                                                            defaultValue={row[v]?.Балл}
-                                                                            onChange={(e) => handleInputChange(v, e.target.value, index, "Балл")}
-                                                                            placeholder="Балл"
-                                                                            height={"50px"}
-                                                                        />
-                                                                    </td>
-                                                                </>) : (<>
-                                                                    <td>{row[v]?.Лимит}</td>
-                                                                    <td>{row[v]?.Балл}</td>
-                                                                </>)}
-                                                        </>);
-                                                } else {
-                                                    return editId !== row.id ? (
-                                                        <td key={v} className={i === 1 ? "idfixed" : ""}>
-                                                            {row[v]}
-                                                        </td>) : (<td>
-                                                            <InputWrapper
-                                                                type="text"
-                                                                name={v}
-                                                                defaultValue={row[v]}
-                                                                onChange={(e) => handleInputChange(v, e.target.value, index)}
-                                                                placeholder={v}
-                                                                height={"50px"}
-                                                            />
-                                                        </td>);
-                                                }
-                                            })}
-
-                                            <td className="buttons">
-                                                {editId === row.id ? (<div className="buttons">
-                                                        <button
-                                                            style={{background: "transparent"}}
-                                                            className="Viewbutton margin10"
-                                                            onClick={handleSave}
-                                                        >
-                                                            <i className="fa-solid fa-floppy-disk colorBlue"></i>
-                                                        </button>
-                                                        <button
-                                                            style={{background: "transparent"}}
-                                                            className="Viewbutton margin10 colorBlue"
-                                                            onClick={handleCancel}
-                                                        >
-                                                            <i className="fa-solid fa-close colorRed"></i>
-                                                        </button>
-                                                    </div>) : (<>
-                                                        <button
-                                                            style={{
-                                                                background: "transparent", padding: "0",
-                                                            }}
-                                                            className="Viewbutton"
-                                                            onClick={() => handleEditClick(row)}
-                                                        >
-                                                            <svg
-                                                                width="24"
-                                                                height="24"
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                                <path
-                                                                    opacity="0.5"
-                                                                    d="M20.8487 8.71306C22.3844 7.17735 22.3844 4.68748 20.8487 3.15178C19.313 1.61607 16.8231 1.61607 15.2874 3.15178L14.4004 4.03882C14.4125 4.0755 14.4251 4.11268 14.4382 4.15035C14.7633 5.0875 15.3768 6.31601 16.5308 7.47002C17.6848 8.62403 18.9133 9.23749 19.8505 9.56262C19.888 9.57563 19.925 9.58817 19.9615 9.60026L20.8487 8.71306Z"
-                                                                    fill="#216BF4"
-                                                                />
-                                                                <path
-                                                                    d="M14.4386 4L14.4004 4.03819C14.4125 4.07487 14.4251 4.11206 14.4382 4.14973C14.7633 5.08687 15.3768 6.31538 16.5308 7.4694C17.6848 8.62341 18.9133 9.23686 19.8505 9.56199C19.8876 9.57489 19.9243 9.58733 19.9606 9.59933L11.4001 18.1598C10.823 18.7369 10.5343 19.0255 10.2162 19.2737C9.84082 19.5665 9.43469 19.8175 9.00498 20.0223C8.6407 20.1959 8.25351 20.3249 7.47918 20.583L3.39584 21.9442C3.01478 22.0712 2.59466 21.972 2.31063 21.688C2.0266 21.4039 1.92743 20.9838 2.05445 20.6028L3.41556 16.5194C3.67368 15.7451 3.80273 15.3579 3.97634 14.9936C4.18114 14.5639 4.43213 14.1578 4.7249 13.7824C4.97307 13.4643 5.26165 13.1757 5.83874 12.5986L14.4386 4Z"
-                                                                    fill="#216BF4"
-                                                                />
-                                                            </svg>
-                                                        </button>
-
-                                                    </>)}
-                                            </td>
-                                        </tr>);
-                                })) : (<tr>
-                                    <td className="empty" colSpan="15" style={{textAlign: "center"}}>
-                                        {loading ? "Loading..." : translate("notInformation")}
-                                    </td>
-                                </tr>)}
-                            </tbody>
-                        </table>
-                    </ResponsiveTableAdmin>
-                </div>
-
-                <PaginationButtonsWrapper>
-                    <button onClick={handlePrevious} disabled={currentPage === 0}>
-                        <LeftArrow/>
-                    </button>
-                    <span>
-            {currentPage + 1} {translate("from")} {totalPages}
-          </span>
-                    <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
-                        <RightArrow/>
-                    </button>
-                </PaginationButtonsWrapper>
-            </WhiteWrapper>
-        </Container>);
+            <PaginationButtonsWrapper>
+                <button onClick={handlePrevious} disabled={currentPage === 0}>
+                    <LeftArrow />
+                </button>
+                <span>
+                    {currentPage + 1} {translate("from")} {totalPages}
+                </span>
+                <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
+                    <RightArrow />
+                </button>
+            </PaginationButtonsWrapper>
+        </WhiteWrapper>
+    </Container>);
 };
 export default UsloviyaProductTable;

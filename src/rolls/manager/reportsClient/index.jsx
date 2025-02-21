@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     ButtonWrapper, InfoContainer, InfoPage, InputWrapper, Item, TableWrapper, Title, TitleWrapper, Wrapper,
 } from "./style";
 
-import {Input, Button} from "antd";
+import { Input, Button } from "antd";
 import GenericTable from "./GenericTableUsloviyaSetting";
-import {useLanguage} from "../../../context/LanguageContext";
+import { useLanguage } from "../../../context/LanguageContext";
 import styled from "styled-components";
 
 const Label = styled.label`
@@ -71,12 +71,19 @@ const Clear = styled.div`
     }
 `;
 
+const Flex = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    gap: 10px;
+`
 
-const CustomCheckbox = ({label, checked, onChange}) => {
+const CustomCheckbox = ({ label, checked, onChange }) => {
     return (<Label htmlFor="select">
         {checked ? "Отменить" : "Выбрать"}
         <CheckboxWrapper checked={checked} onClick={onChange}>
-            <CheckboxInput id="select" type="checkbox" checked={checked} readOnly/>
+            <CheckboxInput id="select" type="checkbox" checked={checked} readOnly />
             <CheckMark checked={checked}>
                 {checked ? (
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -96,7 +103,7 @@ const CustomCheckbox = ({label, checked, onChange}) => {
     </Label>);
 };
 
-const EditableInfo = ({label, value, onSave}) => {
+const EditableInfo = ({ label, value, onSave }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(value);
 
@@ -109,11 +116,11 @@ const EditableInfo = ({label, value, onSave}) => {
         <InputWrapper onDoubleClick={() => setIsEditing(true)}>
             <p>{label}</p>
             {isEditing ? (
-                <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <Input
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        style={{width: "100px"}}
+                        style={{ width: "100px" }}
                     />
                     <Button type="primary" onClick={handleSave}>
                         ✔
@@ -127,7 +134,7 @@ const EditableInfo = ({label, value, onSave}) => {
 };
 
 const ReportsClient = () => {
-    const {translate} = useLanguage();
+    const { translate } = useLanguage();
 
     const [isChecked1, setIsChecked1] = useState(false);
 
@@ -142,27 +149,26 @@ const ReportsClient = () => {
             percent: "11%",
         },
     };
-    const tableData = [{
-        id: 1, data: ["Ампициллин таб. 5/10мг №30", "1000", "900", "1700"], highlight: true, colors: {
-            iconcolor: "#FB3748", textcolor: "black",
-        },
-    }, {
-        id: 1, data: ["Ампициллин таб. 5/10мг №30", "1000", "900", "1700"], highlight: true, colors: {
-            bgcolorr: "#FFDB43", textcolor: "black", iconcolor: "#216BF4",
-        },
-    }, {
-        id: 1, data: ["Артрокол р-р д/ин амп.10мг/2мл №5", "XX", "XX", "XX"], highlight: true, colors: {
-            bgcolorr: "#FB3748", iconbgcolor: "#e1858d", iconcolor: "white", textcolor: "white",
-        },
-    },];
 
-    const Flex = styled.div`
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    const tableData = [
+        {
+            id: 1, data: ["Ампициллин таб. 5/10мг №30", "1000", "900", "1700"], highlight: true, colors: {
+                iconcolor: "#FB3748", textcolor: "black",
+            },
+        },
+        {
+            id: 1, data: ["Ампициллин таб. 5/10мг №30", "1000", "900", "1700"], highlight: true, colors: {
+                bgcolorr: "#FFDB43", textcolor: "black", iconcolor: "#216BF4",
+            },
+        },
+        {
+            id: 1, data: ["Артрокол р-р д/ин амп.10мг/2мл №5", "XX", "XX", "XX"], highlight: true, colors: {
+                bgcolorr: "#FB3748", iconbgcolor: "#e1858d", iconcolor: "white", textcolor: "white",
+            },
+        },
+    ];
 
-        gap: 10px;
-    `
+
 
     const [data, setData] = useState({
         prodaja: "48 000",
@@ -199,16 +205,41 @@ const ReportsClient = () => {
                 "ГЗ": "5",
                 "КВ": "5",
             },
+            {
+                id: 2,
+                name: "Амлипин таблетки \n" + "5/10 мг",
+                Продажа: "-?",
+                Лимит: "-?%",
+                Фактпродаж: "12%",
+                Рецептурник: "7",
+                "СУ": "5",
+                "СБ": "5",
+                "ГЗ": "5",
+                "КВ": "5",
+            },
+            {
+                id: 3,
+                name: "Амлипин таблетки \n" + "5/10 мг",
+                Продажа: "-?",
+                Лимит: "-?%",
+                Фактпродаж: "12%",
+                Рецептурник: "7",
+                "СУ": "5",
+                "СБ": "5",
+                "ГЗ": "5",
+                "КВ": "5",
+            },
         ],
     });
+    const [checkData, setCheckData] = useState({})
 
     const handleSave = (key, newValue) => {
         setData((prev) => ({...prev, [key]: newValue}));
-    };
+    }
 
     return (<Wrapper>
         <TitleWrapper>
-            <Title size={"36px"}>{information.title}</Title>
+            <Title siz e={"36px"}>{information.title}</Title>
             <Flex>
                 <CustomCheckbox
                     checked={isChecked1}
@@ -281,12 +312,14 @@ const ReportsClient = () => {
                 <EditableInfo label={translate("Препарат")} value={data.preparat}
                               onSave={(val) => handleSave("preparat", val)}/>
             </InfoContainer>
+
         </InfoPage>
         <TableWrapper>
 
             <GenericTable
                 loading={false}
                 data={data2}
+                isChecked={isChecked1}
             />
         </TableWrapper>
     </Wrapper>);
