@@ -94,7 +94,7 @@ export const Footer = styled(motion.div)`
     height: 60px;
     
     .copy-link{
-        width: 50% !important;
+        width: 70% !important;
     }
 `
 

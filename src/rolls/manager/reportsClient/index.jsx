@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
     ButtonWrapper, InfoContainer, InfoPage, InputWrapper, Item, TableWrapper, Title, TitleWrapper, Wrapper,
 } from "./style";
 
-import { Input, Button } from "antd";
+import {Input, Button} from "antd";
 import GenericTable from "./GenericTableUsloviyaSetting";
-import { useLanguage } from "../../../context/LanguageContext";
+import {useLanguage} from "../../../context/LanguageContext";
 import styled from "styled-components";
+import * as XLSX from "xlsx";
 
-const Label = styled.label`
+const Label = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,6 +39,35 @@ const CheckboxWrapper = styled.div`
     transition: all 0.3s ease-in-out;
 `;
 
+const exportToExcel = (data, checkData) => {
+    // 1. Tanlangan ustunlarni filtr qilish
+    const selectedHeaders = Object.keys(checkData).filter((key) => checkData[key]);
+
+    // 2. Agar tanlangan ustunlar bo'lsa, faqat ularni chiqarish
+    const filteredData = selectedHeaders.length > 0
+        ? data.map((row) => {
+            let filteredRow = {};
+            selectedHeaders.forEach((header) => {
+                filteredRow[header] = row[header];
+            });
+            return filteredRow;
+        })
+        : data;
+
+    // 3. Jadval ma'lumotlarini tayyorlash
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const workbook = XLSX.utils.book_new();
+
+    // 4. Worksheetni workbookga qo'shish
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Архив договоров");
+
+    // 5. Excel faylini yaratish
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+
+    // 6. Faylni saqlash
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "Архив договоров.xlsx");
+};
 const CheckboxInput = styled.input`
     display: none;
 `;
@@ -79,12 +109,12 @@ const Flex = styled.div`
     gap: 10px;
 `
 
-const CustomCheckbox = ({ label, checked, onChange }) => {
-    return (<Label htmlFor="select">
+const CustomCheckbox = ({label, checked, onChange}) => {
+    return (<Label onClick={onChange}  >
         {checked ? "Отменить" : "Выбрать"}
-        <CheckboxWrapper checked={checked} onClick={onChange}>
-            <CheckboxInput id="select" type="checkbox" checked={checked} readOnly />
-            <CheckMark checked={checked}>
+        <CheckboxWrapper   checked={checked}>
+            <CheckboxInput  id="select" type="checkbox" checked={checked} readOnly/>
+            <CheckMark   checked={checked}>
                 {checked ? (
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -103,7 +133,7 @@ const CustomCheckbox = ({ label, checked, onChange }) => {
     </Label>);
 };
 
-const EditableInfo = ({ label, value, onSave }) => {
+const EditableInfo = ({label, value, onSave}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(value);
 
@@ -116,11 +146,11 @@ const EditableInfo = ({ label, value, onSave }) => {
         <InputWrapper onDoubleClick={() => setIsEditing(true)}>
             <p>{label}</p>
             {isEditing ? (
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                     <Input
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        style={{ width: "100px" }}
+                        style={{width: "100px"}}
                     />
                     <Button type="primary" onClick={handleSave}>
                         ✔
@@ -134,7 +164,7 @@ const EditableInfo = ({ label, value, onSave }) => {
 };
 
 const ReportsClient = () => {
-    const { translate } = useLanguage();
+    const {translate} = useLanguage();
 
     const [isChecked1, setIsChecked1] = useState(false);
 
@@ -167,7 +197,6 @@ const ReportsClient = () => {
             },
         },
     ];
-
 
 
     const [data, setData] = useState({
@@ -235,7 +264,7 @@ const ReportsClient = () => {
     console.log(checkData);
 
     const handleSave = (key, newValue) => {
-        setData((prev) => ({ ...prev, [key]: newValue }));
+        setData((prev) => ({...prev, [key]: newValue}));
     }
 
     return (<Wrapper>
@@ -247,7 +276,7 @@ const ReportsClient = () => {
                     onChange={() => setIsChecked1(!isChecked1)}
                 />
 
-                <Clear onClick={() => exportToExcel(data)}>
+                <Clear onClick={() => exportToExcel(data2.tbody, checkData)}>
                     <svg
                         width="24"
                         height="24"
@@ -269,23 +298,23 @@ const ReportsClient = () => {
                     </svg>
                 </Clear>
 
-                <Clear onClick={() => exportToExcel(data)}>
+                <Clear>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M17.1209 2.87868C16.2422 2 14.828 2 11.9996 2C9.17112 2 7.7569 2 6.87822 2.87868C6.38586 3.37105 6.16939 4.03157 6.07422 5.01484C6.63346 4.99996 7.25161 4.99998 7.92921 5H16.0704C16.7478 4.99998 17.3658 4.99996 17.9249 5.01483C17.8297 4.03156 17.6133 3.37105 17.1209 2.87868Z"
-                            fill="#216BF4" />
+                            fill="#216BF4"/>
                         <path
                             d="M18 15.5C18 18.3284 18 20.2426 17.1213 21.1213C16.2426 22 14.8284 22 12 22C9.17158 22 7.75736 22 6.87868 21.1213C6 20.2426 6 18.3284 6 15.5H18Z"
-                            fill="#216BF4" />
+                            fill="#216BF4"/>
                         <path opacity="0.5"
                               d="M16 6H8C5.17157 6 3.75736 6 2.87868 6.87868C2 7.75736 2 9.17157 2 12C2 14.8284 2 16.2426 2.87868 17.1213C3.37323 17.6159 4.03743 17.8321 5.02795 17.9266C4.99998 17.2038 4.99999 16.3522 5 15.5C4.72386 15.5 4.5 15.2761 4.5 15C4.5 14.7239 4.72386 14.5 5 14.5H19C19.2761 14.5 19.5 14.7239 19.5 15C19.5 15.2761 19.2761 15.5003 19 15.5003C19 16.3525 19 17.2039 18.9721 17.9266C19.9626 17.8321 20.6268 17.6159 21.1213 17.1213C22 16.2426 22 14.8284 22 12C22 9.17157 22 7.75736 21.1213 6.87868C20.2426 6 18.8284 6 16 6Z"
-                              fill="#216BF4" />
+                              fill="#216BF4"/>
                         <path
                             d="M9 10.75C9.41421 10.75 9.75 10.4142 9.75 10C9.75 9.58579 9.41421 9.25 9 9.25H6C5.58579 9.25 5.25 9.58579 5.25 10C5.25 10.4142 5.58579 10.75 6 10.75H9Z"
-                            fill="#216BF4" />
+                            fill="#216BF4"/>
                         <path
                             d="M18 10C18 10.5523 17.5523 11 17 11C16.4477 11 16 10.5523 16 10C16 9.44772 16.4477 9 17 9C17.5523 9 18 9.44772 18 10Z"
-                            fill="#216BF4" />
+                            fill="#216BF4"/>
                     </svg>
 
                 </Clear>
@@ -296,22 +325,22 @@ const ReportsClient = () => {
         <InfoPage>
             <InfoContainer>
                 <EditableInfo label={translate("Продажа")} value={data.prodaja}
-                              onSave={(val) => handleSave("prodaja", val)} />
-                <EditableInfo label={translate("Квота")} value={data.kvota} onSave={(val) => handleSave("kvota", val)} />
+                              onSave={(val) => handleSave("prodaja", val)}/>
+                <EditableInfo label={translate("Квота")} value={data.kvota} onSave={(val) => handleSave("kvota", val)}/>
                 <EditableInfo label={`% ${translate("выполнения")}`} value={data.vypolnenie}
-                              onSave={(val) => handleSave("vypolnenie", val)} />
+                              onSave={(val) => handleSave("vypolnenie", val)}/>
                 <EditableInfo label={translate("Продано в сумах")} value={data.sumProdano}
-                              onSave={(val) => handleSave("sumProdano", val)} />
+                              onSave={(val) => handleSave("sumProdano", val)}/>
                 <EditableInfo label={translate("Дозволено")} value={data.dozvoleno}
-                              onSave={(val) => handleSave("dozvoleno", val)} />
+                              onSave={(val) => handleSave("dozvoleno", val)}/>
             </InfoContainer>
 
             <InfoContainer>
                 <EditableInfo label={translate("Фильтры")} value={""} onSave={() => {
-                }} />
-                <EditableInfo label={translate("Район")} value={data.rayon} onSave={(val) => handleSave("rayon", val)} />
+                }}/>
+                <EditableInfo label={translate("Район")} value={data.rayon} onSave={(val) => handleSave("rayon", val)}/>
                 <EditableInfo label={translate("Препарат")} value={data.preparat}
-                              onSave={(val) => handleSave("preparat", val)} />
+                              onSave={(val) => handleSave("preparat", val)}/>
             </InfoContainer>
 
         </InfoPage>
