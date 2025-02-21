@@ -302,7 +302,7 @@ const ManagersGoal = () => {
                 quote: dist.quote,
             })),
             startDate: date.startDate,
-            endDate: date.endDate,
+            endDate: date.endDate === "Invalid Date"  ? null : date.endDate ,
             adminId: profileInfo.userId,
         };
 

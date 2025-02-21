@@ -18,12 +18,13 @@ const TitleWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: ${({ size }) => (size ? size : "24px")};
-  font-weight: 700;
-  @media (max-width: 765px) {
-    font-size: 18px;
-  }
-  /* width: 339px; */
+    font-size: ${({size}) => (size ? size : "24px")};
+    font-family: "Vela Sans GX", sans-serif;
+    font-weight: 700;
+    @media (max-width: 765px) {
+        font-size: 18px;
+    }
+    /* width: 339px; */
 `;
 
 const ButtonWrapper = styled.div`
