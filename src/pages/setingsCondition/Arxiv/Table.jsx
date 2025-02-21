@@ -99,14 +99,14 @@ const Table = ({ title = "" }) => {
               {currentData.length > 0 ? (
                 currentData.map((row) => (
                   <tr key={row?.id}>
-                    <td>№{row?.No}</td>
-                    <td className="idfixed">{row?.name}</td>
-                    <td>{row?.oltimish}</td>
-                    <td>{row?.yetmish_toqson}</td>
-                    <td>{row?.Спецусловия}</td>
-                    <td>{row?.Спецбал}</td>
-                    <td>{row?.Госзакуп}</td>
-                    <td>{row?.["Каб. вакцинации"]}</td>
+                    <td className="idfixed"> №{row?.No} {row?.Препарат}</td>
+                    <td>{row?.Квота}</td>
+                    <td>{row?.Выписано}</td>
+                    <td>{row?.Рецептурник}</td>
+                    <td>{row?.СУ}</td>
+                    <td>{row?.СБ}</td>
+                    <td>{row?.ГЗ}</td>
+                    <td>{row?.КВ}</td>
                     <td>
                       <button
                         onClick={() => setOpenModalId(row.id)}

@@ -64,9 +64,8 @@ export const ResponsiveTableAdmin = styled.div`
     .idfixed {
         position: sticky;
         left: 0;
-
+        top: 30px;
         height: 100%;
-
         display: flex;
         align-content: center;
         justify-content: left;
@@ -152,10 +151,11 @@ export const ResponsiveTableAdmin = styled.div`
     tr {
         background-color: #f7f8fc; /* Jadval uyalarining default foni */
         padding: 18px 12px;
-        height: 100%;
     }
 
     tr:hover {
+        background-color: #f1f1f1; /* Hover effekti */
+        
         td {
             background-color: #f1f1f1; /* Hover effekti */
         }
