@@ -26,6 +26,15 @@ body {
   user-select: none;
 }
 
+.number-login{
+  display: flex;
+  gap: 10px;
+}
+
+.countryCode{
+  width: 100px !important;
+}
+
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 50px;

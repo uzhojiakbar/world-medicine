@@ -59,6 +59,8 @@ const MedRepGoal = () => {
   const { data: drugs, isLoading: isLoadingDrugs } = useGetDrugs();
   const { data: managers, isLoading: isLoadingManagers } = useGetMedAgents({});
 
+  console.log(managers)
+
   const { data: profileInfo, isLoading: IsLoadingProfileInfo } =
     useGetProfileInfo();
 
@@ -221,29 +223,13 @@ const MedRepGoal = () => {
 
       return;
     }
-    if (!date?.startDate || !date?.endDate) {
+    if (!date?.startDate ) {
       message.warning(translate("Дата_начала_или_окончания_не_указана"));
       console.log(translate("Дата_начала_или_окончания_не_указана"));
       setLoading(0);
 
       return;
     }
-    if (!selectedSpecializations.length) {
-      console.error(translate("Выбранные_специализации_недоступны"));
-      message.warning(translate("Выбранные_специализации_недоступны"));
-      setLoading(0);
-
-      return;
-    }
-    if (!selectedDrugs.length) {
-      console.error(translate("Препараты_не_выбраны"));
-      message.warning(translate("Препараты_не_выбраны"));
-      setLoading(0);
-
-      return;
-    }
-    console.log(selectedDistrict);
-
     if (!selectedDistrict?.districtId) {
       console.error(translate("Пожалуйста_выберите_один_из_районов"));
       message.warning(translate("Пожалуйста_выберите_один_из_районов"));
@@ -251,6 +237,22 @@ const MedRepGoal = () => {
 
       return;
     }
+
+    if (!selectedSpecializations.length || !selectedDrugs.length ) {
+      console.error(translate("Информация_неполная"));
+      message.warning(translate("Информация_неполная"));
+      setLoading(0);
+
+      return;
+    }
+    // if (!selectedDrugs.length) {
+    //   console.error(translate("Препараты_не_выбраны"));
+    //   message.warning(translate("Препараты_не_выбраны"));
+    //   setLoading(0);
+    //
+    //   return;
+    // }
+
 
     if (!profileInfo?.userId) {
       console.error("Admin ID topilmadi");
