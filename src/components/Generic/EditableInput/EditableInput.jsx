@@ -13,6 +13,7 @@ const EditableInput = ({
   JustPassword,
   icon,
   brdr,
+                         isPhoneNumber=false,
   onSave = () => {},
 }) => {
   const [value, setValue] = useState(
@@ -71,9 +72,14 @@ const EditableInput = ({
           className="input"
           onChange={handleChange}
           placeholder="Введите значение"
+          style={{
+            background: "#f7f8fc",
+            borderRadius: "67px",
+            fontFamily: "Vela Sans GX"
+          }}
         />
       ) : (
-        <StaticText>{value}</StaticText>
+        <StaticText>{isPhoneNumber ? formatPhoneNumber(value) : value}</StaticText>
       )}
       <IconButton onClick={toggleEditing}>
         {editing ? (

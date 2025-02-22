@@ -133,7 +133,9 @@ export const MiniTitleSmall = styled.div`
   font-weight: 700;
   font-family: "Vela Sans GX", sans-serif;
 
+  text-transform: capitalize;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
   > .rightBtn {

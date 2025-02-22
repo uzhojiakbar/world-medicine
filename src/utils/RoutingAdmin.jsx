@@ -1,10 +1,10 @@
 import AdminPage from "../rolls/chief/chief";
-import { MainContainer } from "../root/style";
+import {MainContainer} from "../root/style";
 import Profile from "../pages/profile/admin";
 import BaseChief from "../rolls/chief/base";
 import SettingsSystemAdmin from "../pages/admin/settingSystemAdmin/SettingsSystemAdmin";
 import AddMeneger from "../pages/addManager/AddManager";
-import { Route } from "react-router-dom";
+import {Route} from "react-router-dom";
 
 import SettingsCondition from "../pages/setingsCondition";
 import Arxiv from "../pages/setingsCondition/Arxiv/Arxiv";
@@ -29,7 +29,7 @@ export const RoutingAdmin = [
         path: "/",
         element: (
             <MainContainer>
-                <AdminPage />
+                <AdminPage/>
             </MainContainer>
         ),
         child: [],
@@ -43,7 +43,7 @@ export const RoutingAdmin = [
         path: "database",
         element: (
             <MainContainer>
-                <BaseChief />
+                <BaseChief/>
             </MainContainer>
         ),
         child: [],
@@ -57,7 +57,7 @@ export const RoutingAdmin = [
         path: "profile",
         element: (
             <MainContainer>
-                <Profile />
+                <Profile/>
             </MainContainer>
         ),
         child: [],
@@ -71,7 +71,7 @@ export const RoutingAdmin = [
         path: "create-manager",
         element: (
             <MainContainer>
-                <AddMeneger />
+                <AddMeneger/>
             </MainContainer>
         ),
         child: [],
@@ -85,7 +85,7 @@ export const RoutingAdmin = [
         path: "managers-goal",
         element: (
             <MainContainer>
-                <ManagersGoal />
+                <ManagersGoal/>
             </MainContainer>
         ),
         child: [],
@@ -107,28 +107,26 @@ export const RoutingAdmin = [
     //   onlyAdmin: false,
     //   icon: false,
     // },
-
     {
         id: 4,
         title: "Настройка_условий",
         path: "/nastroyka-usloviya",
         element: (
             <MainContainer>
-                <NastroykaUsloviya />
+                <NastroykaUsloviya/>
             </MainContainer>
         ),
         child: (
             <>
-                <Route path="" element={<AdminArxiv />} />
-                <Route path="Preparad" element={<AdminPreparat />} />
-                <Route path="Mestrabotaya" element={<AdminMestaRabota />} />
+                <Route path="" element={<AdminArxiv/>}/>
+                <Route path="Preparad" element={<AdminPreparat/>}/>
+                <Route path="Mestrabotaya" element={<AdminMestaRabota/>}/>
             </>
         ),
         visible: true,
         onlyAdmin: false,
         icon: false,
     },
-
     // {
     //   id: 6,
     //   title: "Profile",
@@ -143,14 +141,13 @@ export const RoutingAdmin = [
     //   onlyAdmin: false,
     //   icon: false,
     // },
-
     {
         id: 8,
         title: "Добавление МП",
         path: "create-med-agent",
         element: (
             <MainContainer>
-                <AddPm />
+                <AddPm/>
             </MainContainer>
         ),
         child: [],
@@ -178,7 +175,7 @@ export const RoutingAdmin = [
         path: "pupose-med-agent",
         element: (
             <MainContainer>
-                <CreateMedAgent />
+                <CreateMedAgent/>
             </MainContainer>
         ),
         child: [],
@@ -221,7 +218,7 @@ export const RoutingAdmin = [
         path: "reports-client",
         element: (
             <MainContainer>
-                <ReportsClient />
+                <ReportsClient/>
             </MainContainer>
         ),
         child: [],
@@ -243,7 +240,6 @@ export const RoutingAdmin = [
     //     onlyAdmin: false,
     //     icon: false,
     // },
-
     // // {
     // //   id: 4,
     // //   title: "Создать договор",

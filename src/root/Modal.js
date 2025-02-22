@@ -42,9 +42,10 @@ export const ModalBody = styled.div`
 `;
 
 export const ModalBodyHeader = styled.div`
-  display: grid;
-  gap: 20px 10px;
-  grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    gap: 20px 10px;
+    margin-top: ${({m})=>m?m:"10px"};
+    grid-template-columns: repeat(2, 1fr);
 `;
 
 export const ModalBodySection = styled.div`
@@ -82,6 +83,7 @@ export const ModalUserProfilePicture = styled.div`
 export const ModalInnerSection = styled.div`
   display: flex;
   align-items: center;
+    justify-content: space-between;
   gap: 10px;
 
   > .fio {

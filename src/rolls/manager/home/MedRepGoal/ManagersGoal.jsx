@@ -57,9 +57,8 @@ const MedRepGoal = () => {
   const { translate, language } = useLanguage();
   const { data: Regions, isLoading: isLoadingRegions } = useGetRegions();
   const { data: drugs, isLoading: isLoadingDrugs } = useGetDrugs();
-  const { data: managers, isLoading: isLoadingManagers } = useGetMedAgents({});
+  const { data: managers, isLoading: isLoadingManagers } = useGetMedAgents({districtId: selectedDistrict?.districtId || null});
 
-  console.log(managers)
 
   const { data: profileInfo, isLoading: IsLoadingProfileInfo } =
     useGetProfileInfo();
@@ -72,7 +71,9 @@ const MedRepGoal = () => {
 
   console.log("goal12:", goal);
   console.log("drugs:", drugs);
-  console.log("drugsD:", allDistricts);
+  console.log("selectedDistrict:", selectedDistrict);
+  console.log("managers",managers)
+
 
   const getAllDistricts = (regions) => {
     return goal?.districtGoalQuantities?.map((item) => ({
@@ -272,7 +273,6 @@ const MedRepGoal = () => {
       startDate: date.startDate,
       endDate: date.endDate,
       medAgentId: specialist.id,
-      districtId: selectedDistrict?.districtId || 0,
       managerId: profileInfo.userId,
       managerGoalId: goal?.goalId || 0,
       medicineWithQuantityDTOS: selectedDrugs.map((drug) => ({
@@ -287,13 +287,14 @@ const MedRepGoal = () => {
       })),
     };
     // *! IT NEED MANAGER GOAL ID
+
+    console.log(requestData)
     mutation.mutate({
       requestData: requestData,
       onSuccess: () => {
-        message.success(translate("Добавлена_​​цель_для_представителю"));
+        message.success(translate("Добавлена_цель_для_представителю"));
         setTimeout(() => {
           setLoading(false);
-
           document.location.reload();
         }, 500);
       },
@@ -325,6 +326,16 @@ const MedRepGoal = () => {
             <DirectionFlexGap gap="10px">
               <MiniTitleSmall>{translate("Кому")}</MiniTitleSmall>
             </DirectionFlexGap>
+            <DirectionFlexGap gap="10px">
+              <MiniTitleSmall>{translate("Выберите_Район_")}</MiniTitleSmall>
+              <PrimarySelect
+                  def={translate("Выберите_Район_")}
+                  options={districtsTranslate}
+
+                  onValueChange={setSelectedDistrict}
+                  onlyOption
+              />
+            </DirectionFlexGap>
             <SectionInner>
               <IconWrapper>
                 <Man />
@@ -332,11 +343,12 @@ const MedRepGoal = () => {
               <EditableSelect
                 options={managerOptions}
                 initialValue={specialist}
-                // onClick={() => {
-                //   !region &&
-                //     message.error(translate("Сначала_выберите_регион"));
-                // }}
                 placeholder={translate("Выберите_представителя")}
+                onClick={() => {
+                  !selectedDistrict &&
+                  message.error(translate("Сначала_выберите_район"));
+                }}
+                disabled={!selectedDistrict}
                 onValueChange={setSpecialist}
                 def={specialist.label || translate("Выберите_представителя")}
                 // disabled={!region}
@@ -348,15 +360,7 @@ const MedRepGoal = () => {
               <DateRangePicker onlyFuture={1} onDateChange={handleDateChange} />
             </DirectionFlexGap>
 
-            <DirectionFlexGap gap="10px">
-              <MiniTitleSmall>{translate("Выберите_Район_")}</MiniTitleSmall>
-              <PrimarySelect
-                def={translate("Выберите_Район_")}
-                options={districtsTranslate}
-                onValueChange={setSelectedDistrict}
-                onlyOption
-              />
-            </DirectionFlexGap>
+
           </SectionOuter>
           <SectionOuter>
             <RightItemMenu>

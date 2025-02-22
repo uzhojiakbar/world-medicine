@@ -367,7 +367,6 @@ const UsloviyaProductTable = ({
     const handleCancel = () => {
         setEditId(null);
     };
-
     const handleSave = () => {
         console.log("Updated row:", changeRow);
 
@@ -375,8 +374,6 @@ const UsloviyaProductTable = ({
 
         setEditId(null);
     };
-
-
     const handleDelete = (id, name) => {
         deleteDrug.mutate(id, {
             onError: (error) => {
