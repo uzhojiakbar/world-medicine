@@ -9,13 +9,15 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 17px;
+  gap: 10px;
+  padding: 10px 0;
   max-width: 1000px;
   width: 100%;
 `;
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 7px;
+  user-select: none;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -26,7 +28,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 20px;
+  padding: 10px;
   width: 100%;
   border-radius: 7px;
   white-space: nowrap;
@@ -46,6 +48,7 @@ const InfoWrapper = styled.div`
   display: flex;
   gap: 20px;
   padding: 20px;
+  min-height: 400px;
   background-color: white;
   border-radius: 30px;
 
@@ -94,6 +97,22 @@ const InfoTitle = styled.div`
   align-items: center;
 `;
 
+export const InfoTitleInner = styled(InfoTitle)`
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0;
+
+  span {
+    font-size: 16px;
+    color: gray;
+    font-family: "Vela Sans GX Regular";
+    font-weight: 400;
+
+  }
+  
+`;
+
+
 const Info = styled.div`
   display: flex;
   padding: 17px 20px;
@@ -117,6 +136,7 @@ const ItemContainer = styled.div`
   justify-content: space-between;
   padding: 17px 20px;
   border-radius: 15px;
+  user-select: none;
 
   background-color: #f7f8fc;
 `;
@@ -127,6 +147,11 @@ const Child = styled.div`
   align-items: center;
   font-size: 16px;
   font-weight: 600;
+cursor: pointer;
+  
+  .red{
+    color: red;
+  }
 
   > svg {
     cursor: pointer;

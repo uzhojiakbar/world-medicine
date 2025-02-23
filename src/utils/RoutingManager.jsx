@@ -9,6 +9,7 @@ import Rahmadjon from "../Rahmadjon";
 import {MainContainer} from "../root/style";
 import MedRepGoal from "../rolls/manager/home/MedRepGoal/ManagersGoal";
 import DoctorAddContact from "../rolls/manager/home/DoctorContract/DoctorAddContact.jsx";
+import CreateMedAgent from "../pages/createMedAgent/index.jsx";
 
 export const RoutingManager = [
     {
@@ -101,7 +102,7 @@ export const RoutingManager = [
         path: "doctor-create-contract",
         element: (
             <MainContainer>
-                <DoctorAddContact/>
+                <CreateMedAgent/>
             </MainContainer>
         ),
         child: [],

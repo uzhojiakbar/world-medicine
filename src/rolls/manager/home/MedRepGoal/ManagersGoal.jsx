@@ -323,9 +323,7 @@ const MedRepGoal = () => {
       <FormWrapper>
         <FormSectionWithGrid>
           <SectionOuter>
-            <DirectionFlexGap gap="10px">
-              <MiniTitleSmall>{translate("Кому")}</MiniTitleSmall>
-            </DirectionFlexGap>
+
             <DirectionFlexGap gap="10px">
               <MiniTitleSmall>{translate("Выберите_Район_")}</MiniTitleSmall>
               <PrimarySelect

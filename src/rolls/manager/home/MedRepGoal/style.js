@@ -20,6 +20,7 @@ const FormWrapper = styled.form`
   margin: 0 auto;
   gap: 20px;
   width: 100%;
+  min-height: 450px;
   max-width: 1000px;
   padding: 20px;
   background-color: white;

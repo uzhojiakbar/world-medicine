@@ -85,8 +85,8 @@ const EditableSelectWithSearch = ({
           PaperProps: {
             style: {
               maxHeight: 220,
+              padding: "10px 5px 0",
               width: 250,
-              borderRadius: "20px",
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             },
           },
@@ -95,14 +95,7 @@ const EditableSelectWithSearch = ({
         disabled={disabled}
       >
         {/* Search Field Inside Dropdown */}
-        <ListSubheader>
-          <StyledSearchInput
-            placeholder="Поиск..."
-            defaultValue={searchTermRef.current}
-            onChange={handleSearchChange}
-            fullWidth
-          />
-        </ListSubheader>
+
 
         {/* Options */}
         {filteredOptions.length > 0 ? (

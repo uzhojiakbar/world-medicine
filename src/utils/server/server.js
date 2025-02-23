@@ -596,6 +596,8 @@ export const useGetDistrcitById = (id = null) => {
         staleTime: 1000 * 60 * 10,
     });
 };
+
+
 export const useGetWorkplacesFilter = () => {
     return useQuery({
         queryKey: ["getWorkplacec"],
@@ -616,7 +618,7 @@ export const useGetWorkplacesById = (id) => {
         queryKey: ["workplace", id],
         queryFn: async () => {
             try {
-                if(id){
+                if (id) {
                     const {data} = await Instance.get(`/v1/db/workplaces/${id}`, {});
                     return data;
                 }
@@ -630,8 +632,7 @@ export const useGetWorkplacesById = (id) => {
 };
 // NOTE Get managers
 export const useGetManagers = ({
-                                   creatorId,
-                                   countryId,
+                                   creatorId, countryId,
                                    regionId,
                                    workplaceId,
                                    nameQuery,
@@ -688,6 +689,46 @@ export const useGetMedAgents = ({
         queryFn: async () => {
             try {
                 const {data} = await Instance.get("/v1/user/medagents", {
+                    params: {
+                        creatorId,
+                        countryId,
+                        regionId,
+                        workplaceId,
+                        nameQuery,
+                        districtId
+                    },
+                });
+                return data;
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
+export const useGetDoctorsFilter = ({
+                                    creatorId,
+                                    countryId,
+                                    regionId,
+                                    workplaceId,
+                                    nameQuery,
+                                    districtId
+                                }) => {
+    return useQuery({
+        queryKey: [
+            "GetMedAgents",
+            creatorId,
+            countryId,
+            regionId,
+            workplaceId,
+            nameQuery,
+            districtId
+        ],
+        queryFn: async () => {
+            try {
+                const {data} = await Instance.get("/v1/user/doctors", {
                     params: {
                         creatorId,
                         countryId,
@@ -891,6 +932,25 @@ export const useAddAdminManagerGoal = () => {
             const response = await Instance.post(
                 "/v1/admin/manager/new-goal",
                 managerGoalData?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess();
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+
+export const useAddAdminDoctorGoal = () => {
+    return useMutation({
+        mutationFn: async (doctorGoalData) => {
+            console.log("AddAdminManagerGoal", doctorGoalData);
+            const response = await Instance.post(
+                "/v1/med-agent/doctor/new-contract",
+                doctorGoalData?.requestData
             );
             return response.data;
         },

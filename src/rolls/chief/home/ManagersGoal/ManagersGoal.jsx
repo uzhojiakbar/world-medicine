@@ -90,41 +90,24 @@ const ManagersGoal = () => {
         [managers]
     );
 
-    const DrugsOptions = useMemo(
-        () =>
-            drugs?.map((drug) => ({
-                value: drug.id,
-                label: drug.name,
-                id: drug.id,
-            })) || [],
-        [drugs]
-    );
-
-    console.log(drugs, DrugsOptions);
-    // console.log("districtsTranslate", districtsTranslate);
 
     const handleChangeRegion = useCallback((selected) => {
         setRegion(selected.id);
         setSpecialist({});
     }, []);
-
     const handleDateChange = useCallback((dates) => setDate(dates), []);
-
     const handleEditInitSpecialization = useCallback((id, quote) => {
         setEditingSpecializationId(id);
         setEditValue(quote);
     }, []);
-
     const handleEditInitDrug = useCallback((id, quote) => {
         setEditingDrugId(id);
         setEditValue(quote);
     }, []);
-
     const handleEditInitDist = useCallback((id, quote) => {
         setEditingDistrId(id);
         setEditValue(quote);
     }, []);
-
     const handleEditSaveSpecialization = useCallback(
         (id) => {
             setSelectedSpecializations((prev) =>
