@@ -87,8 +87,7 @@ const Table = ({
       <ModalManager id={openModalId} setId={setOpenModalId} />
       <WhiteWrapper>
         <TitleSmall>{title}</TitleSmall>
-        <ResponsiveTableAdmin>
-          <table>
+          <ResponsiveTableAdmin>
             <thead>
               <tr>
                 <th className="idfixed">{translate("Препарат")}</th>
@@ -108,7 +107,7 @@ const Table = ({
                     {
                       Object.keys(row)?.map(v => {
                         if (v == "id") return
-                        return v !== "name" ? <td className="idfixed">{row[v]}</td> : <td>{row[v]}</td>
+                        return v !== "name" ? <td >{row[v]}</td> : <td>{row[v]}</td>
                       })
                     }
 
@@ -126,8 +125,7 @@ const Table = ({
                 </tr>
               )}
             </tbody>
-          </table>
-        </ResponsiveTableAdmin>
+          </ResponsiveTableAdmin>
 
         <PaginationButtonsWrapper>
           <button onClick={handlePrevious} disabled={currentPage === 0}>

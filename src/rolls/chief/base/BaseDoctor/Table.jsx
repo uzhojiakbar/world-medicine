@@ -71,9 +71,9 @@ const Table = ({title = "", data = [], isLoading = false}) => {
             <div className="loader"></div>
         </div>)}
 
-        {/*<ModalManager isOpen={!!activeModal} onClose={closeModal} doctorId={activeModal}/>*/}
+        <ModalManager isOpen={!!activeModal} onClose={closeModal} doctorId={activeModal}/>
         {/* {activeModal === 5 && <Modal5  />} */}
-        <ModalManager isOpen={activeModal} onClose={closeModal} />
+        {/*<ModalManager isOpen={activeModal} onClose={closeModal} />*/}
 
 
         <WhiteWrapper>

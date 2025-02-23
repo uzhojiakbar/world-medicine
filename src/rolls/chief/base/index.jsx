@@ -4,7 +4,7 @@ import BaseControl from "./analiktika/analiktikaPage";
 
 const BaseChief = () => {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column",gap: 20 }}>
       <BaseDoctor />
       <BaseControl />
     </div>

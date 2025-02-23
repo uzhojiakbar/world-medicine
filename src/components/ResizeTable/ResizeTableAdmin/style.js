@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export const ResponsiveTableAdmin = styled.div`
+export const ResponsiveTableAdmin = styled.table`
     overflow-x: auto; /* Scrollable */
     width: 100%;
-
+    
     * > {
         transition: all 0.2s ease-in-out;
     }
@@ -16,12 +16,11 @@ export const ResponsiveTableAdmin = styled.div`
     th,
     td {
         text-align: center; /* Matn hizalash */
-        font-family: "Vela Sans GX", sans-serif;
+        font-family: "Vela Sans GX Bold", sans-serif;
     }
 
     th {
         background-color: white; /* Header fon rangi */
-
         color: #00000033;
         font-family: "Vela Sans GX", sans-serif;
         font-weight: 600;
@@ -33,8 +32,6 @@ export const ResponsiveTableAdmin = styled.div`
         color: #333; /* Default matn rangi */
         padding: 17px !important;
         height: 100%;
-
-
         background-color: #f7f8fc; /* Jadval uyalarining default foni */
 
         > button {
@@ -164,6 +161,7 @@ export const ResponsiveTableAdmin = styled.div`
     tbody {
         /* border-bottom: 10px solid white; */
         height: 100%;
+        
     }
 
     tbody tr {

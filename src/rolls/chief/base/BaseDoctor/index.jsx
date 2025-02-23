@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import { InformationTitleSpan, TitleSpan } from "../../../../root/style";
 import { BaseDoctorCon, Line, NavTitleSection } from "./style";
 import { useLanguage } from "../../../../context/LanguageContext";
@@ -17,6 +17,7 @@ import DateRangePicker from "../../../../components/Generic/DataRangePicker/Data
 import Table from "./Table";
 import Button from "../../../../components/Generic/Button/Button.jsx";
 import IconPlus from "../../../../assets/svg/IconPlus.jsx";
+import {transformDistrictsForSelect, transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
 
 const information = {
   all: 500,
@@ -26,7 +27,7 @@ const information = {
 
 const BaseDoctor = () => {
   const nav = useNavigate();
-  const { translate, language } = useLanguage();
+  const { translate, language, setLanguage} = useLanguage();
 
   const [selectedViloyat, setSelectedViloyat] = useState("");
   const [selectedTuman, setSelectedTuman] = useState("");
@@ -69,6 +70,16 @@ const BaseDoctor = () => {
     setFilteredDoctors(filtered);
   }, [selectedSpecialization, date, doctors]);
 
+  const regionsTranslate = useMemo(
+      () => transformRegionsForSelect(regions, language),
+      [regions, translate]
+  );
+
+  const districtsTranslate = useMemo(
+      () => transformDistrictsForSelect(districts, language),
+      [districts, translate]
+  );
+
   const getOptions = (items, language) => {
     console.log(items);
 
@@ -87,6 +98,20 @@ const BaseDoctor = () => {
   };
 
   const handleDateChange = useCallback((dates) => setDate(dates), []);
+
+  const ClearFilter = () => {
+    const a = language
+    setLanguage("uz")
+    setLanguage("ru")
+    setLanguage(language)
+    setNameSurname(""); // FIO inputini tozalash
+    setSelectedViloyat(""); // Viloyat tanlovini tiklash
+    setSelectedTuman(""); // Tuman tanlovini tiklash
+    setSelectedMestaRabot(""); // Mesta rabot tanlovini tiklash
+    setSelectedSpecialization(""); // Specializatsiya tanlovini tiklash
+
+    setDate([]); // Sana oralig‘ini tozalash
+  };
 
   return (
     <BaseDoctorCon>
@@ -112,6 +137,10 @@ const BaseDoctor = () => {
         </div>
         <div className="section1">
          <Button
+             onClick={ClearFilter}
+         >
+           {translate("Очистить фильтр")}
+         </Button><Button
              onClick={() => nav("../create-doctor")}
              icon={<IconPlus />}
          >
@@ -126,13 +155,13 @@ const BaseDoctor = () => {
         />
         <PrimarySelect
           def={translate("область")}
-          options={getOptions(regions, language)}
+          options={regionsTranslate}
           onValueChange={(value) => setSelectedViloyat(value.id)}
           onlyOption={1}
         />
         <PrimarySelect
           def={translate("Район")}
-          options={getOptionsDistricts(districts, language)}
+          options={districtsTranslate}
           onValueChange={(value) => setSelectedTuman(value.id)}
           onlyOption={1}
         />

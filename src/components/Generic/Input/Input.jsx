@@ -11,7 +11,7 @@ const Input = ({
                    onChange = () => {
                    },
                    className,
-                   bgColor="transparent",
+                   bgColor,
                }) => {
     return (
         <InputWrapper
