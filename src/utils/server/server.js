@@ -542,6 +542,27 @@ export const useGetWorkplacesDb = () => {
         staleTime: 1000 * 60 * 10,
     });
 };
+export const useUpdateWorkplace = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(
+        {
+            mutationFn: async (uptWkData) => {
+                console.log("asdasdasd",uptWkData)
+                if (!uptWkData?.requestData?.id) throw new Error("ID majburiy");
+                const { data } = await Instance.put(`/v1/db/workplaces/${uptWkData?.requestData?.id}`, uptWkData?.requestData?.uptData);
+                return;
+            },
+            onSuccess: (data, variables) => {
+                variables.onSuccess();
+                queryClient.invalidateQueries(["getWorkplacec", variables.id]);
+            },
+            onError: (error) => {
+                console.error("Xatolik yuz berdi:", error);
+            },
+        });
+};
+
 export const useDeleteWorkplace = () => {
     const queryClient = useQueryClient();
 
@@ -709,13 +730,13 @@ export const useGetMedAgents = ({
 };
 
 export const useGetDoctorsFilter = ({
-                                    creatorId,
-                                    countryId,
-                                    regionId,
-                                    workplaceId,
-                                    nameQuery,
-                                    districtId
-                                }) => {
+                                        creatorId,
+                                        countryId,
+                                        regionId,
+                                        workplaceId,
+                                        nameQuery,
+                                        districtId
+                                    }) => {
     return useQuery({
         queryKey: [
             "GetMedAgents",

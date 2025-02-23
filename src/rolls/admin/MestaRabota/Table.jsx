@@ -41,9 +41,8 @@ const Table = ({
             setSelectedWk(wk)
         }
     }, [wk]);
+
     const queryClient = useQueryClient();
-
-
     const handleNext = () => {
         if (currentPage < totalPages - 1) {
             setCurrentPage((prevPage) => prevPage + 1);
@@ -72,8 +71,6 @@ const Table = ({
             },
         });
         queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
-
-
         setLoading(1);
     };
     return (<Container>

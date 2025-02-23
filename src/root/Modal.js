@@ -45,6 +45,7 @@ export const ModalBodyHeader = styled.div`
     display: grid;
     gap: 20px 10px;
     margin-top: ${({m})=>m?m:"10px"};
+    margin-bottom: ${({mb})=>mb?mb:"0"};
     grid-template-columns: repeat(2, 1fr);
 `;
 

@@ -30,46 +30,6 @@ const exportToExcel = (data) => {
 };
 
 function AdminMestaRabota() {
-  const [data, setData] = useState([
-    {
-      "id": 1,
-      "userDTO": {
-        "userId": "d52ceead-7214-491c-838b-e6e0fe190bfa",
-        "firstName": "SUPERADMIN",
-        "lastName": "SUPERADMIN",
-        "middleName": "SUPERADMIN",
-        "dateOfBirth": "2025-02-21",
-        "phoneNumber": "333335555",
-        "number": "998333335555",
-        "email": "chief@mail.ru",
-        "position": "string",
-        "fieldName": "NONE",
-        "gender": "MALE",
-        "status": "ENABLED",
-        "creatorId": "c85498ea-14d9-4eb3-93b9-a5af9ea61416",
-        "workplaceId": null,
-        "districtId": 1,
-        "role": "SUPERADMIN"
-      },
-      "regionDistrictDTO": {
-        "regionId": 1,
-        "regionName": "Tashkent Region",
-        "regionNameUzCyrillic": "Тошкент вилояти",
-        "regionNameUzLatin": "Toshkent viloyati",
-        "regionNameRussian": "Ташкентская область",
-        "districtId": 1,
-        "districtName": "Bekabad District",
-        "districtNameUzCyrillic": "Бекобод тумани",
-        "districtNameUzLatin": "Bekobod tumani",
-        "districtNameRussian": "Бекабадский район"
-      },
-      "medicalInstitutionType": "STATE_HOSPITAL",
-      "address": "Namangan",
-      "description": "Namangan",
-      "phone": null,
-      "email": null
-    }
-  ]);
   const [loading, setLoading] = useState(false);
 
   const { data: workplaces, isLoading: isloadingWorkplaces } =
@@ -149,7 +109,7 @@ function AdminMestaRabota() {
             {translate("Обновить_базу")}
           </Text>
 
-          <Button onClick={() => exportToExcel(data)} icon={<IconPlus />}>
+          <Button onClick={() => exportToExcel(workplaces)} icon={<IconPlus />}>
             {translate("Добавить_место_работы")}
           </Button>
         </Box>
