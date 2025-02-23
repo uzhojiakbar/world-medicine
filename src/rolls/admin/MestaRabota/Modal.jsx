@@ -156,12 +156,12 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
                 </ModalInnerSection>
             </ModalBodySection>
         </ModalBodyHeader>
-        <GenericAnalitikaTable
-            data={
-                {thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"], tbody: []}
-            }
-            title={"asdasd"}
-        />
+        {/*<GenericAnalitikaTable*/}
+        {/*    data={*/}
+        {/*        {thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"], tbody: []}*/}
+        {/*    }*/}
+        {/*    title={"asdasd"}*/}
+        {/*/>*/}
     </ModalContainer>;
 };
 

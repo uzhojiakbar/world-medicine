@@ -172,17 +172,16 @@ const CreateMedAgent = () => {
             "startDate": date.startDate,
             "endDate": date.endDate === "Invalid Date" ? null : date.endDate,
             "managerId": profileInfo.userId,
-            medicineGoalQuantities: selectedDrugs.map((drug) => ({
+            "medicinesWithQuantities": selectedDrugs.map((drug) => ({
                 medicineId: drug.id,
-                medicineName: drug.fieldName,
-                quote: drug.quote,
+                quote: parseInt(drug.quote),
             })),
         }
         console.log("requestData", requestData);
         mutation.mutate({
             requestData: requestData,
             onSuccess: () => {
-                message.success(translate("Добавлена_​​цель_для_менеджера"));
+                message.success(translate("Добавлена_контракт_для_Доктор"));
                 setTimeout(() => {
                     setLoading(false);
                     // document.location.reload();
@@ -192,9 +191,9 @@ const CreateMedAgent = () => {
                 console.log("erre", err);
                 setLoading(false);
                 if (
-                    err?.response?.data?.error.includes("Manager has already assigned")
+                    err?.response?.data?.error.includes("Doctor had already assigned")
                 ) {
-                    message.error(translate("Цель_для_менеджера_уже_поставлена"));
+                    message.error(translate("Доктор_уже_назначил_контракт"));
                     console.log(1);
                 } else {
                     message.error(translate("Ошибка_добавления_цели_для_менеджера"));
@@ -301,6 +300,7 @@ const CreateMedAgent = () => {
                                                         type="number"
                                                         value={editValue}
                                                         onChange={setEditValue}
+                                                        placeholder={translate("quote")}
                                                     />
                                                     <EditIconCon onClick={() => handleEditSaveDrug(v.id)}>
                                                         <SaveIcon/>
