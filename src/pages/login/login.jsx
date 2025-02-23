@@ -57,40 +57,6 @@ const Login = () => {
 
     const {translate, setLanguage} = useLanguage(); // Tarjima funksiyasi
 
-    // const handleSubmit = (e = {}) => {
-    //   console.log(e);
-
-    //   if (formRef.current) {
-    //     const values = formRef.current.getFieldsValue(); // Form qiymatlarini olish
-    //     const username = values.username;
-    //     const password = values.parol;
-
-    //     console.log("Username:", username);
-    //     console.log("Password:", password);
-    //     console.log("Password:", values);
-
-    //     setLoading(true);
-
-    //     const onSuccess = (user) => {
-    //       setTimeout(() => {
-    //         setCookie("role", user?.role);
-    //         setCookie("token", user?.token);
-    //         setCookie("name", user?.name);
-    //         setLoading(false);
-    //         nav("/");
-    //       }, 1000);
-    //     };
-
-    //     const onError = () => {
-    //       setTimeout(() => {
-    //         setLoading(false);
-    //       }, 1000);
-    //     };
-
-    //     signIn(username, password, onSuccess, onError);
-    //   }
-    // };
-
     const handleSubmit = (values) => {
         console.log(values);
 
@@ -127,12 +93,12 @@ const Login = () => {
                 // API dan kelgan xato (response mavjud)
                 console.log("Server Response Error:", error.response);
 
-                const { status, data } = error.response;
+                const {status, data} = error.response;
 
                 if (status === 404) {
                     console.error("❌ Xatolik: User Not Found");
                     message.error(translate("login_error_user_not_found"));
-                }else if (status === 401) {
+                } else if (status === 401) {
                     message.error(translate("login_password_incorrect"));
                 } else {
                     message.error(translate("login_error_something"));
@@ -217,6 +183,8 @@ const Login = () => {
                             name="login"
                             onFinish={handleSubmit} // Tasdiqlanganda handleSubmit chaqiriladi
                             layout="vertical"
+                            requiredMark={false} // Barcha required fieldlarda yulduzcha chiqmasin
+
                         >
                             <motion.div
                                 initial={{opacity: 0, y: 50}}
@@ -237,8 +205,9 @@ const Login = () => {
                                         className={"number-login"}
                                     >
 
-                                    <Input className={"countryCode"} disabled value={"+998"} placeholder={translate("+998")}/>
-                                    <Input placeholder={translate("placeholder_username")}/>
+                                        <Input className={"countryCode"} disabled value={"+998"}
+                                               placeholder={translate("+998")}/>
+                                        <Input type={"number"} placeholder={translate("placeholder_username")}/>
                                     </div>
                                 </Form.Item>
 

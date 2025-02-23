@@ -1,50 +1,138 @@
 @font-face {
-  font-family: "Vela Sans GX";
+    font-family: "Vela Sans GX";
 
-  src: url("../assets/fonts/velaSans/ExtraBold.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
+    src: url("../assets/fonts/velaSans/VelaSans-ExtraBold.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
 }
-@font-face {
-  font-family: "Vela Sans GX Regular";
 
-  src: url("../assets/fonts/velaSans/Regular.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
+@font-face {
+    font-family: "Vela Sans GX Regular";
+
+    src: url("../assets/fonts/velaSans/VelaSans-Regular.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Vela Sans GX Bold";
+
+    src: url("../assets/fonts/velaSans/VelaSans-Bold.otf") format("opentype");
+
+}
+
+@font-face {
+    font-family: "Vela Sans GX ExtraBold";
+
+    src: url("../assets/fonts/velaSans/VelaSans-ExtraBold.otf") format("opentype");
+
+}
+
+@font-face {
+    font-family: "Vela Sans GX ExtraLight";
+
+    src: url("../assets/fonts/velaSans/VelaSans-ExtraLight.otf") format("opentype");
+
+}
+
+@font-face {
+    font-family: "Vela Sans GX Light";
+
+    src: url("../assets/fonts/velaSans/VelaSans-Light.otf") format("opentype");
+
+}
+
+@font-face {
+    font-family: "Vela Sans GX Medium";
+
+    src: url("../assets/fonts/velaSans/VelaSans-Medium.otf") format("opentype");
+
+}
+
+@font-face {
+    font-family: "Vela Sans GX SemiBold";
+
+    src: url("../assets/fonts/velaSans/VelaSans-SemiBold.otf") format("opentype");
+
 }
 
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Vela Sans GX Regular", sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Vela Sans GX Regular", sans-serif;
 
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
-  body {
-    overflow-x: auto;
-  }
+    body {
+        overflow-x: auto;
+    }
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+    width: 3px;
+    height: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
-  margin-right: 2px;
+    background: transparent;
+    margin-right: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6;
-  border-radius: 50px;
-  /* text-transform: ; */
-  margin-right: 2px;
+    background: #3b82f6;
+    border-radius: 50px;
+    /* text-transform: ; */
+    margin-right: 2px;
+}
+
+
+.MuiPaper-root {
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+
+    max-height: 400px !important;
+
+    background: white !important;
+    padding: 0 10px 10px;
+    border-radius: 20px !important;
+}
+
+.MuiMenuItem-root {
+    background-color: #F7F8FC !important;
+    padding: 10px 20px !important;
+    margin: 10px 0 !important;
+}
+
+.MuiMenuItem-root:hover {
+    background-color: #f3f3f3 !important;
+}.MuiMenuItem-root:focus {
+    background-color: #f3f3f3 !important;
+}
+
+.Mui-selected {
+    background-color: #d7d2d2 !important;
+}
+
+.Mui-selected:hover {
+    background-color: #d7d2d2 !important;
+}
+
+
+/*select:current*/
+.disabled-select {
+    background-color: transparent !important;
+    padding: 0px !important;
+    margin: 0 !important;
+}
+
+.MuiSelect-select {
+    font-family: "Vela Sans GX";
 }

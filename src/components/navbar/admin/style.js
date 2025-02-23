@@ -57,7 +57,7 @@ const Link = styled(NavLink)`
   text-decoration: none;
   color: var(--black);
   font-size: 18px;
-  font-family: "Vela Sans GX";
+  font-family: "Vela Sans GX Medium";
 
   ${media.tabletMax} {
     font-size: 16px;
@@ -84,7 +84,7 @@ const ChangeLanguage = styled.div`
   text-decoration: none;
   color: var(--black);
   font-size: 18px;
-  font-family: "Vela Sans GX";
+  font-family: "Vela Sans GX Medium";
 
   text-transform: uppercase;
 

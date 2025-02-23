@@ -7,10 +7,10 @@ import { html } from "framer-motion/client";
 const ButtonStyled = styled.button`
   display: inline-flex;
   align-items: center; /* Vertikal hizalash */
-  justify-content: center; /* Gorizontal hizalash */
+  justify-content: ${({jc})=>jc?jc:"center"}; /* Gorizontal hizalash */
 
   gap: 8px; /* Icon va text orasidagi masofa */
-  padding: 10px 20px;
+  padding: 10px 30px;
 
   background-color: ${({ outline }) =>
     outline ? "white" : "#007bff"}; /* Primary rang */
@@ -65,6 +65,7 @@ const CricleButton = ({
   disabled,
   iconRight = false,
   outline = 0,
+    jc="center",
                         className,
   htmlType, // Enter tugmasi bosilganda formni yuboradi
 }) => {
@@ -75,6 +76,7 @@ const CricleButton = ({
       disabled={disabled}
       type={htmlType ? htmlType : "button"}
       className={className}
+      jc={jc}
     >
       {icon && !iconRight && <span>{icon}</span>} {/* Icon ko‘rsatish */}
       <span className={`child ${MobilehiddenText ? "hidden" : ""}`}>

@@ -10,7 +10,8 @@ const Input = ({
                    height,
                    onChange = () => {
                    },
-                   className
+                   className,
+                   bgColor="transparent",
                }) => {
     return (
         <InputWrapper
@@ -22,8 +23,10 @@ const Input = ({
             placeholder={placeholder || ""}
             defaultValue={value}
             height={height}
+            bgColor={bgColor}
         />
-    );
+    )
+        ;
 };
 
 export default Input;

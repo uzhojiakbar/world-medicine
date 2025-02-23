@@ -175,7 +175,7 @@ export const DisabledPage = styled.div`
 `;
 
 const TopTitle = styled.div`
-  font-family: "Vela Sans GX";
+  font-family: "Vela Sans GX Medium";
   font-weight: 400;
   font-size: 36px;
   line-height: 55px;
@@ -216,7 +216,7 @@ const Title = styled.h2`
   color: #333;
   margin-bottom: 30px;
 
-  font-family: "Vela Sans GX Regular";
+  font-family: "Vela Sans GX Medium";
   font-weight: 400;
 
   @media (max-width: 1024px) {
@@ -262,6 +262,7 @@ const LanguageContainer = styled.div`
   background: white;
   padding: 13px;
   border-radius: 30px;
+
 `;
 
 const ButtonWrapper = styled.div`
@@ -273,6 +274,7 @@ const ButtonWrapper = styled.div`
 
   height: 60px;
   margin-top: 20px;
+  
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;

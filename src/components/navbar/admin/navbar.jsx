@@ -90,9 +90,20 @@ const AdminNavbar = () => {
         window.scrollTo({top: 0, behavior: "smooth"}); // Tepaga skroll qilish
     };
 
+    const ToTop = () => {
+        window.scrollTo({top: 0, behavior: "smooth"}); // Tepaga skroll qilish
+    };
+
+
     return (
         <NavBigContainer>
             <NavContainer>
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+
                 <Logo onClick={ToHome} src={LogoMain}>
                     <svg width="48" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -100,11 +111,19 @@ const AdminNavbar = () => {
                               fill="#216BF4"/>
                     </svg>
                 </Logo>
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+
                 <Links>
                     {data.map(
                         (v) =>
                             v.visible && (
                                 <Link
+                                    onClick={ToTop}
                                     className={({isActive}) => (isActive ? "active" : "")}
                                     key={v.id || v.title}
                                     to={Cookies.get("role") === "CHIEF" ? v.path : v.path}
@@ -126,6 +145,7 @@ const AdminNavbar = () => {
                         <i className="fa-solid fa-user"></i>
                     </ProfieBtn>
                 </Links>
+                </motion.div>
 
                 {/* Burger menu dropdown */}
                 <Dropdown

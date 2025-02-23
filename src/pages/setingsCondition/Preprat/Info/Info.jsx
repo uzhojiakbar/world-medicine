@@ -1,48 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, FilterSection, Figcaption, Details } from "./style.js";
 import Input from "../../../../components/Generic/Input/Input.jsx";
 import DateRangePicker from "./DataRangePicker/DataRangePicker.jsx";
 import { useLanguage } from "../../../../context/LanguageContext.jsx";
+import { Button } from "antd";
+
+const LOCAL_STORAGE_KEY_INVEST = "investitsiyaData";
+const LOCAL_STORAGE_KEY_USLOVIYA = "usloviyaData";
+
+const EditableInfo = ({ label, value, onSave }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(value);
+
+  useEffect(() => {
+    setEditValue(value);
+  }, [value]);
+
+  const handleSave = () => {
+    onSave(editValue);
+    setIsEditing(false);
+  };
+
+  return (
+      <Figcaption onDoubleClick={() => setIsEditing(true)}>
+        <div>{label}</div>
+        {isEditing ? (
+            <div style={{ display: "flex", height: "40px", alignItems: "center", gap: "10px" }}>
+              <Input
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  height={"40px"}
+                  autoFocus
+                  bgColor={"white"}
+              />
+              <Button type={"primary"} onClick={handleSave}>✔</Button>
+            </div>
+        ) : (
+            <div style={{ cursor: "pointer", height: "40px" }}>{value}%</div>
+        )}
+      </Figcaption>
+  );
+};
 
 const Info = () => {
   const { translate } = useLanguage();
 
-  const [dataInvestitsiya, setDataInvestitsiya] = useState([
-    { id: 1, title: "<60%", subTitle: "10,0%" },
-    { id: 2, title: "60% - 69,9%", subTitle: "10,5%" },
-    { id: 3, title: "70% - 79,9%", subTitle: "11,0%" },
-    { id: 4, title: "80% - 89,9%", subTitle: "11,5%" },
-    { id: 5, title: "90 >", subTitle: "12%" },
-  ]);
+  const [dataInvestitsiya, setDataInvestitsiya] = useState([]);
+  const [dataUsloviya, setDataUsloviya] = useState([]);
 
-  const [dataUsloviya, setDataUsloviya] = useState([
-    { id: 1, title: "%СУ", subTitle: "30%" },
-    { id: 2, title: "%СБ", subTitle: "20%" },
-    { id: 3, title: "%ГЗ", subTitle: "40%" },
-    { id: 4, title: "%КВ", subTitle: "30%" },
-  ]);
+  useEffect(() => {
+    const savedInvestitsiya = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_INVEST));
+    const savedUsloviya = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_USLOVIYA));
 
-  const [editing, setEditing] = useState({ id: null, type: "", newValue: "" });
+    if (savedInvestitsiya) setDataInvestitsiya(savedInvestitsiya);
+    else {
+      setDataInvestitsiya([
+        { id: 1, minPercentage: 0, maxPercentage: 60, percentageVal: 10 },
+        { id: 2, minPercentage: 60, maxPercentage: 69.9, percentageVal: 10.5 },
+        { id: 3, minPercentage: 70, maxPercentage: 79.9, percentageVal: 11 },
+        { id: 4, minPercentage: 80, maxPercentage: 89.9, percentageVal: 11.5 },
+        { id: 5, minPercentage: 90, maxPercentage: null, percentageVal: 12 },
+      ]);
+    }
 
-  const handleEdit = (id, currentVal, type) => {
-    setEditing({ id, type, newValue: currentVal });
+    if (savedUsloviya) setDataUsloviya(savedUsloviya);
+    else {
+      setDataUsloviya([
+        { id: 1, title: "СУ", value: 30 },
+        { id: 2, title: "СБ", value: 20 },
+        { id: 3, title: "ГЗ", value: 40 },
+        { id: 4, title: "КВ", value: 30 },
+      ]);
+    }
+  }, []);
+
+  const updateInvestitsiya = (id, newValue) => {
+    setDataInvestitsiya((prev) =>
+        prev.map((item) =>
+            item.id === id ? { ...item, percentageVal: parseFloat(newValue) || 0 } : item
+        )
+    );
+    saveToLocal();
   };
 
-  const handleSave = () => {
-    if (editing.type === "investitsiya") {
-      setDataInvestitsiya((prev) =>
-          prev.map((item) =>
-              item.id === editing.id ? { ...item, subTitle: editing.newValue } : item
-          )
-      );
-    } else if (editing.type === "usloviya") {
-      setDataUsloviya((prev) =>
-          prev.map((item) =>
-              item.id === editing.id ? { ...item, subTitle: editing.newValue } : item
-          )
-      );
-    }
-    setEditing({ id: null, type: "", newValue: "" }); // Tahrirlashni tugatish
+  const updateUsloviya = (id, newValue) => {
+    setDataUsloviya((prev) =>
+        prev.map((item) =>
+            item.id === id ? { ...item, value: parseFloat(newValue) || 0 } : item
+        )
+    );
+    saveToLocal();
+  };
+
+  const saveToLocal = () => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_INVEST, JSON.stringify(dataInvestitsiya));
+    localStorage.setItem(LOCAL_STORAGE_KEY_USLOVIYA, JSON.stringify(dataUsloviya));
   };
 
   return (
@@ -53,21 +105,12 @@ const Info = () => {
               <div>{translate("Доступный % инвестиций")}</div>
             </Figcaption>
             {dataInvestitsiya.map((v) => (
-                <Figcaption key={v.id} onDoubleClick={() => handleEdit(v.id, v.subTitle, "investitsiya")}>
-                  <div>{v.title}</div>
-                  {editing.id === v.id ? (
-                      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                        <Input
-                            value={editing.newValue}
-                            onChange={(e) => setEditing({ ...editing, newValue: e.target.value })}
-                            autoFocus
-                        />
-                        <div onClick={handleSave}>{translate("Сохранить")}</div>
-                      </div>
-                  ) : (
-                      <div style={{ cursor: "pointer" }}>{v.subTitle}</div>
-                  )}
-                </Figcaption>
+                <EditableInfo
+                    key={v.id}
+                    label={`${v.minPercentage} - ${v.maxPercentage ? v.maxPercentage : '>'}`}
+                    value={v.percentageVal}
+                    onSave={(newValue) => updateInvestitsiya(v.id, newValue)}
+                />
             ))}
           </Details>
 
@@ -76,21 +119,12 @@ const Info = () => {
               <div>{translate("Условия")}</div>
             </Figcaption>
             {dataUsloviya.map((v) => (
-                <Figcaption key={v.id} onDoubleClick={() => handleEdit(v.id, v.subTitle, "usloviya")}>
-                  <div>{v.title}</div>
-                  {editing.id === v.id ? (
-                      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                        <Input
-                            value={editing.newValue}
-                            onChange={(e) => setEditing({ ...editing, newValue: e.target.value })}
-                            autoFocus
-                        />
-                        <div onClick={handleSave}>{translate("Сохранить")}</div>
-                      </div>
-                  ) : (
-                      <div style={{ cursor: "pointer" }}>{v.subTitle}</div>
-                  )}
-                </Figcaption>
+                <EditableInfo
+                    key={v.id}
+                    label={v.title}
+                    value={v.value}
+                    onSave={(newValue) => updateUsloviya(v.id, newValue)}
+                />
             ))}
           </Details>
         </FilterSection>

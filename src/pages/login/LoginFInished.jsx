@@ -180,6 +180,7 @@ const LoginFInished = ({ isSucces = true, setSucces = () => {} }) => {
                   transition={{ delay: 0.2, duration: 0.5 }}
                 >
                   <CricleButton
+                      jc={"left"}
                     textAlign={"left".toString()}
                     icon={<ArrowRightOutlined />}
                     onClick={Go}
