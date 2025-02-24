@@ -74,7 +74,7 @@ const Table = ({
         setLoading(1);
     };
     return (<Container>
-        {loading || loadingWk ? (<div className="loaderParent">
+        {loading  ? (<div className="loaderParent">
             <div className="loader"></div>
         </div>) : ""}
         <ModalEditLpu setData={setSelectedWk} data={selectedWk}/>

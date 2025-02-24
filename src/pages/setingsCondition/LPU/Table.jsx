@@ -8,8 +8,11 @@ import LeftArrow from "../../../assets/svg/LeftArrow";
 import RightArrow from "../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import {useLanguage} from "../../../context/LanguageContext";
-import {Input} from "antd";
+import {Input, message} from "antd";
 import {transformDistrictsForSelect} from "../../../utils/transformRegionsForSelect.js";
+import ModalEditLpu from "../../../rolls/admin/MestaRabota/Modal.jsx";
+import {useDeleteWorkplace, useGetWorkplacesById} from "../../../utils/server/server.js";
+import log from "eslint-plugin-react/lib/util/log.js";
 
 const Container = styled.div`
     position: relative;
@@ -39,6 +42,11 @@ const Table = ({data = [], loading = true}) => {
     //   const [data, setData] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedRow, setEditedRow] = useState({});
+    const [selectedWk, setSelectedWk] = useState(null)
+    const deleteLpu = useDeleteWorkplace();
+    const {data: wk, isLoading: loadingWk} = useGetWorkplacesById(editId)
+
+
 
     const itemsPerPage = 10;
     const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -61,27 +69,30 @@ const Table = ({data = [], loading = true}) => {
     );
 
     const {translate, language} = useLanguage();
-    const handleEditClick = (row) => {
+
+    const handleEditClick = async (row) => {
         setEditId(row.id);
-        setEditedRow(row);
+        setSelectedWk(await row)
+    }
+    const handleDelete = (id) => {
+        deleteLpu.mutate(id, {
+            onError: (error) => {
+                console.error(translate("workplace_delete_err"), error);
+                message.error(translate("workplace_delete_err"));
+                setLoading(0);
+            }, onSuccess: () => {
+                message.success(translate("workplace_deleted"));
+                setLoading(0);
+            },
+        });
+        queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
+        setLoading(1);
     };
 
-    const handleInputChange = (name, value) => {
-        setEditedRow((prev) => ({...prev, [name]: value}));
-    };
-
-    const handleCancel = () => {
-        setEditId(null);
-        setEditedRow({});
-    };
-
-    const handleSave = async () => {
-        setEditId(null);
-    };
 
     return (
         <Container>
-            {loading ? (
+            {loading || loadingWk? (
                 <div className="loaderParent">
                     <div className="loader"></div>
                 </div>
@@ -89,6 +100,8 @@ const Table = ({data = [], loading = true}) => {
 
             <WhiteWrapper>
                 <ResponsiveTableAdmin>
+                    <ModalEditLpu setData={setSelectedWk} data={selectedWk}/>
+
                     <table>
                         <thead>
                         <tr>
@@ -103,116 +116,33 @@ const Table = ({data = [], loading = true}) => {
                         {currentData.length > 0 ? (
                             currentData.map((row) => (
                                 <tr key={row?.id}>
-                                    {
-                                        // Object.keys(row).map((v, i) => {
-                                        //   if (typeof row[v] == "string")
-                                        //     return <td className="idfixed">
-                                        //       {editId === row.id ? (
-                                        //         <InputWrapper
-                                        //           type="text"
-                                        //           name="name"
-                                        //           defaultValue={editedRow[v]}
-                                        //           onChange={(e) =>
-                                        //             handleInputChange("name", e.target.value)
-                                        //           }
-                                        //           placeholder="Enter name"
-                                        //         />
-                                        //       ) : (
-                                        //         row[v]
-                                        //       )}
-                                        //     </td>
-                                        // })
-                                    }
+
                                     <td className="idfixed">
-                                        {editId === row.id ? (
-                                            <InputWrapper
-                                                type="text"
-                                                name="name"
-                                                defaultValue={editedRow[v]}
-                                                onChange={(e) =>
-                                                    handleInputChange("name", e.target.value)
-                                                }
-                                                placeholder="Enter name"
-                                            />
-                                        ) : (
+                                        {
                                             row?.["name"]
-                                        )}
+                                        }
                                     </td>
                                     <td>
-                                        {editId === row.id ? (
-                                            <InputWrapper
-                                                type="text"
-                                                name="name"
-                                                defaultValue={editedRow["Форма учреждения"]}
-                                                onChange={(e) =>
-                                                    handleInputChange(
-                                                        "Форма учреждения",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                placeholder="Форма учреждения"
-                                            />
-                                        ) : (
+                                        {
                                             translate(row["medicalInstitutionType"])
-                                        )}
+                                        }
                                     </td>
                                     <td>
-                                        {editId === row.id ? (
-                                            <InputWrapper
-                                                type="text"
-                                                name="Регион"
-                                                defaultValue={language == "ru" ? row?.["regionDistrictDTO"]["regionNameRussian"]
-                                                    : language == "uz" ? row?.["regionDistrictDTO"]["regionNameUzLatin"] : row?.["regionDistrictDTO"]["regionName"]
-                                                }
-                                                onChange={(e) =>
-                                                    handleInputChange("Регион", e.target.value)
-                                                }
-                                                placeholder={translate("Регион")}
-                                            />
-                                        ) : (
+                                        {
                                             language == "ru" ? row?.["regionDistrictDTO"]["regionNameRussian"]
                                                 : language == "uz" ? row?.["regionDistrictDTO"]["regionNameUzLatin"] : row?.["regionDistrictDTO"]["regionName"]
 
-                                        )}
+                                        }
                                     </td>
                                     <td>
-                                        {editId === row.id ? (
-                                            <InputWrapper
-                                                type="text"
-                                                name="Район"
-                                                defaultValue={language == "ru" ? row?.["regionDistrictDTO"]["districtNameRussian"]
-                                                    : language == "uz" ? row?.["regionDistrictDTO"]["districtNameUzLatin"] : row?.["regionDistrictDTO"]["districtName"]
-                                                }
-                                                onChange={(e) =>
-                                                    handleInputChange("Район", e.target.value)
-                                                }
-                                                placeholder={translate("Район")}
-                                            />
-                                        ) : (
+                                        {
                                             language == "ru" ? row?.["regionDistrictDTO"]["districtNameRussian"] : language == "uz" ? row?.["regionDistrictDTO"]["districtNameUzLatin"] : row?.["regionDistrictDTO"]["districtName"]
 
-                                        )}
+                                        }
                                     </td>
 
                                     <td className="flex" style={{height: "73px"}}>
-                                        {editId === row.id ? (
-                                            <>
-                                                <button
-                                                    style={{background: "transparent"}}
-                                                    className="Viewbutton"
-                                                    onClick={handleSave}
-                                                >
-                                                    <i class="fa-solid fa-floppy-disk colorBlue"></i>
-                                                </button>
-                                                <button
-                                                    style={{background: "transparent"}}
-                                                    className="Viewbutton colorBlue"
-                                                    onClick={handleCancel}
-                                                >
-                                                    <i class="fa-solid fa-close colorRed"></i>
-                                                </button>
-                                            </>
-                                        ) : (
+                                        {
                                             <>
                                                 <button
                                                     style={{background: "transparent", padding: "0"}}
@@ -272,7 +202,7 @@ const Table = ({data = [], loading = true}) => {
                                                     </svg>
                                                 </button>
                                             </>
-                                        )}
+                                        }
                                     </td>
                                 </tr>
                             ))

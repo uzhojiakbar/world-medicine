@@ -84,7 +84,7 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
         handleUpdate()
         console.log("1111111111111111111")
     },[uptData])
-    return <ModalContainer
+    return  <ModalContainer
         title={
             <ModalHeader>
                 <Title>{translate("Workplace")}</Title>
@@ -98,7 +98,9 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
         onCancel={onClose}
         footer={[]}
         centered
-    >
+    > {isLoading  ? (<div className="loaderParent">
+        <div className="loader"></div>
+    </div>) : ""}
         {isLoading ? (<div className="loaderParent">
             <div className="loader"></div>
         </div>) : ""}
