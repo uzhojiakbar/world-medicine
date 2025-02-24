@@ -873,6 +873,24 @@ export const useRegisterManager = () => {
         },
     });
 };
+export const useResetPasswordWithoutOldPassword = () => {
+    return useMutation({
+        mutationFn: async (resetPassData) => {
+            console.log("resetPassData", resetPassData);
+            const response = await Instance.post(
+                "/v1/admin/reset-password",
+                resetPassData?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess();
+        },
+        onError: (error, variables) => {
+            variables.onError();
+        },
+    });
+};
 
 // NOTE ADD MANAGER
 export const useRegisterDoctor = () => {

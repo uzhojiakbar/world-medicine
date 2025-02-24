@@ -213,7 +213,7 @@ const Input2 = styled.input`
 const ResetPassword = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   width: 100%;
   height: 55px;
   background-color: ${({ bgcolor }) =>
@@ -224,9 +224,11 @@ const ResetPassword = styled.div`
   font-weight: 600;
   color: ${({ color }) => (color ? color : "white")};
   border-radius: 50px;
-  margin-top: 10px;
+  margin-top: ${({mt})=>mt?mt:"10px"};
   cursor: pointer;
   transition: filter 0.3s ease;
+  font-family: "Vela Sans GX SemiBold";
+  user-select: none;
 
   &:hover {
     filter: brightness(85%);
@@ -236,6 +238,7 @@ const ResetPassword = styled.div`
     height: 45px;
     font-size: 12px;
   }
+  text-align: left;
 `;
 
 const Item = styled.span``;

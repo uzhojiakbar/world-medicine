@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     ModalBodyHeader,
     ModalBodySection,
@@ -11,149 +11,209 @@ import {MiniTitleSmall, Title} from "../../../../root/style.js";
 import EditableInput from "../../../../components/Generic/EditableInput/EditableInput.jsx";
 import {useLanguage} from "../../../../context/LanguageContext.jsx";
 import ProfilePic1 from "../../../../assets/img/profile/profile2.svg";
-import {useGetRegions, useGetUserInfo} from "../../../../utils/server/server.js";
+import {
+    useGetDistricts,
+    useGetRegions,
+    useGetUserInfo,
+    useGetWorkplaces,
+    useRegisterManager, useResetPasswordWithoutOldPassword
+} from "../../../../utils/server/server.js";
 import {useGetDistrcitById} from "../../../../utils/server/server.js";
 import {useGetWorkplacesById} from "../../../../utils/server/server.js";
 import log from "eslint-plugin-react/lib/util/log.js";
 import PrimarySelect from "../../../../components/Generic/Select/Select.jsx";
-import {transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
+import {
+    transformDistrictsForSelect,
+    transformRegionsForSelect,
+    transformWorkplacesForSelect
+} from "../../../../utils/transformRegionsForSelect.js";
+import {ResetPassword, Section} from "@/pages/profile/admin/style.js";
+import {message} from "antd";
 
 const ModalDoctor = ({user, isOpen, onClose}) => {
     if (!user) return null; // yoki biror fallback UI chiqarish
 
+
+    const [login,setLoading] = useState(false)
+
     console.log("user", user)
     const {translate, language} = useLanguage();
-
-
-    const {data: regions, isLoading: isRegionLoading} = useGetRegions(
-    );
-    const regionsTranslate = transformRegionsForSelect(regions, language);
 
     const {data: district, isLoading: isDistrictLoading} = useGetDistrcitById(
         user?.districtId
     );
 
-    const {data: workplace, isLoading: isWorkplaceLoading} = useGetWorkplacesById(
-        user?.workplaceId
-    );
+    const {data: regions, isLoading: isRegionLoading} = useGetRegions(
+        )
+    ;
+    const {data: districts, isLoading: isDistrictsLoading} = useGetDistricts(district?.regionId);
+    const {data: workplaces, isLoading: isWorkplacesLoading} = useGetWorkplaces({
+        regionId: district?.regionId || null,
+        districtId: district?.districtId || null,
+    });
+    const regionsTranslate = transformRegionsForSelect(regions, language);
+    const districtsTranslae = transformDistrictsForSelect(districts, language);
+    const WorkplacesTranslate = transformWorkplacesForSelect(workplaces, language);
 
+
+    const mutation = useResetPasswordWithoutOldPassword();
+
+    const ResetPasswordFunc = () => {
+        setLoading(1);
+        const requestData = {
+            "phoneNumber": user?.phoneNumber,
+            "newPassword": "123456789"
+        }
+        mutation.mutate({
+            requestData: requestData, onSuccess: () => {
+                message.success(translate("Manager qo'shildi!"));
+                setTimeout(() => {
+                    setLoading(false);
+
+                    document.location.reload();
+                }, 500);
+            }, onError: () => {
+                setLoading(false);
+                message.error(translate("Manager registratsiya qilishda xatolik"));
+            },
+        });
+    }
 
     console.log("user", user,);
-    console.log("district", district,);
-    console.log("workplace", workplace,);
-    // (isUserLoading || isDistrictLoading || isWorkplaceLoading) ? <div className="loaderParent">
-    //     <div className="loader"></div>
-    // </div> :
-
-
+    console.log("workplaces", workplaces,);
     return (
-        <ModalContainer
-            title={
-                <ModalHeader>
-                    <Title>{translate("Врач")}</Title>
-                    <div onClick={onClose} className="closeIcon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.5"
-                                  d="M43 24C43 34.4933 34.4933 43 24 43C13.5066 43 5 34.4933 5 24C5 13.5066 13.5066 5 24 5C34.4933 5 43 13.5066 43 24Z"
-                                  stroke="#808080" strokeWidth="2"/>
-                            <path
-                                d="M17.9393 17.9393C18.5251 17.3536 19.4749 17.3536 20.0606 17.9393L24 21.8788L27.9394 17.9394C28.5252 17.3536 29.4748 17.3536 30.0606 17.9394C30.6464 18.5252 30.6464 19.4749 30.0606 20.0608L26.1214 24L30.0606 27.9392C30.6464 28.525 30.6464 29.4748 30.0606 30.0606C29.4748 30.6464 28.525 30.6464 27.9392 30.0606L24 26.1214L20.0608 30.0606C19.4749 30.6464 18.5252 30.6464 17.9394 30.0606C17.3536 29.4748 17.3536 28.5252 17.9394 27.9394L21.8788 24L17.9393 20.0606C17.3536 19.4749 17.3536 18.5251 17.9393 17.9393Z"
-                                fill="#808080"/>
-                        </svg>
-                    </div>
-                </ModalHeader>
-            }
-            open={isOpen}
-            onOk={onClose}
-            onCancel={onClose}
-            footer={[]}
-            centered
-        >
-            <ModalBodyHeader>
-                <ModalBodySection>
-                    <MiniTitleSmall>Ф.И.О</MiniTitleSmall>
-                    <ModalInnerSection>
-                        <ModalUserProfilePicture pic={ProfilePic1}/>
-                        <EditableInput
-                            initialValue={user ? `${user.firstName ?? ""} ${user.lastName ?? ""}` : "Noma'lum"}
-                            isInput={0}/>
-                    </ModalInnerSection>
-                </ModalBodySection>
-                <ModalBodySection>
-                    <MiniTitleSmall>Ответственная зона</MiniTitleSmall>
-                    <ModalInnerSection gap={"2px"} >
-                        <PrimarySelect
-                            def={""}
-                            options={regionsTranslate}
-                            onlyOption={1}
-                            className={"select-left-border"}
-                            onValueChange={(value) => console.log("workplace", value)}
-                        />
-                        <PrimarySelect
-                            def={""}
-                            options={[]}
-                            onlyOption={1}
-                            className={"select-middle-border"}
-                            onValueChange={(value) => console.log("workplace", value)}
-                        />
-                        <PrimarySelect
-                            def={""}
-                            options={[]}
-                            className={"select-right-border"}
-                            onlyOption={1}
-                            onValueChange={(value) => console.log("workplace", value)}
-                        />
-                    </ModalInnerSection>
-                </ModalBodySection>
-                <ModalBodySection>
-                    <MiniTitleSmall>Дата рождения</MiniTitleSmall>
-                    <ModalInnerSection>
-                        <EditableInput initialValue={user?.dateOfBirth} isInput={0} inputType="text"/>
-                    </ModalInnerSection>
-                </ModalBodySection>
-                <ModalBodySection>
-                    <MiniTitleSmall>Контакты врача</MiniTitleSmall>
-                    <ModalInnerSection>
-                        <EditableInput
-                            isPhoneNumber={true}
-                            initialValue={user?.number || ""}
-                            value={user?.number}
-                            onSave={e =>
-                                console.log(e)
-                            }
-                        />
-                    </ModalInnerSection>
-                </ModalBodySection>
-                <ModalBodySection>
-                    <MiniTitleSmall>Специализация</MiniTitleSmall>
-                    <ModalInnerSection>
-                        <EditableInput initialValue={user?.fieldName} isInput={0} inputType="text" isEditable={false}/>
-                    </ModalInnerSection>
-                </ModalBodySection>
-                <ModalBodySection>
-                    <MiniTitleSmall>Рабочее место</MiniTitleSmall>
-                    <ModalInnerSection>
-                        <EditableInput
-                            initialValue={workplace?.address || "Неизвестно"}
-                            isInput={0}
-                            inputType="text"
-                            isEditable={false}
-                        />
-                    </ModalInnerSection>
-                </ModalBodySection>
-                <ModalBodySection>
-                    <MiniTitleSmall>Статус</MiniTitleSmall>
-                    <ModalInnerSection>
-                        <EditableInput
-                            initialValue={user?.status === "ENABLED" ? "Активен" : "Отключен"}
-                            isInput={0}
-                            inputType="text"
-                            isEditable={false}
-                        />
-                    </ModalInnerSection>
-                </ModalBodySection>
-            </ModalBodyHeader>
-        </ModalContainer>
+        (!user || isDistrictLoading || isRegionLoading || isDistrictsLoading || isWorkplacesLoading) ?
+            <div className="loaderParent">
+                <div className="loader"></div>
+            </div>
+            : <ModalContainer
+                title={
+                    <ModalHeader>
+                        <Title>{translate("Врач")}</Title>
+                        <div onClick={onClose} className="closeIcon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.5"
+                                      d="M43 24C43 34.4933 34.4933 43 24 43C13.5066 43 5 34.4933 5 24C5 13.5066 13.5066 5 24 5C34.4933 5 43 13.5066 43 24Z"
+                                      stroke="#808080" strokeWidth="2"/>
+                                <path
+                                    d="M17.9393 17.9393C18.5251 17.3536 19.4749 17.3536 20.0606 17.9393L24 21.8788L27.9394 17.9394C28.5252 17.3536 29.4748 17.3536 30.0606 17.9394C30.6464 18.5252 30.6464 19.4749 30.0606 20.0608L26.1214 24L30.0606 27.9392C30.6464 28.525 30.6464 29.4748 30.0606 30.0606C29.4748 30.6464 28.525 30.6464 27.9392 30.0606L24 26.1214L20.0608 30.0606C19.4749 30.6464 18.5252 30.6464 17.9394 30.0606C17.3536 29.4748 17.3536 28.5252 17.9394 27.9394L21.8788 24L17.9393 20.0606C17.3536 19.4749 17.3536 18.5251 17.9393 17.9393Z"
+                                    fill="#808080"/>
+                            </svg>
+                        </div>
+                    </ModalHeader>
+                }
+                open={isOpen}
+                onOk={onClose}
+                onCancel={onClose}
+                footer={[]}
+                centered
+            >
+                <ModalBodyHeader>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Fullname")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <ModalUserProfilePicture pic={ProfilePic1}/>
+                            <EditableInput
+                                initialValue={user ? `${user.firstName ?? ""} ${user.lastName ?? ""} ${user.middleName ?? ""}` : "Noma'lum"}
+                                isInput={0}/>
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Место_работы")}</MiniTitleSmall>
+                        <ModalInnerSection gap={"2px"}>
+                            <PrimarySelect
+                                def={""}
+                                options={regionsTranslate}
+                                onlyOption={1}
+                                className={"select-left-border maxwidth"}
+                                selectedOptionId={district?.regionId}
+                                selectedType={"id"}
+                                onValueChange={(value) => console.log("workplace", value)}
+                            />
+                            <PrimarySelect
+                                def={""}
+                                options={districtsTranslae || []}
+                                onlyOption={1}
+                                selectedOptionId={district?.districtId}
+                                selectedType={"distric"}
+                                className={"select-middle-border maxwidth"}
+                                onValueChange={(value) => console.log("workplace", value)}
+                            />
+                            <PrimarySelect
+                                def={""}
+                                options={WorkplacesTranslate || []}
+                                selectedOptionId={user?.workplaceId}
+                                selectedType={"id"}
+                                className={"select-right-border maxwidth"}
+                                onlyOption={1}
+                                onValueChange={(value) => console.log("workplace", value)}
+                            />
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("data_register")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput initialValue={user?.dateOfBirth} isInput={0} inputType="text"/>
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Контакты_врача")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput
+                                isPhoneNumber={true}
+                                initialValue={user?.number || ""}
+                                value={user?.number}
+                                onSave={e =>
+                                    console.log(e)
+                                }
+                            />
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Логин")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput initialValue={`${user?.number}`} isInput={0} inputType="text"/>
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Почта")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput initialValue={user?.email} isInput={0} inputType="text"/>
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Специализация")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput initialValue={translate(user?.fieldName)} isInput={0} inputType="text"
+                                           isEditable={false}/>
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>Статус</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput
+                                initialValue={user?.status === "ENABLED" ? "Активен" : "Отключен"}
+                                isInput={0}
+                                inputType="text"
+                                isEditable={false}
+                            />
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                </ModalBodyHeader>
+                <ModalBodyHeader gridC={1}>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Сбросить_пароль")}</MiniTitleSmall>
+                        <ResetPassword
+                            mt={"0px"}
+                            ResetPassword pad={"none"}
+                            onClick={()=>ResetPasswordFunc()}
+                        >
+                            {"Установить текущий пароль"}
+                        </ResetPassword>
+                    </ModalBodySection>
+                </ModalBodyHeader>
+
+            </ModalContainer>
     );
 };
 

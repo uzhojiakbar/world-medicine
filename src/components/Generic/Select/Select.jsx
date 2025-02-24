@@ -45,7 +45,6 @@ const StyledFormControl = styled(FormControl)(({borderRadius, bgColor}) => ({
 }));
 
 const CustomArrowIcon = ({open}) => {
-    console.log("open", open)
     return open ? (
         <ArrowUpSelect/>
     ) : (
@@ -64,34 +63,23 @@ const PrimarySelect = ({
                            onClick = () => {
                            },
                            onlyOption = 0,
-                           selectedOptionId,
+                           selectedOptionId = undefined,
+                           selectedType = "value"
                        }) => {
 
     const [open, setOpen] = useState(false);
-
     const handleValueChange = (event) => {
-
-
-        let value = event;
         const selectedValue = event.target.value;
-        const selectedOption = options.find(
-            (option) => option.value === selectedValue
-        );
-        if (!Array.isArray(event)) {
-            value = event.target?.value;
-        }
+        const selectedOption = options.find((option) => option.value === selectedValue);
+
 
         if (onlyOption) {
-            if (onValueChange && value) onValueChange(selectedOption);
+            // If onlyOption is set, pass the full option object
+            if (onValueChange && selectedOption) onValueChange(selectedOption);
         } else {
-            if (onValueChange && value) onValueChange(value);
+            // Otherwise, just pass the value
+            if (onValueChange && selectedValue) onValueChange(selectedValue);
         }
-
-        // console.log(selectedOption);
-
-        // if (onValueChange && selectedOption) {
-        //   onValueChange(selectedOption); // Pass the full object
-        // }
     };
 
 
@@ -103,6 +91,7 @@ const PrimarySelect = ({
                 def ? <InputLabel>{def}</InputLabel> : ""
             }
             <Select
+                defaultValue={selectedOptionId || undefined}
                 onChange={handleValueChange}
                 displayEmpty
                 input={<OutlinedInput/>}
@@ -118,8 +107,13 @@ const PrimarySelect = ({
                 </MenuItem>
                 {options?.length > 0 ? (
                     options.map((option) => (
-                        <MenuItem selectedOption={option.id === selectedOptionId} key={option.value}
-                                  value={option.value}>
+                        <MenuItem key={option.value}
+                                  value={
+                            selectedType === "value"?
+                                option.value:selectedType === "id"
+                                    ?
+                                    option.id : option.districtId
+                        }>
                             {option.value}
                         </MenuItem>
                     ))

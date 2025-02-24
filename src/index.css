@@ -162,7 +162,9 @@ body {
     border-top-left-radius: 40px !important;
     border-bottom-left-radius: 40px !important;
 }
-
+.maxwidth {
+    max-width: 220px;
+}
 .select-right-border > .MuiOutlinedInput-root {
     border-radius: 10px !important;
     border-top-right-radius: 40px !important;
