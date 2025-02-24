@@ -34,7 +34,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
     if (!user) return null; // yoki biror fallback UI chiqarish
 
 
-    const [login,setLoading] = useState(false)
+    const [loading,setLoading] = useState(false)
 
     console.log("user", user)
     const {translate, language} = useLanguage();
@@ -61,20 +61,18 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
     const ResetPasswordFunc = () => {
         setLoading(1);
         const requestData = {
-            "phoneNumber": user?.phoneNumber,
-            "newPassword": "123456789"
+            "phoneNumber": user?.number,
+            "newPassword": user?.number
         }
         mutation.mutate({
             requestData: requestData, onSuccess: () => {
-                message.success(translate("Manager qo'shildi!"));
+                message.success(translate("password_reseted")+user?.number);
                 setTimeout(() => {
                     setLoading(false);
-
-                    document.location.reload();
                 }, 500);
             }, onError: () => {
                 setLoading(false);
-                message.error(translate("Manager registratsiya qilishda xatolik"));
+                message.error(translate("password_reset_error"));
             },
         });
     }
@@ -108,6 +106,11 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                 footer={[]}
                 centered
             >
+                { loading ?
+                    <div className="loaderWindow">
+                        <div className="loader"></div>
+                    </div>
+                    : ""}
                 <ModalBodyHeader>
                     <ModalBodySection>
                         <MiniTitleSmall>{translate("Fullname")}</MiniTitleSmall>
@@ -189,7 +192,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         </ModalInnerSection>
                     </ModalBodySection>
                     <ModalBodySection>
-                        <MiniTitleSmall>Статус</MiniTitleSmall>
+                        <MiniTitleSmall>{translate("Статус")}</MiniTitleSmall>
                         <ModalInnerSection>
                             <EditableInput
                                 initialValue={user?.status === "ENABLED" ? "Активен" : "Отключен"}
@@ -201,6 +204,18 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                     </ModalBodySection>
                 </ModalBodyHeader>
                 <ModalBodyHeader gridC={1}>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Сбросить_пароль")}</MiniTitleSmall>
+                        <ResetPassword
+                            mt={"0px"}
+                            ResetPassword pad={"none"}
+                            onClick={()=>ResetPasswordFunc()}
+                        >
+                            {"Установить текущий пароль"}
+                        </ResetPassword>
+                    </ModalBodySection>
+                </ModalBodyHeader>
+                <ModalBodyHeader gridC={1} dataCenter={true} >
                     <ModalBodySection>
                         <MiniTitleSmall>{translate("Сбросить_пароль")}</MiniTitleSmall>
                         <ResetPassword

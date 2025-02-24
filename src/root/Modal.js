@@ -4,7 +4,7 @@ import ProfilePic1 from "../assets/img/profile/profile2.svg";
 import {m} from "framer-motion";
 
 export const ModalContainer = styled(Modal)`
-    width: ${({w}) => (w ? `${w} !important ` : "70vw !important")};
+    width: ${({w}) => (w ? `${w} !important ` : "90vw !important")};
     max-height: 90vh !important;
     max-width: 1920px !important;
     overflow: auto;
@@ -46,6 +46,7 @@ export const ModalBody = styled.div`
 export const ModalBodyHeader = styled.div`
     display: grid;
     gap: 20px 10px;
+    
     margin-top: ${({m})=>m?m:"10px"};
     margin-bottom: ${({mb})=>mb?mb:"0"};
     grid-template-columns: repeat(${({gridC})=>gridC?gridC:2}, 1fr);
