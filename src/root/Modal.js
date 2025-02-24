@@ -4,14 +4,15 @@ import ProfilePic1 from "../assets/img/profile/profile2.svg";
 import {m} from "framer-motion";
 
 export const ModalContainer = styled(Modal)`
-  width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
-  max-height: 90vh !important;
-    max-width: 1440px !important;
-  overflow: auto;
+    width: ${({w}) => (w ? `${w} !important ` : "70vw !important")};
+    max-height: 90vh !important;
+    max-width: 1920px !important;
+    overflow: auto;
+    background: white;
 
-  .ant-modal-close {
-    display: none !important;
-  }
+    .ant-modal-close {
+        display: none !important;
+    }
 `;
 
 export const ModalNotificationCon = styled(Modal)`
@@ -48,6 +49,10 @@ export const ModalBodyHeader = styled.div`
     margin-top: ${({m})=>m?m:"10px"};
     margin-bottom: ${({mb})=>mb?mb:"0"};
     grid-template-columns: repeat(${({gridC})=>gridC?gridC:2}, 1fr);
+    
+    @media (max-width: 1440px) {
+        grid-template-columns: repeat(${({gridC})=>gridC?gridC:1}, 1fr);        
+    }
 `;
 
 export const ModalBodySection = styled.div`
@@ -87,6 +92,7 @@ export const ModalInnerSection = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: ${({gap}) => gap ? gap : "10px"};
+    
 
     > .fio {
         color: #000;
