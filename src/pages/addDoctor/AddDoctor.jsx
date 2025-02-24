@@ -156,7 +156,7 @@ const AddDoctor = () => {
                     message.success(translate("доктор_создан"));
                     setTimeout(() => {
                         setLoading(false);
-                        // document.location.reload();
+                        document.location.reload();
                     }, 500);
                 }, onError: () => {
                     setLoading(false);
