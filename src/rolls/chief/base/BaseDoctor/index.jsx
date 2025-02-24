@@ -195,15 +195,6 @@ const BaseDoctor = () => {
         isLoading={isLoadingDoctors}
         data={filteredDoctors}
       />
-      {/* {doctors?.length > 0 ? (
-        doctors?.map((doctor) => (
-          <div key={doctor.userId}>
-            Doctor ID: {doctor.userId}, Specialization: {doctor.fieldName}
-          </div>
-        ))
-      ) : (
-        <p>no inf</p>
-      )} */}
     </BaseDoctorCon>
   );
 };

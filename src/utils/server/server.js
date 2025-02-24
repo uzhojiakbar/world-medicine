@@ -445,11 +445,14 @@ export const useGetUserInfo = (userId) => {
         queryKey: ["ProfileInfo", userId],
         queryFn: async () => {
             try {
+                if(userId){
+
                 const data = await Instance.get(`/v1/user/${userId}`);
                 console.log("userId", userId);
                 console.log("UserData", data);
-
                 return data?.data;
+                }
+                return null;
             } catch (error) {
                 console.error("Error fetching data", error);
                 throw error; // xatolikni qaytarish

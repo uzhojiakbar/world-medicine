@@ -7,10 +7,11 @@ import LeftArrow from "../../../../assets/svg/LeftArrow";
 import RightArrow from "../../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import {useLanguage} from "../../../../context/LanguageContext";
-import {useGetDistrictById} from "../../../../utils/server/server"; // Import to'g'ri qilingan
+import {useGetDistrictById, useGetUserInfo} from "../../../../utils/server/server"; // Import to'g'ri qilingan
 import Instance from "../../../../utils/Instance";
 import {DatFormatter} from "../../../../utils/DatFormatter";
 import ModalManager from "../SettingsMenager/Modal.jsx";
+import ModalDoctor from "./Modal.jsx";
 
 const Container = styled.div`
     position: relative;
@@ -21,15 +22,21 @@ const Table = ({title = "", data = [], isLoading = false}) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [districtInfo, setDistrictInfo] = useState({});
     const {translate, language} = useLanguage();
+    const [activeModal, setActiveModal] = useState(null);
+    const [modalOpen,setOpenModal] = useState(false);
+
+    const { data: user, isLoading: isUserLoading } = useGetUserInfo(activeModal ?? "");
+
 
     const itemsPerPage = 5;
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
-    const [activeModal, setActiveModal] = useState(null);
-
     const closeModal = () => {
         console.log("closeModal")
-        setActiveModal(null);
+        setOpenModal(false);
+        setTimeout(()=>{
+            setActiveModal(null);
+        },100)
     };
 
     const handleNext = () => {
@@ -67,11 +74,11 @@ const Table = ({title = "", data = [], isLoading = false}) => {
     console.log("currentData", currentData)
 
     return (<Container>
-        {isLoading && (<div className="loaderParent">
+        {(isLoading || isUserLoading) && (<div className="loaderParent">
             <div className="loader"></div>
         </div>)}
 
-        <ModalManager isOpen={!!activeModal} onClose={closeModal} doctorId={activeModal}/>
+        <ModalDoctor isOpen={!!modalOpen} onClose={closeModal} user={user}/>
         {/* {activeModal === 5 && <Modal5  />} */}
         {/*<ModalManager isOpen={activeModal} onClose={closeModal} />*/}
 
@@ -113,10 +120,14 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                         </td>
                         <td>
                             <button
-                                onClick={() => setActiveModal(row?.userId)}
+                                onClick={() => {
+                                    setActiveModal(row?.userId);
+                                    setOpenModal(true);
+                                }}
                                 className="Viewbutton"
                             >
-                                <svg
+
+                            <svg
                                     width="24"
                                     height="24"
                                     viewBox="0 0 24 24"

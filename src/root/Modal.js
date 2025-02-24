@@ -1,6 +1,7 @@
 import { Modal } from "antd";
 import styled from "styled-components";
 import ProfilePic1 from "../assets/img/profile/profile2.svg";
+import {m} from "framer-motion";
 
 export const ModalContainer = styled(Modal)`
   width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
@@ -82,17 +83,17 @@ export const ModalUserProfilePicture = styled.div`
 `;
 
 export const ModalInnerSection = styled.div`
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-  gap: 10px;
+    gap: ${({gap}) => gap ? gap : "10px"};
 
-  > .fio {
-    color: #000;
-    font-family: "Vela Sans GX Regular";
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-  }
+    > .fio {
+        color: #000;
+        font-family: "Vela Sans GX Regular";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
 `;

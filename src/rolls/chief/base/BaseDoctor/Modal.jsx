@@ -11,14 +11,23 @@ import {MiniTitleSmall, Title} from "../../../../root/style.js";
 import EditableInput from "../../../../components/Generic/EditableInput/EditableInput.jsx";
 import {useLanguage} from "../../../../context/LanguageContext.jsx";
 import ProfilePic1 from "../../../../assets/img/profile/profile2.svg";
-import {useGetUserInfo} from "../../../../utils/server/server.js";
+import {useGetRegions, useGetUserInfo} from "../../../../utils/server/server.js";
 import {useGetDistrcitById} from "../../../../utils/server/server.js";
 import {useGetWorkplacesById} from "../../../../utils/server/server.js";
+import log from "eslint-plugin-react/lib/util/log.js";
+import PrimarySelect from "../../../../components/Generic/Select/Select.jsx";
+import {transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
 
-const ModalDoctor = ({doctorId, isOpen, onClose}) => {
+const ModalDoctor = ({user, isOpen, onClose}) => {
+    if (!user) return null; // yoki biror fallback UI chiqarish
 
-    console.log("doctorId)\n", doctorId)
-    const {data: user, isLoading: isUserLoading} = useGetUserInfo(doctorId);
+    console.log("user", user)
+    const {translate, language} = useLanguage();
+
+
+    const {data: regions, isLoading: isRegionLoading} = useGetRegions(
+    );
+    const regionsTranslate = transformRegionsForSelect(regions, language);
 
     const {data: district, isLoading: isDistrictLoading} = useGetDistrcitById(
         user?.districtId
@@ -28,11 +37,6 @@ const ModalDoctor = ({doctorId, isOpen, onClose}) => {
         user?.workplaceId
     );
 
-    const {translate} = useLanguage();
-
-    // if (isUserLoading || isDistrictLoading || isWorkplaceLoading) return <div className="loaderParent">
-    //     <div className="loader"></div>
-    // </div>;
 
     console.log("user", user,);
     console.log("district", district,);
@@ -40,8 +44,10 @@ const ModalDoctor = ({doctorId, isOpen, onClose}) => {
     // (isUserLoading || isDistrictLoading || isWorkplaceLoading) ? <div className="loaderParent">
     //     <div className="loader"></div>
     // </div> :
+
+
     return (
-         <ModalContainer
+        <ModalContainer
             title={
                 <ModalHeader>
                     <Title>{translate("Врач")}</Title>
@@ -68,17 +74,34 @@ const ModalDoctor = ({doctorId, isOpen, onClose}) => {
                     <MiniTitleSmall>Ф.И.О</MiniTitleSmall>
                     <ModalInnerSection>
                         <ModalUserProfilePicture pic={ProfilePic1}/>
-                        <EditableInput initialValue={`${user?.firstName} ${user?.lastName}`} isInput={0}/>
+                        <EditableInput
+                            initialValue={user ? `${user.firstName ?? ""} ${user.lastName ?? ""}` : "Noma'lum"}
+                            isInput={0}/>
                     </ModalInnerSection>
                 </ModalBodySection>
                 <ModalBodySection>
                     <MiniTitleSmall>Ответственная зона</MiniTitleSmall>
-                    <ModalInnerSection>
-                        <EditableInput
-                            initialValue={district?.nameUzLatin || "Неизвестно"}
-                            isEditable={false}
-                            isInput={1}
-                            inputType="text"
+                    <ModalInnerSection gap={"2px"} >
+                        <PrimarySelect
+                            def={""}
+                            options={regionsTranslate}
+                            onlyOption={1}
+                            className={"select-left-border"}
+                            onValueChange={(value) => console.log("workplace", value)}
+                        />
+                        <PrimarySelect
+                            def={""}
+                            options={[]}
+                            onlyOption={1}
+                            className={"select-middle-border"}
+                            onValueChange={(value) => console.log("workplace", value)}
+                        />
+                        <PrimarySelect
+                            def={""}
+                            options={[]}
+                            className={"select-right-border"}
+                            onlyOption={1}
+                            onValueChange={(value) => console.log("workplace", value)}
                         />
                     </ModalInnerSection>
                 </ModalBodySection>
@@ -92,11 +115,12 @@ const ModalDoctor = ({doctorId, isOpen, onClose}) => {
                     <MiniTitleSmall>Контакты врача</MiniTitleSmall>
                     <ModalInnerSection>
                         <EditableInput
-                            initialValue={`+${user?.number}`}
-                            isInput={1}
-                            phoneFormat={true}
-                            inputType="text"
-                            isEditable={false}
+                            isPhoneNumber={true}
+                            initialValue={user?.number || ""}
+                            value={user?.number}
+                            onSave={e =>
+                                console.log(e)
+                            }
                         />
                     </ModalInnerSection>
                 </ModalBodySection>
