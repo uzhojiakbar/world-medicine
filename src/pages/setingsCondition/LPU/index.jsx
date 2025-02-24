@@ -12,6 +12,7 @@ import * as XLSX from "xlsx";
 import Server, {
   useGetDistrcitById,
   useGetWorkplaces,
+  useGetWorkplacesDb,
 } from "../../../utils/server/server";
 import Filter from "./filter/Filter";
 import Instance from "../../../utils/Instance";
@@ -46,113 +47,23 @@ const exportToExcel = (data) => {
 // }
 
 function Lpu() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      "Ф.И.О. Врача": "1 Городская общественная больница",
-      "Форма учреждения": "Гос. стационар",
-      Регион: "Ташкент",
-      Район: "Шайхантахурский район",
-    },
-    {
-      id: 1,
-      "Ф.И.О. Врача": "1 Городская общественная больница",
-      "Форма учреждения": "Гос. стационар",
-      Регион: "Ташкент",
-      Район: "Шайхантахурский район",
-    },
-    {
-      id: 1,
-      "Ф.И.О. Врача": "1 Городская общественная больница",
-      "Форма учреждения": "Гос. стационар",
-      Регион: "Ташкент",
-      Район: "Шайхантахурский район",
-    },
-  ]);
+  const [loading, setLoading] = useState(false);
 
-  const [loading1, setLoading1] = useState(false);
-
-  const [currentworlplacesData, setCurrentWorkplaceeData] = useState([]);
-
-  // {
-  //   id: 1,
-  //   "Ф.И.О. Врача": "1 Городская общественная больница",
-  //   "Форма учреждения": "Гос. стационар",
-  //   Регион: "Ташкент",
-  //   Район: "Шайхантахурский район",
-  // },
   const { data: workplaces, isLoading: isloadingWorkplaces } =
-    useGetWorkplaces();
+    useGetWorkplacesDb();
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const fetchDistrictInfo = async () => {
-      setLoading1(1);
 
-      try {
-        const updatedData = await Promise.all(
-          workplaces?.map(async (workplace) => {
-            const { data: districtData } = await Instance.get(
-              `v1/auth/district?districtId=${workplace.districtId}`
-            );
-            const { data: RegionData } = await Instance.get(
-              `v1/auth/region?regionId=${districtData?.regionId}`
-            );
-
-            console.log(RegionData);
-
-            return {
-              id: workplace?.id,
-              "Ф.И.О. Врача": workplace?.name,
-              "Форма учреждения": workplace?.name,
-              Регион: RegionData,
-              Район: districtData,
-            };
-          })
-        );
-
-        setCurrentWorkplaceeData(updatedData);
-        setLoading1(0);
-      } catch (error) {
-        console.error("District ma'lumotlarini olishda xatolik:", error);
-        setLoading1(0);
-      }
-    };
-
-    if (workplaces?.length) {
-      fetchDistrictInfo();
-    }
-  }, [workplaces]);
-
-  console.log("currentworlplacesData: ", currentworlplacesData);
+  console.log("WORKPLACES: ", workplaces);
 
   const handleRefresh = () => {
-    setLoading1(1);
+    setLoading(1);
     queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
     setTimeout(() => {
-      setLoading1(0);
+      setLoading(0);
     }, 100);
   };
 
-  const [loading, setLoading] = useState(false);
-
-  // const fetchData = async () => {
-  //   setLoading(true);
-  //   try {
-  //     setTimeout(async () => {
-  //       const data = await Server.getMestaRabotaya();
-  //       setData(data || []);
-  //       setLoading(false);
-  //     }, 300);
-  //   } catch (err) {
-  //     console.error(err);
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
 
   const Container1 = styled.div`
     display: flex;
@@ -304,8 +215,8 @@ function Lpu() {
         </TitleContainer>
       </Container1>
       <MainTable
-        loading={isloadingWorkplaces || loading1}
-        data={currentworlplacesData}
+        loading={isloadingWorkplaces || loading}
+        data={workplaces}
       />
     </Wrapper>
   );
