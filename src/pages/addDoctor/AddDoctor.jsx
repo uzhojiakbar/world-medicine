@@ -12,25 +12,18 @@ import {useLanguage} from "../../context/LanguageContext.jsx";
 import {useNavigate} from "react-router-dom";
 import ForSee from "../../assets/svg/see.jsx";
 import {
-    useGetRegions, useRegisterManager,
+    useGetRegions, useGetWorkplaces, useRegisterDoctor, useRegisterManager,
 } from "../../utils/server/server.js";
-import {transformRegionsForSelect} from "../../utils/transformRegionsForSelect.js";
+import {transformRegionsForSelect, transformWorkplacesForSelect} from "../../utils/transformRegionsForSelect.js";
 import {MiniTitleSmall, Title} from "../../root/style.js";
 import Button from "../../components/Generic/Button/Button.jsx";
 import {formatPhoneNumberForBackend} from "../../utils/phoneFormatterForBackend.js";
 import GenericDatePicker from "../../components/Generic/GenericCalendar/GenericCalendar.jsx";
 import {message} from "antd";
+import FieldnamesManager from "../../utils/fieldnamesManager.js";
+
 
 const AddDoctor = () => {
-    const {translate, language} = useLanguage();
-    const [showPassword, setShowPassword] = useState(false);
-    const {data: Regions, isLoading} = useGetRegions();
-    const [loading, setLoading] = useState(false);
-    const regionsTranslate = transformRegionsForSelect(Regions, language);
-
-    const mutation = useRegisterManager();
-
-    console.log(loading, "loadingloadingloadingloading");
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -47,21 +40,44 @@ const AddDoctor = () => {
         temporaryPassword: "",
         isAdmin: false,
         birthDate: "",
+        fieldname: ""
     });
+    const {translate, language} = useLanguage();
+    const [showPassword, setShowPassword] = useState(false);
+    const {data: Regions, isLoading} = useGetRegions();
+    const {data: Workpalces, isLoadingWorkPlaces} = useGetWorkplaces(
+        {
+            regionId: formData.region || null,
+            districtId: formData.district || null,
+        }
+    );
+
+    const specializations = FieldnamesManager();
+
+
+    const [loading, setLoading] = useState(false);
+    const regionsTranslate = transformRegionsForSelect(Regions, language);
+    const WrkPlc = transformWorkplacesForSelect(Workpalces);
+
+
+    const mutation = useRegisterDoctor();
+
+    console.log(loading, "loadingloadingloadingloading");
 
     const [tuman, setTuman] = useState([]);
 
     const nav = useNavigate();
 
     const formDataLabels = {
-        title: translate("Добавить_менеджера"),
-        download: "Загрузить базу менеджеров",
+        title: translate("Добавить_врача"),
+        download: "Загрузить_базу_врача",
         komu: "Кому",
         fullName: translate("Fullname"),
         фамилия: translate("фамилия"),
         имя: translate("имя"),
         Отчество: translate("Отчество"),
         region: translate("Регион"),
+        workplace_spec: translate("Место_работы_и_специализация"),
         city: translate("Город"),
         district: translate("Район"),
         contactData: translate("Контактные данные менеджера"),
@@ -69,7 +85,8 @@ const AddDoctor = () => {
         email: translate("Почта"),
         phone: translate("Телефон"),
         temporaryPassword: translate("Временный_пароль"),
-        isAdmin: translate("Добавить_менеджера"),
+        isAdmin: translate("Добавить_врача"),
+        fieldname: translate("select-specializations")
     };
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -91,6 +108,11 @@ const AddDoctor = () => {
             setTuman(selectedRegion ? selectedRegion.districts : []);
         }
     };
+    const handleSelectChangeFieldname = (name, value) => {
+        setFormData({
+            ...formData, [name]: value.label,
+        });
+    };
     const handleCHangeName = (name, value) => {
         setFormData({
             ...formData, [name]: value,
@@ -102,7 +124,7 @@ const AddDoctor = () => {
     };
 
     const SendData = () => {
-        const requiredFields = ["firstName", "lastName", "middleName", "mail", "temporaryPassword", "district", "birthDate", "phone",];
+        const requiredFields = ["firstName", "lastName","temporaryPassword", "district", "birthDate", "phone","workplace","fieldname"];
 
         const missingFields = requiredFields.filter((field) => !formData[field]);
 
@@ -116,10 +138,10 @@ const AddDoctor = () => {
                 middleName: formData.middleName,
                 email: formData.mail,
                 password: formData.temporaryPassword,
-                workPlaceId: 1,
+                workPlaceId: formData.workplace,
                 districtId: formData.district,
                 birthDate: formData.birthDate,
-                fieldName: "NEUROLOGIST",
+                fieldName: formData?.fieldname || "NEUROLOGIST",
                 position: "string",
                 gender: "MALE",
                 role: "CHIEF", ...formatPhoneNumberForBackend(formData?.phone),
@@ -127,34 +149,32 @@ const AddDoctor = () => {
 
             console.log("mutation.status", mutation.status);
 
+            console.log(requestData)
+
             mutation.mutate({
                 requestData: requestData, onSuccess: () => {
-                    message.success(translate("Manager qo'shildi!"));
+                    message.success(translate("доктор_создан"));
                     setTimeout(() => {
                         setLoading(false);
-
-                        document.location.reload();
+                        // document.location.reload();
                     }, 500);
                 }, onError: () => {
                     setLoading(false);
-                    message.error(translate("Manager registratsiya qilishda xatolik"));
+                    message.error(translate("create-doctor-error"));
                 },
             });
-            console.log("mutation.status", mutation.status);
-
-            console.log("requestData", requestData);
         }
     };
 
     return (
         <Wrapper>
-            {isLoading || loading ? (<div className="loaderParent">
+            {isLoading || loading || isLoadingWorkPlaces ? (<div className="loaderParent">
                 <div className="loader"></div>
             </div>) : null}
             <Title className="titlee">
                 <div>{formDataLabels.title}</div>
                 <Button onClick={() => nav("../")} icon={<IconPlus/>}>
-                    {translate("Загрузить_базу_менеджеров")}
+                    {translate("Загрузить_базу_врача")}
                 </Button>
             </Title>
             <FormWrapper onSubmit={handleSubmit}>
@@ -206,6 +226,23 @@ const AddDoctor = () => {
                         options={tuman}
                         onlyOption={1}
                         onValueChange={(value) => handleSelectChange("district", value)}
+                    />
+
+                </Section>
+                <MiniTitleSmall>{formDataLabels.workplace_spec}</MiniTitleSmall>
+                <Section>
+                    <PrimarySelect
+                        def={formDataLabels.workplace}
+                        options={WrkPlc}
+                        onlyOption={1}
+                        onValueChange={(value) => handleSelectChange("workplace", value)}
+                    />
+
+                    <PrimarySelect
+                        def={formDataLabels.fieldname}
+                        options={specializations}
+                        onlyOption={1}
+                        onValueChange={(value) => handleSelectChangeFieldname("fieldname", value)}
                     />
                 </Section>
 

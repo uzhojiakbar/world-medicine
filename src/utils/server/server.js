@@ -512,12 +512,25 @@ export const useEnableDoctor = () => {
 };
 
 // NOTE Get managers
-export const useGetWorkplaces = () => {
+export const useGetWorkplaces = (filters = {}) => {
+
+    const cleanFilters = Object.entries(filters).reduce((acc, [key, value]) => {
+        if (value != null) {
+            // menga kelgan qiymatlarni qo'shdim (null yoki undefined bu yerda qoshilmaydi)
+            acc[key] = value;
+        }
+        return acc;
+    }, {});
+
+    const hasFilters = Object.keys(cleanFilters).length > 0;
+
     return useQuery({
-        queryKey: ["getWorkplacec"],
+        queryKey: ["getWorkplacec",cleanFilters],
         queryFn: async () => {
+            const queryParameters = new URLSearchParams(cleanFilters).toString(); // Converts the clean filters object into a query string
+            const url = `/v1/db/workplaces${hasFilters ? "?" + queryParameters : ""}`; // Ap
             try {
-                const {data} = await Instance.get("/v1/auth/workplaces");
+                const {data} = await Instance.get(url);
                 return data;
             } catch (error) {
                 console.error("Error fetching data", error);
@@ -858,6 +871,25 @@ export const useRegisterManager = () => {
     });
 };
 
+// NOTE ADD MANAGER
+export const useRegisterDoctor = () => {
+    return useMutation({
+        mutationFn: async (medagentdata) => {
+            console.log("DoctorData", medagentdata);
+            const response = await Instance.post(
+                "/v1/user/register-doctor",
+                medagentdata?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess();
+        },
+        onError: (error, variables) => {
+            variables.onError();
+        },
+    });
+};
 // NOTE ADD MedAgent
 export const useRegisterMedAgent = () => {
     return useMutation({

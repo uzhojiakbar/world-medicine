@@ -287,7 +287,10 @@ const AddMeneger = () => {
             </IconSection>
           </InputWraper>
         </Section>
-        <Button onClick={SendData}>{formDataLabels.isAdmin}</Button>
+        <Button
+            mw={"1000px"}
+            w={"100%"}
+            onClick={SendData}>{formDataLabels.isAdmin}</Button>
       </FormWrapper>
     </Wrapper>
   );
