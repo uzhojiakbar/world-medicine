@@ -9,8 +9,8 @@ import MainTable from "./Table";
 
 import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
-import Server, {useDeleteWorkplace, useGetWorkplacesDb} from "../../../utils/server/server";
-import {useQueryClient} from "@tanstack/react-query";
+import Server, { useDeleteWorkplace, useGetWorkplacesDb } from "../../../utils/server/server";
+import { useQueryClient } from "@tanstack/react-query";
 import RefReshIcon from "../../../assets/svg/RefreshIcon.jsx";
 
 const exportToExcel = (data) => {
@@ -33,7 +33,7 @@ function AdminMestaRabota() {
   const [loading, setLoading] = useState(false);
 
   const { data: workplaces, isLoading: isloadingWorkplaces } =
-      useGetWorkplacesDb();
+    useGetWorkplacesDb();
   const queryClient = useQueryClient();
 
 
@@ -105,7 +105,7 @@ function AdminMestaRabota() {
         <Title>{translate("Места_работы")}</Title>
         <Box>
           <Text onClick={handleRefresh} >
-           <RefReshIcon/>
+            <RefReshIcon />
             {translate("Обновить_базу")}
           </Text>
 
