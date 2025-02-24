@@ -6,10 +6,11 @@ import PurposeMedAgent from "../rolls/manager/PurposeMedAgent";
 import ReportsClient from "../rolls/manager/reportsClient";
 import Profile from "../pages/profile/admin";
 import Rahmadjon from "../Rahmadjon";
-import {MainContainer} from "../root/style";
+import { MainContainer } from "../root/style";
 import MedRepGoal from "../rolls/manager/home/MedRepGoal/ManagersGoal";
 import DoctorAddContact from "../rolls/manager/home/DoctorContract/DoctorAddContact.jsx";
 import CreateMedAgent from "../pages/createMedAgent/index.jsx";
+import ReportsManager from "../rolls/manager/reportsClient copy/index.jsx";
 
 export const RoutingManager = [
     {
@@ -18,7 +19,7 @@ export const RoutingManager = [
         path: "/",
         element: (
             <MainContainer>
-                <ManagerHome/>
+                <ManagerHome />
             </MainContainer>
         ),
         child: [],
@@ -32,7 +33,7 @@ export const RoutingManager = [
         path: "database",
         element: (
             <MainContainer>
-                <ManagerBase/>
+                <ManagerBase />
             </MainContainer>
         ),
         child: [],
@@ -46,7 +47,7 @@ export const RoutingManager = [
         path: "reports-client",
         element: (
             <MainContainer>
-                <ReportsClient/>
+                <ReportsManager />
             </MainContainer>
         ),
         child: [],
@@ -60,7 +61,7 @@ export const RoutingManager = [
         path: "goal-med-rep",
         element: (
             <MainContainer>
-                <MedRepGoal/>
+                <MedRepGoal />
             </MainContainer>
         ),
         child: [],
@@ -75,7 +76,7 @@ export const RoutingManager = [
         path: "profile",
         element: (
             <MainContainer>
-                <Profile/>
+                <Profile />
             </MainContainer>
         ),
         child: [],
@@ -89,7 +90,7 @@ export const RoutingManager = [
         path: "med-agent-create-contract",
         element: (
             <MainContainer>
-                <MedRepGoal/>
+                <MedRepGoal />
             </MainContainer>
         ),
         child: [],
@@ -102,7 +103,7 @@ export const RoutingManager = [
         path: "doctor-create-contract",
         element: (
             <MainContainer>
-                <CreateMedAgent/>
+                <CreateMedAgent />
             </MainContainer>
         ),
         child: [],
@@ -116,7 +117,7 @@ export const RoutingManager = [
         path: "add-doctor",
         element: (
             <MainContainer>
-                <AddDoctor/>
+                <AddDoctor />
             </MainContainer>
         ),
         child: [],
