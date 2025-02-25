@@ -274,8 +274,16 @@ const ProdajiTableGeneric = ({
 
 
   const thead = ['Препарат', 'Прод.', "Квота", "%", 'Таш.', 'Сам.', 'Бух.', 'Анж.', 'Фер.', 'Нам.', 'Каш.', 'Сур.', 'Джи.', 'Сыр.', 'Таш_об.', 'Хор.']
-  const itemsPerPage = 10;
+  const itemsPerPage = 10; // Har bir sahifada 10 ta element chiqaramiz
   const totalPages = Math.ceil(data?.length / itemsPerPage);
+
+// Hozirgi sahifaga tegishli ma'lumotlarni olish
+  const paginatedData = data.slice(
+      currentPage * itemsPerPage,
+      (currentPage + 1) * itemsPerPage
+  );
+
+
 
   const { translate } = useLanguage();
 
@@ -365,8 +373,8 @@ const ProdajiTableGeneric = ({
               </thead>
 
               <tbody>
-                {data?.length > 0 ? (
-                  data?.map((row, index) => {
+                {paginatedData?.length > 0 ? (
+                    paginatedData?.map((row, index) => {
                     return (
                       <tr key={row.id}>
                         {Object.keys(row)?.map((v, i) => {
