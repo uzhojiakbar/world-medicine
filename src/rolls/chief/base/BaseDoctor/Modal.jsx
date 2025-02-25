@@ -87,7 +87,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
         }
         mutationDel.mutate({
             requestData: requestData, onSuccess: () => {
-                message.success(translate("user_delete") );
+                message.success(translate("user_delete"));
                 setTimeout(() => {
                     setLoading(false);
                 }, 500);
@@ -143,7 +143,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         </ModalInnerSection>
                     </ModalBodySection>
                     <ModalBodySection>
-                        <MiniTitleSmall>{translate("Место_работы")}</MiniTitleSmall>
+                        <MiniTitleSmall>{translate("Регион")}</MiniTitleSmall>
                         <ModalInnerSection gap={"2px"}>
                             <PrimarySelect
                                 def={""}
@@ -154,6 +154,17 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                                 selectedType={"id"}
                                 onValueChange={(value) => console.log("workplace", value)}
                             />
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("data_register")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput initialValue={user?.dateOfBirth} isInput={0} inputType="text"/>
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Район")}</MiniTitleSmall>
+                        <ModalInnerSection gap={"2px"}>
                             <PrimarySelect
                                 def={""}
                                 options={districtsTranslae || []}
@@ -163,21 +174,6 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                                 className={"select-middle-border maxwidth"}
                                 onValueChange={(value) => console.log("workplace", value)}
                             />
-                            <PrimarySelect
-                                def={""}
-                                options={WorkplacesTranslate || []}
-                                selectedOptionId={user?.workplaceId}
-                                selectedType={"id"}
-                                className={"select-right-border maxwidth"}
-                                onlyOption={1}
-                                onValueChange={(value) => console.log("workplace", value)}
-                            />
-                        </ModalInnerSection>
-                    </ModalBodySection>
-                    <ModalBodySection>
-                        <MiniTitleSmall>{translate("data_register")}</MiniTitleSmall>
-                        <ModalInnerSection>
-                            <EditableInput initialValue={user?.dateOfBirth} isInput={0} inputType="text"/>
                         </ModalInnerSection>
                     </ModalBodySection>
                     <ModalBodySection>
@@ -190,6 +186,20 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                                 onSave={e =>
                                     console.log(e)
                                 }
+                            />
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Место_работы")}</MiniTitleSmall>
+                        <ModalInnerSection gap={"2px"}>
+                            <PrimarySelect
+                                def={""}
+                                options={WorkplacesTranslate || []}
+                                selectedOptionId={user?.workplaceId}
+                                selectedType={"id"}
+                                className={"select-right-border maxwidth"}
+                                onlyOption={1}
+                                onValueChange={(value) => console.log("workplace", value)}
                             />
                         </ModalInnerSection>
                     </ModalBodySection>
@@ -236,6 +246,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         </ResetPassword>
                     </ModalBodySection>
                 </ModalBodyHeader>
+
                 <ModalBodyHeader gridC={1}>
                     <ModalBodySection>
                         <MiniTitleSmall

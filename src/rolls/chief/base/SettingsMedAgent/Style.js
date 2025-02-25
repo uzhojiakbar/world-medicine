@@ -156,7 +156,7 @@ const ImgContainer = styled.div`
   gap: 10px;
 `;
 const KvotaContainer = styled.div`
-  background-color: blue;
+  background-color: #216BF4;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   color: white;
@@ -253,7 +253,7 @@ const PageContainer = styled.div`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(${({columnCount})=>columnCount?columnCount:3}, 1fr);
   gap: 20px;
 
   @media (max-width: 768px) {
@@ -264,14 +264,17 @@ const GridContainer = styled.div`
 const Card = styled.div`
   background: #f7f8fc;
   border-radius: 10px;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding: 5px 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
 
   h2 {
-    color: #007bff;
-    font-size: 2rem;
-    margin-top: 10px;
+    color: #216BF4;
+    font-size: 36px;
+    font-family: "Vela Sans GX Bold";
 
     @media (max-width: 768px) {
       font-size: 1.5rem;
@@ -279,8 +282,9 @@ const Card = styled.div`
   }
 
   p {
-    font-size: 1rem;
-    margin: 10px 0 0;
+    font-size: 16px;
+    color: black;
+    font-family: "Vela Sans GX Bold";
 
     @media (max-width: 768px) {
       font-size: 0.9rem;

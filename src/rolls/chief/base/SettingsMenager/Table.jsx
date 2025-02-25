@@ -9,7 +9,7 @@ import RightArrow from "../../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal";
 import { useLanguage } from "../../../../context/LanguageContext";
-import { useGetDistrictById } from "../../../../utils/server/server"; // Import to'g'ri qilingan
+import {useGetDistrictById, useGetUserInfo} from "../../../../utils/server/server"; // Import to'g'ri qilingan
 import Instance from "../../../../utils/Instance";
 import { DatFormatter } from "../../../../utils/DatFormatter";
 
@@ -23,18 +23,26 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [districtInfo, setDistrictInfo] = useState({});
   const { translate, language } = useLanguage();
+  const [modalOpen,setOpenModal] = useState(false);
+
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const [activeModal, setActiveModal] = useState(null);
+  const { data: user, isLoading: isUserLoading } = useGetUserInfo(activeModal ?? "");
+
 
   const openModal = (modalId) => {
     setActiveModal(modalId);
   };
 
   const closeModal = () => {
-    setActiveModal(null);
+    console.log("closeModal")
+    setOpenModal(false);
+    setTimeout(()=>{
+      setActiveModal(null);
+    },100)
   };
 
   const handleNext = () => {
@@ -82,7 +90,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
         </div>
       )}
 
-      <ModalManager isOpen={activeModal} onClose={closeModal} />
+      <ModalManager isOpen={!!modalOpen} onClose={closeModal} user={user}/>
       {/* {activeModal === 5 && <Modal5  />} */}
 
       <WhiteWrapper>
@@ -129,8 +137,10 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
 
                     <td>
                       <button
-                        onClick={() => setActiveModal(true)}
-                        className="Viewbutton"
+                          onClick={() => {
+                            setActiveModal(row?.userId);
+                            setOpenModal(true);
+                          }}                        className="Viewbutton"
                       >
                         <svg
                           width="24"

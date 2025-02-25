@@ -4,9 +4,9 @@ import ProfilePic1 from "../assets/img/profile/profile2.svg";
 import {m} from "framer-motion";
 
 export const ModalContainer = styled(Modal)`
-    width: ${({w}) => (w ? `${w} !important ` : "90vw !important")};
+    width: ${({w}) => (w ? `${w} !important ` : "70vw !important")};
     max-height: 90vh !important;
-    max-width: 1920px !important;
+    max-width: 1200px !important;
     overflow: auto;
     background: white;
 

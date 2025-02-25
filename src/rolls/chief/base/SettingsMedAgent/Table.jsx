@@ -9,9 +9,10 @@ import RightArrow from "../../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal";
 import { useLanguage } from "../../../../context/LanguageContext";
-import { useGetDistrictById } from "../../../../utils/server/server"; // Import to'g'ri qilingan
+import {useGetDistrictById, useGetUserInfo} from "../../../../utils/server/server"; // Import to'g'ri qilingan
 import Instance from "../../../../utils/Instance";
 import { DatFormatter } from "../../../../utils/DatFormatter";
+import ModalMedAgent from "./Modal";
 
 const Container = styled.div`
   position: relative;
@@ -27,10 +28,18 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const [activeModal, setActiveModal] = useState(null);
+  const [modalOpen,setOpenModal] = useState(false);
+  const { data: user, isLoading: isUserLoading } = useGetUserInfo(activeModal ?? "");
+
 
   const closeModal = () => {
-    setActiveModal(null);
+    console.log("closeModal")
+    setOpenModal(false);
+    setTimeout(()=>{
+      setActiveModal(null);
+    },100)
   };
+
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
@@ -77,7 +86,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
         </div>
       )}
 
-      <ModalManager isOpen={activeModal} onClose={closeModal} />
+      <ModalMedAgent isOpen={!!modalOpen} onClose={closeModal} user={user} />
       {/* {activeModal === 5 && <Modal5  />} */}
 
       <WhiteWrapper>
@@ -121,8 +130,10 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                     </td> */}
                     <td>
                       <button
-                        onClick={() => setActiveModal(true)}
-                        className="Viewbutton viewButtonSmall"
+                          onClick={() => {
+                            setActiveModal(row?.userId);
+                            setOpenModal(true);
+                          }}                        className="Viewbutton viewButtonSmall"
                       >
                         <svg
                           width="24"

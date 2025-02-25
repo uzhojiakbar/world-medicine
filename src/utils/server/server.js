@@ -1300,7 +1300,6 @@ export const useGetDistrcitById = (id = null) => {
     });
 };
 
-
 export const useGetWorkplacesFilter = () => {
     return useQuery({
         queryKey: ["getWorkplacec"],
@@ -1746,7 +1745,6 @@ export const useAddAdminMedAgentGoal = () => {
 
 export const useGetManagerGoalId = (id) => {
     // Filterlarni tozalash: null yoki undefined qiymatlarni olib tashlash
-
     return useQuery({
         queryKey: ["useGetManagerGoalId", id], // Cache key
         queryFn: async () => {
@@ -1843,6 +1841,28 @@ export const useDeleteUser = () => {
         },
     });
 };
+
+
+// GET STATICTS
+
+export const useGetStaticticsMedAgent = (id) => {
+    return useQuery({
+        queryKey: ["useGetStaticticsMedAgent", id], // Cache key
+        queryFn: async () => {
+            const url = `v1/med-agent/statistics/${id}`; // Append the query string to the URL
+            try {
+                const {data} = await Instance.get(url);
+                return data;
+            } catch (error) {
+                console.error("Error fetching doctors:", error);
+                throw error; // Continue throwing the error to handle it in the component
+            }
+        },
+        staleTime: 1000 * 60 * 10, // Optionally adjust the cache time as necessary
+    });
+
+};
+// NOTE ADD MedAgent
 
 
 export default Server;
