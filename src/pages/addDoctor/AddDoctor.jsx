@@ -256,7 +256,7 @@ const AddDoctor = () => {
                         placeholder={formDataLabels.email}
                     />
                     <Input2
-                        type="text"
+                        type="number"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}

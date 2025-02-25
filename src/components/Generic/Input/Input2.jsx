@@ -26,4 +26,5 @@ const Input2 = ({
     );
 };
 
+
 export default Input2;
