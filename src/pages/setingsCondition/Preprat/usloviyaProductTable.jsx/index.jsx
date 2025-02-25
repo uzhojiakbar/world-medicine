@@ -337,11 +337,39 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
     };
 
     const handleInputChange = (name, value, subKey) => {
-        setChangeRow((prevRow) => ({
-            ...prevRow,
-            [name]: subKey ? {...prevRow[name], [subKey]: value} : value,
-        }));
+        setChangeRow((prevRow) => {
+            const updatedRow = { ...prevRow };
+
+            if (subKey) {
+                let newValue = value;
+
+                // Agar "Балл" o'zgarsa, unga bog‘liq "Лимит" ham yangilansin
+                if (subKey === "Балл") {
+                    let limitValue = value * 2; // O'zgarish qoidasi (Misol uchun)
+                    updatedRow[name] = {
+                        ...(prevRow[name] || {}),
+                        [subKey]: value,
+                        "Лимит": limitValue,
+                    };
+                } else {
+                    updatedRow[name] = {
+                        ...(prevRow[name] || {}),
+                        [subKey]: value,
+                    };
+                }
+            } else {
+                updatedRow[name] = value;
+            }
+
+            return updatedRow;
+        });
     };
+
+// O‘zgarishlarni tekshirish uchun
+    useEffect(() => {
+        console.log("Yangilangan changeRow:", changeRow);
+    }, [changeRow]);
+
 
 
     const handleCancel = () => {
@@ -457,7 +485,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                                                                 <>
                                                                     <td>
                                                                         <InputWrapper
-                                                                            type="number"
+                                                                            type="text"
                                                                             name="Лимит"
                                                                             defaultValue={row[v]?.Лимит}
                                                                             onChange={(e) =>
@@ -469,7 +497,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                                                                     </td>
                                                                     <td>
                                                                         <InputWrapper
-                                                                            type="number"
+                                                                            type="text"
                                                                             name="Балл"
                                                                             defaultValue={row[v]?.Балл}
                                                                             onChange={(e) =>

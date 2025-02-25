@@ -153,6 +153,8 @@ const Server = {
                 id: 1,
                 name: "Амлипин таблетки",
                 prodaj: 200,
+                kvota: 200,
+                "%": "100%",
                 Таш: 20,
                 Сам: 15,
                 Бух: 25,
@@ -312,6 +314,8 @@ const Server = {
         }
     },
 };
+
+
 
 const fetchDistrict = async (districtId) => {
     try {
