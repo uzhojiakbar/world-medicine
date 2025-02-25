@@ -19,7 +19,7 @@ export const ContainerItem = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: 20px;
-
+    margin-bottom: 50px;
   @media (max-width: 1024px) {
     display: grid;
     grid-template-columns: repeat(3, 2fr);

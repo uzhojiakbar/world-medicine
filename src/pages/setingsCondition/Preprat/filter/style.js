@@ -6,6 +6,7 @@ export const Container = styled.div`
   font-family: Arial, sans-serif;
   background-color: #ffffff;
   border-radius: 10px;
+    margin-bottom: 50px;
 
   display: flex;
   flex-direction: column;
