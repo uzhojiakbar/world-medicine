@@ -1140,4 +1140,23 @@ export const useGetSalesData = (page) => {
     });
 };
 
+export const useDeleteUser = () => {
+    return useMutation({
+        mutationFn: async (DeleteUser) => {
+            console.log("DeleteUser", DeleteUser);
+            const response = await Instance.delete(
+                "/v1/user/"+DeleteUser?.requestData?.userId
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess();
+        },
+        onError: (error, variables) => {
+            variables.onError();
+        },
+    });
+};
+
+
 export default Server;

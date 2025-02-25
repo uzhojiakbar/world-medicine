@@ -136,6 +136,8 @@ export const MiniTitleSmall = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: ${({mgn})=>mgn?mgn:"0"};
+  
 
   > .rightBtn {
     cursor: pointer;
