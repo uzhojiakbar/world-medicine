@@ -28,7 +28,7 @@ const Table = ({title = "", data = [], isLoading = false}) => {
     const { data: user, isLoading: isUserLoading } = useGetUserInfo(activeModal ?? "");
 
 
-    const itemsPerPage = 5;
+    const itemsPerPage = 10;
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
     const closeModal = () => {

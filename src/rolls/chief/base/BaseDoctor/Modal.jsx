@@ -240,11 +240,11 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                     <ModalBodySection>
                         <MiniTitleSmall
                             mgn={"0 auto"}
-                        >{translate("Сбросить_пароль")}</MiniTitleSmall>
+                        >{translate("deleted_doctor")}</MiniTitleSmall>
                         <DeleteBtn
                             onClick={DeleteUser}
                         >
-                            {translate("get_new_pass")}
+                            {translate("delete_doctor")}
                         </DeleteBtn>
                     </ModalBodySection>
                 </ModalBodyHeader>

@@ -122,7 +122,7 @@ const BaseDoctor = () => {
       ) : null} */}
       <NavTitleSection>
         <div className="section1">
-          <TitleSpan>База врачей</TitleSpan>
+          <TitleSpan>{translate("База_врачей")}</TitleSpan>
           <InformationTitleSpan>
             {translate("Всего")} {information.all} вр
           </InformationTitleSpan>
