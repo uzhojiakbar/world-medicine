@@ -335,7 +335,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
         setEditId(row.id);
         setChangeRow(row); // Tahrirlanayotgan qatorni o'zgarish uchun saqlaymiz
     };
-    const handleInputChange = (name, value, subKey) => {
+    const handleInputChange = (name, value, ind, subKey) => {
         setChangeRow((prevRow) => {
             const updatedRow = { ...prevRow };
 
