@@ -204,7 +204,6 @@ const Login = () => {
                                     <div
                                         className={"number-login"}
                                     >
-
                                         <Input className={"countryCode"} disabled value={"+998"}
                                                placeholder={translate("+998")}/>
                                         <Input type={"number"} placeholder={translate("placeholder_username")}/>

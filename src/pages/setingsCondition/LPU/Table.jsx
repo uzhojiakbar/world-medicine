@@ -13,6 +13,7 @@ import {transformDistrictsForSelect} from "../../../utils/transformRegionsForSel
 import ModalEditLpu from "../../../rolls/admin/MestaRabota/Modal.jsx";
 import {useDeleteWorkplace, useGetWorkplacesById} from "../../../utils/server/server.js";
 import log from "eslint-plugin-react/lib/util/log.js";
+import {useQueryClient} from "@tanstack/react-query";
 
 const Container = styled.div`
     position: relative;
@@ -36,7 +37,7 @@ const InputWrapper = styled(Input)`
     }
 `;
 
-const Table = ({data = [], loading = true}) => {
+const Table = ({data = [], loading = true,refresh=()=>{}}) => {
     const [openModalId, setOpenModalId] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     //   const [data, setData] = useState([]);
@@ -45,6 +46,7 @@ const Table = ({data = [], loading = true}) => {
     const [selectedWk, setSelectedWk] = useState(null)
     const deleteLpu = useDeleteWorkplace();
     const {data: wk, isLoading: loadingWk} = useGetWorkplacesById(editId)
+    const queryClient = useQueryClient();
 
 
 
@@ -79,21 +81,21 @@ const Table = ({data = [], loading = true}) => {
             onError: (error) => {
                 console.error(translate("workplace_delete_err"), error);
                 message.error(translate("workplace_delete_err"));
-                setLoading(0);
+                refresh()
             }, onSuccess: () => {
                 message.success(translate("workplace_deleted"));
-                setLoading(0);
+                refresh()
+
             },
         });
         queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
-        setLoading(1);
     };
 
 
     return (
         <Container>
-            {loading || loadingWk? (
-                <div className="loaderParent">
+            {loading || loadingWk ? (
+                <div className="loaderWindow">
                     <div className="loader"></div>
                 </div>
             ) : ""}
@@ -170,6 +172,7 @@ const Table = ({data = [], loading = true}) => {
                                                 <button
                                                     style={{background: "transparent", padding: "0"}}
                                                     className="Viewbutton"
+                                                    onClick={()=>handleDelete(row?.id)}
                                                 >
                                                     <svg
                                                         width="24"
@@ -220,7 +223,6 @@ const Table = ({data = [], loading = true}) => {
                         </tbody>
                     </table>
                 </ResponsiveTableAdmin>
-
                 <PaginationButtonsWrapper>
                     <button onClick={handlePrevious} disabled={currentPage === 0}>
                         <LeftArrow/>

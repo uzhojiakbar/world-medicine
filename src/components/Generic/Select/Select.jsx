@@ -70,7 +70,13 @@ const PrimarySelect = ({
     const [open, setOpen] = useState(false);
     const handleValueChange = (event) => {
         const selectedValue = event.target.value;
-        const selectedOption = options.find((option) => option.value === selectedValue);
+        const selectedOption = options.find((option) =>
+            (selectedType === "value" ?
+                option.value : selectedType === "id"
+                    ?
+                    option.id : option.districtId)
+
+                    === selectedValue);
 
 
         if (onlyOption) {
@@ -109,11 +115,11 @@ const PrimarySelect = ({
                     options.map((option) => (
                         <MenuItem key={option.value}
                                   value={
-                            selectedType === "value"?
-                                option.value:selectedType === "id"
-                                    ?
-                                    option.id : option.districtId
-                        }>
+                                      selectedType === "value" ?
+                                          option.value : selectedType === "id"
+                                              ?
+                                              option.id : option.districtId
+                                  }>
                             {option.value}
                         </MenuItem>
                     ))

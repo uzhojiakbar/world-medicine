@@ -99,7 +99,7 @@ const AddDoctor = () => {
         console.log(value);
 
         setFormData({
-            ...formData, [name]: value?.id,
+            ...formData, [name]: value?.id || value?.districtId,
         });
 
         if (name === "region") {

@@ -877,6 +877,26 @@ export const useRegisterManager = () => {
         },
     });
 };
+export const useAddWorkplace = () => {
+    return useMutation({
+        mutationFn: async (wkData) => {
+            console.log("wkData", wkData);
+            const response = await Instance.post(
+                "/v1/db/workplaces/create",
+                wkData?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess();
+        },
+        onError: (error, variables) => {
+            variables.onError();
+        },
+    });
+};
+
+
 export const useResetPasswordWithoutOldPassword = () => {
     return useMutation({
         mutationFn: async (resetPassData) => {
