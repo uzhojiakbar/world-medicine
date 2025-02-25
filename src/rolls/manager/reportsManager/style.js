@@ -38,13 +38,12 @@ const ButtonWrapper = styled.div`
 
 const Item = styled.div`
   display: flex;
-  /* align-items: center;
-  justify-content: center; */
-  padding: 13px 17px;
+   align-items: center;
+  justify-content: center; 
+  padding: 17px 0;
   width: 100%;
   max-width: 100%;
   border-radius: 7px;
-
   font-size: 20px;
   font-weight: 400;
   line-height: 32px;

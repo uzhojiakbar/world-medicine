@@ -23,6 +23,7 @@ const TableStyled = styled.table`
   }
 
   .left {
+      padding-left: 10px;
     text-align: left;
   }
   th {
@@ -32,7 +33,8 @@ const TableStyled = styled.table`
 
   .isOpen {
     padding: 0 7px;
-    width: 290px;
+    width: 138px;
+      padding-right: 10px;
   }
 
   @media (max-width: 760px) {
@@ -62,7 +64,7 @@ const IsOpen = styled.div`
   justify-content: center;
   gap: 7px;
   padding: 8px 0;
-  border-radius: 3px;
+  border-radius: 4px;
   transition: all 0.3s;
     background: ${({color}) => color == "red" ? "rgba(255, 255, 255, 0.50)": "#FFF"} ;
   &:hover {
@@ -72,6 +74,7 @@ const IsOpen = styled.div`
   @media (max-width: 424px) {
     padding: 3px;
   }
+    max-width: 138px;
 `;
 
 const Button = styled.button`
@@ -140,8 +143,8 @@ const Footer = styled.div`
 
 const Item = styled.td`
   text-align: center;
-  padding: 8px;
-  color: ${({ textcolor }) => textcolor || "black"};
+  padding: 17px 20px;
+  color: ${({ color, statusParent }) => statusParent === "red" ?"white":color === "red" ? "red": "black"};
   width: 350px;
 
   @media (max-width: 760px) {
@@ -166,7 +169,6 @@ const GenericTable = ({ thead = [], tableData = [] }) => {
 
 
     return (
-
         <Wrapper>
             {loading ? (
                 <div className="loaderParent">
@@ -196,7 +198,7 @@ const GenericTable = ({ thead = [], tableData = [] }) => {
                         <TableRow key={row?.id} background={row?.statusParent}>
                             {row?.data.map((v, i) => {
                                 return (
-                                    <Item  className={i == 0 ? "left" : ""} key={i}>
+                                    <Item  className={i == 0 ? "left" : ""} key={i} color={v?.status} statusParent={row?.statusParent}>
                                         {v?.name}
                                     </Item>
                                 );

@@ -53,54 +53,75 @@ const ReportsManager = () => {
         id: 1,
         data: [
             {
-                name: "Ампициллин таб. 5/10мг №30", status: "red"
+                name: "Ампициллин таб. 5/10мг №30", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1000", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "900", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1700", status: "red"
             },
         ],
-        statusParent :"red"
+        statusParent: ""
     }, {
         id: 2,
         data: [
             {
-                name: "Ампициллин таб. 5/10мг №30", status: "red"
+                name: "Ампициллин таб. 5/10мг №30", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1000", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1000", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1000", status: ""
             },
         ],
-        statusParent :"warning"
+        statusParent: "warning"
     }, {
         id: 3,
         data: [
             {
-                name: "Ампициллин таб. 5/10мг №30", status: "red"
+                name: "Ампициллин таб. 5/10мг №30", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1000", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1000", status: ""
             },
             {
-                name: "1000", status: "red"
+                name: "1000", status: ""
             },
+
         ],
-        statusParent :""
-    },];
+        statusParent: "red"
+    },
+        {
+            id: 3,
+            data: [
+                {
+                    name: "Ампициллин таб. 5/10мг №30", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+
+            ],
+            statusParent: "done"
+        },
+    ];
 
     const [data, setData] = useState({
         prodaja: "48 000",
@@ -118,7 +139,7 @@ const ReportsManager = () => {
 
     return (<Wrapper>
         <TitleWrapper>
-            <Title>{information.title}</Title>
+            <Title size={"48px"}>{information.title}</Title>
 
         </TitleWrapper>
         <ButtonWrapper>
