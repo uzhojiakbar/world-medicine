@@ -104,3 +104,38 @@ export const ModalInnerSection = styled.div`
         line-height: normal;
     }
 `;
+
+
+export const DeleteBtn = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+
+    width: fit-content;
+    height: 55px;
+    background-color: ${({ bgcolor }) =>
+            typeof bgcolor == "string" ? bgcolor : "#fb3748"};
+    padding: 0 20px;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 600;
+    color: ${({ color }) => (color ? color : "white")};
+    border-radius: 50px;
+    margin-top: ${({mt})=>mt?mt:"0 auto"};
+    margin: ${({mt})=>mt?mt:"0 auto"};
+    cursor: pointer;
+    transition: filter 0.3s ease;
+    font-family: "Vela Sans GX SemiBold";
+    user-select: none;
+
+    &:hover {
+        filter: brightness(85%);
+    }
+
+    @media (max-width: 768px) {
+        height: 45px;
+        font-size: 12px;
+    }
+`;

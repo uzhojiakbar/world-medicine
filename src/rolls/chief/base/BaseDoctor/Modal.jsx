@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {
+    DeleteBtn,
     ModalBodyHeader,
     ModalBodySection,
     ModalContainer,
@@ -12,6 +13,7 @@ import EditableInput from "../../../../components/Generic/EditableInput/Editable
 import {useLanguage} from "../../../../context/LanguageContext.jsx";
 import ProfilePic1 from "../../../../assets/img/profile/profile2.svg";
 import {
+    useDeleteUser,
     useGetDistricts,
     useGetRegions,
     useGetUserInfo,
@@ -34,7 +36,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
     if (!user) return null; // yoki biror fallback UI chiqarish
 
 
-    const [loading,setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     console.log("user", user)
     const {translate, language} = useLanguage();
@@ -57,6 +59,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
 
 
     const mutation = useResetPasswordWithoutOldPassword();
+    const mutationDel = useDeleteUser();
 
     const ResetPasswordFunc = () => {
         setLoading(1);
@@ -66,7 +69,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
         }
         mutation.mutate({
             requestData: requestData, onSuccess: () => {
-                message.success(translate("password_reseted")+user?.number);
+                message.success(translate("password_reseted") + user?.number);
                 setTimeout(() => {
                     setLoading(false);
                 }, 500);
@@ -77,6 +80,24 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
         });
     }
 
+    const DeleteUser = () => {
+        setLoading(1);
+        const requestData = {
+            userId: user.userId
+        }
+        mutationDel.mutate({
+            requestData: requestData, onSuccess: () => {
+                message.success(translate("user_delete") );
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
+            }, onError: () => {
+                setLoading(false);
+                message.error(translate("user_delete_error"));
+            },
+        });
+        onClose()
+    }
     console.log("user", user,);
     console.log("workplaces", workplaces,);
     return (
@@ -106,7 +127,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                 footer={[]}
                 centered
             >
-                { loading ?
+                {loading ?
                     <div className="loaderWindow">
                         <div className="loader"></div>
                     </div>
@@ -209,25 +230,24 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         <ResetPassword
                             mt={"0px"}
                             ResetPassword pad={"none"}
-                            onClick={()=>ResetPasswordFunc()}
+                            onClick={() => ResetPasswordFunc()}
                         >
-                            {"Установить текущий пароль"}
+                            {translate("get_new_pass")}
                         </ResetPassword>
                     </ModalBodySection>
                 </ModalBodyHeader>
-                <ModalBodyHeader gridC={1} dataCenter={true} >
+                <ModalBodyHeader gridC={1}>
                     <ModalBodySection>
-                        <MiniTitleSmall>{translate("Сбросить_пароль")}</MiniTitleSmall>
-                        <ResetPassword
-                            mt={"0px"}
-                            ResetPassword pad={"none"}
-                            onClick={()=>ResetPasswordFunc()}
+                        <MiniTitleSmall
+                            mgn={"0 auto"}
+                        >{translate("Сбросить_пароль")}</MiniTitleSmall>
+                        <DeleteBtn
+                            onClick={DeleteUser}
                         >
-                            {"Установить текущий пароль"}
-                        </ResetPassword>
+                            {translate("get_new_pass")}
+                        </DeleteBtn>
                     </ModalBodySection>
                 </ModalBodyHeader>
-
             </ModalContainer>
     );
 };
