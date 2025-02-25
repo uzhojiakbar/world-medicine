@@ -3,6 +3,7 @@ import { useState } from "react";
 import PenIcon from "../../../assets/svg/penIcon";
 import { Input } from "antd";
 import UsloviyaModal from "./Modal/Modal.jsx";
+import log from "eslint-plugin-react/lib/util/log.js";
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ const TableStyled = styled.table`
 const TableRow = styled.tr`
   height: 60px;
   border-radius: 27px;
-  background-color: ${({ background }) => background || "#F7F8FC"};
+  background-color: ${({ background }) => console.log(background) || background === "warning" ? "#FFDB43": background === "red"? "#FB3748" : "#F7F8FC"};
 `;
 
 const IsOpen = styled.div`
@@ -62,14 +63,11 @@ const IsOpen = styled.div`
   gap: 7px;
   padding: 8px 0;
   border-radius: 3px;
-  background-color: white;
-  transition: all 0.1s; 
-
+  transition: all 0.3s;
+    background: ${({color}) => color == "red" ? "rgba(255, 255, 255, 0.50)": "#FFF"} ;
   &:hover {
-  background-color: ${({ color, btn }) => !btn && (color || "#efefef")};
-
+    background: ${({color}) => color == "red" ? "rgb(255,171,171)": "#eaeaea"};
     cursor: ${({ btn }) => !btn && "pointer"};
-    opacity: ${({ btn }) => !btn && "0.90"};
   }
   @media (max-width: 424px) {
     padding: 3px;
@@ -158,24 +156,6 @@ const Item = styled.td`
   }
 `;
 
-const ChangeInput = styled(Input)`
-  background-color: white;
-  border-radius: 10px;
-  display: inline-block;
-  height: 40px;
-  border: none !important;
-
-  width: 100%;
-  font-size: 16px;
-
-  @media (max-width: 760px) {
-    font-size: 14px;
-  }
-  @media (max-width: 424px) {
-    font-size: 10px;
-  }
-`;
-
 const GenericTable = ({ thead = [], tableData = [] }) => {
     console.log(tableData, "table data")
     const [openModalId, setOpenModalId] = useState(false);
@@ -211,8 +191,9 @@ const GenericTable = ({ thead = [], tableData = [] }) => {
                 <UsloviyaModal setId={setOpenModalId} id={openModalId} thead={["Препараты", "Выписано", "Дозволено", "Продано"]}
                                data={tableData?.data} />
                 {tableData?.map((row) => {
+
                     return (
-                        <TableRow key={row?.id} background={row?.status}>
+                        <TableRow key={row?.id} background={row?.statusParent}>
                             {row?.data.map((v, i) => {
                                 return (
                                     <Item  className={i == 0 ? "left" : ""} key={i}>

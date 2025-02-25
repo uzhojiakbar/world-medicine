@@ -65,7 +65,7 @@ const ReportsManager = () => {
                 name: "1000", status: "red"
             },
         ],
-        statusParent :"warning"
+        statusParent :"red"
     }, {
         id: 2,
         data: [
@@ -99,7 +99,7 @@ const ReportsManager = () => {
                 name: "1000", status: "red"
             },
         ],
-        statusParent :"warning"
+        statusParent :""
     },];
 
     const [data, setData] = useState({
