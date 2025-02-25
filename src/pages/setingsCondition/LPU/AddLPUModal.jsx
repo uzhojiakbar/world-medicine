@@ -33,6 +33,10 @@ const AddLpu = ({open, setOpen}) => {
         regionId: formData?.region || null, districtId: formData?.district || null,
     });
 
+
+    console.log(Regions)
+    console.log(Districts)
+
     const translateRegions = transformRegionsForSelect(Regions, language)
     const translateDIstricts = transformDistrictsForSelect(Districts, language)
     const translateInsitution = TransformInsitutation(medicalInstitutionType, language, translate)
@@ -54,6 +58,7 @@ const AddLpu = ({open, setOpen}) => {
 
     const handleChange = (e) => {
         const {name, value} = e.target;
+
         console.log(name, value)
         setFormData({
             ...formData, [name]: value,
