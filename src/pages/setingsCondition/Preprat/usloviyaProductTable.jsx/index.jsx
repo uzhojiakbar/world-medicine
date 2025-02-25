@@ -335,7 +335,6 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
         setEditId(row.id);
         setChangeRow(row); // Tahrirlanayotgan qatorni o'zgarish uchun saqlaymiz
     };
-
     const handleInputChange = (name, value, subKey) => {
         setChangeRow((prevRow) => {
             const updatedRow = { ...prevRow };
@@ -344,7 +343,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                 let newValue = value;
 
                 // Agar "Балл" o'zgarsa, unga bog‘liq "Лимит" ham yangilansin
-                if (subKey === "Балл") {
+                if (subKey == "Балл") {
                     let limitValue = value * 2; // O'zgarish qoidasi (Misol uchun)
                     updatedRow[name] = {
                         ...(prevRow[name] || {}),

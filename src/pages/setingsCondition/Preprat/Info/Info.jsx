@@ -28,7 +28,7 @@ const EditableInfo = ({ label, value, onSave }) => {
             <div style={{ display: "flex", height: "40px", alignItems: "center", gap: "10px" }}>
               <Input
                   value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
+                  onChange={(value) => setEditValue(value)}
                   height={"40px"}
                   autoFocus
                   bgColor={"white"}
