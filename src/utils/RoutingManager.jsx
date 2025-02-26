@@ -1,6 +1,6 @@
 import ManagerBase from "../rolls/manager/base/ManagerBase";
 import ManagerHome from "../rolls/manager";
-import AddDoctor from "../rolls/manager/addDoctor/AddDoctor";
+import AddDoctor from "../pages/addDoctor/AddDoctor.jsx";
 import CreateDogovorMain from "../rolls/manager/createDogovor";
 import PurposeMedAgent from "../rolls/manager/PurposeMedAgent";
 import ReportsClient from "../rolls/manager/reportsClient";
@@ -118,6 +118,19 @@ export const RoutingManager = [
         element: (
             <MainContainer>
                 <AddDoctor/>
+            </MainContainer>
+        ),
+        child: [],
+        visible: false,
+        onlyAdmin: false,
+        icon: false,
+    },{
+        id: 10,
+        title: "Добавить_менеджера",
+        path: "create-doctor",
+        element: (
+            <MainContainer>
+                <AddDoctor />
             </MainContainer>
         ),
         child: [],

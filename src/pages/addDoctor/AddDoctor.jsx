@@ -53,12 +53,9 @@ const AddDoctor = () => {
     );
 
     const specializations = FieldnamesManager();
-
-
     const [loading, setLoading] = useState(false);
     const regionsTranslate = transformRegionsForSelect(Regions, language);
     const WrkPlc = transformWorkplacesForSelect(Workpalces);
-
 
     const mutation = useRegisterDoctor();
 
