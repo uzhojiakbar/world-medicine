@@ -6,6 +6,7 @@ import {
 import GenericTable from "./GenericTableUsloviyaSetting";
 import {useLanguage} from "../../../context/LanguageContext";
 import {Button, Input} from "antd";
+import {useGetDrugsWithReports} from "../../../utils/server/server.js";
 
 const EditableInfo = ({label, value, onSave}) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -36,6 +37,9 @@ const ReportsManager = () => {
     const {translate} = useLanguage();
 
     const [activeTab, setActiveTab] = useState("Рецепт");
+    const {data: drugsData, isLoading: IsLoadingDrugsData} = useGetDrugsWithReports();
+
+    console.log("drugsData", drugsData);
 
 
     const information = {
@@ -49,59 +53,62 @@ const ReportsManager = () => {
             percent: "11%",
         },
     };
-    const tableData = [{
-        id: 1,
-        data: [
-            {
-                name: "Ампициллин таб. 5/10мг №30", status: ""
-            },
-            {
-                name: "1000", status: ""
-            },
-            {
-                name: "900", status: ""
-            },
-            {
-                name: "1700", status: "red"
-            },
-        ],
-        statusParent: ""
-    }, {
-        id: 2,
-        data: [
-            {
-                name: "Ампициллин таб. 5/10мг №30", status: ""
-            },
-            {
-                name: "1000", status: ""
-            },
-            {
-                name: "1000", status: ""
-            },
-            {
-                name: "1000", status: ""
-            },
-        ],
-        statusParent: "warning"
-    }, {
-        id: 3,
-        data: [
-            {
-                name: "Ампициллин таб. 5/10мг №30", status: ""
-            },
-            {
-                name: "1000", status: ""
-            },
-            {
-                name: "1000", status: ""
-            },
-            {
-                name: "1000", status: ""
-            },
+    const tableData = [
+        {
+            id: 1,
+            data: [
+                {
+                    name: "Ампициллин таб. 5/10мг №30", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+                {
+                    name: "900", status: ""
+                },
+                {
+                    name: "1700", status: "red"
+                },
+            ],
+            statusParent: ""
+        },
+        {
+            id: 2,
+            data: [
+                {
+                    name: "Ампициллин таб. 5/10мг №30", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+            ],
+            statusParent: "warning"
+        },
+        {
+            id: 3,
+            data: [
+                {
+                    name: "Ампициллин таб. 5/10мг №30", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
+                {
+                    name: "1000", status: ""
+                },
 
-        ],
-        statusParent: "red"
-    },
+            ],
+            statusParent: "red"
+        },
         {
             id: 3,
             data: [
@@ -177,9 +184,17 @@ const ReportsManager = () => {
 
         </InfoPage>
         <TableWrapper>
+            {
+                IsLoadingDrugsData ?
+                    <div className="loaderParent">
+                        <div className="loader"></div>
+                    </div>
+                    :
+                    ""
+            }
             <GenericTable
                 thead={["Препараты", "Выписано", "Дозволено", "Продано"]}
-                tableData={tableData}
+                tableData={drugsData}
             />
         </TableWrapper>
     </Wrapper>);

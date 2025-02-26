@@ -94,6 +94,20 @@ body {
     z-index: 9999999999999999999 !important;
 }
 
+.loaderFixed{
+    width: 100vw;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: 0.2s;
+}
 .relative {
     position: relative;
 }

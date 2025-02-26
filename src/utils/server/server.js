@@ -1144,6 +1144,95 @@ export const useGetDrugs = () => {
     });
 };
 
+export const useGetDrugsWithReports = () => {
+    return useQuery({
+        queryKey: ["DrugsWithReports"],
+        queryFn: async () => {
+            try {
+                // Dorilarni olish
+                const {data: medicines} = await Instance.get(`/v1/db/medicines`);
+
+                if (!medicines || !Array.isArray(medicines)) {
+                    throw new Error("Invalid medicines data");
+                }
+
+                console.log("medicines", medicines);
+
+                // Har bir dorining ID sini ishlatib report ma'lumotlarini olish
+                const reports = await Promise.all(
+                    medicines.map(async (medicine) => {
+                        const {data: report} = await Instance.get(`/v1/report/${medicine.id}`);
+
+                        return {
+                            id: medicine.id,
+                            data: [
+                                {name: `${medicine.name}. ${medicine.prescription} ${medicine.volume}`, status: ""},
+                                {name: report.written.toString(), status: ""},
+                                {name: report.allowed.toString(), status: ""},
+                                {
+                                    name: report.writtenInFact.toString(),
+                                    status: getStatus(report.written, report.allowed, report.writtenInFact)
+                                },
+                            ],
+                            statusParent: getStatusParent(report.written, report.allowed, report.writtenInFact)
+                        };
+                    })
+                );
+
+                return reports;
+            } catch (error) {
+                console.error("Error fetching drug reports", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
+export const useGetDTOForReports = (id) => {
+    return useQuery({
+        queryKey: ["useGetDTOForReports", id],
+        queryFn: async () => {
+            try {
+                if (!id) {
+                    return null
+                }
+                console.log("ID3", id)
+                const {data: report} = await Instance.get(`/v1/report/${id}`);
+                console.log("ID4", report)
+                return report;
+            } catch (error) {
+                console.log("ID5", id)
+                console.error("Error fetching drug reports", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+}
+
+// `status` maydonini hisoblash uchun funksiya
+const getStatus = (written, allowed, writtenInFact) => {
+    if (written > allowed * 1.3) {
+        return "red"; // 30% dan ko'p bo‘lsa qizil
+    }
+    if (written > allowed) {
+        return "warning"; // Written allowed dan ko‘p lekin 30% oshmagan bo‘lsa sariq
+    }
+    return "";
+};
+
+// `statusParent` maydonini hisoblash uchun funksiya
+const getStatusParent = (written, allowed, writtenInFact) => {
+    if (writtenInFact > allowed * 1.5) {
+        return "red"; // 50% dan ko‘p bo‘lsa qizil
+    }
+    if (writtenInFact > allowed * 1.3) {
+        return "warning"; // 30% dan ko‘p lekin 50% dan kam bo‘lsa sariq
+    }
+    return "done";
+};
+
 export const useDeleteDrug = () => {
     const queryClient = useQueryClient();
 
