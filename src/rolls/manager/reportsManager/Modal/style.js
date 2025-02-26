@@ -126,6 +126,9 @@ const TableRow = styled.tr`
   &:hover {
     filter: brightness(85%);
   }
+  .edit {
+    max-width: 135px;    
+  }
 `;
 
 const CloseButton = styled.button`
@@ -177,6 +180,41 @@ const Title = styled.div`
   width: 339px;
 `;
 
+const ChangeRow = styled.div`
+ background-color: white;
+  max-width: 120px;
+  padding: 7px;
+  border-radius: 8px;
+  position: relative;
+`
+const IconChange = styled.div`
+    position: absolute;
+  right: 5px;
+  top: 0;
+  cursor: pointer;
+  
+;
+`;
+
+
+const InputWrapper = styled.input`
+    position: relative;
+    display: inline-block;
+    border: none !important;
+
+    width: 100%;
+  padding: 10px;
+  padding-right: 20px;
+    font-size: 12px;
+    font-family: "Vela Sans GX";
+    outline: none;
+    &::placeholder {
+        text-transform: capitalize;
+    }
+`;
+const Wrapp = styled.div`
+    position: relative;
+`
 export {
   ModalOverlay,
   ModalContainer,
@@ -189,4 +227,8 @@ export {
   CloseButton,
   Item,
   Title,
+  ChangeRow,
+  IconChange,
+  InputWrapper,
+  Wrapp
 };

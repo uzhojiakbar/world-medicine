@@ -10,7 +10,11 @@ import {
     TableRow,
     CloseButton,
     Item,
-    Title
+    Title,
+    ChangeRow,
+    IconChange,
+    InputWrapper,
+    Wrapp
 } from "./style"
 import PrimarySelect from "../../../../components/Generic/Select/Select"
 import {useLanguage} from "../../../../context/LanguageContext";
@@ -62,6 +66,7 @@ const UsloviyaModal = ({
 
     const {translate} = useLanguage();
     const [filterData, setFilterData] = useState({})
+    const [change, setChange] = useState(false)
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -78,11 +83,10 @@ const UsloviyaModal = ({
             ...filterData,
             [name]: value, // select uchun tanlangan qiymatni saqlash
         }));
-
-
     };
-    console.log(filterData);
-
+    const handleVipasanoChange = (name, value) => {
+        setChange({...change, [name]: value})
+    }
 
     return (
         <ModalOverlay open={id}
@@ -183,10 +187,43 @@ const UsloviyaModal = ({
                                         {formatPhoneNumber(998+row?.doctor?.number)} {" "}
                                     </Item>
                                     <Item>
-                                        {(row?.written)} {" "}
+                                        40
+                                    </Item>
+                                    <Item className={"edit"}>
+                                        {change!== row?.contractDTO?.id?
+
+                                        <ChangeRow>
+                                            1
+                                            <IconChange >
+                                                    <div onClick={() => setChange(row?.contractDTO?.id)}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 12 12" fill="none">
+                                                    <path opacity="0.5" d="M10.4243 4.35653C11.1922 3.58868 11.1922 2.34374 10.4243 1.57589C9.6565 0.808036 8.41155 0.808036 7.6437 1.57589L7.2002 2.01941C7.20625 2.03775 7.21255 2.05634 7.2191 2.07518C7.38165 2.54375 7.6884 3.15801 8.2654 3.73501C8.8424 4.31202 9.45665 4.61875 9.92525 4.78131C9.944 4.78782 9.9625 4.79409 9.98075 4.80013L10.4243 4.35653Z" fill="black"/>
+                                                    <path d="M7.2193 2L7.2002 2.01909C7.20625 2.03743 7.21255 2.05603 7.2191 2.07487C7.38165 2.54344 7.6884 3.15769 8.2654 3.7347C8.8424 4.31171 9.45665 4.61843 9.92525 4.78099C9.9438 4.78744 9.96215 4.79366 9.9803 4.79966L5.70005 9.0799C5.4115 9.36845 5.26715 9.51275 5.1081 9.63685C4.92041 9.78325 4.71734 9.90875 4.50249 10.0112C4.32035 10.0979 4.12675 10.1624 3.73959 10.2915L1.69792 10.9721C1.50739 11.0356 1.29733 10.986 1.15531 10.844C1.0133 10.702 0.963715 10.4919 1.02722 10.3014L1.70778 8.2597C1.83684 7.87255 1.90136 7.67895 1.98817 7.4968C2.09057 7.28195 2.21606 7.0789 2.36245 6.8912C2.48653 6.73215 2.63082 6.58785 2.91937 6.2993L7.2193 2Z" fill="black"/>
+                                                 </svg>
+                                                    </div >
+                                            </IconChange>
+
+
+                                        </ChangeRow>
+                                            :
+                                            <Wrapp>
+
+                                                <InputWrapper type="text" defaultValue={"1"}  />
+                                                <IconChange >
+
+                                            <div onClick={() => setChange(0)}>
+                                                <i style={{"color": "#216BF4", fontSize: "12px"}} className="fa-solid fa-floppy-disk"></i>
+                                            </div>
+                                                </IconChange>
+
+                                            </Wrapp>
+
+                                        }
                                     </Item>
                                     <Item>
-                                        {(row?.contractDTO?.medicinesWithQuantities[0]?.correction)} {" "}
+
+                                        0%
+
                                     </Item>
                                 </TableRow>
                         );
