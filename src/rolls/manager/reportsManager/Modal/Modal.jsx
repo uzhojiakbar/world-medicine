@@ -54,7 +54,7 @@ const tableData = [
 
 const UsloviyaModal = ({
                            onclose = () => {
-                           }, id = {}, thead = [], data = []
+                           }, id = 0, thead = [], data = []
                        }) => {
     if (data.length) {
         data = tableData
