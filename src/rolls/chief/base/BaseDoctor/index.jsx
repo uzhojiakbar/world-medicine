@@ -183,11 +183,11 @@ const BaseDoctor = ({FilterHide, title}) => {
                             onValueChange={(value) => setSelectedTuman(value.districtId)}
                             onlyOption={1}
                         />
-                        <PrimarySelect
-                            def={translate("Категория")}
-                            options={MestaRabot[selectedTuman] || []}
-                            onValueChange={setSelectedMestaRabot}
-                        />
+                        {/*<PrimarySelect*/}
+                        {/*    def={translate("Категория")}*/}
+                        {/*    options={MestaRabot[selectedTuman] || []}*/}
+                        {/*    onValueChange={setSelectedMestaRabot}*/}
+                        {/*/>*/}
                         <PrimarySelect
                             def="Специальность"
                             options={specializations}

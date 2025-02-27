@@ -1019,21 +1019,20 @@ export const useGetNewContract = (page) => {
         queryKey: ["newContract", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
         queryFn: async () => {
             try {
-                // const data = await Instance.get(
-                //   `v1/admin/contracts/pending-review?page=${page}&size=10`
-                // );
-                // const data = {};
+                const data = await Instance.get(
+                    `/v1/admin/doctor/contracts/pending-review?page=${page}&size=10`
+                );
 
-                // const content = await Promise.all(
-                //   data?.data?.content?.map(async (doctor) => {
-                //     const districtInfo = await fetchDistrict(doctor?.districtId);
-                //     const fetchRegionInfo = await fetchRegion(districtInfo?.regionId);
+                const content = await Promise.all(
+                    data?.data?.content.map(async (doctor) => {
+                        const districtInfo = await fetchDistrict(doctor?.districtId);
+                        const fetchRegionInfo = await fetchRegion(districtInfo?.regionId);
 
-                //     return { ...doctor, districtInfo, regioninfo: fetchRegionInfo }; // Region nomini doctorga qo'shamiz
-                //   })
-                // );
+                        return {...doctor, districtInfo, regioninfo: fetchRegionInfo}; // Region nomini doctorga qo'shamiz
+                    })
+                );
 
-                return {};
+                return {...data?.data, content: content};
             } catch (error) {
                 console.error("Error fetching data", error);
                 throw error; // xatolikni qaytarish

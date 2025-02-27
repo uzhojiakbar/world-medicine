@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import styled from "styled-components";
-import { TitleSmall, WhiteWrapper } from "../../../root/style";
+import { TitleSmall, WhiteWrapper } from "../../../root/style.js";
 import {
   PaginationButtonsWrapper,
   ResponsiveTableAdmin,
-} from "../../../components/ResizeTable/ResizeTableAdmin/style";
-import { formatPhoneNumber } from "../../../utils/PhoneFormatter";
-import LeftArrow from "../../../assets/svg/LeftArrow";
-import RightArrow from "../../../assets/svg/RightArrow";
-import CancelIcon from "../../../assets/svg/CancelIcon";
-import ReceptIcon from "../../../assets/svg/ReceptIcon";
-import { useLanguage } from "../../../context/LanguageContext";
-import { useGetNewConnecting } from "../../../utils/server/server";
-import Instance from "../../../utils/Instance";
+} from "../../../components/ResizeTable/ResizeTableAdmin/style.js";
+import { formatPhoneNumber } from "../../../utils/PhoneFormatter.js";
+import LeftArrow from "../../../assets/svg/LeftArrow.jsx";
+import RightArrow from "../../../assets/svg/RightArrow.jsx";
+import CancelIcon from "../../../assets/svg/CancelIcon.jsx";
+import ReceptIcon from "../../../assets/svg/ReceptIcon.jsx";
+import { useLanguage } from "../../../context/LanguageContext.jsx";
+import { useGetNewConnecting } from "../../../utils/server/server.js";
+import Instance from "../../../utils/Instance.js";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Container = styled.div`
@@ -21,7 +21,7 @@ const Container = styled.div`
   transition: all 0.2s ease-in-out;
 `;
 
-const NewConnect = ({ title = "" }) => {
+const NewContract = ({ title = "" }) => {
   const { translate } = useLanguage();
   const [currentPage, setCurrentPage] = useState(0);
   const { data, isLoading } = useGetNewConnecting(currentPage);
@@ -173,4 +173,4 @@ const NewConnect = ({ title = "" }) => {
   );
 };
 
-export default NewConnect;
+export default NewContract;

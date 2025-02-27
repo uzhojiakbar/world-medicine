@@ -1,67 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Reports from "./Reports";
 import FilterAnaliktika from "./Filter/Filter";
-import { css } from "@emotion/react";
-import { Wrapper } from "./Reports/style";
+import {css} from "@emotion/react";
+import {Wrapper} from "./Reports/style";
 import NewConnect from "../../../../pages/admin/settingSystemAdmin/NewConnect";
 import NewContract from "../../../../pages/NewContract";
-import { useLanguage } from "../../../../context/LanguageContext";
+import {useLanguage} from "../../../../context/LanguageContext";
 import SettingsMenager from "../SettingsMenager/SettingsMenager";
 import SettingsMedAgent from "../SettingsMedAgent/SettingsMedAgent";
 import DisabledPage from "../../../../components/DisabledPage/index.jsx";
 // import SettingsMenager from "../../../../pages/SettingsMenager/SettingsMenager";
 
 const BaseControl = () => {
-  const { translate } = useLanguage();
+    const {translate} = useLanguage();
 
-  const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    const hash = window.location.hash;
+    useEffect(() => {
+        const hash = window.location.hash;
 
-    if (hash) {
-      const element = document.querySelector(hash);
-      if (element) {
-        const topOffset = 200; // 150px yuqoriga
-        const elementPosition = element.getBoundingClientRect().top; // Element joylashuvi
-        const offsetPosition = elementPosition + window.pageYOffset - topOffset;
+        if (hash) {
+            const element = document.querySelector(hash);
+            if (element) {
+                const topOffset = 200; // 150px yuqoriga
+                const elementPosition = element.getBoundingClientRect().top; // Element joylashuvi
+                const offsetPosition = elementPosition + window.pageYOffset - topOffset;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth", // Animatsiyali skroll
-        });
-      }
-    }
-  }, []); // Faqat komponent birinchi marta render bo'lganda chaqiriladi
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth", // Animatsiyali skroll
+                });
+            }
+        }
+    }, []); // Faqat komponent birinchi marta render bo'lganda chaqiriladi
 
-  return (
-    <Wrapper
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: 50px;
-      `}
-    >
-      <FilterAnaliktika />
+    return (
+        <Wrapper
+            className={css`
+                display: flex;
+                flex-direction: column;
+                gap: 50px;
+            `}
+        >
+            <FilterAnaliktika/>
 
-      <div className="relative">
 
-      <NewConnect
-        title={translate("new_connect")}
-        data={posts || []}
-        loading={false}
-      />
-      </div>
-
-      <NewContract
-        title={translate("Новые договора")}
-        data={posts || []}
-        loading={false}
-      />
-      <SettingsMenager />
-      <SettingsMedAgent />
-    </Wrapper>
-  );
+            <div className="relative">
+                <NewContract
+                    title={translate("Новые_подкл_договора")}
+                    data={posts || []}
+                    loading={false}
+                />
+            </div>
+            <SettingsMenager/>
+            <SettingsMedAgent/>
+        </Wrapper>
+    );
 };
 
 export default BaseControl;
