@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from "react";
-import {
-  MiniTitleSmall,
-  TitleSmall,
-  WhiteWrapper,
-} from "../../../root/style.js";
+import { TitleSmall, WhiteWrapper } from "../../../root/style";
 import {
   PaginationButtonsWrapper,
   ResponsiveTableAdmin,
-} from "../../../components/ResizeTable/ResizeTableAdmin/style.js";
-import LeftArrow from "../../../assets/svg/LeftArrow.jsx";
-import RightArrow from "../../../assets/svg/RightArrow.jsx";
+} from "../../../components/ResizeTable/ResizeTableAdmin/style";
+import LeftArrow from "../../../assets/svg/LeftArrow";
+import RightArrow from "../../../assets/svg/RightArrow";
 import styled from "styled-components";
-import ModalManager from "./Modal.jsx";
-import { useLanguage } from "../../../context/LanguageContext.jsx";
-import Server from "../../../utils/server/server.js";
-import Input from "../../../components/Generic/Input/Input.jsx"; // Import your Input component
+import ModalManager from "./Modal";
+import { useLanguage } from "../../../context/LanguageContext";
+import Server from "../../../utils/server/server";
 
 const Container = styled.div`
   position: relative;
+
   transition: all 0.2s ease-in-out;
 `;
 
-const Table = ({
-  data = [],
+const Table = ({ data = [],
   loading = true,
   setLoading = () => { },
-  title = "",
-}) => {
+  title = "", }) => {
   const [openModalId, setOpenModalId] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   //   const [data, setData] = useState([]);
@@ -78,16 +72,19 @@ const Table = ({
 
   return (
     <Container>
-      {loading && (
+      {loading ? (
         <div className="loaderParent">
-          <div className="loader"></div>
+          <div class="loader"></div>
         </div>
+      ) : (
+        ""
       )}
 
-      <ModalManager id={openModalId} setId={setOpenModalId} />
+      {openModalId && <ModalManager isOpen={openModalId} onClose={setOpenModalId} />}
+
       <WhiteWrapper>
-        <TitleSmall>{title}</TitleSmall>
-          <ResponsiveTableAdmin>
+        <ResponsiveTableAdmin>
+          <table>
             <thead>
               <tr>
                 <th className="idfixed">{translate("Препарат")}</th>
@@ -125,14 +122,15 @@ const Table = ({
                 </tr>
               )}
             </tbody>
-          </ResponsiveTableAdmin>
+          </table>
+        </ResponsiveTableAdmin>
 
         <PaginationButtonsWrapper>
           <button onClick={handlePrevious} disabled={currentPage === 0}>
             <LeftArrow />
           </button>
           <span>
-            {currentPage + 1} {translate("from")} {totalPages}
+            {currentPage + 1} {translate("from")} {""} {totalPages}
           </span>
           <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
             <RightArrow />

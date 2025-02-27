@@ -1,10 +1,10 @@
 import { Modal } from "antd";
 import styled from "styled-components";
 import ProfilePic1 from "../assets/img/profile/profile2.svg";
-import {m} from "framer-motion";
+import { m } from "framer-motion";
 
 export const ModalContainer = styled(Modal)`
-    width: ${({w}) => (w ? `${w} !important ` : "70vw !important")};
+    width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
     max-height: 90vh !important;
     max-width: 1200px !important;
     overflow: auto;
@@ -47,12 +47,12 @@ export const ModalBodyHeader = styled.div`
     display: grid;
     gap: 20px 10px;
     
-    margin-top: ${({m})=>m?m:"10px"};
-    margin-bottom: ${({mb})=>mb?mb:"0"};
-    grid-template-columns: repeat(${({gridC})=>gridC?gridC:2}, 1fr);
+    margin-top: ${({ m }) => m ? m : "10px"};
+    margin-bottom: ${({ mb }) => mb ? mb : "0"};
+    grid-template-columns: repeat(${({ gridC }) => gridC ? gridC : 2}, 1fr);
     
     @media (max-width: 1440px) {
-        grid-template-columns: repeat(${({gridC})=>gridC?gridC:1}, 1fr);        
+        grid-template-columns: repeat(${({ gridC }) => gridC ? gridC : 1}, 1fr);        
     }
 `;
 
@@ -92,7 +92,7 @@ export const ModalInnerSection = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: ${({gap}) => gap ? gap : "10px"};
+    gap: ${({ gap }) => gap ? gap : "10px"};
     
 
     > .fio {
@@ -116,15 +116,15 @@ export const DeleteBtn = styled.div`
     width: fit-content;
     height: 55px;
     background-color: ${({ bgcolor }) =>
-            typeof bgcolor == "string" ? bgcolor : "#fb3748"};
+    typeof bgcolor == "string" ? bgcolor : "#fb3748"};
     padding: 0 20px;
     font-size: 14px;
     line-height: 21px;
     font-weight: 600;
     color: ${({ color }) => (color ? color : "white")};
     border-radius: 50px;
-    margin-top: ${({mt})=>mt?mt:"0 auto"};
-    margin: ${({mt})=>mt?mt:"0 auto"};
+    margin-top: ${({ mt }) => mt ? mt : "0 auto"};
+    margin: ${({ mt }) => mt ? mt : "0 auto"};
     cursor: pointer;
     transition: filter 0.3s ease;
     font-family: "Vela Sans GX SemiBold";

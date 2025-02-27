@@ -60,7 +60,7 @@ const Table = ({ title = "" }) => {
   );
 
   const { translate } = useLanguage();
-
+  console.log(currentData)
   return (
     <Container>
       {loading ? (
@@ -71,7 +71,7 @@ const Table = ({ title = "" }) => {
         ""
       )}
 
-      <ModalManager id={openModalId} setId={setOpenModalId} />
+      {openModalId && <ModalManager isOpen={openModalId} onClose={setOpenModalId} />}
 
       <WhiteWrapper>
         <ResponsiveTableAdmin>
@@ -93,17 +93,17 @@ const Table = ({ title = "" }) => {
               {currentData.length > 0 ? (
                 currentData.map((row) => (
                   <tr key={row?.id}>
-                    <td>№{row?.No}</td>
-                    <td className="idfixed">{row?.name}</td>
-                    <td>{row?.oltimish}</td>
-                    <td>{row?.yetmish_toqson}</td>
+                    <td>№{row?.id}</td>
+                    <td className="idfixed">{row?.Препарат}</td>
+                    <td>{row?.Квота60}</td>
+                    <td>{row?.Квота90}</td>
                     <td>{row?.Спецусловия}</td>
                     <td>{row?.Спецбал}</td>
                     <td>{row?.Госзакуп}</td>
-                    <td>{row?.["Каб. вакцинации"]}</td>
+                    <td>{row?.["Кабвакцинации"]}</td>
                     <td>
                       <button
-                        onClick={() => setOpenModalId(row.id)}
+                        onClick={() => setOpenModalId(true)}
                         className="Viewbutton"
                       >
                         <svg

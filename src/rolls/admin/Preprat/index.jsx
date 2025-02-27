@@ -5,7 +5,7 @@ import IconPlus from "../../../assets/svg/IconPlus";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext";
 import { Title } from "../../../root/style";
-import MainTable from "./Table";
+import MainTable from "./Table1";
 
 import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
