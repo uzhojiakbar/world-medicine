@@ -37,6 +37,7 @@ const BaseDoctor = ({FilterHide, title}) => {
     const [selectedSpecialization, setSelectedSpecialization] = useState("");
     const [date, setDate] = useState([]);
 
+    console.log("nameSurname",nameSurname);
     const specializations = FieldnamesManager();
 
     const {data: regions, isLoading: isLoadingRegions} = useGetRegions();
@@ -45,7 +46,11 @@ const BaseDoctor = ({FilterHide, title}) => {
     const {data: doctors, isLoading: isLoadingDoctors} = useGetDoctors({
         regionId: selectedViloyat,
         districtId: selectedTuman ? selectedTuman : null,
+        nameQuery: nameSurname || null,
     });
+
+    console.log("doctors",doctors)
+
 
     const [filteredDoctors, setFilteredDoctors] = useState();
 
@@ -114,7 +119,7 @@ const BaseDoctor = ({FilterHide, title}) => {
     };
 
     return (
-        <BaseDoctorCon>
+        <BaseDoctorCon  >
             {/* {isLoadingDoctors || isLoadingDistricts || isLoadingRegions ? (
         <div className="loaderParent">
           <div className="loader"></div>
@@ -163,7 +168,7 @@ const BaseDoctor = ({FilterHide, title}) => {
                 !FilterHide ?
                     <div className="cards">
                         <Input
-                            onChange={(e) => setNameSurname(e.target.value)}
+                            onChange={setNameSurname}
                             placeholder={translate("Fullname")}
                         />
                         <PrimarySelect
@@ -175,7 +180,7 @@ const BaseDoctor = ({FilterHide, title}) => {
                         <PrimarySelect
                             def={translate("Район")}
                             options={districtsTranslate}
-                            onValueChange={(value) => setSelectedTuman(value.id)}
+                            onValueChange={(value) => setSelectedTuman(value.districtId)}
                             onlyOption={1}
                         />
                         <PrimarySelect

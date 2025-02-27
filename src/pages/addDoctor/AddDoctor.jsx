@@ -77,7 +77,7 @@ const AddDoctor = () => {
         workplace_spec: translate("Место_работы_и_специализация"),
         city: translate("Город"),
         district: translate("Район"),
-        contactData: translate("Контактные данные менеджера"),
+        contactData: translate("Контактные_данные"),
         workplace: translate("Место_работы"),
         email: translate("Почта"),
         phone: translate("Телефон"),

@@ -1410,7 +1410,7 @@ export const useGetWorkplacesById = (id) => {
 export const useGetManagers = ({
                                    creatorId, countryId,
                                    regionId,
-                                   workplaceId,
+                                   districtId,
                                    nameQuery,
                                }) => {
     return useQuery({
@@ -1419,7 +1419,7 @@ export const useGetManagers = ({
             creatorId,
             countryId,
             regionId,
-            workplaceId,
+            districtId,
             nameQuery,
         ],
         queryFn: async () => {
@@ -1429,7 +1429,7 @@ export const useGetManagers = ({
                         creatorId,
                         countryId,
                         regionId,
-                        workplaceId,
+                        districtId,
                         nameQuery,
                     },
                 });
@@ -1458,7 +1458,7 @@ export const useGetMedAgents = ({
             creatorId,
             countryId,
             regionId,
-            workplaceId,
+            districtId,
             nameQuery,
             districtId
         ],

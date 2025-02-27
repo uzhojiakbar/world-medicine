@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
 import { MainWrapperGap, Title, TitleSmall } from "../../../../root/style";
@@ -9,27 +9,47 @@ import PrimarySelect from "../../../../components/Generic/Select/Select";
 import { Viloyatlar, Tumanlar, MestaRabot } from "../../../../mock/data";
 import Table from "./Table";
 import { useLanguage } from "../../../../context/LanguageContext";
-import { useGetManagers } from "../../../../utils/server/server";
+import {useGetDistricts, useGetManagers, useGetProfileInfo, useGetRegions} from "../../../../utils/server/server";
 import { FilterCardsWrapper } from "../../../../pages/admin/settingSystemAdmin/style";
+import {transformDistrictsForSelect, transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
 
 const SettingsMenager = ({ id }) => {
   const nav = useNavigate();
-  const { translate } = useLanguage();
+  const { translate,language } = useLanguage();
 
   const [selectedViloyat, setSelectedViloyat] = useState("");
   const [selectedTuman, setSelectedTuman] = useState("");
   const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
   const [nameSurname, setNameSurname] = useState("");
   const [checked, setChecked] = useState(false);
+  // from Backend
+  const {data: profileInfo, isLoading: IsLoadingProfileInfo} =
+      useGetProfileInfo();
+
+  const {data: regions, isLoading: isLoadingRegions} = useGetRegions();
+  const {data: districts, isLoading: isLoadingDistricts} =
+      useGetDistricts(selectedViloyat);
 
   // Filterlar asosida ma'lumot olish
   const { data: Managers, isLoading } = useGetManagers({
-    creatorId: checked ? "currentUserId" : null, // Agarda checkbox bosilgan bo'lsa, foydalanuvchi ID sini qo'shish
+    creatorId: checked ? profileInfo?.userId : null, // Agarda checkbox bosilgan bo'lsa, foydalanuvchi ID sini qo'shish
     countryId: null, // Agar kerak bo'lsa, qo'shish
     regionId: selectedViloyat || null,
-    workplaceId: selectedMestaRabot || null,
+    districtId: selectedTuman || null,
     nameQuery: nameSurname || null,
   });
+
+  const regionsTranslate = useMemo(
+      () => transformRegionsForSelect(regions, language),
+      [regions, translate]
+  );
+
+  const districtsTranslate = useMemo(
+      () => transformDistrictsForSelect(districts, language),
+      [districts, translate]
+  );
+
+  console.log("districtsTranslate",districtsTranslate)
 
   return (
     <MainWrapperGap id={id || "administration"}>
@@ -40,23 +60,20 @@ const SettingsMenager = ({ id }) => {
         </Button>
       </Title>
 
-      <FilterCardsWrapper>
-        <TitleSmall>{translate("врача_по_фильтрам")}</TitleSmall>
+      <FilterCardsWrapper grid={4} >
+        <TitleSmall>{translate("manager_filter")}</TitleSmall>
         <div className="cards">
           <PrimarySelect
             def={translate("область")}
-            options={Viloyatlar}
-            onValueChange={setSelectedViloyat}
+            options={regionsTranslate}
+            onValueChange={(value) => setSelectedViloyat(value.id)}
+            onlyOption={1}
           />
           <PrimarySelect
             def={translate("Район")}
-            options={Tumanlar[selectedViloyat] || []}
-            onValueChange={setSelectedTuman}
-          />
-          <PrimarySelect
-            def={translate("Место_работы")}
-            options={MestaRabot[selectedTuman] || []}
-            onValueChange={setSelectedMestaRabot}
+            options={districtsTranslate}
+            onValueChange={(value) => setSelectedTuman(value.districtId)}
+            onlyOption={1}
           />
           <Input
             onChange={setNameSurname}
@@ -71,7 +88,7 @@ const SettingsMenager = ({ id }) => {
         </div>
       </FilterCardsWrapper>
 
-      <Table title="Менеджеры" data={Managers || []} isLoading={isLoading} />
+      <Table title="Менеджеры" data={Managers || []} isLoading={isLoading || isLoadingRegions || isLoadingDistricts || IsLoadingProfileInfo} />
     </MainWrapperGap>
   );
 };

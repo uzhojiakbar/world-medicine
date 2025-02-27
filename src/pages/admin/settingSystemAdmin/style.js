@@ -25,7 +25,7 @@ export const FilterCardsWrapper = styled.div`
 
   .cards {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(${({grid})=>grid?grid:5}, 1fr);
     gap: 10px;
   }
 
