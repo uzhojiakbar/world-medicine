@@ -51,6 +51,12 @@ const BaseControl = () => {
                     data={posts || []}
                     loading={false}
                 />
+            </div>        <div className="relative">
+                <NewContract
+                    title={translate("Пересмотренные_договора")}
+                    data={posts || []}
+                    loading={false}
+                />
             </div>
             <SettingsMenager/>
             <SettingsMedAgent/>
