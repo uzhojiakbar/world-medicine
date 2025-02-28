@@ -54,7 +54,7 @@ const ModalPrescription = ({ id = 454, setId = () => { } }) => {
       title={
         <ModalHeader>
           <Title>{translate("Описание_рецепта")}</Title>
-          <div onClick={() => setId(false)} className="closeIcon">
+          <div onClick={() => setId({})} className="closeIcon">
             <svg
               width="48"
               height="48"
@@ -76,9 +76,9 @@ const ModalPrescription = ({ id = 454, setId = () => { } }) => {
           </div>
         </ModalHeader>
       }
-      open={id}
-      onOk={() => setId(false)}
-      onCancel={() => setId(false)}
+      open={Object.keys(id).length}
+      onOk={() => setId({})}
+      onCancel={() => setId({})}
       footer={[]}
       centered
     >

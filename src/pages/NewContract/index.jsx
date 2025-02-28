@@ -3,8 +3,7 @@ import {message} from "antd";
 import styled from "styled-components";
 import {TitleSmall, WhiteWrapper} from "../../root/style.js";
 import {
-    PaginationButtonsWrapper,
-    ResponsiveTableAdmin,
+    PaginationButtonsWrapper, ResponsiveTableAdmin,
 } from "../../components/ResizeTable/ResizeTableAdmin/style";
 import {formatPhoneNumber} from "../../utils/PhoneFormatter";
 import LeftArrow from "../../assets/svg/LeftArrow";
@@ -22,10 +21,11 @@ const Container = styled.div`
 `;
 
 const NewConnect = ({title = ""}) => {
-    const {translate,language} = useLanguage();
+    const {translate, language} = useLanguage();
     const [currentPage, setCurrentPage] = useState(0);
     const {data, isLoading} = useGetContract(currentPage);
 
+    console.log("DAAATA",data)
     const [isMainLoading, setMainLoading] = useState(false);
 
     const queryClient = useQueryClient(); // Initialize queryClient
@@ -49,9 +49,7 @@ const NewConnect = ({title = ""}) => {
     const onPrinyat = async (userId = 0, contract) => {
         try {
             setMainLoading(true);
-            const response = await Instance.patch(
-                `/v1/admin/contract/${userId}/user-enable`
-            );
+            const response = await Instance.patch(`/v1/admin/contract/${userId}/user-enable`);
             // Invalidate and refetch the query to get updated data
             queryClient.invalidateQueries(["Contract", currentPage]);
 
@@ -67,14 +65,10 @@ const NewConnect = ({title = ""}) => {
     const onOtk = async (userId = 0, contract) => {
         try {
             setMainLoading(true);
-            const response = await Instance.patch(
-                `/v1/admin/contract/${userId}/user-decline`
-            );
+            const response = await Instance.patch(`/v1/admin/contract/${userId}/user-decline`);
             queryClient.invalidateQueries(["Contract", currentPage]);
 
-            message.success(
-                `${contract}  ${translate("Успешно_отклонено")}`
-            );
+            message.success(`${contract}  ${translate("Успешно_отклонено")}`);
         } catch (error) {
             console.error("Error decline contract", error);
             message.error(translate("произошла_ошибка"));
@@ -85,15 +79,10 @@ const NewConnect = ({title = ""}) => {
 
     console.log(currentData);
 
-    return (
-        <Container>
-            {isLoading || isMainLoading ? (
-                <div className="loaderParent">
+    return (<Container>
+            {isLoading || isMainLoading ? (<div className="loaderParent">
                     <div className="loader"></div>
-                </div>
-            ) : (
-                ""
-            )}
+                </div>) : ("")}
             <WhiteWrapper>
                 <TitleSmall>{title}</TitleSmall>
                 <ResponsiveTableAdmin>
@@ -109,9 +98,7 @@ const NewConnect = ({title = ""}) => {
                         </tr>
                         </thead>
                         <tbody>
-                        {currentData?.length > 0 ? (
-                            currentData?.map((row, index) => (
-                                <tr key={row?.id || index}>
+                        {currentData?.length > 0 ? (currentData?.map((row, index) => (<tr key={row?.id || index}>
                                     <td>№{index + 1}</td>
                                     <td className="idfixed">
                                         {row?.user?.firstName + " " + " " + row?.user?.lastName}
@@ -128,26 +115,19 @@ const NewConnect = ({title = ""}) => {
                                     <td className="buttons">
                                         <button
                                             disabled={isLoading || isMainLoading}
-                                            onClick={() =>
-                                                onPrinyat(row?.id, `${translate("Договоры")} №${row?.id}`)
-                                            }
+                                            onClick={() => onPrinyat(row?.id, `${translate("Договоры")} №${row?.id}`)}
                                         >
                                             <ReceptIcon/>
                                             {translate("accept")}
                                         </button>
                                         <button
-                                            onClick={() =>
-                                                onOtk(row?.id, `${translate("Договоры")} №${row?.id}`)
-                                            }
+                                            onClick={() => onOtk(row?.id, `${translate("Договоры")} №${row?.id}`)}
                                         >
                                             <CancelIcon/>
                                             {translate("reject")}
                                         </button>
                                     </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
+                                </tr>))) : (<tr>
                                 <td
                                     className="empty"
                                     colSpan="7"
@@ -155,8 +135,7 @@ const NewConnect = ({title = ""}) => {
                                 >
                                     {translate("notInformation")}
                                 </td>
-                            </tr>
-                        )}
+                            </tr>)}
                         </tbody>
                     </table>
                 </ResponsiveTableAdmin>
@@ -174,8 +153,7 @@ const NewConnect = ({title = ""}) => {
                     </button>
                 </PaginationButtonsWrapper>
             </WhiteWrapper>
-        </Container>
-    );
+        </Container>);
 };
 
 export default NewConnect;

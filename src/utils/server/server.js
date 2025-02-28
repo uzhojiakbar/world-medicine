@@ -1687,7 +1687,6 @@ export const useAddWorkplace = () => {
     });
 };
 
-
 export const useResetPasswordWithoutOldPassword = () => {
     return useMutation({
         mutationFn: async (resetPassData) => {
@@ -1972,9 +1971,7 @@ export const useDeleteUser = () => {
     });
 };
 
-
 // GET STATICTS
-
 export const useGetStaticticsMedAgent = (id) => {
     return useQuery({
         queryKey: ["useGetStaticticsMedAgent", id], // Cache key
@@ -1993,6 +1990,45 @@ export const useGetStaticticsMedAgent = (id) => {
 
 };
 // NOTE ADD MedAgent
+
+export const useGetRecepiesFilter = ({
+                                         regionId,
+                                         districtId,
+                                         medicineId,
+                                         doctorField,
+                                         page=0,
+                                         size=10
+                                     }) => {
+    return useQuery({
+        queryKey: [
+            "GetMedAgents",
+            regionId,
+            districtId,
+            medicineId,
+            doctorField,
+            page,
+            size
+        ],
+        queryFn: async () => {
+            try {
+                const {data} = await Instance.get("/v1/db/recipes", {
+                    params: {
+                        regionId,
+                        districtId,
+                        medicineId,
+                        doctorField,
+                        page,
+                        size                    },
+                });
+                return data;
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
 
 
 export default Server;

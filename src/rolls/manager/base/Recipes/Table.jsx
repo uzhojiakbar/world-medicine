@@ -9,6 +9,8 @@ import RightArrow from "../../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalPrescription from "./Modal";
 import { useLanguage } from "../../../../context/LanguageContext";
+import {useGetRecepiesFilter} from "../../../../utils/server/server.js";
+import {useQueryClient} from "@tanstack/react-query";
 
 const Container = styled.div`
   position: relative;
@@ -16,14 +18,20 @@ const Container = styled.div`
   transition: all 0.2s ease-in-out;
 `;
 
-const Table = ({ title = "", data = [] }) => {
-  const [loading, setLoading] = useState(0);
-  const [openModalId, setOpenModalId] = useState(false);
-
+const Table = ({ title = "", filter={} }) => {
+  const { translate,language } = useLanguage();
   const [currentPage, setCurrentPage] = useState(0);
+  const {data:data, isLoading:  isLoadingRecepies} = useGetRecepiesFilter({...filter,page:currentPage});
+  const [isMainLoading, setMainLoading] = useState(false);
+  const queryClient = useQueryClient(); // Initialize queryClient
+
+  const [loading, setLoading] = useState(0);
+  const [openModalId, setOpenModalId] = useState({});
+
 
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(data?.totalElements / 10) || 0;
+
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
@@ -37,16 +45,15 @@ const Table = ({ title = "", data = [] }) => {
     }
   };
 
-  const currentData = data.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  const currentData = data?.content;
 
-  const { translate } = useLanguage();
+  console.log("currentPage", "currentPage");
+  console.log(currentPage, currentData);
+
 
   return (
     <Container>
-      {loading ? (
+      {isMainLoading || isLoadingRecepies ? (
         <div className="loaderParent">
           <div class="loader"></div>
         </div>
@@ -71,20 +78,28 @@ const Table = ({ title = "", data = [] }) => {
               </tr>
             </thead>
             <tbody>
-              {currentData.length > 0 ? (
-                currentData.map((row) => (
-                  <tr key={row?.id}>
-                    <td>№{row?.id}</td>
-                    <td className="idfixed">{row?.fio}</td>
-                    <td>{row?.district}</td>
-                    <td>
-                      {translate("Создан")} {row?.dateCreated}
+              {currentData?.length > 0 ? (
+                currentData?.map((row,index) => (
+                  <tr key={index}>
+                    <td>№{index+1}</td>
+                    <td className="idfixed">
+                      {row?.doctor?.firstName ?? ""} {" "}
+                      {row?.doctor?.lastName ?? ""} {" "}
+                      {row?.doctor?.middleName ?? ""}
                     </td>
-                    <td>{row?.preparation}</td>
+                    <td>
+                      {row?.district}
+                      {row?.doctor?.regionDistrictDTO?.[`regionName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}, {" "}
+                      {row?.doctor?.workPlaceDTO?.name}, {" "}
+                    </td>
+                    <td>
+                      {translate("Создан")} {row?.dateCreation}
+                    </td>
+                    <td>{row?.preparations[0]?.name} {row?.preparations[0]?.medicine?.prescription} {row?.preparations[0]?.medicine?.volume}</td>
 
                     <td>
                       <button
-                        onClick={() => setOpenModalId(row.id)}
+                        onClick={() => setOpenModalId(row)}
                         className="Viewbutton"
                       >
                         <svg
@@ -127,13 +142,14 @@ const Table = ({ title = "", data = [] }) => {
 
         <PaginationButtonsWrapper>
           <button onClick={handlePrevious} disabled={currentPage === 0}>
-            <LeftArrow />
+            <LeftArrow/>
           </button>
           <span>
-            {currentPage + 1} {translate("from")} {""} {totalPages}
+            {currentPage + 1} {translate("from")} {""}
+            {totalPages}
           </span>
           <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
-            <RightArrow />
+            <RightArrow/>
           </button>
         </PaginationButtonsWrapper>
       </WhiteWrapper>

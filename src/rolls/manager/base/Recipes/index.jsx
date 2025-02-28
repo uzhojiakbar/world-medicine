@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useMemo, useState} from "react";
 import { FiltrContainer, Form, Header, TableWrapper, Wrapper } from "./style.js";
 import { Title, TitleSmall } from "../../../../root/style.js";
 import { MestaRabot, Tumanlar, Viloyatlar } from "../../../../mock/data.js";
@@ -7,6 +7,8 @@ import Input2 from "../../../../components/Generic/Input/Input2.jsx";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker.jsx";
 import { useLanguage } from "../../../../context/LanguageContext.jsx";
 import Table from "./Table.jsx";
+import {useGetDistricts, useGetRecepiesFilter, useGetRegions} from "../../../../utils/server/server.js";
+import {transformDistrictsForSelect, transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
 
 const TableData = [
   {
@@ -96,7 +98,9 @@ const TableData = [
 ];
 
 const Recipes = () => {
-  const { translate } = useLanguage();
+  const { translate,language } = useLanguage();
+
+
 
   const information = {
     title: translate("Рецепты"),
@@ -135,6 +139,7 @@ const Recipes = () => {
   });
 
   const handleViloyatChange = (value) => {
+    console.log(value);
     setSelectedViloyat(value);
 
     setFormData((prevFormData) => ({
@@ -147,6 +152,7 @@ const Recipes = () => {
   };
 
   const handleTumanChange = (value) => {
+    console.log("TUMAN",value)
     setSelectedTuman(value);
     setSetKategoriya("");
 
@@ -186,6 +192,22 @@ const Recipes = () => {
   };
 
   console.log(formData);
+  const {data: regions, isLoading: isLoadingRegions} =
+      useGetRegions();
+
+  const {data: districts, isLoading: isLoadingDistricts} =
+      useGetDistricts(selectedViloyat || null);
+
+  console.log("districts",districts);
+  const regionsTranslate = useMemo(
+      () => transformRegionsForSelect(regions, language),
+      [regions, translate]
+  );
+
+  const districtsTranslate = useMemo(
+      () => transformDistrictsForSelect(districts, language),
+      [districts, translate]
+  );
 
   return (
     <Wrapper>
@@ -199,17 +221,22 @@ const Recipes = () => {
               placeholder={information.inputData.fullTitle}
               onChange={handleChange}
               name="fullName"
+
             />
 
             <PrimarySelect
               def={information.inputData.city}
-              options={Viloyatlar}
-              onValueChange={handleViloyatChange}
+              options={regionsTranslate}
+              onValueChange={(value)=>handleViloyatChange(value?.id)}
+              onlyOption={1}
             />
             <PrimarySelect
               def={information.inputData.district}
-              options={Tumanlar[selectedViloyat] || []}
-              onValueChange={handleTumanChange}
+              options={districtsTranslate || []}
+              onValueChange={(value)=>handleTumanChange(value?.districtId)}
+              onlyOption={1}
+
+              selectedType={"districtId"}
             />
 
             <PrimarySelect
@@ -234,7 +261,10 @@ const Recipes = () => {
         </FiltrContainer>
       </Header>
       <TableWrapper>
-        <Table title={Object.values(information.tableTitle)} data={TableData} />
+        <Table  filter={{
+          regionId: selectedViloyat || null,
+          districtId: selectedTuman || null,
+        }} title={Object.values(information.tableTitle)}  />
       </TableWrapper>
     </Wrapper>
   );
