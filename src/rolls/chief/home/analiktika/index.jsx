@@ -25,7 +25,7 @@ import PrimarySelect from "../../../../components/Generic/Select/Select";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import {useLanguage} from "../../../../context/LanguageContext";
 import {useGetDashboard, useGetDistricts, useGetRegions} from "../../../../utils/server/server.js";
-import {transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
+import {transformDistrictsForSelect, transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
 import TableRegions from "./TableRegions.jsx";
 import {motion} from "framer-motion";
 import TableRegions2 from "./TableRegions2.jsx";
@@ -51,18 +51,29 @@ const AnalitikaChiefPage = () => {
         () => transformRegionsForSelect(Regions, language),
         [Regions, translate]
     );
-    console.log("regionsTranslate", regionsTranslate);
-
+    const districtsTranslate = useMemo(
+        () => transformDistrictsForSelect(Districts, language),
+        [Districts, translate]
+    );
     const [selectedTuman, setSelectedTuman] = useState("");
-
     const handleChangeRegion = useCallback((selected) => {
         console.log("1111111111", selected);
         setRegion(selected.id);
     }, []);
 
-    const handleChangeDistrict = useCallback((selected) => {
-        console.log("1111111111", selected);
-        setDistrict(selected.id);
+    const handleChangeDistrict = useCallback((selected, dId) => {
+
+        if (dId) {
+            console.log(selected, dId);
+            console.log(selected, dId);
+            console.log(selected, dId);
+            console.log(selected, dId);
+            console.log("1111111111", selected);
+            setDistrict(selected);
+        } else {
+            setDistrict(selected.id);
+
+        }
     }, []);
 
     const [active, setActive] = useState(1);
@@ -145,8 +156,10 @@ const AnalitikaChiefPage = () => {
                             />
                             <PrimarySelect
                                 def={translate("Район")}
-                                options={Tumanlar["Ташкент"] || []}
-                                onValueChange={(value) => handleChange(["district", value])}
+                                options={districtsTranslate}
+                                onValueChange={(value) => handleChangeDistrict(value?.districtId, 1)}
+                                onlyOption={1}
+                                selectedType="districtId"
                             />
                             <PrimarySelect
                                 def={translate("ЛПУ")}
@@ -201,7 +214,7 @@ const AnalitikaChiefPage = () => {
                     </FilterWrapper>
                     {
                         region ?
-                            district ?  <FilterWrapper>
+                            district ? <FilterWrapper>
                                 <TableSpec
                                     thead={["Специальность", "Врачи по базе", "Врачи по факту"]}
                                     tbody={dashboardData?.recordDistrictDTO?.recordWorkPlaceStatsDTOList}
