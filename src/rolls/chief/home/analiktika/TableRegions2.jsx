@@ -12,7 +12,6 @@ const Container = styled.div`
 const WhiteWrapper = styled.div`
     display: flex;
     flex-direction: column;
-
     gap: 20px;
 
     background-color: #f7f8fc;
@@ -20,7 +19,6 @@ const WhiteWrapper = styled.div`
 
     min-height: 700px;
     max-height: 700px;
-    overflow-y: auto;
     height: fit-content;
     width: 100%;
 
@@ -28,6 +26,7 @@ const WhiteWrapper = styled.div`
 `;
 
 const ResponsiveTableAdmin = styled.div`
+
     overflow-x: auto; /* Scrollable */
     width: 100%;
 
@@ -60,18 +59,14 @@ const ResponsiveTableAdmin = styled.div`
         color: #333; /* Default matn rangi */
         padding: 17px !important;
         height: 100%;
-
         background-color: white; /* Jadval uyalarining default foni */
-
         .empty {
             height: 400px;
             background-color: var(--bg-color);
-
             &:hover {
                 background-color: var(--bg-color);
             }
         }
-
         .start {
             align-items: center;
         }
@@ -108,7 +103,7 @@ const ResponsiveTableAdmin = styled.div`
         border-bottom: 10px solid #f7f8fc;
         user-select: none;
         cursor: pointer;
-        border-radius: 10px; 
+        border-radius: 10px;
     }
 
     @media (max-width: 768px) {
@@ -126,18 +121,24 @@ const ResponsiveTableAdmin = styled.div`
             padding: 8px;
         }
     }
-    
-    .active{
+
+    .active {
         background: #216BF4 !important;
-    
+
     }
-    .active >td{
+
+    .active > td {
         background: #216BF4 !important;
         color: #fff;
     }
 `;
-const TableRegions = ({thead,  tbody,change=()=>{},currentRegion}) => {
-    const {translate,language} = useLanguage();
+
+
+const TableRegions2 = ({
+                           thead, tbody, change = () => {
+    }, currentRegion
+                       }) => {
+    const {translate, language} = useLanguage();
     return (
         <Container>
             <WhiteWrapper>
@@ -156,13 +157,22 @@ const TableRegions = ({thead,  tbody,change=()=>{},currentRegion}) => {
                         <tbody>
                         {tbody?.length > 0 ? (
                             tbody?.map((row, i) => (
-
-                                <tr className={ row.id===currentRegion ? "active" : ""} onClick={()=>change(row)} key={row?.id}>
-                                    {console.log(row.id===currentRegion)}
+                                <tr
+                                    className={row.id === currentRegion ?
+                                        `active ${1 ? "redborder" : ""} `
+                                        : ``
+                                }
+                                    style={{border: `2px solid ${((row?.lpuAmount === 0) && (row?.doctorsByDB === 0) && (row?.doctorsInFact === 0) && (row?.population === 0) )? "#FB3748 !important" : "transparent"}`,borderRadius: "10px"}}
+                                    onClick={() => change(row)}
+                                    key={row?.id}>
                                     <td style={{textAlign: "left"}}>
+                                        {/*(row?.lpuAmount === 0) && (row?.doctorsByDB === 0) && (row?.doctorsInFact === 0) && (row?.population === 0)*/}
                                         {row?.[`name${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")} {" "}
                                     </td>
-                                    <td style={{textAlign: "center"}}>{row?.amount}</td>
+                                    <td style={{textAlign: "center"}}>{row?.lpuAmount}</td>
+                                    <td style={{textAlign: "center"}}>{row?.doctorsByDB}</td>
+                                    <td style={{textAlign: "center"}}>{row?.doctorsInFact}</td>
+                                    <td style={{textAlign: "center"}}>{row?.population}</td>
                                 </tr>
                             ))
                         ) : (
@@ -186,4 +196,4 @@ const TableRegions = ({thead,  tbody,change=()=>{},currentRegion}) => {
 }
 
 
-export default TableRegions;
+export default TableRegions2;

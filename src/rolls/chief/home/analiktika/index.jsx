@@ -28,13 +28,19 @@ import {useGetDashboard, useGetDistricts, useGetRegions} from "../../../../utils
 import {transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
 import TableRegions from "./TableRegions.jsx";
 import {motion} from "framer-motion";
+import TableRegions2 from "./TableRegions2.jsx";
+import TableSpec from "./TableSpec.jsx";
 
 const AnalitikaChiefPage = () => {
     const {translate, language} = useLanguage();
     const [region, setRegion] = useState(null);
+    const [district, setDistrict] = useState(null);
     console.log(region)
 
-    const {data: dashboardData, isLoading: isLoadingDashboard} = useGetDashboard({})
+    const {data: dashboardData, isLoading: isLoadingDashboard} = useGetDashboard({
+        regionId: region || null,
+        districtId: district || null,
+    })
     console.log("dashboardData", dashboardData)
 
 
@@ -52,6 +58,11 @@ const AnalitikaChiefPage = () => {
     const handleChangeRegion = useCallback((selected) => {
         console.log("1111111111", selected);
         setRegion(selected.id);
+    }, []);
+
+    const handleChangeDistrict = useCallback((selected) => {
+        console.log("1111111111", selected);
+        setDistrict(selected.id);
     }, []);
 
     const [active, setActive] = useState(1);
@@ -169,35 +180,98 @@ const AnalitikaChiefPage = () => {
                             <InfoItem>
                                 <Title size={"24"}>{translate("Квота")}</Title>
                                 <Title size={"38"} title="true">
-                                    500 000
+                                    {dashboardData?.quote}
                                 </Title>
                             </InfoItem>
                             <InfoItem>
                                 <Title size={"24"}>{translate("Продажи")}</Title>
                                 <Title size={"38"} title="true">
-                                    400 000
+                                    {dashboardData?.sales}
                                 </Title>
                             </InfoItem>
                             <InfoItem>
                                 <Title size={"24"}>%</Title>
                                 <Title size={"38"} title="true">
-                                    70%
+                                    {dashboardData?.quote > 0
+                                        ? ((dashboardData?.sales / dashboardData?.quote) * 100).toFixed(2) + "%"
+                                        : "0%"}
                                 </Title>
                             </InfoItem>
                         </InfoContainer>
                     </FilterWrapper>
-                    <FilterWrapper>
-                        {
-                            <TableRegions
-                                thead={["Регион", "Кол-во сотрудников"]}
-                                tbody={dashboardData?.recordRegionDTO?.employeeStatsList}
-                                data={tableData}
-                                currentRegion={region}
-                                change={handleChangeRegion}
-                            />
-                        }
-                    </FilterWrapper>
+                    {
+                        region ?
+                            district ?  <FilterWrapper>
+                                <TableSpec
+                                    thead={["Специальность", "Врачи по базе", "Врачи по факту"]}
+                                    tbody={dashboardData?.recordDistrictDTO?.recordWorkPlaceStatsDTOList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                />
+                            </FilterWrapper> : <FilterWrapper>
+                                <TableRegions
+                                    thead={[translate("Регион"), translate("amount-kolvo")]}
+                                    tbody={dashboardData?.recordDistrictDTO?.employeeStatsList}
+                                    data={tableData}
+                                    change={handleChangeDistrict}
+                                />
+                            </FilterWrapper>
+                            :
+                            <FilterWrapper>
+                                <TableRegions
+                                    thead={[translate("Регион"), translate("amount-kolvo")]}
+                                    tbody={dashboardData?.recordRegionDTO?.employeeStatsList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                    change={handleChangeRegion}
+                                />
+                            </FilterWrapper>
+                    }
                 </ItemWrapper>
+                {
+                    region ?
+                        district ? "" : <ItemWrapper>
+                            <FilterWrapper>
+                                <TableRegions2
+                                    thead={["Регион", "ЛПУ", "Врачи по базе", "Врачи по факту", "Население"]}
+                                    tbody={dashboardData?.recordDistrictDTO?.recordStatsEmployeeFactList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                    change={handleChangeDistrict}
+                                />
+                            </FilterWrapper>
+                            <FilterWrapper>
+                                <TableSpec
+                                    thead={["Специальность", "Врачи по базе", "Врачи по факту"]}
+                                    tbody={dashboardData?.recordDistrictDTO?.recordWorkPlaceStatsDTOList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                    change={handleChangeRegion}
+                                />
+                            </FilterWrapper>
+                        </ItemWrapper>
+                        :
+                        <ItemWrapper>
+                            <FilterWrapper>
+                                <TableRegions2
+                                    thead={["Регион", "ЛПУ", "Врачи по базе", "Врачи по факту", "Население"]}
+                                    tbody={dashboardData?.recordRegionDTO?.recordStatsEmployeeFactList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                />
+                            </FilterWrapper>
+                            <FilterWrapper>
+                                <TableSpec
+                                    thead={["Специальность", "Врачи по базе", "Врачи по факту"]}
+                                    tbody={dashboardData?.recordRegionDTO?.recordWorkPlaceStatsDTOList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                    change={handleChangeRegion}
+                                />
+                            </FilterWrapper>
+                        </ItemWrapper>
+                }
+
                 {
                     // region ? <ItemWrapper>
                     //     <FilterWrapper>

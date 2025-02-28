@@ -27,14 +27,15 @@ const ItemWrapper = styled.div`
 `;
 
 const FilterWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: space-between;
-
-  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     gap: 20px;
-  }
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+        gap: 20px;
+    }
 `;
 
 const Title = styled.div`
@@ -85,6 +86,7 @@ const InfoContainer = styled.div`
 
 const InfoItem = styled.div`
   flex: 1;
+    user-select: none;
 `;
 
 const AllChartContainer = styled.div`

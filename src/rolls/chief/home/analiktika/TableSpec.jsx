@@ -136,7 +136,9 @@ const ResponsiveTableAdmin = styled.div`
         color: #fff;
     }
 `;
-const TableRegions = ({thead,  tbody,change=()=>{},currentRegion}) => {
+const TableSpec = ({thead,  tbody,change=()=>{},currentRegion}) => {
+    console.log("tbody", tbody)
+
     const {translate,language} = useLanguage();
     return (
         <Container>
@@ -157,12 +159,13 @@ const TableRegions = ({thead,  tbody,change=()=>{},currentRegion}) => {
                         {tbody?.length > 0 ? (
                             tbody?.map((row, i) => (
 
-                                <tr className={ row.id===currentRegion ? "active" : ""} onClick={()=>change(row)} key={row?.id}>
-                                    {console.log(row.id===currentRegion)}
+                                <tr className={ row.id===currentRegion ? "active1" : ""} onClick={()=>change(row)} key={row?.id}>
                                     <td style={{textAlign: "left"}}>
-                                        {row?.[`name${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")} {" "}
+                                        {/*{row?.[`name${(language !== "ru" ? language === "uz" ? "UzLatin" : "" : "Russian")}`] || translate("NONE")} {" "}*/}
+                                        {translate(row?.field)}
                                     </td>
-                                    <td style={{textAlign: "center"}}>{row?.amount}</td>
+                                    <td style={{textAlign: "center"}}>{row?.doctorsByDB}</td>
+                                    <td style={{textAlign: "center"}}>{row?.doctorsInFact}</td>
                                 </tr>
                             ))
                         ) : (
@@ -186,4 +189,4 @@ const TableRegions = ({thead,  tbody,change=()=>{},currentRegion}) => {
 }
 
 
-export default TableRegions;
+export default TableSpec;
