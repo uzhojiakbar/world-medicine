@@ -82,11 +82,7 @@ const AddLpu = ({open, setOpen}) => {
             message.warning(translate("Форма_учреждения_не_выбраны"));
             return;
         }
-        if (!formData?.chiefDoctorId) {
-            console.error(translate("Глав_Врач_не_выбраны"));
-            message.warning(translate("Глав_Врач_не_выбраны"));
-            return;
-        }
+
         if (!formData?.name) {
             console.error(translate("Введите_название_организации"));
             message.warning(translate("Введите_название_организации"));

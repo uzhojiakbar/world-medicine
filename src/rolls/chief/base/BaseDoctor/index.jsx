@@ -208,7 +208,6 @@ const BaseDoctor = ({FilterHide, title}) => {
                             }}
                         />
                     </div>
-
                     : ""
             }
 

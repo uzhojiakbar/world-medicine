@@ -966,10 +966,10 @@ const Server = {
 
 const fetchDistrict = async (districtId) => {
     try {
-        if(districtId){
-        const response = await Instance.get(
-            `/v1/auth/district?districtId=${districtId}`
-        );
+        if (districtId) {
+            const response = await Instance.get(
+                `/v1/auth/district?districtId=${districtId}`
+            );
         }
         return response?.data; // Region nomini qaytaradi
     } catch (error) {
@@ -1155,7 +1155,10 @@ export const useGetDrugsWithReports = () => {
                         return {
                             id: medicine.id,
                             data: [
-                                {name: `${medicine.name}. ${medicine.prescription} ${medicine.volume}. №${medicine.id}`, status: ""},
+                                {
+                                    name: `${medicine.name}. ${medicine.prescription} ${medicine.volume}. №${medicine.id}`,
+                                    status: ""
+                                },
                                 {name: report.written.toString(), status: ""},
                                 {name: report.allowed.toString(), status: ""},
                                 {
@@ -1287,12 +1290,23 @@ export const useGetWorkplaces = (filters = {}) => {
         staleTime: 1000 * 60 * 10,
     });
 };
-export const useGetWorkplacesDb = () => {
+export const useGetWorkplacesDb = (
+    {
+        regionId,
+        districtId,
+    }
+) => {
     return useQuery({
-        queryKey: ["getWorkplacec"],
+        queryKey: ["getWorkplacec", regionId,
+            districtId,],
         queryFn: async () => {
             try {
-                const {data} = await Instance.get("/v1/db/workplaces");
+                const {data} = await Instance.get("/v1/db/workplaces", {
+                    params: {
+                        regionId,
+                        districtId,
+                    },
+                });
                 return data;
             } catch (error) {
                 console.error("Error fetching data", error);
@@ -1489,13 +1503,13 @@ export const useGetMedAgents = ({
 };
 
 export const useGetAdmins = ({
-                                    creatorId,
-                                    countryId,
-                                    regionId,
-                                    workplaceId,
-                                    nameQuery,
-                                    districtId
-                                }) => {
+                                 creatorId,
+                                 countryId,
+                                 regionId,
+                                 workplaceId,
+                                 nameQuery,
+                                 districtId
+                             }) => {
     return useQuery({
         queryKey: [
             "getAdmins",

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import Button from "../../../components/Generic/Button/Button";
 import IconPlus from "../../../assets/svg/IconPlus";
@@ -11,7 +11,7 @@ import {saveAs} from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
 import Server, {
     useDeleteWorkplace,
-    useGetDistrcitById,
+    useGetDistrcitById, useGetDistricts, useGetRegions,
     useGetWorkplaces,
     useGetWorkplacesDb,
 } from "../../../utils/server/server";
@@ -19,6 +19,8 @@ import Filter from "./filter/Filter";
 import Instance from "../../../utils/Instance";
 import {useQueryClient} from "@tanstack/react-query";
 import AddLpu from "./AddLPUModal.jsx";
+import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
+import {transformDistrictsForSelect, transformRegionsForSelect} from "../../../utils/transformRegionsForSelect.js";
 
 const exportToExcel = (data) => {
     // 1. Jadval ma'lumotlarini tayyorlash
@@ -47,22 +49,6 @@ const exportToExcel = (data) => {
 //   "chiefDoctorId": "57b0aba9-020b-4ea0-8fa3-62cc0957ef09",
 //   "districtId": 1
 // }
-
-function Lpu() {
-    const [loading, setLoading] = useState(false);
-    const [add, setAdd] = useState(0);
-
-    const {data: workplaces, isLoading: isloadingWorkplaces} =
-        useGetWorkplacesDb();
-    const queryClient = useQueryClient();
-
-    const handleRefresh = () => {
-        setLoading(1);
-        queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
-        setTimeout(() => {
-            setLoading(0);
-        }, 100);
-    };
 
     const Container1 = styled.div`
         display: flex;
@@ -95,6 +81,17 @@ function Lpu() {
         display: flex;
         flex-direction: column;
         gap: 20px;
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 20px;
+            width: 100%;
+            border-radius: 30px;
+            border: 1px solid #fafafa;
+            background: #fff;
+        }
     `
     const Box = styled.div`
         display: flex;
@@ -151,13 +148,69 @@ function Lpu() {
         }
     `;
 
-    const {translate} = useLanguage();
+function Lpu() {
+    const [loading, setLoading] = useState(false);
+    const [add, setAdd] = useState(0);
+
+
+
+    const queryClient = useQueryClient();
+
+    const handleRefresh = () => {
+        setLoading(1);
+        queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
+        setTimeout(() => {
+            setLoading(0);
+        }, 100);
+    };
+
+    const {translate,language} = useLanguage();
+
+    const [selectedViloyat, setSelectedViloyat] = useState("");
+    const [selectedTuman, setSelectedTuman] = useState("");
+
+    const {data: workplaces, isLoading: isloadingWorkplaces} = useGetWorkplacesDb(
+        {
+            regionId: selectedViloyat,
+            districtId: selectedTuman
+        }
+    );
+
+    const {data: regions, isLoading: isLoadingRegions} = useGetRegions();
+    const {data: districts, isLoading: isLoadingDistricts} =
+        useGetDistricts(selectedViloyat);
+
+    const regionsTranslate = useMemo(
+        () => transformRegionsForSelect(regions, language),
+        [regions, translate]
+    );
+
+
+    const districtsTranslate = useMemo(
+        () => transformDistrictsForSelect(districts, language),
+        [districts, translate]
+    );
 
     return (
         <Wrapper>
             <Container1>
             <AddLpu open={add} setOpen={setAdd}/>
-                <Filter/>
+                {/*<Filter/>*/}
+
+               <div className={"cards"}>
+                   <PrimarySelect
+                       def={translate("область")}
+                       options={regionsTranslate}
+                       onValueChange={(value) => setSelectedViloyat(value.id)}
+                       onlyOption={1}
+                   />
+                   <PrimarySelect
+                       def={translate("Район")}
+                       options={districtsTranslate}
+                       onValueChange={(value) => setSelectedTuman(value.districtId)}
+                       onlyOption={1}
+                   />
+               </div>
                 <TitleContainer>
                     <Title>{translate("ЛПУ")}</Title>
                     <Box>
@@ -213,7 +266,7 @@ function Lpu() {
             </Container1>
             <MainTable
                 refresh={handleRefresh}
-                loading={isloadingWorkplaces || loading}
+                loading={isloadingWorkplaces || loading || isLoadingDistricts || isLoadingRegions}
                 data={workplaces}
             />
         </Wrapper>
