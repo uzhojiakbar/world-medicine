@@ -21,10 +21,10 @@ const Container = styled.div`
     transition: all 0.2s ease-in-out;
 `;
 
-const NewConnect = ({title = ""}) => {
+const ReNewConnect = ({title = ""}) => {
     const {translate,language} = useLanguage();
     const [currentPage, setCurrentPage] = useState(0);
-    const {data, isLoading} = useGetContract(currentPage);
+    const {data, isLoading} = useGetContract(currentPage,"DECLINED");
 
     const [isMainLoading, setMainLoading] = useState(false);
 
@@ -178,4 +178,4 @@ const NewConnect = ({title = ""}) => {
     );
 };
 
-export default NewConnect;
+export default ReNewConnect;

@@ -9,6 +9,8 @@ import {useLanguage} from "../../../../context/LanguageContext";
 import SettingsMenager from "../SettingsMenager/SettingsMenager";
 import SettingsMedAgent from "../SettingsMedAgent/SettingsMedAgent";
 import DisabledPage from "../../../../components/DisabledPage/index.jsx";
+import ReNewConnect from "../../../../pages/NewContract/index2.jsx";
+import SettingsAdmin from "../SettingsMedAgent/SettingsAdmin.jsx";
 // import SettingsMenager from "../../../../pages/SettingsMenager/SettingsMenager";
 
 const BaseControl = () => {
@@ -52,7 +54,7 @@ const BaseControl = () => {
                     loading={false}
                 />
             </div>        <div className="relative">
-                <NewContract
+                <ReNewConnect
                     title={translate("Пересмотренные_договора")}
                     data={posts || []}
                     loading={false}
@@ -60,6 +62,7 @@ const BaseControl = () => {
             </div>
             <SettingsMenager/>
             <SettingsMedAgent/>
+            <SettingsAdmin/>
         </Wrapper>
     );
 };

@@ -12,7 +12,7 @@ import RightArrow from "../../../../assets/svg/RightArrow";
 import CancelIcon from "../../../../assets/svg/CancelIcon";
 import ReceptIcon from "../../../../assets/svg/ReceptIcon";
 import { useLanguage } from "../../../../context/LanguageContext";
-import { useGetNewContract } from "../../../../utils/server/server";
+import { useGetContract } from "../../../../utils/server/server";
 import Instance from "../../../../utils/Instance";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -24,7 +24,7 @@ const Container = styled.div`
 const NewContract = ({ title = "" }) => {
   const { translate } = useLanguage();
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading } = useGetNewContract(currentPage);
+  const { data, isLoading } = useGetContract(currentPage);
 
   const [isMainLoading, setMainLoading] = useState(false);
 

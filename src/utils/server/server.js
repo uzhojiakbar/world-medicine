@@ -966,9 +966,11 @@ const Server = {
 
 const fetchDistrict = async (districtId) => {
     try {
+        if(districtId){
         const response = await Instance.get(
             `/v1/auth/district?districtId=${districtId}`
         );
+        }
         return response?.data; // Region nomini qaytaradi
     } catch (error) {
         console.error("Error fetching region data", error);
@@ -978,8 +980,11 @@ const fetchDistrict = async (districtId) => {
 
 const fetchRegion = async (regionId) => {
     try {
-        const response = await Instance.get(`/v1/auth/region?regionId=${regionId}`);
-        return response?.data; // Region nomini qaytaradi
+        if (regionId) {
+            const response = await Instance.get(`/v1/auth/region?regionId=${regionId}`);
+            return response?.data; // Region nomini qaytaradi
+
+        }
     } catch (error) {
         console.error("Error fetching region data", error);
         return null;
@@ -1014,13 +1019,13 @@ export const useGetNewConnecting = (page) => {
     });
 };
 
-export const useGetNewContract = (page) => {
+export const useGetContract = (page, status = "PENDING_REVIEW") => {
     return useQuery({
-        queryKey: ["newContract", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
+        queryKey: ["Contract", page, status], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
         queryFn: async () => {
             try {
                 const data = await Instance.get(
-                    `/v1/admin/doctor/contracts/pending-review?page=${page}&size=10`
+                    `/v1/admin/doctor/contracts/status?goalStatus=${status}&page=${page}&size=10`
                 );
 
                 const content = await Promise.all(
@@ -1467,6 +1472,44 @@ export const useGetMedAgents = ({
                     params: {
                         creatorId,
                         countryId,
+                        regionId,
+                        workplaceId,
+                        nameQuery,
+                        districtId
+                    },
+                });
+                return data;
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
+export const useGetAdmins = ({
+                                    creatorId,
+                                    countryId,
+                                    regionId,
+                                    workplaceId,
+                                    nameQuery,
+                                    districtId
+                                }) => {
+    return useQuery({
+        queryKey: [
+            "getAdmins",
+            creatorId,
+            regionId,
+            districtId,
+            workplaceId,
+            nameQuery,
+        ],
+        queryFn: async () => {
+            try {
+                const {data} = await Instance.get("/v1/user/admins", {
+                    params: {
+                        creatorId,
                         regionId,
                         workplaceId,
                         nameQuery,
