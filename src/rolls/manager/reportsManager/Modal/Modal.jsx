@@ -288,7 +288,7 @@ const UsloviyaModal = ({
                                         <Wrapp>
                                             <InputWrapper
                                                 type="text"
-                                                value={editCorrection[row?.contractDTO?.id] || ""}
+                                                defaultValue={row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.correction  || ""}
                                                 onChange={(e) => setEditCorrection({ ...editCorrection, [row?.contractDTO?.id]: e.target.value })}
                                             />
                                             <IconChange>
