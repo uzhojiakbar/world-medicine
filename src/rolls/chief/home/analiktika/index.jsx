@@ -250,7 +250,6 @@ const AnalitikaChiefPage = () => {
                                     tbody={dashboardData?.recordDistrictDTO?.recordStatsEmployeeFactList}
                                     data={tableData}
                                     currentRegion={region}
-                                    change={handleChangeDistrict}
                                 />
                             </FilterWrapper>
                             <FilterWrapper>
@@ -259,7 +258,6 @@ const AnalitikaChiefPage = () => {
                                     tbody={dashboardData?.recordDistrictDTO?.recordWorkPlaceStatsDTOList}
                                     data={tableData}
                                     currentRegion={region}
-                                    change={handleChangeRegion}
                                 />
                             </FilterWrapper>
                         </ItemWrapper>
@@ -279,7 +277,6 @@ const AnalitikaChiefPage = () => {
                                     tbody={dashboardData?.recordRegionDTO?.recordWorkPlaceStatsDTOList}
                                     data={tableData}
                                     currentRegion={region}
-                                    change={handleChangeRegion}
                                 />
                             </FilterWrapper>
                         </ItemWrapper>
