@@ -73,15 +73,23 @@ const UsloviyaModal = ({
     const [change, setChange] = useState(false)
     const [writtenAll, setWrittenAll] = useState(0)
     const [editCorrection, setEditCorrection] = useState({});
+    const [modalId, setModalId] = useState(id);
+
 
 
     const [ids, setIds] = useState({...id})
 
+    useEffect(() => {
+        if (id) {
+            setModalId(id);
+        }
+    }, [id]);
+
 
     useEffect(() => {
-        if (!id?.doctorReportListDTOList) return;
+        if (!modalId?.doctorReportListDTOList) return;
 
-        const totalWritten = id?.doctorReportListDTOList.reduce((sum, row) => {
+        const totalWritten = modalId?.doctorReportListDTOList.reduce((sum, row) => {
             const medicine = row?.contractDTO?.medicinesWithQuantities?.find(
                 (med) => med.medicineId === selectedID
             );
@@ -89,7 +97,7 @@ const UsloviyaModal = ({
         }, 0);
 
         setWrittenAll(totalWritten);
-    }, [id, selectedID]);
+    }, [id,modalId, selectedID]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -111,27 +119,47 @@ const UsloviyaModal = ({
         setChange({...change, [name]: value})
     }
 
-
     const handleSave = async (row) => {
-        // O'zgarishni saqlaymiz
-        const updatedCorrection = editCorrection[row.contractDTO.id] || row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.correction;
-        const quantityId = row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.quantityId
-        console.log("row",row)
-        console.log("updatedCorrection",updatedCorrection)
-        console.log("URLLLL",`/v1/report/correction/${quantityId}?correction=${updatedCorrection}`)
-        const res = await Instance.put(`/v1/report/correction/${quantityId}?correction=${updatedCorrection}`);
+        try {
+            const updatedCorrection = editCorrection[row.contractDTO.id] || row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.correction;
+            const quantityId = row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.quantityId;
 
-        console.log("REEEEEEED",res)
+            console.log("row", row);
+            console.log("updatedCorrection", updatedCorrection);
+            console.log("URLLLL", `/v1/report/correction/${quantityId}?correction=${updatedCorrection}`);
 
+            const res = await Instance.put(`/v1/report/correction/${quantityId}?correction=${updatedCorrection}`);
 
+            console.log("REEEEEEED", res);
+            console.log("Saqlangan correction:", updatedCorrection);
 
-        // Backenda jo'natish kerak bo'lsa, shu joyda API chaqirish mumkin
-        console.log("Saqlangan correction:", updatedCorrection);
+            // **modalId ichidagi correction ni yangilash**
+            setModalId((prevModalId) => ({
+                ...prevModalId,
+                doctorReportListDTOList: prevModalId.doctorReportListDTOList.map((item) =>
+                    item.contractDTO.id === row.contractDTO.id
+                        ? {
+                            ...item,
+                            contractDTO: {
+                                ...item.contractDTO,
+                                medicinesWithQuantities: item.contractDTO.medicinesWithQuantities.map((med) =>
+                                    med.medicineId === selectedID
+                                        ? { ...med, correction: updatedCorrection }
+                                        : med
+                                ),
+                            },
+                        }
+                        : item
+                ),
+            }));
 
-        // O'zgarishlarni state-ga qayta yozish
-        setChange(null);
+            // O'zgarishlarni tozalash
+            setChange(null);
+            setEditCorrection({});
+        } catch (error) {
+            console.error("Xatolik yuz berdi:", error);
+        }
     };
-
 
     console.log("MODALDATA", ids)
     return (
@@ -212,7 +240,9 @@ const UsloviyaModal = ({
                     {/* </thead> */}
                     {/* <tbody> */}
 
-                    {id?.doctorReportListDTOList?.map((row, index) => {
+                    {
+                        modalId?.doctorReportListDTOList?.length > 0 ?
+                            modalId?.doctorReportListDTOList?.map((row, index) => {
                         return (
                             <TableRow key={index}>
                                 <Item>
@@ -224,7 +254,7 @@ const UsloviyaModal = ({
                                     {row?.contractDTO?.regionDistrictDTO?.districtName} {" "}
                                 </Item>
                                 <Item>
-                                    {row?.doctor?.workplaceId} {" "}
+                                    {row?.doctor?.workPlaceDTO?.address} {" "}
                                 </Item>
                                 <Item>
                                     {translate(row?.doctor?.fieldName)} {" "}
@@ -277,7 +307,10 @@ const UsloviyaModal = ({
                                 </Item>
                             </TableRow>
                         );
-                    })}
+                    })
+
+                    : "DATA NOT FOUND"
+                    }
                     {/* </tbody> */}
                 </TableStyled>
             </ModalContainer>
