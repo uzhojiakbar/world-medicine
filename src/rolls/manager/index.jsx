@@ -180,7 +180,6 @@ const ManagerHome = () => {
     });
     return (
         <Container>
-
             <motion.div
                 initial={{opacity: 0, x: -30}}
                 animate={{opacity: 1, x: 0}}

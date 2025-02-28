@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { TitleSmall } from "../../../root/style";
 
 import styled from "styled-components";
 import { useLanguage } from "../../../context/LanguageContext";

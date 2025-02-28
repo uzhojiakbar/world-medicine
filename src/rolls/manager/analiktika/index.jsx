@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useMemo, useState} from "react";
 import {
     AllChartContainer,
     AppointmentWrapper,
@@ -14,24 +14,69 @@ import {
     Wrapper,
     Title,
 } from "./style";
-// import { Title } from "../../../root/style";
-import {useLanguage} from "../../../context/LanguageContext";
-import DateRangePicker from "../../../components/Generic/DataRangePicker/DataRangePicker";
-import PrimarySelect from "../../../components/Generic/Select/Select";
-import {Tumanlar} from "../../../mock/data";
-import Input2 from "../../../components/Generic/Input/Input2";
 import GenericAnalitikaTable from "./GenericTable";
-import PieDiagram from "../../../components/PieDiagram/PieDiagream2";
-import ChartBar from "../../../components/ChartBar";
-import HorizontalChart from "../../../components/HorizontalBar";
 import SalesChart from "./SelesChart";
+import HorizontalChart from "../../../components/HorizontalBar";
+import ChartBar from "../../../components/ChartBar";
+import PieDiagram from "../../../components/PieDiagram/PieDiagream2";
+import Input2 from "../../../components/Generic/Input/Input2";
+import {Tumanlar} from "../../../mock/data";
+import PrimarySelect from "../../../components/Generic/Select/Select";
+import DateRangePicker from "../../../components/Generic/DataRangePicker/DataRangePicker";
+// import {} from "../../../context/LanguageContext";
+import {useGetDashboard, useGetDistricts, useGetRegions} from "../../../utils/server/server.js";
+import {transformDistrictsForSelect, transformRegionsForSelect} from "../../../utils/transformRegionsForSelect.js";
+import TableRegions from "./TableRegions.jsx";
 import {motion} from "framer-motion";
+import TableRegions2 from "./TableRegions2.jsx";
+import TableSpec from "./TableSpec.jsx";
+import {useLanguage} from "../../../context/LanguageContext.jsx";
 
 const AnalitikaManagerPage = () => {
-    const {translate} = useLanguage();
-    const [posts, setPosts] = useState([]);
+    const {translate, language} = useLanguage();
+    const [region, setRegion] = useState(null);
+    const [district, setDistrict] = useState(null);
+    console.log(region)
 
+    const {data: dashboardData, isLoading: isLoadingDashboard} = useGetDashboard({
+        regionId: region || null,
+        districtId: district || null,
+    })
+    console.log("dashboardData", dashboardData)
+
+
+    const {data: Regions, isLoading: loadingRegions} = useGetRegions();
+    const {data: Districts, isLoading: loadingDistricts} = useGetDistricts(region || null);
+
+    const regionsTranslate = useMemo(
+        () => transformRegionsForSelect(Regions, language),
+        [Regions, translate]
+    );
+    const districtsTranslate = useMemo(
+        () => transformDistrictsForSelect(Districts, language),
+        [Districts, translate]
+    );
     const [selectedTuman, setSelectedTuman] = useState("");
+    const handleChangeRegion = useCallback((selected) => {
+        console.log("1111111111", selected);
+        setRegion(selected.id);
+    }, []);
+
+    const handleChangeDistrict = useCallback((selected, dId) => {
+
+        if (dId) {
+            console.log(selected, dId);
+            console.log(selected, dId);
+            console.log(selected, dId);
+            console.log(selected, dId);
+            console.log("1111111111", selected);
+            setDistrict(selected);
+        } else {
+            setDistrict(selected.id);
+
+        }
+    }, []);
+
     const [active, setActive] = useState(1);
 
     const [formData, setFormData] = useState({
@@ -58,6 +103,7 @@ const AnalitikaManagerPage = () => {
             [name]: value, // formData ichidagi qiymatni yangilash
         }));
     };
+
 
     const tableData = {
         thead: {
@@ -88,110 +134,172 @@ const AnalitikaManagerPage = () => {
 
     return (
         <Container>
-            <motion.div
-                initial={{opacity: 0, x: -50}}
-                animate={{opacity: 1, x: 0}}
-                transition={{duration: 0.5}}
-                style={{width: "100%"}}
-            >
-                <Title>{translate("Аналитика")}</Title>
-            </motion.div>
+            {loadingRegions || isLoadingDashboard || loadingDistricts ? (
+                <div className="loaderParent">
+                    <div className="loader"></div>
+                </div>
+            ) : (
+                ""
+            )}
+            <Title>{translate("Аналитика")}</Title>
 
             <Wrapper>
                 <ItemWrapper>
-                    <motion.div
-                        initial={{opacity: 0, x: -50}}
-                        animate={{opacity: 1, x: 0}}
-                        transition={{duration: 0.5}}
-                        style={{width: "100%"}}
-                    >
-                        <FilterWrapper>
-                            <Form>
-                                <PrimarySelect
-                                    def={translate("Район")}
-                                    options={Tumanlar["Ташкент"] || []}
-                                    onValueChange={(value) => handleChange(["district", value])}
-                                />
-                                <PrimarySelect
-                                    def={translate("ЛПУ")}
-                                    options={[]}
-                                    onValueChange={(value) => handleChange(["lpu", value])}
-                                />
+                    <FilterWrapper>
+                        <Form>
+                            <PrimarySelect
+                                def={translate("Регион")}
+                                options={regionsTranslate || []}
+                                onValueChange={handleChangeRegion}
+                                onlyOption={1}
+                                selectedType="id"
+                                selectedOptionId={region}
+                            />
+                            <PrimarySelect
+                                def={translate("Район")}
+                                options={districtsTranslate}
+                                onValueChange={(value) => handleChangeDistrict(value?.districtId, 1)}
+                                onlyOption={1}
+                                selectedType="districtId"
+                            />
+                            <PrimarySelect
+                                def={translate("ЛПУ")}
+                                options={[]}
+                                onValueChange={(value) => handleChange(["lpu", value])}
+                            />
 
-                                {/* * */}
+                            {/* * */}
 
-                                <PrimarySelect
-                                    def={translate("Специальность")}
-                                    options={[]}
-                                    onValueChange={(value) =>
-                                        handleChange(["Специальность", value])
-                                    }
+                            <PrimarySelect
+                                def={translate("Специальность")}
+                                options={[]}
+                                onValueChange={(value) =>
+                                    handleChange(["Специальность", value])
+                                }
+                            />
+                            <Input2
+                                type={"text"}
+                                placeholder={translate("Ф.И.О")}
+                                onChange={handleChange}
+                                name="fullName"
+                            />
+                            <PrimarySelect
+                                def={translate("Препарат")}
+                                options={[]}
+                                onValueChange={(value) => handleChange(["preparation", value])}
+                            />
+                            <DateRangePicker/>
+                        </Form>
+                        <InfoContainer>
+                            <InfoItem>
+                                <Title size={"24"}>{translate("Квота")}</Title>
+                                <Title size={"38"} title="true">
+                                    {dashboardData?.quote}
+                                </Title>
+                            </InfoItem>
+                            <InfoItem>
+                                <Title size={"24"}>{translate("Продажи")}</Title>
+                                <Title size={"38"} title="true">
+                                    {dashboardData?.sales}
+                                </Title>
+                            </InfoItem>
+                            <InfoItem>
+                                <Title size={"24"}>%</Title>
+                                <Title size={"38"} title="true">
+                                    {dashboardData?.quote > 0
+                                        ? ((dashboardData?.sales / dashboardData?.quote) * 100).toFixed(2) + "%"
+                                        : "0%"}
+                                </Title>
+                            </InfoItem>
+                        </InfoContainer>
+                    </FilterWrapper>
+                    {
+                        region ?
+                            district ? <FilterWrapper>
+                                <TableSpec
+                                    thead={["Специальность", "Врачи по базе", "Врачи по факту"]}
+                                    tbody={dashboardData?.recordDistrictDTO?.recordWorkPlaceStatsDTOList}
+                                    data={tableData}
+                                    currentRegion={region}
                                 />
-                                <Input2
-                                    type={"text"}
-                                    placeholder={translate("Ф.И.О")}
-                                    onChange={handleChange}
-                                    name="fullName"
+                            </FilterWrapper> : <FilterWrapper>
+                                <TableRegions
+                                    thead={[translate("Регион"), translate("amount-kolvo")]}
+                                    tbody={dashboardData?.recordDistrictDTO?.employeeStatsList}
+                                    data={tableData}
+                                    change={handleChangeDistrict}
                                 />
-                                <PrimarySelect
-                                    def={translate("Препарат")}
-                                    options={[]}
-                                    onValueChange={(value) => handleChange(["preparation", value])}
+                            </FilterWrapper>
+                            :
+                            <FilterWrapper>
+                                <TableRegions
+                                    thead={[translate("Регион"), translate("amount-kolvo")]}
+                                    tbody={dashboardData?.recordRegionDTO?.employeeStatsList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                    change={handleChangeRegion}
                                 />
-                                <DateRangePicker/>
-                            </Form>
-                            <InfoContainer>
-                                <InfoItem>
-                                    <Title size={"24"}>{translate("Квота")}</Title>
-                                    <Title size={"38"} title="true">
-                                        500 000
-                                    </Title>
-                                </InfoItem>
-                                <InfoItem>
-                                    <Title size={"24"}>{translate("Продажи")}</Title>
-                                    <Title size={"38"} title="true">
-                                        400 000
-                                    </Title>
-                                </InfoItem>
-                                <InfoItem>
-                                    <Title size={"24"}>%</Title>
-                                    <Title size={"38"} title="true">
-                                        70%
-                                    </Title>
-                                </InfoItem>
-                            </InfoContainer>
-                        </FilterWrapper>
-                    </motion.div>
-                    <motion.div
-                        initial={{opacity: 0, x: 50}}
-                        animate={{opacity: 1, x: 0}}
-                        transition={{duration: 0.5}}
-                        style={{width: "100%"}}
-                    >
-
-                        <FilterWrapper>
-                            <GenericAnalitikaTable data={tableData}/>
-                        </FilterWrapper>
-                    </motion.div>
-
+                            </FilterWrapper>
+                    }
                 </ItemWrapper>
+                {
+                    region ?
+                        district ? "" : <ItemWrapper>
+                            <FilterWrapper>
+                                <TableRegions2
+                                    thead={["Регион", "ЛПУ", "Врачи по базе", "Врачи по факту", "Население"]}
+                                    tbody={dashboardData?.recordDistrictDTO?.recordStatsEmployeeFactList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                />
+                            </FilterWrapper>
+                            <FilterWrapper>
+                                <TableSpec
+                                    thead={["Специальность", "Врачи по базе", "Врачи по факту"]}
+                                    tbody={dashboardData?.recordDistrictDTO?.recordWorkPlaceStatsDTOList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                />
+                            </FilterWrapper>
+                        </ItemWrapper>
+                        :
+                        <ItemWrapper>
+                            <FilterWrapper>
+                                <TableRegions2
+                                    thead={["Регион", "ЛПУ", "Врачи по базе", "Врачи по факту", "Население"]}
+                                    tbody={dashboardData?.recordRegionDTO?.recordStatsEmployeeFactList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                />
+                            </FilterWrapper>
+                            <FilterWrapper>
+                                <TableSpec
+                                    thead={["Специальность", "Врачи по базе", "Врачи по факту"]}
+                                    tbody={dashboardData?.recordRegionDTO?.recordWorkPlaceStatsDTOList}
+                                    data={tableData}
+                                    currentRegion={region}
+                                />
+                            </FilterWrapper>
+                        </ItemWrapper>
+                }
 
-                <motion.div
-                    initial={{opacity: 0, x: 50}}
-                    animate={{opacity: 1, x: 0}}
-                    transition={{duration: 0.5}}
-                    style={{width: "100%"}}
-                >
-
-                    <ItemWrapper>
-                        <FilterWrapper>
-                            <GenericAnalitikaTable data={tableData}/>
-                        </FilterWrapper>
-                        <FilterWrapper>
-                            <GenericAnalitikaTable data={tableData}/>
-                        </FilterWrapper>
-                    </ItemWrapper>
-                </motion.div>
+                {
+                    // region ? <ItemWrapper>
+                    //     <FilterWrapper>
+                    //         <TableRegions data={tableData}/>
+                    //     </FilterWrapper>
+                    //     <FilterWrapper>
+                    //         <GenericAnalitikaTable data={tableData}/>
+                    //     </FilterWrapper>
+                    // </ItemWrapper> :       <ItemWrapper>
+                    //     <FilterWrapper>
+                    //         <GenericAnalitikaTable data={tableData}/>
+                    //     </FilterWrapper>
+                    //     <FilterWrapper>
+                    //         <GenericAnalitikaTable data={tableData}/>
+                    //     </FilterWrapper>
+                    // </ItemWrapper>
+                }
 
             </Wrapper>
 
@@ -224,12 +332,12 @@ const AnalitikaManagerPage = () => {
                             <PieDiagram
                                 item={["Рецепт", "СБ", "СУ", "ГЭ"]}
                                 bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                                title="По упаковкам"
+                                title={translate("Инвестиции_по_упаковкам")}
                             />
                             <PieDiagram
                                 item={["Рецепт", "СБ", "СУ", "ГЭ"]}
                                 bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                                title="По сумме"
+                                title={translate("Инвестиции_по_сумме")}
                             />
                         </Child>
                         <Child>
@@ -244,14 +352,14 @@ const AnalitikaManagerPage = () => {
                                 <PieDiagram
                                     item={["Рецепт", "СБ", "СУ", "ГЭ"]}
                                     bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                                    title="По в месяц"
+                                    title={translate("Рецептов_в_месяц")}
                                 />
                             </Child>
                         </Child>
-                        <Child>
-                            <HorizontalChart title={"Продажа препаратов по регионам"}/>
-                            <ChartBar title={"Активность врачей"} active={active}/>
-                        </Child>
+                        {/*<Child>*/}
+                        {/*  <HorizontalChart title={"Продажа препаратов по регионам"} />*/}
+                        {/*  <ChartBar title={"Активность врачей"} active={active} />*/}
+                        {/*</Child>*/}
                     </AppointmentWrapper>
                 </ChartContainer>
             </AllChartContainer>
@@ -260,3 +368,7 @@ const AnalitikaManagerPage = () => {
 };
 
 export default AnalitikaManagerPage;
+
+
+
+AnalitikaManagerPage
