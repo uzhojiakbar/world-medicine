@@ -104,9 +104,10 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                       </span>
                         </td>
                         <td>
-                            {language === "en" ? districtInfo[row.districtId]?.name : ""}
-                            {language === "ru" ? districtInfo[row.districtId]?.nameRussian : ""}
-                            {language === "uz" ? districtInfo[row.districtId]?.nameUzLatin : ""}
+                            {row?.regionDistrictDTO?.[`regionName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}, {" "}
+                            {row?.workPlaceDTO?.name}, {" "}
+
+
                         </td>
                         <td>
                             {translate("Создан")}{" "}

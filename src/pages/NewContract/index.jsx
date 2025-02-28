@@ -114,7 +114,7 @@ const NewConnect = ({title = ""}) => {
                                 <tr key={row?.id || index}>
                                     <td>№{index + 1}</td>
                                     <td className="idfixed">
-                                        {row?.firstName + " " + " " + row?.lastName}
+                                        {row?.user?.firstName + " " + " " + row?.user?.lastName}
                                     </td>
                                     <td>
                                         {/* VILOYAT */}
@@ -122,7 +122,7 @@ const NewConnect = ({title = ""}) => {
                                         {row?.regionDistrictDTO?.[`districtName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}
                                     </td>
 
-                                    <td>{formatPhoneNumber(row?.number)}</td>
+                                    <td>{formatPhoneNumber(row?.user?.number)}</td>
                                     <td> {row?.id ? `${translate("Договоры")} №${row?.id}` : translate("NONE")} </td>
 
                                     <td className="buttons">
