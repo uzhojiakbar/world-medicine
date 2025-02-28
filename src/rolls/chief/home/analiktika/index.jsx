@@ -24,14 +24,22 @@ import {Tumanlar} from "../../../../mock/data";
 import PrimarySelect from "../../../../components/Generic/Select/Select";
 import DateRangePicker from "../../../../components/Generic/DataRangePicker/DataRangePicker";
 import {useLanguage} from "../../../../context/LanguageContext";
-import {useGetRegions} from "../../../../utils/server/server.js";
+import {useGetDashboard, useGetDistricts, useGetRegions} from "../../../../utils/server/server.js";
 import {transformRegionsForSelect} from "../../../../utils/transformRegionsForSelect.js";
+import TableRegions from "./TableRegions.jsx";
+import {motion} from "framer-motion";
 
 const AnalitikaChiefPage = () => {
-    const {translate,language} = useLanguage();
+    const {translate, language} = useLanguage();
     const [region, setRegion] = useState(null);
+    console.log(region)
+
+    const {data: dashboardData, isLoading: isLoadingDashboard} = useGetDashboard({})
+    console.log("dashboardData", dashboardData)
+
 
     const {data: Regions, isLoading: loadingRegions} = useGetRegions();
+    const {data: Districts, isLoading: loadingDistricts} = useGetDistricts(region || null);
 
     const regionsTranslate = useMemo(
         () => transformRegionsForSelect(Regions, language),
@@ -42,7 +50,7 @@ const AnalitikaChiefPage = () => {
     const [selectedTuman, setSelectedTuman] = useState("");
 
     const handleChangeRegion = useCallback((selected) => {
-        console.log("1111111111",selected);
+        console.log("1111111111", selected);
         setRegion(selected.id);
     }, []);
 
@@ -73,6 +81,7 @@ const AnalitikaChiefPage = () => {
         }));
     };
 
+
     const tableData = {
         thead: {
             viloyat: "Регион",
@@ -102,7 +111,7 @@ const AnalitikaChiefPage = () => {
 
     return (
         <Container>
-            {loadingRegions ? (
+            {loadingRegions || isLoadingDashboard || loadingDistricts ? (
                 <div className="loaderParent">
                     <div className="loader"></div>
                 </div>
@@ -119,7 +128,9 @@ const AnalitikaChiefPage = () => {
                                 def={translate("Регион")}
                                 options={regionsTranslate || []}
                                 onValueChange={handleChangeRegion}
-                                onlyOption
+                                onlyOption={1}
+                                selectedType="id"
+                                selectedOptionId={region}
                             />
                             <PrimarySelect
                                 def={translate("Район")}
@@ -176,17 +187,35 @@ const AnalitikaChiefPage = () => {
                         </InfoContainer>
                     </FilterWrapper>
                     <FilterWrapper>
-                        <GenericAnalitikaTable data={tableData}/>
+                        {
+                            <TableRegions
+                                thead={["Регион", "Кол-во сотрудников"]}
+                                tbody={dashboardData?.recordRegionDTO?.employeeStatsList}
+                                data={tableData}
+                                currentRegion={region}
+                                change={handleChangeRegion}
+                            />
+                        }
                     </FilterWrapper>
                 </ItemWrapper>
-                <ItemWrapper>
-                    <FilterWrapper>
-                        <GenericAnalitikaTable data={tableData}/>
-                    </FilterWrapper>
-                    <FilterWrapper>
-                        <GenericAnalitikaTable data={tableData}/>
-                    </FilterWrapper>
-                </ItemWrapper>
+                {
+                    // region ? <ItemWrapper>
+                    //     <FilterWrapper>
+                    //         <TableRegions data={tableData}/>
+                    //     </FilterWrapper>
+                    //     <FilterWrapper>
+                    //         <GenericAnalitikaTable data={tableData}/>
+                    //     </FilterWrapper>
+                    // </ItemWrapper> :       <ItemWrapper>
+                    //     <FilterWrapper>
+                    //         <GenericAnalitikaTable data={tableData}/>
+                    //     </FilterWrapper>
+                    //     <FilterWrapper>
+                    //         <GenericAnalitikaTable data={tableData}/>
+                    //     </FilterWrapper>
+                    // </ItemWrapper>
+                }
+
             </Wrapper>
 
             <AllChartContainer>
