@@ -23,6 +23,7 @@ import Input2 from "../../../../components/Generic/Input/Input2";
 import {Tumanlar} from "../../../../mock/data";
 import {formatPhoneNumber} from "../../../../utils/PhoneFormatter.js";
 import Instance from "../../../../utils/Instance.js";
+import {useQueryClient} from "@tanstack/react-query";
 
 const tableData = [
     {
@@ -62,9 +63,8 @@ const UsloviyaModal = ({
                            }, id = 0, thead = [], data = [],
                            selectedID,
                        }) => {
-    if (data.length) {
-        data = tableData
-    }
+
+    const queryClient = useQueryClient();
 
     console.log("selectedID",selectedID)
 
@@ -287,7 +287,7 @@ const UsloviyaModal = ({
                                     ) : (
                                         <Wrapp>
                                             <InputWrapper
-                                                type="text"
+                                                type="number"
                                                 defaultValue={row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.correction  || ""}
                                                 onChange={(e) => setEditCorrection({ ...editCorrection, [row?.contractDTO?.id]: e.target.value })}
                                             />
