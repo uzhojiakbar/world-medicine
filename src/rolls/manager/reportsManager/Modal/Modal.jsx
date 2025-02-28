@@ -93,7 +93,7 @@ const UsloviyaModal = ({
             const medicine = row?.contractDTO?.medicinesWithQuantities?.find(
                 (med) => med.medicineId === selectedID
             );
-            return sum + (medicine?.contractMedicineAmount.amount || 0);
+            return sum + (Number(medicine?.correction) || 0);
         }, 0);
 
         setWrittenAll(totalWritten);

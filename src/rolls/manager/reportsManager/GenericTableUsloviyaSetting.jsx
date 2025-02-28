@@ -5,6 +5,7 @@ import {Input} from "antd";
 import UsloviyaModal from "./Modal/Modal.jsx";
 import log from "eslint-plugin-react/lib/util/log.js";
 import {useGetDTOForReports} from "../../../utils/server/server.js";
+import {useQueryClient} from "@tanstack/react-query";
 
 const Wrapper = styled.div`
     display: flex;
@@ -172,10 +173,14 @@ const GenericTable = ({thead = [], tableData = []}) => {
     const {data:report,isLoading} = useGetDTOForReports(selectedRowId);
     console.log("report123123", report);
 
+    const queryClient = useQueryClient(); // Initialize queryClient
 
-    const onclose = () => {
+
+    const onclose = async() => {
         setSelectedRow(null);
         setOpenModalId(false);
+        await queryClient.invalidateQueries(["DrugsWithReports"]);
+        await queryClient.invalidateQueries(["useGetDTOForReports"]);
     }
 
     return (
