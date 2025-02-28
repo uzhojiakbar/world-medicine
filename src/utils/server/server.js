@@ -1155,7 +1155,7 @@ export const useGetDrugsWithReports = () => {
                         return {
                             id: medicine.id,
                             data: [
-                                {name: `${medicine.name}. ${medicine.prescription} ${medicine.volume}`, status: ""},
+                                {name: `${medicine.name}. ${medicine.prescription} ${medicine.volume}. №${medicine.id}`, status: ""},
                                 {name: report.written.toString(), status: ""},
                                 {name: report.allowed.toString(), status: ""},
                                 {

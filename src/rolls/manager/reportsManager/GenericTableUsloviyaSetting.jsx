@@ -190,6 +190,7 @@ const GenericTable = ({thead = [], tableData = []}) => {
             <UsloviyaModal
                 onclose={onclose}
                 id={report}
+                selectedID={selectedRowId}
                 thead={["Ф.И.О","Район","ЛПУ","Специальность","Телефон","Выписано","Коррекция","Процент"]}
             />
 

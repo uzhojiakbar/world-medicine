@@ -40,11 +40,11 @@ const Item = styled.div`
   display: flex;
    align-items: center;
   justify-content: center; 
-  padding: 17px 0;
+  padding: 10px 0;
   width: 100%;
   max-width: 100%;
   border-radius: 7px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 32px;
   background-color: ${(props) => (props.active ? "#007bff" : "white")};

@@ -18,10 +18,11 @@ import {
 } from "./style"
 import PrimarySelect from "../../../../components/Generic/Select/Select"
 import {useLanguage} from "../../../../context/LanguageContext";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Input2 from "../../../../components/Generic/Input/Input2";
 import {Tumanlar} from "../../../../mock/data";
 import {formatPhoneNumber} from "../../../../utils/PhoneFormatter.js";
+import Instance from "../../../../utils/Instance.js";
 
 const tableData = [
     {
@@ -58,15 +59,37 @@ const tableData = [
 
 const UsloviyaModal = ({
                            onclose = () => {
-                           }, id = 0, thead = [], data = []
+                           }, id = 0, thead = [], data = [],
+                           selectedID,
                        }) => {
     if (data.length) {
         data = tableData
     }
 
+    console.log("selectedID",selectedID)
+
     const {translate} = useLanguage();
     const [filterData, setFilterData] = useState({})
     const [change, setChange] = useState(false)
+    const [writtenAll, setWrittenAll] = useState(0)
+    const [editCorrection, setEditCorrection] = useState({});
+
+
+    const [ids, setIds] = useState({...id})
+
+
+    useEffect(() => {
+        if (!id?.doctorReportListDTOList) return;
+
+        const totalWritten = id?.doctorReportListDTOList.reduce((sum, row) => {
+            const medicine = row?.contractDTO?.medicinesWithQuantities?.find(
+                (med) => med.medicineId === selectedID
+            );
+            return sum + (medicine?.contractMedicineAmount.amount || 0);
+        }, 0);
+
+        setWrittenAll(totalWritten);
+    }, [id, selectedID]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -88,6 +111,29 @@ const UsloviyaModal = ({
         setChange({...change, [name]: value})
     }
 
+
+    const handleSave = async (row) => {
+        // O'zgarishni saqlaymiz
+        const updatedCorrection = editCorrection[row.contractDTO.id] || row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.correction;
+        const quantityId = row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.quantityId
+        console.log("row",row)
+        console.log("updatedCorrection",updatedCorrection)
+        console.log("URLLLL",`/v1/report/correction/${quantityId}?correction=${updatedCorrection}`)
+        const res = await Instance.put(`/v1/report/correction/${quantityId}?correction=${updatedCorrection}`);
+
+        console.log("REEEEEEED",res)
+
+
+
+        // Backenda jo'natish kerak bo'lsa, shu joyda API chaqirish mumkin
+        console.log("Saqlangan correction:", updatedCorrection);
+
+        // O'zgarishlarni state-ga qayta yozish
+        setChange(null);
+    };
+
+
+    console.log("MODALDATA", ids)
     return (
         <ModalOverlay open={id}
                       onOk={() => onclose()}
@@ -135,11 +181,11 @@ const UsloviyaModal = ({
                 <StatsContainer>
                     <Stat>
                         <p>Дозволено</p>
-                        <p>900</p>
+                        <p>{id?.allowed}</p>
                     </Stat>
                     <Stat>
                         <p>Выписано</p>
-                        <p>900</p>
+                        <p>{writtenAll}</p>
                     </Stat>
                     <CloseButton onClick={() => onclose(false)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="3 0 40 40" fill="none">
@@ -158,7 +204,7 @@ const UsloviyaModal = ({
                     {/* <thead> */}
                     <tr>
                         {thead.map((v, i) => (
-                            <th  key={v}>
+                            <th key={v}>
                                 {v}
                             </th>
                         ))}
@@ -168,64 +214,68 @@ const UsloviyaModal = ({
 
                     {id?.doctorReportListDTOList?.map((row, index) => {
                         return (
-                                <TableRow key={index}>
-                                    <Item>
-                                        {row?.doctor?.firstName} {" "}
-                                        {row?.doctor?.lastName} {" "}
-                                        {row?.doctor?.middleName}
-                                    </Item>
-                                    <Item>
-                                        {row?.contractDTO?.regionDistrictDTO?.districtName} {" "}
-                                    </Item>
-                                    <Item>
-                                        {row?.doctor?.workplaceId} {" "}
-                                    </Item>
-                                    <Item>
-                                        {translate(row?.doctor?.fieldName)} {" "}
-                                    </Item>
-                                    <Item>
-                                        {formatPhoneNumber(998+row?.doctor?.number)} {" "}
-                                    </Item>
-                                    <Item>
-                                        40
-                                    </Item>
-                                    <Item className={"edit"}>
-                                        {change!== row?.contractDTO?.id?
-
+                            <TableRow key={index}>
+                                <Item>
+                                    {row?.doctor?.firstName} {" "}
+                                    {row?.doctor?.lastName} {" "}
+                                    {row?.doctor?.middleName}
+                                </Item>
+                                <Item>
+                                    {row?.contractDTO?.regionDistrictDTO?.districtName} {" "}
+                                </Item>
+                                <Item>
+                                    {row?.doctor?.workplaceId} {" "}
+                                </Item>
+                                <Item>
+                                    {translate(row?.doctor?.fieldName)} {" "}
+                                </Item>
+                                <Item>
+                                    {formatPhoneNumber(row?.doctor?.number)} {" "}
+                                </Item>
+                                <Item>
+                                    {row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.quote || "N/A"}
+                                    {/*40*/}
+                                </Item>
+                                <Item className={"edit"}>
+                                    {change !== row?.contractDTO?.id ? (
                                         <ChangeRow>
-                                            1
-                                            <IconChange >
-                                                    <div onClick={() => setChange(row?.contractDTO?.id)}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 12 12" fill="none">
-                                                    <path opacity="0.5" d="M10.4243 4.35653C11.1922 3.58868 11.1922 2.34374 10.4243 1.57589C9.6565 0.808036 8.41155 0.808036 7.6437 1.57589L7.2002 2.01941C7.20625 2.03775 7.21255 2.05634 7.2191 2.07518C7.38165 2.54375 7.6884 3.15801 8.2654 3.73501C8.8424 4.31202 9.45665 4.61875 9.92525 4.78131C9.944 4.78782 9.9625 4.79409 9.98075 4.80013L10.4243 4.35653Z" fill="black"/>
-                                                    <path d="M7.2193 2L7.2002 2.01909C7.20625 2.03743 7.21255 2.05603 7.2191 2.07487C7.38165 2.54344 7.6884 3.15769 8.2654 3.7347C8.8424 4.31171 9.45665 4.61843 9.92525 4.78099C9.9438 4.78744 9.96215 4.79366 9.9803 4.79966L5.70005 9.0799C5.4115 9.36845 5.26715 9.51275 5.1081 9.63685C4.92041 9.78325 4.71734 9.90875 4.50249 10.0112C4.32035 10.0979 4.12675 10.1624 3.73959 10.2915L1.69792 10.9721C1.50739 11.0356 1.29733 10.986 1.15531 10.844C1.0133 10.702 0.963715 10.4919 1.02722 10.3014L1.70778 8.2597C1.83684 7.87255 1.90136 7.67895 1.98817 7.4968C2.09057 7.28195 2.21606 7.0789 2.36245 6.8912C2.48653 6.73215 2.63082 6.58785 2.91937 6.2993L7.2193 2Z" fill="black"/>
-                                                 </svg>
-                                                    </div >
+                                            {row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.correction || "N/A"}
+                                            <IconChange>
+                                                <div onClick={() => setChange(row?.contractDTO?.id)}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"
+                                                         viewBox="0 0 12 12" fill="none">
+                                                        <path opacity="0.5"
+                                                              d="M10.4243 4.35653C11.1922 3.58868 11.1922 2.34374 10.4243 1.57589C9.6565 0.808036 8.41155 0.808036 7.6437 1.57589L7.2002 2.01941C7.20625 2.03775 7.21255 2.05634 7.2191 2.07518C7.38165 2.54375 7.6884 3.15801 8.2654 3.73501C8.8424 4.31202 9.45665 4.61875 9.92525 4.78131C9.944 4.78782 9.9625 4.79409 9.98075 4.80013L10.4243 4.35653Z"
+                                                              fill="black"/>
+                                                        <path
+                                                            d="M7.2193 2L7.2002 2.01909C7.20625 2.03743 7.21255 2.05603 7.2191 2.07487C7.38165 2.54344 7.6884 3.15769 8.2654 3.7347C8.8424 4.31171 9.45665 4.61843 9.92525 4.78099C9.9438 4.78744 9.96215 4.79366 9.9803 4.79966L5.70005 9.0799C5.4115 9.36845 5.26715 9.51275 5.1081 9.63685C4.92041 9.78325 4.71734 9.90875 4.50249 10.0112C4.32035 10.0979 4.12675 10.1624 3.73959 10.2915L1.69792 10.9721C1.50739 11.0356 1.29733 10.986 1.15531 10.844C1.0133 10.702 0.963715 10.4919 1.02722 10.3014L1.70778 8.2597C1.83684 7.87255 1.90136 7.67895 1.98817 7.4968C2.09057 7.28195 2.21606 7.0789 2.36245 6.8912C2.48653 6.73215 2.63082 6.58785 2.91937 6.2993L7.2193 2Z"
+                                                            fill="black"/>
+                                                    </svg>
+                                                </div>
                                             </IconChange>
-
-
                                         </ChangeRow>
-                                            :
-                                            <Wrapp>
+                                    ) : (
+                                        <Wrapp>
+                                            <InputWrapper
+                                                type="text"
+                                                value={editCorrection[row?.contractDTO?.id] || ""}
+                                                onChange={(e) => setEditCorrection({ ...editCorrection, [row?.contractDTO?.id]: e.target.value })}
+                                            />
+                                            <IconChange>
+                                                <div onClick={() => handleSave(row)}>
+                                                    <i style={{"color": "#216BF4", fontSize: "12px"}}
+                                                       className="fa-solid fa-floppy-disk"></i>
+                                                </div>
+                                            </IconChange>
+                                        </Wrapp>
+                                    )}
+                                </Item>
+                                <Item>
 
-                                                <InputWrapper type="text" defaultValue={"1"}  />
-                                                <IconChange >
+                                    0%
 
-                                            <div onClick={() => setChange(0)}>
-                                                <i style={{"color": "#216BF4", fontSize: "12px"}} className="fa-solid fa-floppy-disk"></i>
-                                            </div>
-                                                </IconChange>
-
-                                            </Wrapp>
-
-                                        }
-                                    </Item>
-                                    <Item>
-
-                                        0%
-
-                                    </Item>
-                                </TableRow>
+                                </Item>
+                            </TableRow>
                         );
                     })}
                     {/* </tbody> */}
@@ -236,84 +286,3 @@ const UsloviyaModal = ({
 };
 
 export default UsloviyaModal;
-//
-// {
-//     "doctor": {
-//     "userId": "2b769d21-e471-46c4-b968-8de1d554b891",
-//         "firstName": "Doctor",
-//         "lastName": "Doctor",
-//         "middleName": "",
-//         "dateOfBirth": "2025-02-11",
-//         "phoneNumber": "97822428",
-//         "number": "99897822428",
-//         "email": "doctor12@mail.ru",
-//         "position": "string",
-//         "fieldName": "NEUROLOGIST",
-//         "gender": "MALE",
-//         "status": "ENABLED",
-//         "creatorId": "5a09ef4d-2b99-4c1f-a12d-e0604d72cb3e",
-//         "workplaceId": 7,
-//         "districtId": 1,
-//         "role": "DOCTOR"
-// },
-//     "contractDTO": {
-//     "id": 1,
-//         "doctorId": "2b769d21-e471-46c4-b968-8de1d554b891",
-//         "goalStatus": "APPROVED",
-//         "createdAt": "2025-02-24",
-//         "startDate": "2025-02-24",
-//         "endDate": "2025-03-06",
-//         "agentId": null,
-//         "agentContractId": null,
-//         "managerId": "3e528c15-7528-49bd-8b82-b1c40f363888",
-//         "medicinesWithQuantities": [
-//         {
-//             "medicineId": 47,
-//             "quote": 123,
-//             "correction": 1,
-//             "agentContractId": null,
-//             "contractMedicineAmount": {
-//                 "id": 3,
-//                 "amount": 0
-//             },
-//             "medicine": {
-//                 "id": 47,
-//                 "name": "AEROLET",
-//                 "nameUzCyrillic": "AEROLET",
-//                 "nameUzLatin": "AEROLET",
-//                 "nameRussian": "AEROLET",
-//                 "imageUrl": "string",
-//                 "cip": 33750,
-//                 "quantity": 150,
-//                 "prescription": 100,
-//                 "volume": "ML",
-//                 "type": "SYRUPS",
-//                 "suPercentage": 10,
-//                 "suLimit": 10,
-//                 "suBall": 10,
-//                 "sbPercentage": 10,
-//                 "sbLimit": 10,
-//                 "sbBall": 10,
-//                 "gzPercentage": 10,
-//                 "gzLimit": 10,
-//                 "gzBall": 10,
-//                 "kbPercentage": 10,
-//                 "kbLimit": 10,
-//                 "kbBall": 10
-//             }
-//         }
-//     ],
-//         "regionDistrictDTO": {
-//         "regionId": 1,
-//             "regionName": "Tashkent Region",
-//             "regionNameUzCyrillic": "Тошкент вилояти",
-//             "regionNameUzLatin": "Toshkent viloyati",
-//             "regionNameRussian": "Ташкентская область",
-//             "districtId": 1,
-//             "districtName": "Bekabad District",
-//             "districtNameUzCyrillic": "Бекобод тумани",
-//             "districtNameUzLatin": "Bekobod tumani",
-//             "districtNameRussian": "Бекабадский район"
-//     }
-// }
-// }

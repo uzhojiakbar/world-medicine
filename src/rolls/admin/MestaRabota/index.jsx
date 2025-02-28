@@ -12,6 +12,7 @@ import * as XLSX from "xlsx";
 import Server, { useDeleteWorkplace, useGetWorkplacesDb } from "../../../utils/server/server";
 import { useQueryClient } from "@tanstack/react-query";
 import RefReshIcon from "../../../assets/svg/RefreshIcon.jsx";
+import AddLpu from "../../../pages/setingsCondition/LPU/AddLPUModal.jsx";
 
 const exportToExcel = (data) => {
   // 1. Jadval ma'lumotlarini tayyorlash
@@ -31,6 +32,8 @@ const exportToExcel = (data) => {
 
 function AdminMestaRabota() {
   const [loading, setLoading] = useState(false);
+  const [add, setAdd] = useState(0);
+
 
   const { data: workplaces, isLoading: isloadingWorkplaces } =
     useGetWorkplacesDb();
@@ -99,17 +102,21 @@ function AdminMestaRabota() {
 
   const { translate } = useLanguage();
 
+
+
   return (
     <>
       <Container1>
         <Title>{translate("Места_работы")}</Title>
+        <AddLpu open={add} setOpen={setAdd}/>
+
         <Box>
           <Text onClick={handleRefresh} >
             <RefReshIcon />
             {translate("Обновить_базу")}
           </Text>
 
-          <Button onClick={() => exportToExcel(workplaces)} icon={<IconPlus />}>
+          <Button onClick={() => setAdd(1)} icon={<IconPlus />}>
             {translate("Добавить_место_работы")}
           </Button>
         </Box>

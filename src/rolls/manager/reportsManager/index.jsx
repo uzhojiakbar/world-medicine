@@ -146,7 +146,7 @@ const ReportsManager = () => {
 
     return (<Wrapper>
         <TitleWrapper>
-            <Title size={"48px"}>{information.title}</Title>
+            <Title size={"40px"}>{information.title}</Title>
 
         </TitleWrapper>
         <ButtonWrapper>
