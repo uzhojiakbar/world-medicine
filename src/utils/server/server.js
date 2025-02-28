@@ -1891,14 +1891,16 @@ export const useGetManagerGoalId = (id) => {
     });
 };
 
-export const useUploadSales = () => {
+export const useUploadSales = ({}) => {
     return useMutation({
+        // startDate=2025-02-01&endDate=2025-03-01&page=0&size=10
         mutationFn: async (uploadData) => {
             console.log("managerData", uploadData);
             const response = await Instance.post(
                 "/v1/db/sales/load-data",
                 uploadData?.uploadData
             );
+            console.log("UPLOAD SUCCES: ", response.data)
             return response.data;
         },
         onSuccess: (data, variables) => {
@@ -1921,28 +1923,23 @@ const fetchSalesData = async (page) => {
     }
 };
 
-export const useGetSalesData = (page) => {
+export const useGetSalesData = ({
+                                    page = 0,
+                                    size = 10
+                                }) => {
     return useQuery({
         queryKey: ["salesData", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
         queryFn: async () => {
             try {
-                const {data} = await Instance.get(`/v1/db/sales/data?page=${page}&size=10`);
+                const {data} = await Instance.get(`/v1/db/sales/data`,{
+                    params: {
+                        page,
+                        size,
+                    }
+                });
 
-                // const content = await Promise.all(
-                //     data.content.map(async (sale) => {
-                //       const districtInfo = sale?.regionDTO?.districtId
-                //           ? await fetchDistrict(sale.regionDTO.districtId)
-                //           : null;
-                //
-                //       const regionInfo = districtInfo?.regionId
-                //           ? await fetchRegion(districtInfo.regionId)
-                //           : null;
-                //
-                //       return { ...sale, districtInfo, regionInfo };
-                //     })
-                // );
-
-                return {...data};
+                console.log("SAAAAAAAALES",data)
+                return data;
             } catch (error) {
                 console.error("Error fetching sales data:", error);
                 throw new Error("Failed to fetch sales data");
@@ -1992,14 +1989,13 @@ export const useGetStaticticsMedAgent = (id) => {
 // NOTE ADD MedAgent
 
 
-
 export const useGetRecepiesFilter = ({
                                          regionId,
                                          districtId,
                                          medicineId,
                                          doctorField,
-                                         page=0,
-                                         size=10
+                                         page = 0,
+                                         size = 10
                                      }) => {
     return useQuery({
         queryKey: [
@@ -2020,7 +2016,8 @@ export const useGetRecepiesFilter = ({
                         medicineId,
                         doctorField,
                         page,
-                        size                    },
+                        size
+                    },
                 });
                 return data;
             } catch (error) {
@@ -2032,15 +2029,38 @@ export const useGetRecepiesFilter = ({
     });
 };
 
+export const useUpdateSale = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(
+        {
+            mutationFn: async (uptWkData) => {
+                console.log("asdasdasd", uptWkData)
+                if (!uptWkData?.requestData?.id) throw new Error("ID majburiy");
+                const {data} = await Instance.put(`v1/db/sales/${uptWkData?.requestData?.id}`, uptWkData?.requestData);
+                return data;
+            },
+            onSuccess: (data, variables) => {
+                variables.onSuccess();
+                queryClient.invalidateQueries(["salesData"]);
+            },
+            onError: (error,variables) => {
+                variables.onError();
+                console.error("Xatolik yuz berdi:", error);
+            },
+        });
+};
+
+
 export const useGetDashboard = ({
 
-                                         regionId,
-                                         districtId,
-                                         medicineId,
-                                         doctorField,
-                                         page=0,
-                                         size=10
-                                     }) => {
+                                    regionId,
+                                    districtId,
+                                    medicineId,
+                                    doctorField,
+                                    page = 0,
+                                    size = 10
+                                }) => {
     return useQuery({
         queryKey: [
             "GetMedAgents",
@@ -2060,7 +2080,8 @@ export const useGetDashboard = ({
                         medicineId,
                         doctorField,
                         page,
-                        size                    },
+                        size
+                    },
                 });
                 return data;
             } catch (error) {
@@ -2071,8 +2092,6 @@ export const useGetDashboard = ({
         staleTime: 1000 * 60 * 10,
     });
 };
-
-
 
 
 export default Server;

@@ -11,6 +11,7 @@ import * as XLSX from "xlsx";
 import Server, {useGetSalesData, useUploadSales} from "../../../utils/server/server";
 import ProdajiTableGeneric from "./ProdajiTableGeneric/ProdajiTableGeneric";
 import {message} from "antd";
+import {useQueryClient} from "@tanstack/react-query";
 
 const exportToExcel = (data) => {
     // 1. Jadval ma'lumotlarini tayyorlash
@@ -25,42 +26,21 @@ const exportToExcel = (data) => {
 
     // 4. Faylni saqlash
     const blob = new Blob([excelBuffer], {type: "application/octet-stream"});
-    saveAs(blob, "Продажи.xlsx");
+    saveAs(blob, "Sales.xlsx");
 };
 
 function AddPreporad() {
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(0);
     const [jsonData, setJsonData] = useState([]);
-    const mutation = useUploadSales();
-    const { data: sales, isLoading } = useGetSalesData(1);
-
-    console.log(sales)
-
-
-
-
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            setTimeout(async () => {
-                const data = await Server.getProdaji();
-                setData(data || []);
-                setLoading(false);
-            }, 300);
-        } catch (err) {
-            console.error(err);
-            setLoading(false);
-        }
-    };
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const mutation = useUploadSales({});
+    const { data: sales, isLoading } = useGetSalesData({});
 
     const Container1 = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
 
         @media (max-width: 768px) {
             flex-direction: column;
@@ -145,12 +125,12 @@ function AddPreporad() {
             background-color: #1a5cd8;
         }
     `;
+
     const nav = useNavigate();
 
     const {translate} = useLanguage();
 
     const fileInputRef = useRef(null);
-
     const handleButtonClick = () => {
         fileInputRef.current.click();
     };
@@ -216,7 +196,7 @@ function AddPreporad() {
                 if (!data[col]?.[row]) break; // Stop if no more sales data
 
                 medicine.sales.push({
-                    districtId: parseInt(data[0][row] || 0), // Placeholder for now
+                    regionId: parseInt(data[0][row] || 0), // Placeholder for now
                     allDirectSales: parseInt(data[col][row] || 0),
                     allSecondarySales: parseInt(data[col][row] || 0),
                     total: parseFloat(data[col][row] || 0.0),
@@ -229,9 +209,9 @@ function AddPreporad() {
 
         return medicines;
     };
+    const queryClient = useQueryClient();
 
-    const SendData = () => {
-        console.log(jsonData)
+    const SendData = async () => {
         setLoading(true);
         mutation.mutate({
             uploadData: jsonData, onSuccess: (data) => {
@@ -239,25 +219,39 @@ function AddPreporad() {
                 message.success(translate("Sales qo'shildi!"));
                 setTimeout(() => {
                     setLoading(false);
-
                 }, 500);
             }, onError: (error) => {
                 console.log("mutation.error", error);
                 setLoading(false);
-                message.error(translate("Sales qoshisda xatolik xatolik"));
+                message.error(translate("Sales qoshisda xatolik xatolik")+": "+error?.response?.data?.error);
             },
         });
-        console.log("mutation.status", mutation.status);
+        await queryClient.invalidateQueries(["salesData"]);
 
-        console.log("requestData", jsonData);
+        setJsonData([])
     }
+
+    const refresh = async() => {
+        setLoading(1)
+        await queryClient.invalidateQueries(["salesData"]);
+        setLoading(0)
+    }
+    console.log("jsonData",jsonData)
+
 
     return (
         <>
             <Container1>
+                {loading || isLoading  ? (
+                    <div className="loaderParent">
+                        <div className="loader"></div>
+                    </div>
+                )
+                    : ""
+                }
                 <Title>{translate("Продажи")}</Title>
                 <Box>
-                    <Text onClick={fetchData}>
+                    <Text onClick={refresh}>
                         <svg
                             width="24"
                             height="24"
