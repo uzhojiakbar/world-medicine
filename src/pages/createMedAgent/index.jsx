@@ -169,7 +169,7 @@ const CreateMedAgent = () => {
 
         const requestData = {
             "doctorId": doctor.id,
-            "startDate": date.startDate,
+            "startDate": date.startDate === "Invalid Date" ? new Date().toISOString().split('T')[0] : data?.startDate,
             "endDate": date.endDate === "Invalid Date" ? null : date.endDate,
             "managerId": profileInfo.userId,
             "medicinesWithQuantities": selectedDrugs.map((drug) => ({
@@ -196,7 +196,7 @@ const CreateMedAgent = () => {
                     message.error(translate("Доктор_уже_назначил_контракт"));
                     console.log(1);
                 } else {
-                    message.error(translate("Ошибка_добавления_цели_для_менеджера"));
+                    message.error(translate("Ошибка_добавления_контракт_для_Доктор"));
                 }
             },
         });
@@ -325,7 +325,7 @@ const CreateMedAgent = () => {
                     </InfoWrapper>
                     <Button
                         onClick={prepareRequestData}
-                        w={"100%"} icon={<IconPlus/>}>{translate("Создать договор")}</Button>
+                        w={"100%"} icon={<IconPlus/>}>{translate("Создать_договор")}</Button>
                 </Wrapper>
             </Container>
         );

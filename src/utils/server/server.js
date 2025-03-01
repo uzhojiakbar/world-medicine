@@ -1157,6 +1157,7 @@ export const useGetDrugsWithReports = () => {
                             data: [
                                 {
                                     name: `${medicine.name}. ${medicine.prescription} ${medicine.volume}. №${medicine.id}`,
+                                    CIP: medicine.cip,
                                     status: ""
                                 },
                                 {name: report.written.toString(), status: ""},
@@ -1180,28 +1181,36 @@ export const useGetDrugsWithReports = () => {
         staleTime: 1000 * 60 * 10,
     });
 };
-
-export const useGetDTOForReports = (id) => {
+export const useGetDTOForReports = (id, { districtId, workplaceId, fieldname, query }) => {
     return useQuery({
-        queryKey: ["useGetDTOForReports", id],
+        queryKey: ["useGetDTOForReports", id, districtId, workplaceId, fieldname, query], // Filterlar kiritildi
         queryFn: async () => {
             try {
                 if (!id) {
-                    return null
+                    return null;
                 }
-                console.log("ID3", id)
-                const {data: report} = await Instance.get(`/v1/report/${id}`);
-                console.log("ID4", report)
+                console.log("ID3", id);
+
+                const { data: report } = await Instance.get(`/v1/report/${id}`, {
+                    params: {
+                        districtId,
+                        workplaceId,
+                        fieldname,
+                        ...query, // Qo‘shimcha query parametrlar bo‘lsa qo‘shiladi
+                    }
+                });
+
+                console.log("ID4", report);
                 return report;
             } catch (error) {
-                console.log("ID5", id)
+                console.log("ID5", id);
                 console.error("Error fetching drug reports", error);
                 throw error;
             }
         },
         staleTime: 1000 * 60 * 10,
     });
-}
+};
 
 // `status` maydonini hisoblash uchun funksiya
 const getStatus = (written, allowed, writtenInFact) => {

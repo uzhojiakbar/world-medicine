@@ -61,7 +61,7 @@ const tableData = [
 const UsloviyaModal = ({
                            onclose = () => {
                            }, id = 0, thead = [], data = [],
-                           selectedID,
+                           selectedID,filter,setFilter,
                        }) => {
 
     const queryClient = useQueryClient();
@@ -75,10 +75,7 @@ const UsloviyaModal = ({
     const [editCorrection, setEditCorrection] = useState({});
     const [modalId, setModalId] = useState(id);
 
-
-
     const [ids, setIds] = useState({...id})
-
     useEffect(() => {
         if (id) {
             setModalId(id);
@@ -101,9 +98,9 @@ const UsloviyaModal = ({
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        setFilterData((filterData) => ({
+        setFilter((filterData) => ({
             ...filterData,
-            [name]: value, // formData ichidagi qiymatni yangilash
+            name: value, // formData ichidagi qiymatni yangilash
         }));
     };
     const handleSubmit = (e) => {
@@ -187,11 +184,12 @@ const UsloviyaModal = ({
                         type={"text"}
                         placeholder={translate("Ф.И.О")}
                         onChange={handleChange}
-                        name="fullName"
+                        name="query"
                     />
                     <PrimarySelect
                         def={translate("Район")}
                         options={Tumanlar["Наманган"]}
+                        onlyOption={1}
                         onValueChange={(value) => handleSelectChange(["city", value])}
                     />
                     <PrimarySelect
@@ -263,13 +261,13 @@ const UsloviyaModal = ({
                                     {formatPhoneNumber(row?.doctor?.number)} {" "}
                                 </Item>
                                 <Item>
-                                    {row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.quote || "N/A"}
+                                    {row?.contractDTO?.medicinesWithQuantities?.find(med => med?.medicineId === selectedID)?.quote }
                                     {/*40*/}
                                 </Item>
                                 <Item className={"edit"}>
                                     {change !== row?.contractDTO?.id ? (
                                         <ChangeRow>
-                                            {row?.contractDTO?.medicinesWithQuantities?.find(med => med.medicineId === selectedID)?.correction || "N/A"}
+                                            {row?.contractDTO?.medicinesWithQuantities?.find(med => med?.medicineId === selectedID)?.correction}
                                             <IconChange>
                                                 <div onClick={() => setChange(row?.contractDTO?.id)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"
@@ -302,7 +300,11 @@ const UsloviyaModal = ({
                                 </Item>
                                 <Item>
 
-                                    0%
+                                    {
+                                        (
+                                            row?.contractDTO?.medicinesWithQuantities?.find(med => med?.medicineId === selectedID)?.quote > 0 ? (row?.contractDTO?.medicinesWithQuantities?.find(med => med?.medicineId === selectedID)?.correction / row?.contractDTO?.medicinesWithQuantities?.find(med => med?.medicineId === selectedID)?.quote) * 100 : 0
+                                        )?.toFixed(0)
+                                    }%
 
                                 </Item>
                             </TableRow>

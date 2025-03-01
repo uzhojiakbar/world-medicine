@@ -12,3 +12,8 @@ export const formatPhoneNumber = (phoneNumber) => {
     return phoneNumber;
   }
 };
+
+export function formatSum(number) {
+  let cleanNumber = `${number}`.replace(/\D/g, ""); // Faqat raqamlarni saqlash
+  return cleanNumber.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}

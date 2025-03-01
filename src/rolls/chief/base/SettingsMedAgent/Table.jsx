@@ -107,8 +107,10 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                   <tr key={row?.userId}>
                     <td>№{row?.id || index + 1}</td>
                     <td className="idfixed">
-                      {row?.lastName ?? " "} {row?.firstName ?? ""}{" "}
-                      {row?.middleName ?? ""}
+                      <span>
+                        {row?.lastName ?? " "} {row?.firstName ?? ""}{" "}
+                        {row?.middleName ?? ""}
+                      </span>
                     </td>
                     {/* <td>
                       {language === "en"

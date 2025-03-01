@@ -64,7 +64,8 @@ const PrimarySelect = ({
                            },
                            onlyOption = 0,
                            selectedOptionId = undefined,
-                           selectedType = "value"
+                           selectedType = "value",
+                           ref
                        }) => {
 
     const [open, setOpen] = useState(false);
@@ -97,6 +98,7 @@ const PrimarySelect = ({
                 def ? <InputLabel>{def}</InputLabel> : ""
             }
             <Select
+                ref={ref}
                 defaultValue={selectedOptionId || undefined}
                 onChange={handleValueChange}
                 displayEmpty

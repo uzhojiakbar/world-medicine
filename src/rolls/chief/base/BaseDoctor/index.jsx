@@ -25,6 +25,9 @@ const information = {
     new: 10,
 };
 
+import { useRef } from "react";
+
+
 const BaseDoctor = ({FilterHide, title}) => {
     const nav = useNavigate();
     const {translate, language, setLanguage} = useLanguage();
@@ -36,6 +39,15 @@ const BaseDoctor = ({FilterHide, title}) => {
     const [checked, setChecked] = useState(false);
     const [selectedSpecialization, setSelectedSpecialization] = useState("");
     const [date, setDate] = useState([]);
+
+
+    const nameSurnameRef = useRef(null);
+    const viloyatRef = useRef(null);
+    const tumanRef = useRef(null);
+    const specializationRef = useRef(null);
+    const mestaRabotRef = useRef(null);
+    const datePickerRef = useRef(null);
+
 
     console.log("nameSurname",nameSurname);
     const specializations = FieldnamesManager();
@@ -104,27 +116,17 @@ const BaseDoctor = ({FilterHide, title}) => {
 
     const handleDateChange = useCallback((dates) => setDate(dates), []);
 
-    const ClearFilter = () => {
-        const a = language
-        setLanguage("uz")
-        setLanguage("ru")
-        setLanguage(language)
-        setNameSurname(""); // FIO inputini tozalash
-        setSelectedViloyat(""); // Viloyat tanlovini tiklash
-        setSelectedTuman(""); // Tuman tanlovini tiklash
-        setSelectedMestaRabot(""); // Mesta rabot tanlovini tiklash
-        setSelectedSpecialization(""); // Specializatsiya tanlovini tiklash
-
-        setDate([]); // Sana oralig‘ini tozalash
+    const clearFilters = () => {
+        if (nameSurnameRef.current) nameSurnameRef.current.value = "";
+        if (viloyatRef.current) viloyatRef.current.clear();
+        if (tumanRef.current) tumanRef.current.clear();
+        if (specializationRef.current) specializationRef.current.clear();
+        if (mestaRabotRef.current) mestaRabotRef.current.clear();
+        if (datePickerRef.current) datePickerRef.current.clear();
     };
 
     return (
         <BaseDoctorCon  >
-            {/* {isLoadingDoctors || isLoadingDistricts || isLoadingRegions ? (
-        <div className="loaderParent">
-          <div className="loader"></div>
-        </div>
-      ) : null} */}
             <NavTitleSection>
                 {
                     title ? <div className="section1">
@@ -150,7 +152,7 @@ const BaseDoctor = ({FilterHide, title}) => {
                     {
                         !FilterHide ?
                             <Button
-                                onClick={ClearFilter}
+                                onClick={clearFilters}
                             >
                                 {translate("Очистить фильтр")}
                             </Button>
@@ -168,39 +170,44 @@ const BaseDoctor = ({FilterHide, title}) => {
                 !FilterHide ?
                     <div className="cards">
                         <Input
+                            ref={nameSurnameRef}
                             onChange={setNameSurname}
                             placeholder={translate("Fullname")}
                         />
+
                         <PrimarySelect
+                            ref={viloyatRef}
                             def={translate("область")}
                             options={regionsTranslate}
                             onValueChange={(value) => setSelectedViloyat(value.id)}
                             onlyOption={1}
                         />
+
                         <PrimarySelect
+                            ref={tumanRef}
                             def={translate("Район")}
                             options={districtsTranslate}
                             onValueChange={(value) => setSelectedTuman(value.districtId)}
                             onlyOption={1}
                         />
-                        {/*<PrimarySelect*/}
-                        {/*    def={translate("Категория")}*/}
-                        {/*    options={MestaRabot[selectedTuman] || []}*/}
-                        {/*    onValueChange={setSelectedMestaRabot}*/}
-                        {/*/>*/}
+
                         <PrimarySelect
+                            ref={specializationRef}
                             def="Специальность"
                             options={specializations}
                             onValueChange={(value) => setSelectedSpecialization(value.label)}
                             onlyOption={1}
                         />
+
                         <PrimarySelect
+                            ref={mestaRabotRef}
                             def={translate("Препарат")}
                             options={MestaRabot[selectedTuman] || []}
                             onValueChange={setSelectedMestaRabot}
                         />
 
-                        <DateRangePicker onDateChange={handleDateChange}/>
+                        <DateRangePicker ref={datePickerRef} onDateChange={handleDateChange}/>
+
                         <PrimarySelect
                             def={translate("Все")}
                             options={[]}
@@ -221,3 +228,9 @@ const BaseDoctor = ({FilterHide, title}) => {
 };
 
 export default BaseDoctor;
+
+{/*<PrimarySelect*/}
+{/*    def={translate("Категория")}*/}
+{/*    options={MestaRabot[selectedTuman] || []}*/}
+{/*    onValueChange={setSelectedMestaRabot}*/}
+{/*/>*/}

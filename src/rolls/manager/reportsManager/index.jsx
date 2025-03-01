@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     ButtonWrapper, InfoContainer, InfoPage, InputWrapper, Item, TableWrapper, Title, TitleWrapper, Wrapper,
 } from "./style";
@@ -7,6 +7,7 @@ import GenericTable from "./GenericTableUsloviyaSetting";
 import {useLanguage} from "../../../context/LanguageContext";
 import {Button, Input} from "antd";
 import {useGetDrugsWithReports} from "../../../utils/server/server.js";
+import {formatSum} from "../../../utils/PhoneFormatter.js";
 
 const EditableInfo = ({label, value, onSave}) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -17,7 +18,7 @@ const EditableInfo = ({label, value, onSave}) => {
         setIsEditing(false);
     };
 
-    return (<InputWrapper onDoubleClick={() => setIsEditing(true)}>
+    return (<InputWrapper >
         <p>{label}</p>
         {isEditing ? (<div style={{display: "flex", alignItems: "center", gap: "10px"}}>
             <Input
@@ -53,82 +54,6 @@ const ReportsManager = () => {
             percent: "11%",
         },
     };
-    const tableData = [
-        {
-            id: 1,
-            data: [
-                {
-                    name: "Ампициллин таб. 5/10мг №30", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-                {
-                    name: "900", status: ""
-                },
-                {
-                    name: "1700", status: "red"
-                },
-            ],
-            statusParent: ""
-        },
-        {
-            id: 2,
-            data: [
-                {
-                    name: "Ампициллин таб. 5/10мг №30", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-            ],
-            statusParent: "warning"
-        },
-        {
-            id: 3,
-            data: [
-                {
-                    name: "Ампициллин таб. 5/10мг №30", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-
-            ],
-            statusParent: "red"
-        },
-        {
-            id: 3,
-            data: [
-                {
-                    name: "Ампициллин таб. 5/10мг №30", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-                {
-                    name: "1000", status: ""
-                },
-
-            ],
-            statusParent: "done"
-        },
-    ];
 
     const [data, setData] = useState({
         prodaja: "48 000",
@@ -143,6 +68,34 @@ const ReportsManager = () => {
         setData((prev) => ({...prev, [key]: newValue}));
     }
 
+    const [ProdajaSum, setProdajaSum] = useState({
+        prodaja: 0,
+        totalDozvoleno: 0,
+    });
+    useEffect(() => {
+        const totalProdaja = drugsData?.reduce((sum, row) => {
+            const value = Number(row.data[3]?.name);
+            return sum + (!isNaN(value) ? value : 0);
+        }, 0);
+
+        const totalDozvoleno = drugsData?.reduce((sum, row) => {
+            const value = Number(row.data[2]?.name);
+            return sum + (!isNaN(value) ? value : 0);
+        }, 0);
+        const ProdanaSumax = drugsData?.reduce((sum, row) => {
+            const value = Number((row.data[0]?.CIP || 0)*row.data[3].name || 0);
+            return sum + (!isNaN(value) ? value : 0);
+        }, 0);
+
+        setProdajaSum({
+            ...ProdajaSum,
+            prodaja: totalProdaja,
+            totalDozvoleno,
+            ProdanaSumax: ProdanaSumax,
+            percentage: totalDozvoleno > 0 ? (totalProdaja / totalDozvoleno) * 100 : 0
+        });
+
+    }, [drugsData]);
 
     return (<Wrapper>
         <TitleWrapper>
@@ -161,13 +114,12 @@ const ReportsManager = () => {
 
         <InfoPage>
             <InfoContainer>
-                <EditableInfo label={translate("Продажа")} value={data.prodaja}
-                              onSave={(val) => handleSave("prodaja", val)}/>
-                <EditableInfo label={translate("Квота")} value={data.kvota}
+                <EditableInfo label={translate("Продажа")} value={formatSum(ProdajaSum?.prodaja)}/>
+                <EditableInfo label={translate("Квота")} value={formatSum(ProdajaSum?.totalDozvoleno)}
                               onSave={(val) => handleSave("kvota", val)}/>
-                <EditableInfo label={`% ${translate("выполнения")}`} value={data.vypolnenie}
+                <EditableInfo label={`% ${translate("выполнения")}`} value={`${ProdajaSum?.percentage?.toFixed(ProdajaSum.percentage>10?0:1)}%`}
                               onSave={(val) => handleSave("vypolnenie", val)}/>
-                <EditableInfo label={translate("Продано в сумах")} value={data.sumProdano}
+                <EditableInfo label={translate("Продано в сумах")} value={formatSum(ProdajaSum?.ProdanaSumax)}
                               onSave={(val) => handleSave("sumProdano", val)}/>
                 <EditableInfo label={translate("Дозволено")} value={data.dozvoleno}
                               onSave={(val) => handleSave("dozvoleno", val)}/>

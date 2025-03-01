@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PenIcon from "../../../assets/svg/penIcon";
 import {Input} from "antd";
 import UsloviyaModal from "./Modal/Modal.jsx";
@@ -170,18 +170,26 @@ const GenericTable = ({thead = [], tableData = []}) => {
     const [openModalId, setOpenModalId] = useState(false);
     const [loading, setLoading] = useState(0);
     const [selectedRowId, setSelectedRow] = useState(null);
-    const {data:report,isLoading} = useGetDTOForReports(selectedRowId);
+    const [fitter, setFitter] = useState({
+        districtId: null, workplaceId: null, fieldname: null
+        , query: null
+    });
+
+    console.log(fitter)
+
+    const {data: report, isLoading} = useGetDTOForReports(selectedRowId, fitter);
     console.log("report123123", report);
 
     const queryClient = useQueryClient(); // Initialize queryClient
 
 
-    const onclose = async() => {
+    const onclose = async () => {
         setSelectedRow(null);
         setOpenModalId(false);
         await queryClient.invalidateQueries(["DrugsWithReports"]);
         await queryClient.invalidateQueries(["useGetDTOForReports"]);
     }
+
 
     return (
         <Wrapper>
@@ -195,8 +203,10 @@ const GenericTable = ({thead = [], tableData = []}) => {
             <UsloviyaModal
                 onclose={onclose}
                 id={report}
+                filter={fitter}
+                setFilter={setFitter}
                 selectedID={selectedRowId}
-                thead={["Ф.И.О","Район","ЛПУ","Специальность","Телефон","Выписано","Коррекция","Процент"]}
+                thead={["Ф.И.О", "Район", "ЛПУ", "Специальность", "Телефон", "Выписано", "Коррекция", "Процент"]}
             />
 
             <TableStyled>

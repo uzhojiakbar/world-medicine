@@ -157,7 +157,7 @@ const AddMeneger = () => {
       mutation.mutate({
         requestData: requestData,
         onSuccess: () => {
-          message.success(translate("Manager qo'shildi!"));
+          message.success(translate("med_agent_added"));
           setTimeout(() => {
             setLoading(false);
 
@@ -166,7 +166,7 @@ const AddMeneger = () => {
         },
         onError: () => {
           setLoading(false);
-          message.error(translate("Manager registratsiya qilishda xatolik"));
+          message.error(translate("med_agent_error"));
         },
       });
       console.log("mutation.status", mutation.status);

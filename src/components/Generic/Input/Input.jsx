@@ -12,9 +12,11 @@ const Input = ({
                    },
                    className,
                    bgColor,
+                   ref
                }) => {
     return (
         <InputWrapper
+            ref={ref}
             className={className}
             maxLength={maxLength}
             type={type}

@@ -279,11 +279,18 @@ function AddPreporad() {
 
                     {
                         jsonData?.length ?
-                            <Button
-                                icon={<IconPlus />} onClick={SendData}
-                            >
-                                Send data to server
-                            </Button>
+                           <>
+                               <Button
+                                   icon={<IconPlus />} onClick={SendData}
+                               >
+                                   Send data to server
+                               </Button>
+                               <Button
+                                   icon={<IconPlus />} onClick={SendData}
+                               >
+                                   Send data to server
+                               </Button>
+                           </>
                             : <>
                             <HiddenInput
                                 ref={fileInputRef}
