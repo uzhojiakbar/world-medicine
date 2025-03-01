@@ -19,6 +19,7 @@ import ManagersGoal from "../rolls/chief/home/ManagersGoal/ManagersGoal";
 import Lpu from "../pages/setingsCondition/LPU";
 import AddDoctor from "../pages/addDoctor/AddDoctor.jsx";
 import ExcelUploader from "../components/FileUploader.jsx";
+import RegionDistrict from "../rolls/chief/RegionDistrict/RegionDistrict.jsx";
 
 export const RoutingChief = [
     {
@@ -123,6 +124,7 @@ export const RoutingChief = [
                 <Route path="Predoji" element={<AddPreporad/>}/>{" "}
                 <Route path="Arxiv" element={<Arxiv/>}/>
                 <Route path="lpu" element={<Lpu/>}/>
+                <Route path="regions" element={<RegionDistrict/>}/>
             </>
         ),
         visible: true,

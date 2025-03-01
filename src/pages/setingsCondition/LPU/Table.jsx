@@ -20,23 +20,6 @@ const Container = styled.div`
     transition: all 0.2s ease-in-out;
 `;
 
-const InputWrapper = styled(Input)`
-    background-color: ${({bgColor}) => (bgColor ? bgColor : "var(--bg-color)")};
-
-    border-radius: 10px;
-    display: inline-block;
-    height: ${({height}) => (height ? height : "40px")};
-    border: none !important;
-
-    width: 100%;
-    font-size: 16px;
-    font-family: "Vela Sans GX";
-
-    &::placeholder {
-        text-transform: capitalize;
-    }
-`;
-
 const Table = ({data = [], loading = true,refresh=()=>{}}) => {
     const [openModalId, setOpenModalId] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
