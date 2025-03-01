@@ -23,9 +23,9 @@ const Table = ({title = "", data = [], isLoading = false}) => {
     const [districtInfo, setDistrictInfo] = useState({});
     const {translate, language} = useLanguage();
     const [activeModal, setActiveModal] = useState(null);
-    const [modalOpen,setOpenModal] = useState(false);
+    const [modalOpen, setOpenModal] = useState(false);
 
-    const { data: user, isLoading: isUserLoading } = useGetUserInfo(activeModal ?? "");
+    const {data: user, isLoading: isUserLoading} = useGetUserInfo(activeModal ?? "");
 
 
     const itemsPerPage = 10;
@@ -34,9 +34,9 @@ const Table = ({title = "", data = [], isLoading = false}) => {
     const closeModal = () => {
         console.log("closeModal")
         setOpenModal(false);
-        setTimeout(()=>{
+        setTimeout(() => {
             setActiveModal(null);
-        },100)
+        }, 100)
     };
 
     const handleNext = () => {
@@ -125,7 +125,7 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                                 className="Viewbutton"
                             >
 
-                            <svg
+                                <svg
                                     width="24"
                                     height="24"
                                     viewBox="0 0 24 24"

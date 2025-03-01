@@ -10,6 +10,8 @@ export const ResponsiveTableAdmin = styled.table`
 
     table {
         width: 100%;
+        border-radius: 10px;
+
         border-collapse: collapse;
     }
 
@@ -32,8 +34,10 @@ export const ResponsiveTableAdmin = styled.table`
         color: #333; /* Default matn rangi */
         padding: 17px !important;
         height: 100%;
+        border: none;
         background-color: #f7f8fc; /* Jadval uyalarining default foni */
 
+      
         > button {
             border: none;
             outline: none;
@@ -47,6 +51,17 @@ export const ResponsiveTableAdmin = styled.table`
         > input {
             width: 100%;
         }
+
+        &:first-child {
+            border-top-left-radius: 15px !important;
+            border-bottom-left-radius: 15px !important;
+        }
+
+        &:last-child {
+            border-top-right-radius: 15px !important;
+            border-bottom-right-radius: 15px !important;
+        }
+
     }
 
     .empty {
@@ -62,7 +77,7 @@ export const ResponsiveTableAdmin = styled.table`
         position: sticky;
         left: 0;
         top: 30px;
-        height: 100%;
+        height: 100% !important;
         display: flex;
         align-content: center;
         justify-content: left;
@@ -70,8 +85,9 @@ export const ResponsiveTableAdmin = styled.table`
 
         span {
             padding: 10px;
-
             font-family: "Vela Sans GX", sans-serif;
+            text-align: center;
+            vertical-align: center;
         }
     }
 
@@ -146,13 +162,10 @@ export const ResponsiveTableAdmin = styled.table`
     }
 
     tr {
-        background-color: #f7f8fc; /* Jadval uyalarining default foni */
         padding: 18px 12px;
     }
 
     tr:hover {
-        background-color: #f1f1f1; /* Hover effekti */
-        
         td {
             background-color: #f1f1f1; /* Hover effekti */
         }
@@ -214,6 +227,7 @@ export const ResponsiveTableAdmin = styled.table`
         height: 100%;
         justify-content: center;
     }
+
 `;
 
 export const PaginationButtonsWrapper = styled.div`
