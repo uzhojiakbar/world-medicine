@@ -36,7 +36,7 @@ function AdminMestaRabota() {
 
 
   const { data: workplaces, isLoading: isloadingWorkplaces } =
-    useGetWorkplacesDb();
+    useGetWorkplacesDb({});
   const queryClient = useQueryClient();
 
 
