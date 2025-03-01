@@ -1181,9 +1181,9 @@ export const useGetDrugsWithReports = () => {
         staleTime: 1000 * 60 * 10,
     });
 };
-export const useGetDTOForReports = (id, { districtId, workplaceId, fieldname, query }) => {
+export const useGetDTOForReports = (id, { districtId, workplaceId, fieldName, query }) => {
     return useQuery({
-        queryKey: ["useGetDTOForReports", id, districtId, workplaceId, fieldname, query], // Filterlar kiritildi
+        queryKey: ["useGetDTOForReports", id, districtId, workplaceId, fieldName, query], // Filterlar kiritildi
         queryFn: async () => {
             try {
                 if (!id) {
@@ -1195,8 +1195,8 @@ export const useGetDTOForReports = (id, { districtId, workplaceId, fieldname, qu
                     params: {
                         districtId,
                         workplaceId,
-                        fieldname,
-                        ...query, // Qo‘shimcha query parametrlar bo‘lsa qo‘shiladi
+                        fieldName,
+                        query, // Qo‘shimcha query parametrlar bo‘lsa qo‘shiladi
                     }
                 });
 

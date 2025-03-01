@@ -136,3 +136,11 @@ body {
 .MuiSelect-select {
     font-family: "Vela Sans GX";
 }
+
+.colorRed{
+    color: #FB3748;
+}
+
+.colorBlue{
+    color: #216BF4;
+}

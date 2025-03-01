@@ -17,6 +17,7 @@ const Wrapper = styled.div`
 const TableStyled = styled.table`
     width: 100%;
     border-collapse: separate;
+    
     border-spacing: 0 10px;
 
     th {
@@ -57,8 +58,19 @@ const TableStyled = styled.table`
 
 const TableRow = styled.tr`
     height: 60px;
-    border-radius: 27px;
-    background-color: ${({background}) => background === "warning" ? "#FFDB43" : background === "red" ? "#FB3748" : "#F7F8FC"};
+    background-color: ${({background}) =>
+            background === "warning" ? "#FFDB43" :
+                    background === "red" ? "#FB3748" : "#F7F8FC"};
+
+    td:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    td:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
 `;
 
 const IsOpen = styled.div`
@@ -142,6 +154,14 @@ const Footer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 17px;
+    
+    position: fixed;
+    bottom: 20px;
+    left: 5vw;
+    
+    width: 90vw;
+    background: #F7F8FC;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
     @media (max-width: 760px) {
         gap: 10px;
