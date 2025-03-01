@@ -1181,7 +1181,7 @@ export const useGetDrugsWithReports = () => {
         staleTime: 1000 * 60 * 10,
     });
 };
-export const useGetDTOForReports = (id, { districtId, workplaceId, fieldName, query }) => {
+export const useGetDTOForReports = (id, {districtId, workplaceId, fieldName, query}) => {
     return useQuery({
         queryKey: ["useGetDTOForReports", id, districtId, workplaceId, fieldName, query], // Filterlar kiritildi
         queryFn: async () => {
@@ -1191,7 +1191,7 @@ export const useGetDTOForReports = (id, { districtId, workplaceId, fieldName, qu
                 }
                 console.log("ID3", id);
 
-                const { data: report } = await Instance.get(`/v1/report/${id}`, {
+                const {data: report} = await Instance.get(`/v1/report/${id}`, {
                     params: {
                         districtId,
                         workplaceId,
@@ -1940,14 +1940,14 @@ export const useGetSalesData = ({
         queryKey: ["salesData", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
         queryFn: async () => {
             try {
-                const {data} = await Instance.get(`/v1/db/sales/data`,{
+                const {data} = await Instance.get(`/v1/db/sales/data`, {
                     params: {
                         page,
                         size,
                     }
                 });
 
-                console.log("SAAAAAAAALES",data)
+                console.log("SAAAAAAAALES", data)
                 return data;
             } catch (error) {
                 console.error("Error fetching sales data:", error);
@@ -2053,7 +2053,7 @@ export const useUpdateSale = () => {
                 variables.onSuccess();
                 queryClient.invalidateQueries(["salesData"]);
             },
-            onError: (error,variables) => {
+            onError: (error, variables) => {
                 variables.onError();
                 console.error("Xatolik yuz berdi:", error);
             },
@@ -2099,6 +2099,60 @@ export const useGetDashboard = ({
             }
         },
         staleTime: 1000 * 60 * 10,
+    });
+};
+
+
+export const useGetAllReportsWithDrugs = () => {
+    return useQuery({
+        queryKey: ["DrugsWithReportsAll"],
+        queryFn: async () => {
+            try {
+                const {data: medicines} = await Instance.get(`/v1/db/medicines`);
+
+                if (!medicines || !Array.isArray(medicines)) {
+                    throw new Error("Invalid medicines data");
+                }
+
+                console.log("medicines", medicines);
+
+                const reports = await Promise.all(
+                    medicines.map(async (medicine) => {
+                        try {
+                            const { data } = await Instance.get(`/v1/report/admin/{medicineId}?medicineId=${medicine.id}`);
+                            return data;
+                        } catch (error) {
+                            return null; // false emas, null yoki undefined bo‘lishi kerak
+                        }
+                    })
+                );
+                return reports.filter(Boolean);
+            } catch (error) {
+                console.error("Error fetching drug reports", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
+
+export const useSaveReportManager = () => {
+    return useMutation({
+        mutationFn: async (reportdata) => {
+            console.log("reportdata", reportdata);
+            const response = await Instance.post(
+                "/v1/report/save",
+                {body: reportdata?.requestData} // Ma'lumot body ichida ketadi
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
     });
 };
 

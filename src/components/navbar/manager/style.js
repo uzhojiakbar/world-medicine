@@ -118,9 +118,9 @@ const ChangeLanguage = styled.div`
 `;
 
 const ProfieBtn = styled(NavLink)`
-  width: 50px;
-  height: 50px;
-  background-color: #f7f8fc;
+  width:  40px;
+  height: 40px;
+  background-color: #F7F8FC;
   border-radius: 50%;
 
   display: flex;
@@ -129,8 +129,12 @@ const ProfieBtn = styled(NavLink)`
 
   cursor: pointer;
 
-  color: var(--icon-hover);
+  color: #216BF4;
   cursor: pointer;
+
+  &:hover {
+    background-color: #ebebeb;
+  }
 `;
 
 export const BellBtnContainer = styled.div`

@@ -269,7 +269,7 @@ const ReportsClient = () => {
 
     return (<Wrapper>
         <TitleWrapper>
-            <Title siz e={"36px"}>{information.title}</Title>
+            <Title size={"36px"}>{information.title}</Title>
             <Flex>
                 <CustomCheckbox
                     checked={isChecked1}

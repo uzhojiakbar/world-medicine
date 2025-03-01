@@ -58,7 +58,7 @@ const Profile = () => {
         CHIEF: translate("Главный_администратор"),
         SUPERADMIN: translate("Главный_администратор"),
         status: translate("неизвестный"),
-        ADMIN: translate("администратор"),
+        ADMIN: translate("Field Force"),
         MANAGER: translate("Менеджер"),
         privateData: translate("Личная_информация"),
         login: translate("Логин"),

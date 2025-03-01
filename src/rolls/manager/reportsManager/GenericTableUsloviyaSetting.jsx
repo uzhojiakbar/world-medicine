@@ -4,8 +4,15 @@ import PenIcon from "../../../assets/svg/penIcon";
 import {Input} from "antd";
 import UsloviyaModal from "./Modal/Modal.jsx";
 import log from "eslint-plugin-react/lib/util/log.js";
-import {useGetDTOForReports} from "../../../utils/server/server.js";
+import {
+    useGetAllReportsWithDrugs,
+    useGetDTOForReports,
+    useRegisterDoctor,
+    useSaveReportManager
+} from "../../../utils/server/server.js";
 import {useQueryClient} from "@tanstack/react-query";
+import {useLanguage} from "../../../context/LanguageContext.jsx";
+import {formatPhoneNumberForBackend} from "../../../utils/phoneFormatterForBackend.js";
 
 const Wrapper = styled.div`
     display: flex;
@@ -187,7 +194,6 @@ const Item = styled.td`
 `;
 
 const GenericTable = ({thead = [], tableData = []}) => {
-    const [openModalId, setOpenModalId] = useState(false);
     const [loading, setLoading] = useState(0);
     const [selectedRowId, setSelectedRow] = useState(null);
     const [fitter, setFitter] = useState({
@@ -195,25 +201,39 @@ const GenericTable = ({thead = [], tableData = []}) => {
         , query: null
     });
 
-    console.log(fitter)
-
-    const {data: report, isLoading} = useGetDTOForReports(selectedRowId, fitter);
-    console.log("report123123", report);
-
     const queryClient = useQueryClient(); // Initialize queryClient
+    const {data: reportsAll,isLoading: loadingReport1} = useGetAllReportsWithDrugs()
 
+
+    console.log("reportsAll"+loadingReport1,reportsAll);
+
+    const {translate} = useLanguage()
 
     const onclose = async () => {
         setSelectedRow(null);
-        setOpenModalId(false);
         await queryClient.invalidateQueries(["DrugsWithReports"]);
         await queryClient.invalidateQueries(["useGetDTOForReports"]);
+    }
+
+    const mutation = useSaveReportManager();
+
+    const SendReports = () => {
+        setLoading(1)
+        const date = new Date();
+
+        const requestData = {
+            "date": date.toISOString().split("T")[0],
+            salesReportDTOS: tableData
+        };
+
+        console.log(requestData)
+        setLoading(0)
     }
 
 
     return (
         <Wrapper>
-            {loading || isLoading ? (
+            {loading  ? (
                 <div className="loaderFixed">
                     <div className="loader"></div>
                 </div>
@@ -222,7 +242,6 @@ const GenericTable = ({thead = [], tableData = []}) => {
             )}
             <UsloviyaModal
                 onclose={onclose}
-                id={report}
                 filter={fitter}
                 setFilter={setFitter}
                 selectedID={selectedRowId}
@@ -257,7 +276,6 @@ const GenericTable = ({thead = [], tableData = []}) => {
                                     <IsOpen
                                         color={row.statusParent}
                                         onClick={() => {
-                                            setOpenModalId(true)
                                             setSelectedRow(row?.id)
                                         }}
                                     >
@@ -275,9 +293,8 @@ const GenericTable = ({thead = [], tableData = []}) => {
 
 
             <Footer>
-                <SendButton wdth="true" onClick={() => {
-                }}>
-                    Отправить счет
+                <SendButton wdth="true" onClick={() => SendReports()}>
+                    {translate("Отправить_счет")}
                 </SendButton>
             </Footer>
         </Wrapper>
