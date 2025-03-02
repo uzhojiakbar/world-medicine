@@ -57,7 +57,7 @@ const AddDoctor = () => {
             ) {
                 console.error(`❌ Xatolik: ${firstName || "Foydaluvchi"} ma’lumotlari to‘liq emas!`);
                 message.error(`Xatolik: ${firstName || "Foydaluvchi"} ma’lumotlari to‘liq emas!`)
-                return []; // ❌ Ma’lumot noto‘g‘ri bo‘lsa, bo‘sh array qaytariladi
+                return []; //  Ma’lumot noto‘g‘ri bo‘lsa, bo‘sh array qaytariladi
             }
             formattedData.push({
                 firstName,
