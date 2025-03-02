@@ -1735,6 +1735,24 @@ export const useRegisterDoctor = () => {
     });
 };
 // NOTE ADD MedAgent
+export const useUploadDoctor = () => {
+    return useMutation({
+        mutationFn: async (medagentdata) => {
+            const response = await Instance.post(
+                "/v1/user/upload-doctors",
+                medagentdata?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+// NOTE ADD MedAgent
 export const useRegisterMedAgent = () => {
     return useMutation({
         mutationFn: async (medagentdata) => {

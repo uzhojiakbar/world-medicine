@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {
     DataLayoutGrid, FormWrapper, IconSection, IconWrapper, InputWraper, Section, Wrapper,
 } from "./style.js";
@@ -12,7 +12,7 @@ import {useLanguage} from "../../context/LanguageContext.jsx";
 import {useNavigate} from "react-router-dom";
 import ForSee from "../../assets/svg/see.jsx";
 import {
-    useGetRegions, useGetWorkplaces, useRegisterDoctor, useRegisterManager,
+    useGetRegions, useGetWorkplaces, useRegisterDoctor, useRegisterManager, useUploadDoctor,
 } from "../../utils/server/server.js";
 import {transformRegionsForSelect, transformWorkplacesForSelect} from "../../utils/transformRegionsForSelect.js";
 import {MiniTitleSmall, Title} from "../../root/style.js";
@@ -21,9 +21,87 @@ import {formatPhoneNumberForBackend} from "../../utils/phoneFormatterForBackend.
 import GenericDatePicker from "../../components/Generic/GenericCalendar/GenericCalendar.jsx";
 import {message} from "antd";
 import FieldnamesManager from "../../utils/fieldnamesManager.js";
+import styled from "styled-components";
+import * as XLSX from "xlsx";
 
-
+const HiddenInput = styled.input`
+    display: none;
+`;
 const AddDoctor = () => {
+    const fileInputRef = useRef(null);
+    const handleButtonClick = () => {
+        fileInputRef.current.click();
+    };
+    const processExcelData = (rawData) => {
+        if (!rawData || rawData.length < 2) {
+            console.error("❌ Xatolik: Excel fayli bo‘sh yoki noto‘g‘ri formatda!");
+            return [];
+        }
+
+        const headers = rawData[0]; // Birinchi qator - sarlavhalar
+        const dataRows = rawData.slice(1); // Qolgan qatorlar - ma'lumotlar
+
+        const formattedData = [];
+
+        for (const row of dataRows) {
+            const [
+                index, lastName, firstName, middleName, role, birthDate,
+                regionId, districtId, workPlaceId, fieldName, email,
+                phone, password
+            ] = row;
+
+            // ❗ **Validatsiya (bo‘sh maydon yoki noto‘g‘ri format)** ❗
+            if (
+                !firstName || !lastName || !password || !workPlaceId ||
+                !districtId || !birthDate || !phone
+            ) {
+                console.error(`❌ Xatolik: ${firstName || "Foydaluvchi"} ma’lumotlari to‘liq emas!`);
+                message.error(`Xatolik: ${firstName || "Foydaluvchi"} ma’lumotlari to‘liq emas!`)
+                return []; // ❌ Ma’lumot noto‘g‘ri bo‘lsa, bo‘sh array qaytariladi
+            }
+            formattedData.push({
+                firstName,
+                lastName,
+                middleName: middleName || "string", // Agar yo‘q bo‘lsa, bo‘sh string
+                email: email || null,
+                password,
+                workPlaceId,
+                districtId,
+                birthDate,
+                fieldName: fieldName || "NEUROLOGIST", // Default qiymat
+                position: "string",
+                gender: "MALE",
+                role: "CHIEF",
+                ...formatPhoneNumberForBackend(`${phone}`), // Telefon formatlash
+            });
+        }
+
+        console.log("✅ Excel ma’lumotlari formatlandi:", formattedData);
+        return formattedData;
+    };
+    const handleFileChange = (event) => {
+        console.log(1)
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: "array"});
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+
+                let rawData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+                rawData = rawData.filter(row => row.some(cell => cell !== null && cell !== ""));
+                console.log("📥 Raw Excel Data (Cleaned):", rawData);
+                const formattedJson = processExcelData(rawData);
+                setJsonData(formattedJson);
+                console.log("📤 Converted JSON:", formattedJson);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+    };
+
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -52,15 +130,26 @@ const AddDoctor = () => {
         }
     );
 
+    const [jsonData, setJsonData] = useState([]);
+
     const specializations = FieldnamesManager();
     const [loading, setLoading] = useState(false);
     const regionsTranslate = transformRegionsForSelect(Regions, language);
     const WrkPlc = transformWorkplacesForSelect(Workpalces);
 
+
+    const CancelUpload = () => {
+        setJsonData([]); // JSON ma'lumotlarini tozalaydi
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""; // Fayl inputini tozalaydi
+            fileInputRef.current.files = []; // Fayl inputini tozalaydi
+        }
+        console.log("🚫 Yuklash bekor qilindi!");
+        message.warning("Yuklash bekor qilindi!");
+    };
+
     const mutation = useRegisterDoctor();
-
-    console.log(loading, "loadingloadingloadingloading");
-
+    const mutationUpload = useUploadDoctor();
     const [tuman, setTuman] = useState([]);
 
     const nav = useNavigate();
@@ -121,7 +210,7 @@ const AddDoctor = () => {
     };
 
     const SendData = () => {
-        const requiredFields = ["firstName", "lastName","temporaryPassword", "district", "birthDate", "phone","workplace","fieldname"];
+        const requiredFields = ["firstName", "lastName", "temporaryPassword", "district", "birthDate", "phone", "workplace", "fieldname"];
 
         const missingFields = requiredFields.filter((field) => !formData[field]);
 
@@ -162,6 +251,34 @@ const AddDoctor = () => {
             });
         }
     };
+    const SendDatas = async () => {
+        if (!jsonData?.length) {
+            message.error("❌ Malumotlar topilmadi!");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await mutationUpload.mutateAsync({
+                requestData: jsonData, onSuccess: (data) => {
+                    console.log(data)
+                    if (data === "Doctors upload partially failed. Please check the input data.") {
+                        message.warning(translate("доктор_создан_частично"));
+                    } else {
+                        message.success(translate("доктор_создан"));
+                    }
+                }, onError: (error) => {
+                    console.log(error)
+                    setLoading(false);
+                    message.error(translate("create-doctor-error"));
+                }, // Har bir elementni serverga jo‘natamiz
+            })
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <Wrapper>
@@ -170,9 +287,35 @@ const AddDoctor = () => {
             </div>) : null}
             <Title className="titlee">
                 <div>{formDataLabels.title}</div>
-                <Button onClick={() => nav("../")} icon={<IconPlus/>}>
-                    {translate("Загрузить_базу_врача")}
-                </Button>
+                {
+                    jsonData?.length ?
+                        <div className={"buttons"}>
+                            <Button
+                                onClick={CancelUpload}
+                            >
+                                Bekor qilish
+                            </Button>
+                            <Button
+                                icon={<IconPlus/>} onClick={SendDatas}
+                            >
+                                Send data to server
+                            </Button>
+                        </div>
+                        : <div className="buttons">
+                            <HiddenInput
+                                ref={fileInputRef}
+                                type="file"
+                                accept=".xlsx"
+                                onChange={handleFileChange}
+                            />
+                            <Button icon={<IconPlus/>} onClick={handleButtonClick}>
+                                {translate("Загрузить_продажи_за_месяц")}
+                            </Button>
+                        </div>
+                }
+                {/*<Button onClick={() => nav("../")} icon={<IconPlus/>}>*/}
+                {/*    {translate("Загрузить_базу_врача")}*/}
+                {/*</Button>*/}
             </Title>
             <FormWrapper onSubmit={handleSubmit}>
                 <MiniTitleSmall>{formDataLabels.komu}</MiniTitleSmall>

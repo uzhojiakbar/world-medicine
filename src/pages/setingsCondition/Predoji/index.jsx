@@ -295,7 +295,7 @@ function AddPreporad() {
                             <HiddenInput
                                 ref={fileInputRef}
                                 type="file"
-                                accept=".xlsx, .xls, .csv"
+                                accept=".xlsx"
                                 onChange={handleFileChange}
                             />
                             <Button icon={<IconPlus />} onClick={handleButtonClick}>
