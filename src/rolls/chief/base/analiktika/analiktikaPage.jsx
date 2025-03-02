@@ -38,22 +38,17 @@ const BaseControl = () => {
 
     return (
         <Wrapper
-            className={css`
-                display: flex;
-                flex-direction: column;
-                gap: 50px;
-            `}
+
         >
-            <FilterAnaliktika/>
-
-
-            <div className="relative">
+            <div style={{"display":"flex",flexDirection: "column",gap: "20px"}}  className="relative">
+                <FilterAnaliktika/>
                 <NewContract
                     title={translate("Новые_подкл_договора")}
                     data={posts || []}
                     loading={false}
                 />
-            </div>        <div className="relative">
+            </div>
+            <div style={{"display":"flex",flexDirection: "column",gap: "20px"}} className="relative">
                 <ReNewConnect
                     title={translate("Пересмотренные_договора")}
                     data={posts || []}

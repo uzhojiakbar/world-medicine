@@ -1753,6 +1753,25 @@ export const useUploadDoctor = () => {
     });
 };
 // NOTE ADD MedAgent
+
+export const useUploadManager = () => {
+    return useMutation({
+        mutationFn: async (medagentdata) => {
+            const response = await Instance.post(
+                "/v1/user/upload-managers",
+                medagentdata?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+// NOTE ADD MedAgent
 export const useRegisterMedAgent = () => {
     return useMutation({
         mutationFn: async (medagentdata) => {

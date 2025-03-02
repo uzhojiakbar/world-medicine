@@ -75,7 +75,6 @@ const AddDoctor = () => {
                 ...formatPhoneNumberForBackend(`${phone}`), // Telefon formatlash
             });
         }
-
         console.log("✅ Excel ma’lumotlari formatlandi:", formattedData);
         return formattedData;
     };
@@ -266,7 +265,7 @@ const AddDoctor = () => {
                     if (data === "Doctors upload partially failed. Please check the input data.") {
                         message.warning(translate("доктор_создан_частично"));
                     } else {
-                        message.success(translate("доктор_создан"));
+                        message.success(translate("doctors_created"));
                     }
                 }, onError: (error) => {
                     console.log(error)
