@@ -55,8 +55,8 @@ const AddDoctor = () => {
                 !firstName || !lastName || !password || !workPlaceId ||
                 !districtId || !birthDate || !phone
             ) {
-                console.error(`❌ Xatolik: ${firstName || "Foydaluvchi"} ma’lumotlari to‘liq emas!`);
-                message.error(`Xatolik: ${firstName || "Foydaluvchi"} ma’lumotlari to‘liq emas!`)
+                console.error(`❌ ERROR: ${firstName || translate("user")} ${translate("information_is_not_full")} `);
+                message.error(`ERROR: ${firstName || translate("user")} ${translate("information_is_not_full")} `);
                 return []; //  Ma’lumot noto‘g‘ri bo‘lsa, bo‘sh array qaytariladi
             }
             formattedData.push({
@@ -145,7 +145,7 @@ const AddDoctor = () => {
             fileInputRef.current.files = []; // Fayl inputini tozalaydi
         }
         console.log("🚫 Yuklash bekor qilindi!");
-        message.warning("Yuklash bekor qilindi!");
+        message.warning(translate("Отменено"));
     };
 
     const mutation = useRegisterDoctor();
@@ -253,7 +253,7 @@ const AddDoctor = () => {
     };
     const SendDatas = async () => {
         if (!jsonData?.length) {
-            message.error("❌ Malumotlar topilmadi!");
+            message.error("❌"+translate("no_information_found"));
             return;
         }
 
@@ -293,12 +293,12 @@ const AddDoctor = () => {
                             <Button
                                 onClick={CancelUpload}
                             >
-                                Bekor qilish
+                                {translate("Отмена")}
                             </Button>
                             <Button
                                 icon={<IconPlus/>} onClick={SendDatas}
                             >
-                                Send data to server
+                                {translate("send-data-to-server")}
                             </Button>
                         </div>
                         : <div className="buttons">
