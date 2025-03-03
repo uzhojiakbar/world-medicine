@@ -10,8 +10,7 @@ import SettingsMenager from "../SettingsMenager/SettingsMenager";
 import SettingsMedAgent from "../SettingsMedAgent/SettingsMedAgent";
 import DisabledPage from "../../../../components/DisabledPage/index.jsx";
 import ReNewConnect from "../../../../pages/NewContract/index2.jsx";
-import SettingsAdmin from "../SettingsMedAgent/SettingsAdmin.jsx";
-// import SettingsMenager from "../../../../pages/SettingsMenager/SettingsMenager";
+import SettingsFieldForce from "../SettingsFieldForce/SettingsAdmin.jsx";
 
 const BaseControl = () => {
     const {translate} = useLanguage();
@@ -57,7 +56,7 @@ const BaseControl = () => {
             </div>
             <SettingsMenager/>
             <SettingsMedAgent/>
-            <SettingsAdmin/>
+            <SettingsFieldForce/>
         </Wrapper>
     );
 };

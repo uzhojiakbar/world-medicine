@@ -12,7 +12,7 @@ import {useLanguage} from "../../context/LanguageContext.jsx";
 import {useNavigate} from "react-router-dom";
 import ForSee from "../../assets/svg/see.jsx";
 import {
-    useGetRegions, useRegisterManager, useUploadDoctor, useUploadManager,
+    useGetRegions, useRegisterFieldForce, useRegisterManager, useUploadDoctor, useUploadFieldForce, useUploadManager,
 } from "../../utils/server/server.js";
 import {transformRegionsForSelect} from "../../utils/transformRegionsForSelect.js";
 import {MiniTitleSmall, Title} from "../../root/style.js";
@@ -22,15 +22,19 @@ import GenericDatePicker from "../../components/Generic/GenericCalendar/GenericC
 import {message} from "antd";
 import * as XLSX from "xlsx";
 import styled from "styled-components";
+import {useQueryClient} from "@tanstack/react-query";
 
-const AddMeneger = () => {
+const AddFieldForce = () => {
     const {translate, language} = useLanguage();
     const [showPassword, setShowPassword] = useState(false);
     const {data: Regions, isLoading} = useGetRegions();
     const [loading, setLoading] = useState(false);
     const regionsTranslate = transformRegionsForSelect(Regions, language);
 
-    const mutation = useRegisterManager();
+    const mutation = useRegisterFieldForce();
+    // const queryClient = useQueryClient();
+    // queryClient.invalidateQueries(["getAdmins"]);
+
 
     console.log(loading, "loadingloadingloadingloading");
 
@@ -56,7 +60,7 @@ const AddMeneger = () => {
     const nav = useNavigate();
 
     const formDataLabels = {
-        title: translate("Добавить_менеджера"),
+        title: translate("add_addmin"),
         download: "Загрузить базу менеджеров",
         komu: "Кому",
         fullName: translate("Fullname"),
@@ -66,12 +70,12 @@ const AddMeneger = () => {
         region: translate("Регион"),
         city: translate("Город"),
         district: translate("Район"),
-        contactData: translate("Контактные_данные_менеджера"),
+        contactData: translate("Контактные_данные"),
         workplace: translate("Место_работы"),
         email: translate("Почта"),
         phone: translate("Телефон"),
         temporaryPassword: translate("Временный_пароль"),
-        isAdmin: translate("Добавить_менеджера"),
+        isAdmin: translate("add_addmin"),
     };
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -237,7 +241,7 @@ const AddMeneger = () => {
     };
 
     //
-    const mutationUpload = useUploadManager();
+    const mutationUpload = useUploadFieldForce();
     const SendDatas = async () => {
         if (!jsonData?.length) {
             message.error("❌" + translate("no_information_found"));
@@ -266,13 +270,12 @@ const AddMeneger = () => {
         }
     };
 
-
     return (<Wrapper>
         {isLoading || loading ? (<div className="loaderParent">
             <div className="loader"></div>
         </div>) : null}
         <Title className="titlee">
-            <div className={"boldTextVelaSans"}>{formDataLabels.title}</div>
+            <div className={"boldTextVelaSans"} >{formDataLabels.title}</div>
             {
                 jsonData?.length ?
                     <div className={"buttons"}>
@@ -295,7 +298,7 @@ const AddMeneger = () => {
                             onChange={handleFileChange}
                         />
                         <Button icon={<IconPlus/>} onClick={handleButtonClick}>
-                            {translate("Загрузить_базу_менеджеров")}
+                            {translate("Загрузить_базу")}
                         </Button>
                     </div>
             }
@@ -395,8 +398,6 @@ const AddMeneger = () => {
                 </InputWraper>
             </Section>
         </FormWrapper>
-
-
         <Button
             mw={"1000px"}
             w={"100%"}
@@ -404,4 +405,4 @@ const AddMeneger = () => {
     </Wrapper>);
 };
 
-export default AddMeneger;
+export default AddFieldForce;

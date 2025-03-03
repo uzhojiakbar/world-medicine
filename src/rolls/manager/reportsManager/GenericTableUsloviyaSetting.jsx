@@ -18,7 +18,8 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     //   justify-content: space-between;
-    gap: 20px
+    gap: 20px;
+    padding-bottom: 100px;
 `;
 
 const TableStyled = styled.table`

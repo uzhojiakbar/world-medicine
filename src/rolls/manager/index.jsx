@@ -18,6 +18,9 @@ import AnalitikaManagerPage from "./analiktika";
 import UsloviyaProductTable from "../../Asadbek/usloviyaProductTable.jsx";
 import ProdajiTableGeneric from "../../Asadbek/ProdajiTableGeneric/ProdajiTableGeneric.jsx";
 import {motion} from "framer-motion";
+import {useGetManagerGoalWithManagerId} from "../../utils/server/server.js";
+import {jwtDecode} from "jwt-decode";
+import Cookies from "js-cookie";
 
 const ManagerHome = () => {
     const {translate} = useLanguage();
@@ -98,6 +101,18 @@ const ManagerHome = () => {
     ];
 
     const [loading, setLoading] = useState(false);
+
+
+    const {data: managerGoal,isLoading: ManagerGoalLoading} = useGetManagerGoalWithManagerId(jwtDecode(Cookies.get("access_token"))?.sub);
+
+    console.log("managerGoal",managerGoal)
+    console.log("managerGoal",managerGoal)
+
+    console.log("managerGoal",managerGoal)
+
+    console.log("managerGoal",managerGoal)
+
+
 
     const [tableData, settableData] = useState({
         thead: [
@@ -180,6 +195,11 @@ const ManagerHome = () => {
     });
     return (
         <Container>
+            {
+                ManagerGoalLoading ? (<div className="loaderParent">
+                    <div className="loader"></div>
+                </div>)  : ""
+            }
             <motion.div
                 initial={{opacity: 0, x: -30}}
                 animate={{opacity: 1, x: 0}}
@@ -203,50 +223,47 @@ const ManagerHome = () => {
                         initial={{opacity: 0, x: -30}}
                         animate={{opacity: 1, x: 0}}
                         transition={{duration: 0.5}}
-                        style={{width: "100%"}}
+                        style={{width: "100%",height: "100%"}}
                     >
                         <InfoWrapper>
                             <TitleSmall size={"18px"}> {translate("Охват врачей")}</TitleSmall>
+                            {
+                                managerGoal?.fieldGoalQuantities.map((v)=>{
+                                    const percentage = (v?.contractFieldAmount?.amount / v?.quote) * 100;
 
-                            <Item className="itemInner">
-                                <Highlight foiz={"20%"}/>
-
-                                <TitleSmall size={"12px"}>{translate("Гинеколог")}</TitleSmall>
-                                <TitleSmall size={"12px"}>12 из 20</TitleSmall>
-                            </Item>
-                            <Item className="itemInner">
-                                <Highlight foiz={"60%"}/>
-
-                                <TitleSmall size={"12px"}>{translate("Гинеколог")}</TitleSmall>
-                                <TitleSmall size={"12px"}>12 из 20</TitleSmall>
-                            </Item>
+                                    return <Item className="itemInner">
+                                        <Highlight foiz={`${percentage.toFixed(2)}%`}/>
+                                        <TitleSmall size={"12px"}>{translate(v?.fieldName)}</TitleSmall>
+                                        <TitleSmall size={"12px"}>{v?.contractFieldAmount?.amount} из {v?.quote}</TitleSmall>
+                                    </Item>
+                                })
+                            }
                         </InfoWrapper>
                     </motion.div>
                     <motion.div
                         initial={{opacity: 0, x: 30}}
                         animate={{opacity: 1, x: 0}}
                         transition={{duration: 0.5}}
-                        style={{width: "100%"}}
+                        style={{width: "100%",height: "100%"}}
                     >
                         <InfoWrapper>
                             <TitleSmall size={"18px"}>
                                 {" "}
                                 {translate("Заключение договоров")}
                             </TitleSmall>
-                            <Item className="itemInner">
-                                <Highlight foiz={"40%"}/>
+                            {
+                                managerGoal?.medicineGoalQuantities.map((v)=>{
+                                    const percentage = (v?.contractMedicineAmount?.amount / v?.quote) * 100;
 
-                                <TitleSmall size={"12px"}>{translate("Алтикам")}</TitleSmall>
-                                <TitleSmall size={"12px"}>12 из 20</TitleSmall>
-                            </Item>
-                            <Item className="itemInner">
-                                <Highlight foiz={"20%"}/>
-                                <TitleSmall size={"12px"}>{translate("Амлипин")}</TitleSmall>
-                                <TitleSmall size={"12px"}>45 из 100</TitleSmall>
-                            </Item>
+                                    return <Item className="itemInner">
+                                        <Highlight foiz={`${percentage.toFixed(2)}%`}/>
+                                        <TitleSmall size={"12px"}>{translate(v?.medicine?.name)}</TitleSmall>
+                                        <TitleSmall size={"12px"}>{v?.contractMedicineAmount?.amount} из {v?.quote}</TitleSmall>
+                                    </Item>
+                                })
+                            }
                         </InfoWrapper>
                     </motion.div>
-
                 </Wrap>
             </SellWrap>
             <AnalitikaManagerPage/>

@@ -1559,7 +1559,7 @@ export const useGetDoctorsFilter = ({
                                     }) => {
     return useQuery({
         queryKey: [
-            "GetMedAgents",
+            "GetDoctorsFilter",
             creatorId,
             countryId,
             regionId,
@@ -1660,6 +1660,7 @@ export const useGetManagersWithDistrictName = () => {
 
 // NOTE ADD MANAGER
 export const useRegisterManager = () => {
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (managerData) => {
             console.log("managerData", managerData);
@@ -1667,6 +1668,7 @@ export const useRegisterManager = () => {
                 "/v1/user/register-manager",
                 managerData?.requestData
             );
+            await queryClient.invalidateQueries(["GetManagers"]);
             return response.data;
         },
         onSuccess: (data, variables) => {
@@ -1677,6 +1679,30 @@ export const useRegisterManager = () => {
         },
     });
 };
+
+export const useRegisterFieldForce = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (managerData) => {
+            console.log("managerData", managerData);
+            const response = await Instance.post(
+                "/v1/user/register-admin",
+                managerData?.requestData
+            );
+            await queryClient.invalidateQueries(["getAdmins"]);
+
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess();
+        },
+        onError: (error, variables) => {
+            variables.onError();
+        },
+    });
+};
+
 export const useAddWorkplace = () => {
     return useMutation({
         mutationFn: async (wkData) => {
@@ -1772,6 +1798,45 @@ export const useUploadManager = () => {
     });
 };
 // NOTE ADD MedAgent
+
+export const useUploadMedAgents = () => {
+    return useMutation({
+        mutationFn: async (medagentdata) => {
+            const response = await Instance.post(
+                "/v1/user/upload-medagents",
+                medagentdata?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+// NOTE ADD MedAgent
+
+export const useUploadFieldForce= () => {
+    return useMutation({
+        mutationFn: async (medagentdata) => {
+            const response = await Instance.post(
+                "/v1/user/upload-admins",
+                medagentdata?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+// NOTE ADD MedAgent
+
 export const useRegisterMedAgent = () => {
     return useMutation({
         mutationFn: async (medagentdata) => {
@@ -2156,7 +2221,7 @@ export const useGetAllReportsWithDrugs = () => {
                 const reports = await Promise.all(
                     medicines.map(async (medicine) => {
                         try {
-                            const { data } = await Instance.get(`/v1/report/admin/{medicineId}?medicineId=${medicine.id}`);
+                            const { data } = await Instance.get(`/v1/report/admin/${medicine.id}`);
                             return data;
                         } catch (error) {
                             return null; // false emas, null yoki undefined bo‘lishi kerak
@@ -2172,6 +2237,31 @@ export const useGetAllReportsWithDrugs = () => {
         staleTime: 1000 * 60 * 10,
     });
 };
+
+
+export const useGetManagerGoalWithManagerId = (managerID = null) => {
+    return useQuery({
+        queryKey: ["useGetManagerGoalWithManagerId", managerID],
+        queryFn: async () => {
+            try {
+                if (managerID) {
+                    const data = await Instance.get(
+                        `v1/admin/manager/goal/manager-id/${managerID}`
+                    );
+                    return data?.data;
+                } else {
+                    return [];
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error; // xatolikni qaytarish
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
+
 
 
 export const useSaveReportManager = () => {

@@ -32,13 +32,16 @@ const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
   background-color: white;
   border-radius: 10px;
   cursor: pointer;
+  
+  
+  min-height: 177px;
 
   &:hover {
     opacity: 0.7;
-    background-color: #f7f8fc;
   }
 `;
 

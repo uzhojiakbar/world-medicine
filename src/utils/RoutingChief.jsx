@@ -20,6 +20,7 @@ import Lpu from "../pages/setingsCondition/LPU";
 import AddDoctor from "../pages/addDoctor/AddDoctor.jsx";
 import ExcelUploader from "../components/FileUploader.jsx";
 import RegionDistrict from "../rolls/chief/RegionDistrict/RegionDistrict.jsx";
+import AddFieldForce from "../pages/addFieldForce/AddFieldForce.jsx";
 
 export const RoutingChief = [
     {
@@ -87,6 +88,19 @@ export const RoutingChief = [
         element: (
             <MainContainer>
                 <AddDoctor/>
+            </MainContainer>
+        ),
+        child: [],
+        visible: false,
+        onlyAdmin: false,
+        icon: false,
+    }, {
+        id: 10,
+        title: "Добавить_менеджера",
+        path: "create-admin",
+        element: (
+            <MainContainer>
+                <AddFieldForce/>
             </MainContainer>
         ),
         child: [],

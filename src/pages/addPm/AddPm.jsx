@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useRef, useState} from "react";
 import {
   DataLayoutGrid,
   FormWrapper,
@@ -21,7 +21,7 @@ import {
   useGetRegions,
   useGetWorkplaces,
   useRegisterManager,
-  useRegisterMedAgent,
+  useRegisterMedAgent, useUploadManager, useUploadMedAgents,
 } from "../../utils/server/server.js";
 import {
   transformRegionsForSelect,
@@ -32,6 +32,8 @@ import Button from "../../components/Generic/Button/Button.jsx";
 import { formatPhoneNumberForBackend } from "../../utils/phoneFormatterForBackend.js";
 import GenericDatePicker from "../../components/Generic/GenericCalendar/GenericCalendar.jsx";
 import { message } from "antd";
+import styled from "styled-components";
+import * as XLSX from "xlsx";
 
 const AddMeneger = () => {
   const { translate, language } = useLanguage();
@@ -175,6 +177,126 @@ const AddMeneger = () => {
     }
   };
 
+  //
+  const HiddenInput = styled.input`
+        display: none;
+    `;
+
+  const [jsonData, setJsonData] = useState([]);
+
+  const fileInputRef = useRef(null);
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+  const processExcelData = (rawData) => {
+    if (!rawData || rawData.length < 2) {
+      console.error("❌ Xatolik: Excel fayli bo‘sh yoki noto‘g‘ri formatda!");
+      return [];
+    }
+
+    const headers = rawData[0]; // Birinchi qator - sarlavhalar
+    const dataRows = rawData.slice(1); // Qolgan qatorlar - ma'lumotlar
+
+    const formattedData = [];
+
+    for (const row of dataRows) {
+      const [
+        index, lastName, firstName, middleName, role, birthDate,
+        regionId, districtId, workPlaceId, email, phone, password
+      ] = row;
+
+      // ❗ **Validatsiya (bo‘sh maydon yoki noto‘g‘ri format)** ❗
+      if (
+          !firstName || !lastName || !password ||
+          !districtId || !workPlaceId || !birthDate || !phone
+      ) {
+        console.error(`❌ ERROR: ${firstName || translate("user")} ${translate("information_is_not_full")} `);
+        message.error(`ERROR: ${firstName || translate("user")} ${translate("information_is_not_full")} `);
+        return []; //  Ma’lumot noto‘g‘ri bo‘lsa, bo‘sh array qaytariladi
+      }
+      formattedData.push({
+        firstName,
+        lastName,
+        middleName: middleName || "string", // Agar yo‘q bo‘lsa, bo‘sh string
+        email: email || null,
+        password,
+        workPlaceId,
+        districtId,
+        birthDate,
+        fieldName: "NEUROLOGIST",
+        position: "string",
+        gender: "MALE",
+        role: "CHIEF",
+        ...formatPhoneNumberForBackend(`${phone}`), // Telefon formatlash
+      });
+    }
+
+    console.log("✅ Excel ma’lumotlari formatlandi:", formattedData);
+    return formattedData;
+  };
+  const handleFileChange = (event) => {
+    console.log(1)
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, {type: "array"});
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        let rawData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+        rawData = rawData.filter(row => row.some(cell => cell !== null && cell !== ""));
+        console.log("📥 Raw Excel Data (Cleaned):", rawData);
+        const formattedJson = processExcelData(rawData);
+        setJsonData(formattedJson);
+        console.log("📤 Converted JSON:", formattedJson);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+  };
+
+  const CancelUpload = () => {
+    setJsonData([]); // JSON ma'lumotlarini tozalaydi
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Fayl inputini tozalaydi
+      fileInputRef.current.files = []; // Fayl inputini tozalaydi
+    }
+    console.log("🚫 Yuklash bekor qilindi!");
+    message.warning(translate("Отменено"));
+  };
+
+  //
+  const mutationUpload = useUploadMedAgents();
+  const SendDatas = async () => {
+    if (!jsonData?.length) {
+      message.error("❌" + translate("no_information_found"));
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await mutationUpload.mutateAsync({
+        requestData: jsonData, onSuccess: (data) => {
+          console.log(data)
+          if (data?.includes("partially failed")) {
+            message.warning(translate("med-agent_создан_частично"));
+          } else {
+            message.success(translate("agents_created"));
+          }
+        }, onError: (error) => {
+          console.log(error)
+          setLoading(false);
+          message.error(translate("create-med-agent-error"));
+        }, // Har bir elementni serverga jo‘natamiz
+      })
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Wrapper>
       {isLoading || loading || isLoadingWorkPlaces ? (
@@ -183,10 +305,33 @@ const AddMeneger = () => {
         </div>
       ) : null}
       <Title className="titlee">
-        <div>{formDataLabels.title}</div>
-        <Button onClick={() => nav("../")} icon={<IconPlus />}>
-          {formDataLabels.download}
-        </Button>
+        <div className={"boldTextVelaSans"}>{formDataLabels.title}</div>
+        {
+          jsonData?.length ?
+              <div className={"buttons"}>
+                <Button
+                    onClick={CancelUpload}
+                >
+                  {translate("Отмена")}
+                </Button>
+                <Button
+                    icon={<IconPlus/>} onClick={SendDatas}
+                >
+                  {translate("send-data-to-server")}
+                </Button>
+              </div>
+              : <div className="buttons">
+                <HiddenInput
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".xlsx"
+                    onChange={handleFileChange}
+                />
+                <Button icon={<IconPlus/>} onClick={handleButtonClick}>
+                  {formDataLabels.download}
+                </Button>
+              </div>
+        }
       </Title>
       <FormWrapper onSubmit={handleSubmit}>
         <MiniTitleSmall>{formDataLabels.komu}</MiniTitleSmall>
@@ -260,7 +405,7 @@ const AddMeneger = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            placeholder={"+998 "}
+            placeholder={translate("998901234567")}
           />
         </Section>
         <MiniTitleSmall>{formDataLabels.temporaryPassword}</MiniTitleSmall>

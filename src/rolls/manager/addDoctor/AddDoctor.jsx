@@ -31,7 +31,7 @@ const AddDoctor = () => {
     region: translate("Регион"),
     city: translate("Город"),
     district: translate("Район"),
-    contactData: translate("Контактные данные менеджера"),
+    contactData: translate("Контактные_данные"),
     workplace: translate("Место работы"),
     email: translate("Почта"),
     phone: translate("Телефон"),

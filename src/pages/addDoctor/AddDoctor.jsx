@@ -285,7 +285,7 @@ const AddDoctor = () => {
                 <div className="loader"></div>
             </div>) : null}
             <Title className="titlee">
-                <div>{formDataLabels.title}</div>
+                <div className={"boldTextVelaSans"}>{formDataLabels.title}</div>
                 {
                     jsonData?.length ?
                         <div className={"buttons"}>
@@ -399,7 +399,7 @@ const AddDoctor = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder={"+998 "}
+                        placeholder={translate("998901234567")}
                     />
                 </Section>
                 <MiniTitleSmall>{formDataLabels.temporaryPassword}</MiniTitleSmall>
