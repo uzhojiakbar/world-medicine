@@ -50,7 +50,7 @@ const Item = styled.div`
   justify-content: space-between;
   padding: 17px 20px;
   background-color: #f7f8fc;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
 `;
 
@@ -60,7 +60,9 @@ const Highlight = styled.div`
   left: 0;
   width: ${({ foiz }) => (foiz ? foiz : 0)};
   height: 100%;
-  background-color: #62ffac;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background-color: #62FFAC;
 `;
 
 const TitleSmall = styled.div`
