@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import {useEffect, useState} from "react";
 import PenIcon from "../../../assets/svg/penIcon";
-import {Input} from "antd";
+import {Input, message} from "antd";
 import UsloviyaModal from "./Modal/Modal.jsx";
 import log from "eslint-plugin-react/lib/util/log.js";
 import {
     useGetAllReportsWithDrugs,
-    useGetDTOForReports,
+    useGetDTOForReports, useGetProfileInfo,
     useRegisterDoctor,
     useSaveReportManager
 } from "../../../utils/server/server.js";
@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 const TableStyled = styled.table`
     width: 100%;
     border-collapse: separate;
-    
+
     border-spacing: 0 10px;
 
     th {
@@ -162,11 +162,11 @@ const Footer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 17px;
-    
+
     position: fixed;
     bottom: 20px;
     left: 5vw;
-    
+
     width: 90vw;
     background: #F7F8FC;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -197,16 +197,20 @@ const Item = styled.td`
 const GenericTable = ({thead = [], tableData = []}) => {
     const [loading, setLoading] = useState(0);
     const [selectedRowId, setSelectedRow] = useState(null);
+
+
+    const [jsonData, setJsonData] = useState([]);
+
     const [fitter, setFitter] = useState({
         districtId: null, workplaceId: null, fieldname: null
         , query: null
     });
 
     const queryClient = useQueryClient(); // Initialize queryClient
-    const {data: reportsAll,isLoading: loadingReport1} = useGetAllReportsWithDrugs()
+    const {data: info, isLoading} = useGetProfileInfo();
 
+    const {data: reportsAll, isLoading: loadingReport1} = useGetAllReportsWithDrugs()
 
-    console.log("reportsAll"+loadingReport1,reportsAll);
 
     const {translate} = useLanguage()
 
@@ -220,21 +224,40 @@ const GenericTable = ({thead = [], tableData = []}) => {
 
     const SendReports = () => {
         setLoading(1)
-        const date = new Date();
+        const date = new Date(); // Hozirgi sana
+        const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+        const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
         const requestData = {
-            "date": date.toISOString().split("T")[0],
-            salesReportDTOS: tableData
+            "startDate": startDate.toISOString().split("T")[0],
+            "endDate": endDate.toISOString().split("T")[0],
+            "regionId": info?.regionDistrictDTO?.regionId,
+            "salesReportDTOS": jsonData
         };
 
-        console.log(requestData)
-        setLoading(0)
+
+        mutation.mutate({
+            requestData: requestData,
+            onSuccess: () => {
+                message.success(translate("reports_sended"));
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
+            },
+            onError: (err) => {
+                console.log("erre", err);
+                setLoading(false);
+
+                message.error(translate("reports_not_sended"));
+                console.log(1);
+            },
+        });
     }
 
 
     return (
         <Wrapper>
-            {loading  ? (
+            {loading ? (
                 <div className="loaderFixed">
                     <div className="loader"></div>
                 </div>
@@ -246,6 +269,8 @@ const GenericTable = ({thead = [], tableData = []}) => {
                 filter={fitter}
                 setFilter={setFitter}
                 selectedID={selectedRowId}
+                setJsonData={setJsonData}
+                jsonData={jsonData}
                 thead={["Ф.И.О", "Район", "ЛПУ", "Специальность", "Телефон", "Выписано", "Коррекция", "Процент"]}
             />
 

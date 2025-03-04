@@ -39,7 +39,7 @@ import FieldnamesManager from "../../../../utils/fieldnamesManager.js";
 
 const UsloviyaModal = ({
                            onclose = () => {
-                           }, thead = [], data = [], selectedID = 0
+                           }, thead = [], data = [], selectedID = 0,setJsonData=()=>{},jsonData
                        }) => {
 
     const [fitter, setFitter] = useState({
@@ -118,6 +118,23 @@ const UsloviyaModal = ({
         setChange({...change, [name]: value})
     }
 
+    const updateOrAddMedicine = (newMedicine, state, setState) => {
+        setState(prevState => {
+            const existingIndex = prevState.findIndex(item => item.medicineId === newMedicine.medicineId);
+
+            if (existingIndex !== -1) {
+                // Agar mavjud bo'lsa, yangilaymiz
+                return prevState.map((item, index) =>
+                    index === existingIndex ? newMedicine : item
+                );
+            } else {
+                // Agar mavjud bo'lmasa, qo'shamiz
+                return [...prevState, newMedicine];
+            }
+        });
+    };
+
+
     const handleSave = async (row) => {
         setLoading(true);
         try {
@@ -132,7 +149,10 @@ const UsloviyaModal = ({
 
             console.log("REEEEEEED", res);
             console.log("Saqlangan correction:", updatedCorrection);
+            console.log("Saqlangan correction22:", modalId);
             setLoading(0);
+
+
 
 
             // **modalId ichidagi correction ni yangilash**
@@ -149,6 +169,19 @@ const UsloviyaModal = ({
                 } : item),
             }));
 
+            const data = {
+                medicineId:selectedID,
+                written: modalId?.written,
+                allowed: modalId?.allowed,
+                sold: updatedCorrection,
+            }
+
+            updateOrAddMedicine({
+                medicineId:selectedID,
+                written: modalId?.written,
+                allowed: modalId?.allowed,
+                sold: +updatedCorrection || 0,
+            },jsonData,setJsonData);
             // O'zgarishlarni tozalash
             setChange(null);
             setEditCorrection({});

@@ -1133,7 +1133,7 @@ export const useGetDrugs = () => {
     });
 };
 
-export const useGetDrugsWithReports = () => {
+export const useGetDrugsWithReports = (regionId) => {
     return useQuery({
         queryKey: ["DrugsWithReports"],
         queryFn: async () => {
@@ -1150,7 +1150,12 @@ export const useGetDrugsWithReports = () => {
                 // Har bir dorining ID sini ishlatib report ma'lumotlarini olish
                 const reports = await Promise.all(
                     medicines.map(async (medicine) => {
-                        const {data: report} = await Instance.get(`/v1/report/${medicine.id}`);
+                        const {data: report} = await Instance.get(`/v1/report/${medicine.id}?regionId=${regionId}`);
+
+                        // Agar written, allowed va writtenInFact hammasi 0 bo‘lsa, null qaytaramiz
+                        if (report.written === 0 && report.allowed === 0 && report.writtenInFact === 0) {
+                            return null;
+                        }
 
                         return {
                             id: medicine.id,
@@ -1172,7 +1177,9 @@ export const useGetDrugsWithReports = () => {
                     })
                 );
 
-                return reports;
+// Null bo'lgan elementlarni filter qilib tashlaymiz
+                return reports.filter(report => report !== null);
+
             } catch (error) {
                 console.error("Error fetching drug reports", error);
                 throw error;
@@ -1818,7 +1825,7 @@ export const useUploadMedAgents = () => {
 };
 // NOTE ADD MedAgent
 
-export const useUploadFieldForce= () => {
+export const useUploadFieldForce = () => {
     return useMutation({
         mutationFn: async (medagentdata) => {
             const response = await Instance.post(
@@ -2041,9 +2048,15 @@ export const useGetSalesData = ({
     return useQuery({
         queryKey: ["salesData", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
         queryFn: async () => {
+            const date = new Date(); // Hozirgi sana
+            const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
             try {
                 const {data} = await Instance.get(`/v1/db/sales/data`, {
                     params: {
+                        startDate: startDate.toISOString().split("T")[0],
+                        endDate: endDate.toISOString().split("T")[0],
                         page,
                         size,
                     }
@@ -2210,7 +2223,7 @@ export const useGetAllReportsWithDrugs = () => {
         queryKey: ["DrugsWithReportsAll"],
         queryFn: async () => {
             try {
-                const {data: medicines} = await Instance.get(`/v1/db/medicines`);
+                const {data: medicines} = await Instance.get(`/v1/db/medicines/`);
 
                 if (!medicines || !Array.isArray(medicines)) {
                     throw new Error("Invalid medicines data");
@@ -2221,7 +2234,7 @@ export const useGetAllReportsWithDrugs = () => {
                 const reports = await Promise.all(
                     medicines.map(async (medicine) => {
                         try {
-                            const { data } = await Instance.get(`/v1/report/admin/${medicine.id}`);
+                            const {data} = await Instance.get(`/v1/report/admin/${medicine.id}`);
                             return data;
                         } catch (error) {
                             return null; // false emas, null yoki undefined bo‘lishi kerak
@@ -2254,6 +2267,8 @@ export const useGetManagerGoalWithManagerId = (managerID = null) => {
                 }
             } catch (error) {
                 console.error("Error fetching data", error);
+                return [];
+
                 throw error; // xatolikni qaytarish
             }
         },
@@ -2262,15 +2277,13 @@ export const useGetManagerGoalWithManagerId = (managerID = null) => {
 };
 
 
-
-
 export const useSaveReportManager = () => {
     return useMutation({
         mutationFn: async (reportdata) => {
             console.log("reportdata", reportdata);
             const response = await Instance.post(
                 "/v1/report/save",
-                {body: reportdata?.requestData} // Ma'lumot body ichida ketadi
+                reportdata?.requestData // Ma'lumot body ichida ketadi
             );
             return response.data;
         },

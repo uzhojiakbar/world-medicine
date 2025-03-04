@@ -8,6 +8,7 @@ import Button from "../../../components/Generic/Button/Button.jsx";
 import IconPlus from "../../../assets/svg/IconPlus.jsx";
 import RegionTable from "./Table.jsx";
 import {useGetDistricts, useGetRegions} from "../../../utils/server/server.js";
+import * as XLSX from "xlsx";
 
 
 const Container1 = styled.div`
@@ -117,6 +118,18 @@ const Clear = styled.div`
     }
 `;
 
+
+const exportToExcel = (data) => {
+    // 1. Jadval ma'lumotlarini tayyorlash
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Продажи");
+    const excelBuffer = XLSX.write(workbook, {bookType: "xlsx", type: "array"});
+    const blob = new Blob([excelBuffer], {type: "application/octet-stream"});
+    saveAs(blob, "Districts.xlsx");
+};
+
+
 const RegionDistrict = () => {
 
     const [loading, setLoading] = useState(false);
@@ -125,11 +138,19 @@ const RegionDistrict = () => {
     const {translate, language} = useLanguage();
 
     const {data: regions, isLoading: RegionsLoading} = useGetRegions();
-    const {data: districts, isLoading: DistrictsLoading} = useGetDistricts();
+
+    const districtsWithRegion = regions?.flatMap(region =>
+        region?.districts?.map(district => ({
+            regionId: region?.id,
+            districtId: district?.districtId,
+            regionName: region?.name,
+            districtName: district?.name,
+        }))
+    );
 
     const handleRefresh = () => {
         setLoading(1);
-        queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
+        queryClient.invalidateQueries(["Regions"]); // Ma'lumotlarni qayta yuklash
         setTimeout(() => {
             setLoading(0);
         }, 100);
@@ -139,7 +160,7 @@ const RegionDistrict = () => {
         <Container1>
             <div className={"cards"}>
                 <TitleSmall>
-                    Поиск по фильтрам
+                    {translate("Поиск_по_фильтрам")}
                 </TitleSmall>
                 <div className={"filters"}>
                     <PrimarySelect
@@ -197,7 +218,7 @@ const RegionDistrict = () => {
                             />
                         </svg>
                     </Text>
-                    <Clear onClick={() => console.log([])}>
+                    <Clear onClick={() => exportToExcel(districtsWithRegion)}>
                         <svg
                             width="24"
                             height="24"
@@ -223,7 +244,7 @@ const RegionDistrict = () => {
         </Container1>
 
         <RegionTable
-        loading={RegionsLoading || DistrictsLoading}
+            loading={RegionsLoading}
         />
     </Wrapper>
 }

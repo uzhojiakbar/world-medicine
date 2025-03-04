@@ -313,5 +313,7 @@
   "no_information_found": "Информация не найдена.",
   "information_is_not_full": "Информация неполная!!",
   "user": "Пользователь",
-  "send-data-to-server": "Отправка данных на сервер"
+  "send-data-to-server": "Отправка данных на сервер",
+  "reports_sended": "Отчеты отправлены",
+  "reports_not_sended": "Отчеты не отправлены"
 }

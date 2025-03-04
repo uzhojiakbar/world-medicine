@@ -24,6 +24,14 @@ const Details = styled.div`
     font-size: 16px;
     font-weight: 600;
   }
+    
+    .flexp{
+        display: flex;
+        font-size: 16px;
+        font-weight: 600;
+        justify-content: space-between;
+        align-items: center;
+    }
   > div {
     font-size: 16px;
     font-weight: 500;

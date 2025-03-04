@@ -106,6 +106,7 @@ body {
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.8);
     transition: 0.2s;
+    z-index: 9999999999999999999 !important;
 }
 .relative {
     position: relative;

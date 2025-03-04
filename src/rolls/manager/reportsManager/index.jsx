@@ -6,7 +6,7 @@ import {
 import GenericTable from "./GenericTableUsloviyaSetting";
 import {useLanguage} from "../../../context/LanguageContext";
 import {Button, Input} from "antd";
-import {useGetDrugsWithReports} from "../../../utils/server/server.js";
+import {useGetDrugsWithReports, useGetProfileInfo} from "../../../utils/server/server.js";
 import {formatSum} from "../../../utils/PhoneFormatter.js";
 
 const EditableInfo = ({label, value, onSave}) => {
@@ -38,7 +38,9 @@ const ReportsManager = () => {
     const {translate} = useLanguage();
 
     const [activeTab, setActiveTab] = useState("Рецепт");
-    const {data: drugsData, isLoading: IsLoadingDrugsData} = useGetDrugsWithReports();
+    const {data: info, isLoading} = useGetProfileInfo();
+
+    const {data: drugsData, isLoading: IsLoadingDrugsData} = useGetDrugsWithReports(info?.regionDistrictDTO?.regionId);
 
     console.log("drugsData", drugsData);
 
