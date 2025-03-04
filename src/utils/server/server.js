@@ -2223,7 +2223,7 @@ export const useGetAllReportsWithDrugs = () => {
         queryKey: ["DrugsWithReportsAll"],
         queryFn: async () => {
             try {
-                const {data: medicines} = await Instance.get(`/v1/db/medicines/`);
+                const {data: medicines} = await Instance.get(`/v1/db/medicines`);
 
                 if (!medicines || !Array.isArray(medicines)) {
                     throw new Error("Invalid medicines data");

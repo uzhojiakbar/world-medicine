@@ -5,9 +5,7 @@ import {Input, message} from "antd";
 import UsloviyaModal from "./Modal/Modal.jsx";
 import log from "eslint-plugin-react/lib/util/log.js";
 import {
-    useGetAllReportsWithDrugs,
     useGetDTOForReports, useGetProfileInfo,
-    useRegisterDoctor,
     useSaveReportManager
 } from "../../../utils/server/server.js";
 import {useQueryClient} from "@tanstack/react-query";
@@ -209,7 +207,6 @@ const GenericTable = ({thead = [], tableData = []}) => {
     const queryClient = useQueryClient(); // Initialize queryClient
     const {data: info, isLoading} = useGetProfileInfo();
 
-    const {data: reportsAll, isLoading: loadingReport1} = useGetAllReportsWithDrugs()
 
 
     const {translate} = useLanguage()

@@ -8,6 +8,7 @@ import GenericTable from "./GenericTableUsloviyaSetting";
 import {useLanguage} from "../../../context/LanguageContext";
 import styled from "styled-components";
 import * as XLSX from "xlsx";
+import {useGetAllReportsWithDrugs} from "../../../utils/server/server.js";
 
 const Label = styled.div`
     display: flex;
@@ -261,7 +262,8 @@ const ReportsClient = () => {
         ],
     });
     const [checkData, setCheckData] = useState({})
-    console.log(checkData);
+    const {data: reports} = useGetAllReportsWithDrugs()
+    console.log("reports",reports);
 
     const handleSave = (key, newValue) => {
         setData((prev) => ({...prev, [key]: newValue}));
