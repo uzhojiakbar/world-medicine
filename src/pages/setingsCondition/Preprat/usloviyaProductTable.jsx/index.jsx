@@ -390,7 +390,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
         deleteDrug.mutate(id, {
             onError: (error) => {
                 console.error("Failed to delete the drug:", error);
-                message.error("Dorini o‘chirishda xatolik yuz berdi.");
+                message.error(translate("drug_delete_error"));
                 setLoadingIn(0);
             },
             onSuccess: () => {

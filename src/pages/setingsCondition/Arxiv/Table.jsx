@@ -46,7 +46,7 @@ const Table = ({ title = "" }) => {
   console.log(data);
 
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(data?.length / itemsPerPage);
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {

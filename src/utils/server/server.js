@@ -1260,6 +1260,24 @@ export const useDeleteDrug = () => {
     });
 };
 
+export const useDeleteDistrcit = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id) => {
+            try {
+                await Instance.delete(`/v1/db/districts/delete/${id}`);
+            } catch (error) {
+                console.error("Error deleting district", error);
+                throw error; // Xatolikni qaytarish
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(["Regions"]);
+        },
+    });
+};
+
 export const useEnableDoctor = () => {
     const {translate} = useLanguage();
 

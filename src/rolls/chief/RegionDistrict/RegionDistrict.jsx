@@ -7,8 +7,9 @@ import {Title, TitleSmall} from "../../../root/style.js";
 import Button from "../../../components/Generic/Button/Button.jsx";
 import IconPlus from "../../../assets/svg/IconPlus.jsx";
 import RegionTable from "./Table.jsx";
-import {useGetDistricts, useGetRegions} from "../../../utils/server/server.js";
+import {useDeleteDistrcit, useDeleteDrug, useGetDistricts, useGetRegions} from "../../../utils/server/server.js";
 import * as XLSX from "xlsx";
+import {message} from "antd";
 
 
 const Container1 = styled.div`
@@ -156,6 +157,9 @@ const RegionDistrict = () => {
         }, 100);
     };
 
+
+
+
     return <Wrapper>
         <Container1>
             <div className={"cards"}>
@@ -244,7 +248,7 @@ const RegionDistrict = () => {
         </Container1>
 
         <RegionTable
-            loading={RegionsLoading}
+            loading={RegionsLoading || loading}
         />
     </Wrapper>
 }

@@ -113,7 +113,9 @@ body {
 
 .MuiMenuItem-root:hover {
     background-color: #f3f3f3 !important;
-}.MuiMenuItem-root:focus {
+}
+
+.MuiMenuItem-root:focus {
     background-color: #f3f3f3 !important;
 }
 
@@ -137,13 +139,14 @@ body {
     font-family: "Vela Sans GX";
 }
 
-.colorRed{
+.colorRed {
     color: #FB3748;
 }
 
-.colorBlue{
+.colorBlue {
     color: #216BF4;
 }
+
 .ant-table {
     border-radius: 10px !important;
     overflow: hidden;
@@ -178,6 +181,20 @@ table td:last-child {
     border-bottom-right-radius: 10px;
 }
 
-.boldTextVelaSans{
+.boldTextVelaSans {
     font-family: "Vela Sans GX Bold", sans-serif !important;
+}
+
+.doubeCLickEffect:active {
+    transition: 0.3s ease;
+    transform: scale(1.03);
+    background-color: #216BF4 !important;
+    color: white !important;
+    font-family: "Vela Sans GX Bold";
+
+}
+
+
+.doubeCLickEffect:active  svg path {
+    fill: white !important;
 }
