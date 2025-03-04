@@ -192,7 +192,7 @@ const Pagination = () => {
                     icon: <LpuIcon/>,
                 }, {
                     id: 4,
-                    name: translate("ЛПУ"),
+                    name: translate("Регионы_районы"),
                     path: "regions",
                     icon: <RegionsIcon/>,
                 },

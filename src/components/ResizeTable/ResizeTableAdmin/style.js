@@ -84,7 +84,7 @@ export const ResponsiveTableAdmin = styled.table`
         gap: 10px;
 
         span {
-            padding: 10px;
+            padding: 15px 0;
             font-family: "Vela Sans GX", sans-serif;
             text-align: center;
             vertical-align: center;
@@ -97,6 +97,13 @@ export const ResponsiveTableAdmin = styled.table`
         font-family: "Vela Sans GX", sans-serif;
         font-weight: 700;
         font-size: 18px;
+    }
+    
+    .bug{
+            padding: 15px 0;
+            font-family: "Vela Sans GX", sans-serif;
+            text-align: center;
+            vertical-align: center;
     }
 
     .Viewbutton {
@@ -123,6 +130,10 @@ export const ResponsiveTableAdmin = styled.table`
             opacity: 1;
             transform: scale(1.01);
         }
+    }
+    
+    .bordernone{
+        border: none;
     }
 
     .viewButtonSmall {
@@ -221,7 +232,7 @@ export const ResponsiveTableAdmin = styled.table`
         }
     }
 
-    .flex {
+    td .flex {
         display: flex !important;
         align-items: center;
         height: 100%;

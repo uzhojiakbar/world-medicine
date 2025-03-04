@@ -20,7 +20,10 @@ const Container = styled.div`
     transition: all 0.2s ease-in-out;
 `;
 
-const Table = ({data = [], loading = true,refresh=()=>{}}) => {
+const Table = ({
+                   data = [], loading = true, refresh = () => {
+    }
+               }) => {
     const [openModalId, setOpenModalId] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     //   const [data, setData] = useState([]);
@@ -30,7 +33,6 @@ const Table = ({data = [], loading = true,refresh=()=>{}}) => {
     const deleteLpu = useDeleteWorkplace();
     const {data: wk, isLoading: loadingWk} = useGetWorkplacesById(editId)
     const queryClient = useQueryClient();
-
 
 
     const itemsPerPage = 10;
@@ -90,7 +92,8 @@ const Table = ({data = [], loading = true,refresh=()=>{}}) => {
                     <table>
                         <thead>
                         <tr>
-                            <th className="idfixed">{translate("Ф_Врача")}</th>
+                            <th className="idfixed">{translate("ID")}</th>
+                            <th>{translate("Ф_Врача")}</th>
                             <th>{translate("Форма учреждения")}</th>
                             <th>{translate("Регион")}</th>
                             <th>{translate("Район")}</th>
@@ -101,8 +104,14 @@ const Table = ({data = [], loading = true,refresh=()=>{}}) => {
                         {currentData.length > 0 ? (
                             currentData.map((row) => (
                                 <tr key={row?.id}>
-
                                     <td className="idfixed">
+                                        <span>
+                                            {
+                                                row?.["id"]
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
                                         {
                                             row?.["name"]
                                         }
@@ -125,13 +134,12 @@ const Table = ({data = [], loading = true,refresh=()=>{}}) => {
 
                                         }
                                     </td>
-
-                                    <td className="flex" style={{height: "73px"}}>
+                                    <td style={{height: "100%"}}>
                                         {
-                                            <>
+                                            <div className={"flex buttons"}>
                                                 <button
                                                     style={{background: "transparent", padding: "0"}}
-                                                    className="Viewbutton"
+                                                    className="Viewbutton bordernone"
                                                     onClick={() => handleEditClick(row)}
                                                 >
                                                     <svg
@@ -154,8 +162,8 @@ const Table = ({data = [], loading = true,refresh=()=>{}}) => {
                                                 </button>
                                                 <button
                                                     style={{background: "transparent", padding: "0"}}
-                                                    className="Viewbutton"
-                                                    onClick={()=>handleDelete(row?.id)}
+                                                    className="Viewbutton bordernone"
+                                                    onClick={() => handleDelete(row?.id)}
                                                 >
                                                     <svg
                                                         width="24"
@@ -187,7 +195,7 @@ const Table = ({data = [], loading = true,refresh=()=>{}}) => {
                                                         />
                                                     </svg>
                                                 </button>
-                                            </>
+                                            </div>
                                         }
                                     </td>
                                 </tr>
@@ -195,7 +203,7 @@ const Table = ({data = [], loading = true,refresh=()=>{}}) => {
                         ) : (
                             <tr>
                                 <td
-                                    className="empty"
+                                    className="empty "
                                     colSpan="15"
                                     style={{textAlign: "center"}}
                                 >
