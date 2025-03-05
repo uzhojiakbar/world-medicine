@@ -306,15 +306,15 @@ const AnalitikaChiefPage = () => {
                 <ChartContainer>
                     <AppointmentWrapper>
                         <Title size={"24"}>
-                            {translate("Топ")} {назначению.length}{" "}
+                            {translate("Топ")} {6}{" "}
                             {translate("по назначению")}
                         </Title>
-                        {назначению.map((v) => {
+                        {dashboardData?.topProductsOnSellDTO?.map((v) => {
                             return (
                                 <Item>
-                                    <div>{v.title}</div>
+                                    <div>{v?.medicine?.name}</div>
                                     <div>
-                                        {v.price} {translate("шт")}.
+                                        {v?.amount} {translate("шт")}.
                                     </div>
                                 </Item>
                             );
@@ -324,7 +324,6 @@ const AnalitikaChiefPage = () => {
                         <SalesChart title={"Статистика продаж"} active={active}/>
                     </AppointmentWrapper>
                 </ChartContainer>
-
                 <ChartContainer>
                     <AppointmentWrapper gap={"20px"}>
                         <Child>

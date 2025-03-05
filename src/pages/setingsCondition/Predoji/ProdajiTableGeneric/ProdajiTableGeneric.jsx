@@ -13,6 +13,7 @@ import Server, {useGetSalesData, useUpdateSale, useUpdateWorkplace} from "../../
 import Input from "../../../../components/Generic/Input/Input.jsx"; // Import your Input component
 import {isArray} from "chart.js/helpers";
 import {useQueryClient} from "@tanstack/react-query";
+import log from "eslint-plugin-react/lib/util/log.js";
 
 const Container = styled.div`
     position: relative;
@@ -367,6 +368,10 @@ const ProdajiTableGeneric = ({
     const queryClient = useQueryClient();
 
     const handleInputChange = ({value, regionId, id, quote, allDirectSales, allSecondarySales}) => {
+
+        console.log(
+            {value, regionId, id, quote, allDirectSales, allSecondarySales}
+        );
         setChangeRow(prevRows => {
             const existingIndex = prevRows.findIndex(row => row.id === id && row.regionId === regionId);
             if (existingIndex !== -1) {
@@ -407,7 +412,9 @@ const ProdajiTableGeneric = ({
 
     const handleSave = async () => {
         setIsLoading1(1)
+        console.log("changeRow",changeRow)
          changeRow.map(async (row) => {
+
             console.log("roww", row)
             await mutation.mutate(
                 {
@@ -508,7 +515,7 @@ const ProdajiTableGeneric = ({
                                                                 handleInputChange({
                                                                     value: +value,
                                                                     regionId: region?.id,
-                                                                    id: row?.id,
+                                                                    id: region?.id,
                                                                     quote: region?.totalQuote,
                                                                     allDirectSales: 0,
                                                                     allSecondarySales: 0

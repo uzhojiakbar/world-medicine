@@ -238,7 +238,15 @@ function AddPreporad() {
     }
     console.log("jsonData",jsonData)
 
-
+    const CancelUpload = () => {
+        setJsonData([]); // JSON ma'lumotlarini tozalaydi
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""; // Fayl inputini tozalaydi
+            fileInputRef.current.files = []; // Fayl inputini tozalaydi
+        }
+        console.log("🚫 Yuklash bekor qilindi!");
+        message.warning(translate("Отменено"));
+    };
     return (
         <>
             <Container1>
@@ -281,14 +289,14 @@ function AddPreporad() {
                         jsonData?.length ?
                            <>
                                <Button
-                                   icon={<IconPlus />} onClick={SendData}
+                                   icon={<IconPlus />} onClick={CancelUpload}
                                >
-                                   Send data to server
+                                   {translate("Отмена")}
                                </Button>
                                <Button
                                    icon={<IconPlus />} onClick={SendData}
                                >
-                                   Send data to server
+                                   {translate("send-data-to-server")}
                                </Button>
                            </>
                             : <>

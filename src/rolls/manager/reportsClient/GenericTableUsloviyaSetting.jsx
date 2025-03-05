@@ -332,6 +332,7 @@ const Checkbox = styled.div`
 
 const UsloviyaProductTable = ({
                                   data,
+                                  data2,
                                   loading = true,
                                   title = "",
                                   isChecked = false,
@@ -340,6 +341,7 @@ const UsloviyaProductTable = ({
                                   }
                               }) => {
 
+    console.log("DATA2",data2)
     let {thead, tbody} = data;
     const [editId, setEditId] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
@@ -356,6 +358,8 @@ const UsloviyaProductTable = ({
         setEditId(row.id);
         setChangeRow(row); // Tahrirlanayotgan qatorni o'zgarish uchun saqlaymiz
     };
+
+    const [selectedMedicine, setSelectedMedicine] = useState(null);
 
     const handleInputChange = (name, value, subKey) => {
         setChangeRow((prevRow) => ({
@@ -405,11 +409,9 @@ const UsloviyaProductTable = ({
         setEditedRow([...tbody]);
     }, [tbody]);
     return (<Container>
-        {loading || loadingIn ? (<div className="loaderParent">
+        {loading || loadingIn ? (<div className="loaderFixed">
             <div className="loader"></div>
         </div>) : ("")}
-
-        {/* <ModalManager id={openModalId} setId={setOpenModalId} /> */}
         <WhiteWrapper>
             <div>
                 <TitleSmall>{title}</TitleSmall>
@@ -480,13 +482,11 @@ const UsloviyaProductTable = ({
                                     </>);
                                 }
                             })}
-
                         </tr>
                         </thead>
-
                         <tbody>
                         {editedRow?.length > 0 ? (editedRow?.map((row, index) => {
-                            return (<tr onDoubleClick={() => handleEditClick(row)}
+                            return (<tr onDoubleClick={() => setSelectedMedicine(row)}
                                         key={row.id}>
                                 {Object.keys(row)?.map((v, i) => {
                                     if (v === "id") return null; // id ni chiqarish shart emas
@@ -541,7 +541,6 @@ const UsloviyaProductTable = ({
                                         </>
                                     }
                                 })}
-
                                 {!isChecked ? <td className="buttons">
                                     {editId === row.id ? (<div className="buttons">
                                         <button
@@ -564,25 +563,13 @@ const UsloviyaProductTable = ({
                                                 background: "transparent", padding: "0",
                                             }}
                                             className="Viewbutton"
-                                            onClick={() => handleEditClick(row)}
+                                            onClick={() => setSelectedMedicine(row)}
                                         >
-                                            <svg
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    opacity="0.5"
-                                                    d="M20.8487 8.71306C22.3844 7.17735 22.3844 4.68748 20.8487 3.15178C19.313 1.61607 16.8231 1.61607 15.2874 3.15178L14.4004 4.03882C14.4125 4.0755 14.4251 4.11268 14.4382 4.15035C14.7633 5.0875 15.3768 6.31601 16.5308 7.47002C17.6848 8.62403 18.9133 9.23749 19.8505 9.56262C19.888 9.57563 19.925 9.58817 19.9615 9.60026L20.8487 8.71306Z"
-                                                    fill="#216BF4"
-                                                />
-                                                <path
-                                                    d="M14.4386 4L14.4004 4.03819C14.4125 4.07487 14.4251 4.11206 14.4382 4.14973C14.7633 5.08687 15.3768 6.31538 16.5308 7.4694C17.6848 8.62341 18.9133 9.23686 19.8505 9.56199C19.8876 9.57489 19.9243 9.58733 19.9606 9.59933L11.4001 18.1598C10.823 18.7369 10.5343 19.0255 10.2162 19.2737C9.84082 19.5665 9.43469 19.8175 9.00498 20.0223C8.6407 20.1959 8.25351 20.3249 7.47918 20.583L3.39584 21.9442C3.01478 22.0712 2.59466 21.972 2.31063 21.688C2.0266 21.4039 1.92743 20.9838 2.05445 20.6028L3.41556 16.5194C3.67368 15.7451 3.80273 15.3579 3.97634 14.9936C4.18114 14.5639 4.43213 14.1578 4.7249 13.7824C4.97307 13.4643 5.26165 13.1757 5.83874 12.5986L14.4386 4Z"
-                                                    fill="#216BF4"
-                                                />
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.5" d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12Z" fill="#343434"/>
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12C8.25 9.92893 9.92893 8.25 12 8.25C14.0711 8.25 15.75 9.92893 15.75 12C15.75 14.0711 14.0711 15.75 12 15.75C9.92893 15.75 8.25 14.0711 8.25 12ZM9.75 12C9.75 10.7574 10.7574 9.75 12 9.75C13.2426 9.75 14.25 10.7574 14.25 12C14.25 13.2426 13.2426 14.25 12 14.25C10.7574 14.25 9.75 13.2426 9.75 12Z" fill="#343434"/>
                                             </svg>
+
                                         </button>
 
                                     </>)}

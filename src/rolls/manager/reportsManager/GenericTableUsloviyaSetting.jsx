@@ -207,8 +207,6 @@ const GenericTable = ({thead = [], tableData = []}) => {
     const queryClient = useQueryClient(); // Initialize queryClient
     const {data: info, isLoading} = useGetProfileInfo();
 
-
-
     const {translate} = useLanguage()
 
     const onclose = async () => {

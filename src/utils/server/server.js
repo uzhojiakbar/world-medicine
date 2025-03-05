@@ -2074,8 +2074,6 @@ export const useGetSalesData = ({
             try {
                 const {data} = await Instance.get(`/v1/db/sales/data`, {
                     params: {
-                        startDate: startDate.toISOString().split("T")[0],
-                        endDate: endDate.toISOString().split("T")[0],
                         page,
                         size,
                     }
@@ -2254,7 +2252,10 @@ export const useGetAllReportsWithDrugs = () => {
                     medicines.map(async (medicine) => {
                         try {
                             const {data} = await Instance.get(`/v1/report/admin/${medicine.id}`);
-                            return data;
+                            return {
+                                ...data,
+                                medicine
+                            }
                         } catch (error) {
                             return null; // false emas, null yoki undefined bo‘lishi kerak
                         }
@@ -2270,6 +2271,38 @@ export const useGetAllReportsWithDrugs = () => {
     });
 };
 
+export const useGetAllReportsWithDrugsAdmin = () => {
+    return useQuery({
+        queryKey: ["DrugsWithReportsAll"],
+        queryFn: async () => {
+            try {
+                const {data: medicines} = await Instance.get(`/v1/db/medicines`);
+
+                if (!medicines || !Array.isArray(medicines)) {
+                    throw new Error("Invalid medicines data");
+                }
+
+                console.log("medicines", medicines);
+
+                const reports = await Promise.all(
+                    medicines.map(async (medicine) => {
+                        try {
+                            const {data} = await Instance.get(`/v1/report/admin/${medicine.id}`);
+                            return data;
+                        } catch (error) {
+                            return null; // false emas, null yoki undefined bo‘lishi kerak
+                        }
+                    })
+                );
+                return reports.filter(Boolean);
+            } catch (error) {
+                console.error("Error fetching drug reports", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
 
 export const useGetManagerGoalWithManagerId = (managerID = null) => {
     return useQuery({
@@ -2294,7 +2327,6 @@ export const useGetManagerGoalWithManagerId = (managerID = null) => {
         staleTime: 1000 * 60 * 10,
     });
 };
-
 
 export const useSaveReportManager = () => {
     return useMutation({

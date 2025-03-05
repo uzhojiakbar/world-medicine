@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     ButtonWrapper, InfoContainer, InfoPage, InputWrapper, Item, TableWrapper, Title, TitleWrapper, Wrapper,
 } from "./style";
@@ -63,10 +63,10 @@ const exportToExcel = (data, checkData) => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Архив договоров");
 
     // 5. Excel faylini yaratish
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const excelBuffer = XLSX.write(workbook, {bookType: "xlsx", type: "array"});
 
     // 6. Faylni saqlash
-    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    const blob = new Blob([excelBuffer], {type: "application/octet-stream"});
     saveAs(blob, "Архив договоров.xlsx");
 };
 const CheckboxInput = styled.input`
@@ -111,11 +111,11 @@ const Flex = styled.div`
 `
 
 const CustomCheckbox = ({label, checked, onChange}) => {
-    return (<Label onClick={onChange}  >
+    return (<Label onClick={onChange}>
         {checked ? "Отменить" : "Выбрать"}
-        <CheckboxWrapper   checked={checked}>
-            <CheckboxInput  id="select" type="checkbox" checked={checked} readOnly/>
-            <CheckMark   checked={checked}>
+        <CheckboxWrapper checked={checked}>
+            <CheckboxInput id="select" type="checkbox" checked={checked} readOnly/>
+            <CheckMark checked={checked}>
                 {checked ? (
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -223,48 +223,63 @@ const ReportsClient = () => {
             "КВ",
         ],
         tbody: [
-            {
-                id: 1,
-                name: "Амлипин таблетки \n" + "5/10 мг",
-                Продажа: "-?",
-                Лимит: "-?%",
-                Фактпродаж: "12%",
-                Рецептурник: "7",
-                "СУ": "5",
-                "СБ": "5",
-                "ГЗ": "5",
-                "КВ": "5",
-            },
-            {
-                id: 2,
-                name: "Амлипин таблетки \n" + "5/10 мг",
-                Продажа: "-?",
-                Лимит: "-?%",
-                Фактпродаж: "12%",
-                Рецептурник: "7",
-                "СУ": "5",
-                "СБ": "5",
-                "ГЗ": "5",
-                "КВ": "5",
-            },
-            {
-                id: 3,
-                name: "Амлипин таблетки \n" + "5/10 мг",
-                Продажа: "-?",
-                Лимит: "-?%",
-                Фактпродаж: "12%",
-                Рецептурник: "7",
-                "СУ": "5",
-                "СБ": "5",
-                "ГЗ": "5",
-                "КВ": "5",
-            },
+
         ],
     });
     const [checkData, setCheckData] = useState({})
-    const {data: reports} = useGetAllReportsWithDrugs()
-    console.log("reports",reports);
+    const {data: reports,isLoading: loadingReports} = useGetAllReportsWithDrugs()
+    console.log("reports", reports);
 
+    const data3 = reports?.map((v) => {
+        return {
+            id: v.id,
+            name: v?.medicine?.name,
+            Продажа: v?.written,
+            // Продажа: v?.doctorReportListDTOS?.reduce((sum, row) => {
+            //     return sum + row?.contractDTO?.medicinesWithQuantities?.filter((v2)=>{
+            //         return v2.medicineId === v.medicineId
+            //     })[0]?.contractMedicineAmount?.amount
+            // }, 0),
+            Лимит: v?.allowed,
+            Фактпродаж: `${Math.round((v?.written/v?.sold)*100)}%`,
+            Рецептурник: v?.doctorReportListDTOS?.length,
+            "СУ": v?.medicine?.suBall,
+            "СБ": v?.medicine?.sbBall,
+            "ГЗ": v?.medicine?.gzBall,
+            "КВ": v?.medicine?.kbBall,
+        }
+    })
+
+    useEffect(() => {
+        if (reports) {
+            setData2(prev => ({
+                ...prev,
+                tbody: data3 || []
+            }));
+        }
+    }, [reports]);
+
+
+    console.log("data3",data3)
+    // useEffect(() => {
+    //     useState({
+    //         ...data2.thead,
+    //         tbody: reports?.map((v) => {
+    //             return {
+    //                 id: v.id,
+    //                 name: v?.medicine?.name,
+    //                 Продажа: "-?",
+    //                 Лимит: "-?%",
+    //                 Фактпродаж: "12%",
+    //                 Рецептурник: "7",
+    //                 "СУ": "5",
+    //                 "СБ": "5",
+    //                 "ГЗ": "5",
+    //                 "КВ": "5",
+    //             }
+    //         })
+    //     })
+    // }, [reports])
     const handleSave = (key, newValue) => {
         setData((prev) => ({...prev, [key]: newValue}));
     }
@@ -323,7 +338,6 @@ const ReportsClient = () => {
 
             </Flex>
         </TitleWrapper>
-
         <InfoPage>
             <InfoContainer>
                 <EditableInfo label={translate("Продажа")} value={data.prodaja}
@@ -347,10 +361,10 @@ const ReportsClient = () => {
 
         </InfoPage>
         <TableWrapper>
-
             <GenericTable
-                loading={false}
+                loading={loadingReports}
                 data={data2}
+                data2={reports}
                 isChecked={isChecked1}
                 setCheckData={setCheckData}
                 checkData={checkData}
