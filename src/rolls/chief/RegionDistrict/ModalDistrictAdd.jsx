@@ -18,20 +18,21 @@ import GenericAnalitikaTable from "../../manager/analiktika/GenericTable.jsx";
 import {
     useAddRegion,
     useGetDoctorsFilter,
-    useGetProfileInfo,
+    useGetProfileInfo, useGetRegions,
     useSaveReportManager,
     useUpdateWorkplace
 } from "../../../utils/server/server.js";
 import Input from "../../../components/Generic/Input/Input.jsx";
 import {message} from "antd";
+import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
+import {transformRegionsForSelect} from "../../../utils/transformRegionsForSelect.js";
 
-const ModalAddRegion = ({
-                            open = false, setOpen = () => {
+const ModalAddDistrict = ({
+                              open = false, setOpen = () => {
     }
-                        }) => {
-    const {translate} = useLanguage();
+                          }) => {
+    const {translate,language} = useLanguage();
     const [loading, setLoading] = useState(0);
-
 
     const onClose = () => setOpen(false);
 
@@ -41,7 +42,6 @@ const ModalAddRegion = ({
         nameRussian: "",
         nameUzCyrillic: ""
     });
-
     const changeInput = (value, name) => {
         setFormData(prevState => ({
             ...prevState,
@@ -50,6 +50,9 @@ const ModalAddRegion = ({
 
         console.log(formData);
     };
+
+    const {data: Regions, isLoading} = useGetRegions();
+    const regionsTranslate = transformRegionsForSelect(Regions, language);
 
     const mutation = useAddRegion();
 
@@ -70,9 +73,6 @@ const ModalAddRegion = ({
         mutation.mutate({
             requestData: {
                 ...formData,
-                districts: [
-                    formData
-                ]
             },
             onSuccess: () => {
                 message.success(translate("region_added"));
@@ -89,14 +89,14 @@ const ModalAddRegion = ({
         });
     };
 
+
     return <ModalContainer
         w={"1000px"}
         BorderRadius={"40px"}
         minHeight={"40vh"}
-        maxheight={"55vh"}
         title={
             <ModalHeader>
-                <Title>{translate("add_region")}</Title>
+                <Title>{translate("addDistrict")}</Title>
                 <div onClick={onClose} className="closeIcon">
                     <CloseIcon/>
                 </div>
@@ -111,11 +111,21 @@ const ModalAddRegion = ({
         {loading ? (<div className="loaderWindow">
             <div className="loader"></div>
         </div>) : ""}
-        <ModalBodyHeader>
-            <MiniTitleSmall>
-                {translate("add_region_title")}
-            </MiniTitleSmall>
+        <ModalBodyHeader m={"40px"} mb={"20px"} gridC={1}>
+            <ModalBodySection height={"fit-content"}>
+                <MiniTitleSmall>
+                <span>
+                    {translate("Выберите_регион")}
+                </span>
+                </MiniTitleSmall>
+                <PrimarySelect
+                    def={translate("Выберите_регион")}
+                    borderRadius={"30px"}
+                    options={regionsTranslate}
+                />
+            </ModalBodySection>
         </ModalBodyHeader>
+
         <ModalBodyHeader m={"20px"} mb={"20px"}>
             <ModalBodySection height={"fit-content"}>
                 <MiniTitleSmall>
@@ -182,7 +192,7 @@ const ModalAddRegion = ({
     </ModalContainer>;
 };
 
-export default ModalAddRegion;
+export default ModalAddDistrict;
 
 
 // const {data: info, isLoading} = useGetProfileInfo();

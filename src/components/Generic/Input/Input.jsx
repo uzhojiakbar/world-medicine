@@ -12,7 +12,9 @@ const Input = ({
                    },
                    className,
                    bgColor,
-                   ref
+                   ref,
+    required=false,
+                   borderRadius
                }) => {
     return (
         <InputWrapper
@@ -21,11 +23,13 @@ const Input = ({
             maxLength={maxLength}
             type={type}
             disabled={disabled}
+            required={required}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder || ""}
             defaultValue={value}
             height={height}
             bgColor={bgColor}
+            borderRadius={borderRadius}
         />
     )
         ;

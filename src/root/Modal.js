@@ -5,10 +5,11 @@ import { m } from "framer-motion";
 
 export const ModalContainer = styled(Modal)`
     width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
-    max-height: 90vh !important;
+    max-height:${({maxheight})=>maxheight?maxheight:"90vh"} !important;
+    min-height: ${({minHeight})=>minHeight?minHeight:"fit-content"};
     max-width: 1200px !important;
     overflow: auto;
-    background: white;
+    border-radius: ${({BorderRadius})=>BorderRadius?BorderRadius:"30px"};
 
     .ant-modal-close {
         display: none !important;
@@ -61,7 +62,7 @@ export const ModalBodySection = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 10px;
-  height: 103px;
+  height: ${({height}) => (height ? `${height}` : "103px")};
 `;
 
 export const ModalSectionFull = styled.div`

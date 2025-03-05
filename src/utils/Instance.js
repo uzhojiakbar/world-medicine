@@ -71,4 +71,9 @@ Instance.interceptors.response.use(
   }
 );
 
+
+export const reloadPage = () => {
+  document.location.reload();
+}
+
 export default Instance;

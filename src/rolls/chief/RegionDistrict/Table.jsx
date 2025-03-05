@@ -23,38 +23,22 @@ import {useQueryClient} from "@tanstack/react-query";
 import ModalEditLpu from "./Modal.jsx";
 import * as XLSX from "xlsx";
 import {useCopyToClipboard} from "../../../utils/CopyClipboard.jsx";
+import Copy from "../../../assets/svg/copy.jsx";
 
 
-const RegionTable = ({loading}) => {
+const RegionTable = ({loading, regions = [], currentPage, setCurrentPage}) => {
     const {translate, language} = useLanguage();
 
     const [loadingInner, setLoadingInner] = useState(false);
 
-    const {data: regions, isLoading: RegionsLoading} = useGetRegions();
 
     const {copyToClipboard} = useCopyToClipboard();
 
+    const districtsWithRegion = regions
 
-    const districtsWithRegion = regions?.flatMap(region =>
-        region?.districts?.map(district => ({
-            districtId: district?.districtId,
-            name: district?.name,
-            nameUzCyrillic: district?.nameUzCyrillic,
-            nameUzLatin: district?.nameUzLatin,
-            nameRussian: district?.nameRussian,
-            region: {
-                id: region?.id,
-                name: region?.name,
-                nameUzCyrillic: region?.nameUzCyrillic,
-                nameUzLatin: region?.nameUzLatin,
-                nameRussian: region?.nameRussian
-            }
-        }))
-    );
+    console.log(districtsWithRegion)
 
-
-    const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 20;
+    const itemsPerPage = 10;
     const totalPages = Math.ceil(districtsWithRegion?.length / itemsPerPage);
 
 
@@ -94,49 +78,100 @@ const RegionTable = ({loading}) => {
 
 
     return (<Container>
-        {RegionsLoading || loading || loadingInner ? (<div className="loaderFixed">
+        {loading || loadingInner ? (<div className="loaderFixed">
             <div className="loader"></div>
         </div>) : ""}
-        <WhiteWrapper>
-            <Wrapper>
-                {currentData?.map((item, index) => (
-                    <Details className={"doubeCLickEffect"} onDoubleClick={()=>copyToClipboard(item?.districtId)} key={index}>
-                        <div className={"flexp"}>
-                            <span>{item?.region?.[`name${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}</span>
-                            <span>ID: {item?.districtId}</span>
-                        </div>
-                        <div>{item?.[`name${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}</div>
-                        <div className="button">
-                            <button
-                                style={{background: "transparent", padding: "0"}}
-                                className="Viewbutton"
-                                onClick={() => console.log(item?.districtId)}
+        {
+            currentData?.length > 0 ? (
+                <WhiteWrapper>
+                    <Wrapper>
+                        {currentData.map((item, index) => (
+                            <Details
+                                className={"doubeCLickEffect"}
+                                onDoubleClick={() => copyToClipboard(item?.districtId)}
+                                key={index}
                             >
-                                <Edit/>
-                            </button>
-                            <button
-                                style={{background: "transparent", padding: "0"}}
-                                className="Viewbutton"
-                                onClick={() => handleDelete(item?.districtId, item?.[`name${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE"))}
-                            >
-                                <DeleteIconBig/>
-                            </button>
-                        </div>
-                    </Details>
-                ))}
-            </Wrapper>
-            <PaginationButtonsWrapper>
-                <button onClick={handlePrevious} disabled={currentPage === 0}>
-                    <LeftArrow/>
-                </button>
-                <span>
-            {currentPage + 1} {translate("from")} {""} {totalPages}
-          </span>
-                <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
-                    <RightArrow/>
-                </button>
-            </PaginationButtonsWrapper>
-        </WhiteWrapper>
+                                <div className={"flexp"}>
+                            <span>
+                                {item?.region?.[
+                                    `name${
+                                        language === "ru"
+                                            ? "Russian"
+                                            : language === "uz"
+                                                ? "UzLatin"
+                                                : ""
+                                    }`
+                                    ] || translate("NONE")}
+                            </span>
+                                    <div
+                                        onClick={() => copyToClipboard(item?.districtId)}
+                                        className={"flexcenter copyID pointer"}
+                                    >
+                                        <span>ID: {item?.districtId}</span>
+                                        <Copy/>
+                                    </div>
+                                </div>
+                                <div>
+                                    {item?.[
+                                        `name${
+                                            language === "ru"
+                                                ? "Russian"
+                                                : language === "uz"
+                                                    ? "UzLatin"
+                                                    : ""
+                                        }`
+                                        ] || translate("NONE")}
+                                </div>
+                                <div className="button">
+
+                                    <button
+                                        style={{background: "transparent", padding: "0"}}
+                                        className="Viewbutton"
+                                        onClick={() =>
+                                            handleDelete(
+                                                item?.districtId,
+                                                item?.[
+                                                    `name${
+                                                        language === "ru"
+                                                            ? "Russian"
+                                                            : language === "uz"
+                                                                ? "UzLatin"
+                                                                : ""
+                                                    }`
+                                                    ] || translate("NONE")
+                                            )
+                                        }
+                                    >
+                                        <DeleteIconBig/>
+                                    </button>
+                                </div>
+                            </Details>
+                        ))}
+                    </Wrapper>
+
+
+                    <PaginationButtonsWrapper>
+                        <button onClick={handlePrevious} disabled={currentPage === 0}>
+                            <LeftArrow/>
+                        </button>
+                        <span>
+                    {currentPage + 1} {translate("from")} {totalPages}
+                </span>
+                        <button
+                            onClick={handleNext}
+                            disabled={currentPage >= totalPages - 1}
+                        >
+                            <RightArrow/>
+                        </button>
+                    </PaginationButtonsWrapper>
+                </WhiteWrapper>
+            ) : (
+                <div className={"noIformation"}>
+                    {loading ? "Loading..." : translate("notInformation")}
+                </div>
+            )
+        }
+
     </Container>);
 };
 

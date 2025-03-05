@@ -1263,6 +1263,7 @@ export const useDeleteDrug = () => {
 export const useDeleteDistrcit = () => {
     const queryClient = useQueryClient();
 
+
     return useMutation({
         mutationFn: async (id) => {
             try {
@@ -2307,6 +2308,27 @@ export const useSaveReportManager = () => {
         },
         onSuccess: (data, variables) => {
             variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+
+export const useAddRegion = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (reportdata) => {
+            console.log("reportdata", reportdata);
+            const response = await Instance.post(
+                "v1/db/regions/add",
+                reportdata?.requestData // Ma'lumot body ichida ketadi
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess(data);
+            queryClient.invalidateQueries(["Regions"]);
         },
         onError: (error, variables) => {
             variables.onError(error);
