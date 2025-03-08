@@ -1788,7 +1788,10 @@ export const useRegisterDoctor = () => {
 };
 // NOTE ADD MedAgent
 export const useUploadDoctor = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
+        // GetDoctorsFilter
         mutationFn: async (medagentdata) => {
             const response = await Instance.post(
                 "/v1/user/upload-doctors",
@@ -1797,9 +1800,11 @@ export const useUploadDoctor = () => {
             return response.data;
         },
         onSuccess: (data, variables) => {
+            queryClient.invalidateQueries(["GetDoctorsFilter"]);
             variables.onSuccess(data);
         },
         onError: (error, variables) => {
+            queryClient.invalidateQueries(["GetDoctorsFilter"]);
             variables.onError(error);
         },
     });
@@ -1807,6 +1812,7 @@ export const useUploadDoctor = () => {
 // NOTE ADD MedAgent
 
 export const useUploadManager = () => {
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (medagentdata) => {
             const response = await Instance.post(
@@ -1816,9 +1822,12 @@ export const useUploadManager = () => {
             return response.data;
         },
         onSuccess: (data, variables) => {
+            queryClient.invalidateQueries(["GetManagers"]);
+
             variables.onSuccess(data);
         },
         onError: (error, variables) => {
+            queryClient.invalidateQueries(["GetManagers"]);
             variables.onError(error);
         },
     });
@@ -1826,6 +1835,8 @@ export const useUploadManager = () => {
 // NOTE ADD MedAgent
 
 export const useUploadMedAgents = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (medagentdata) => {
             const response = await Instance.post(
@@ -1835,9 +1846,11 @@ export const useUploadMedAgents = () => {
             return response.data;
         },
         onSuccess: (data, variables) => {
+            queryClient.invalidateQueries(["GetMedAgents"]);
             variables.onSuccess(data);
         },
         onError: (error, variables) => {
+            queryClient.invalidateQueries(["GetMedAgents"]);
             variables.onError(error);
         },
     });
@@ -2368,5 +2381,26 @@ export const useAddRegion = () => {
     });
 };
 
+
+export const useAddDistrict = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (reportdata) => {
+            console.log("reportdata", reportdata);
+            const response = await Instance.post(
+                "v1/db/districts/add",
+                reportdata?.requestData // Ma'lumot body ichida ketadi
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess(data);
+            queryClient.invalidateQueries(["Regions"]);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
 
 export default Server;

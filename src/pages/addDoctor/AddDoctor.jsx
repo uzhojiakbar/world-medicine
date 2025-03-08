@@ -211,6 +211,15 @@ const AddDoctor = () => {
     const SendData = () => {
         const requiredFields = ["firstName", "lastName", "temporaryPassword", "district", "birthDate", "phone", "workplace", "fieldname"];
 
+        if(formData?.phone.length !== 12 ){
+            message.error(translate("phone_incorrect_format"));
+            return;
+        }
+        if(formData?.temporaryPassword.length < 6 ){
+            message.error(translate("minimal_password_length"));
+            return;
+        }
+
         const missingFields = requiredFields.filter((field) => !formData[field]);
 
         if (missingFields.length > 0) {
@@ -218,14 +227,14 @@ const AddDoctor = () => {
         } else {
             setLoading(true);
             const requestData = {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                middleName: formData.middleName,
-                email: formData.mail,
-                password: formData.temporaryPassword,
-                workPlaceId: formData.workplace,
-                districtId: formData.district,
-                birthDate: formData.birthDate,
+                firstName: formData.firstName || "string",
+                lastName: formData.lastName || "string",
+                middleName: formData.middleName || "string",
+                email: formData.mail || null,
+                password: formData.temporaryPassword || "string",
+                workPlaceId: formData.workplace || "string",
+                districtId: formData.district || 0,
+                birthDate: formData.birthDate || "string",
                 fieldName: formData?.fieldname || "NEUROLOGIST",
                 position: "string",
                 gender: "MALE",
@@ -395,7 +404,7 @@ const AddDoctor = () => {
                         placeholder={formDataLabels.email}
                     />
                     <Input2
-                        type="text"
+                        type="number"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}

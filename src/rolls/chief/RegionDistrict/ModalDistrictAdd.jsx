@@ -16,6 +16,7 @@ import ProfilePic1 from "../../../assets/img/profile/profile2.svg";
 import CloseIcon from "../../../assets/svg/closeIcon.jsx";
 import GenericAnalitikaTable from "../../manager/analiktika/GenericTable.jsx";
 import {
+    useAddDistrict,
     useAddRegion,
     useGetDoctorsFilter,
     useGetProfileInfo, useGetRegions,
@@ -40,27 +41,31 @@ const ModalAddDistrict = ({
         name: "",
         nameUzLatin: "",
         nameRussian: "",
-        nameUzCyrillic: ""
+        nameUzCyrillic: "",
+        regionId: 0
     });
     const changeInput = (value, name) => {
         setFormData(prevState => ({
             ...prevState,
             [name]: value
         }));
-
         console.log(formData);
     };
 
     const {data: Regions, isLoading} = useGetRegions();
     const regionsTranslate = transformRegionsForSelect(Regions, language);
 
-    const mutation = useAddRegion();
+    const mutation = useAddDistrict();
 
     const AddRegion = () => {
-        setLoading(1);
+        setLoading(1)
+        console.log("formData",formData)
 
-        const emptyFields = Object.entries(formData)
-            .filter(([key, value]) => !value.trim()) // Bo‘sh yoki faqat bo‘sh joylardan iborat maydonlarni tekshirish
+        const emptyFields = Object.entries({
+            ...formData,
+            regionId: "123"
+        })
+            .filter(([key, value]) => typeof(value)==="string"?!value.trim():value) // Bo‘sh yoki faqat bo‘sh joylardan iborat maydonlarni tekshirish
             .map(([key]) => key); // Faqat maydon nomlarini olish
 
         if (emptyFields.length > 0) {
@@ -75,7 +80,7 @@ const ModalAddDistrict = ({
                 ...formData,
             },
             onSuccess: () => {
-                message.success(translate("region_added"));
+                message.success(translate("district_added"));
                 setTimeout(() => {
                     setLoading(false);
                     onClose()
@@ -84,7 +89,7 @@ const ModalAddDistrict = ({
             onError: (err) => {
                 console.log("error", err);
                 setLoading(false);
-                message.error(translate("region_add_error"));
+                message.error(translate("district_added_error"));
             },
         });
     };
@@ -122,6 +127,9 @@ const ModalAddDistrict = ({
                     def={translate("Выберите_регион")}
                     borderRadius={"30px"}
                     options={regionsTranslate}
+                    selectedType={"id"}
+                    onlyOption={1}
+                    onValueChange={(value)=>changeInput(value?.id,"regionId")}
                 />
             </ModalBodySection>
         </ModalBodyHeader>

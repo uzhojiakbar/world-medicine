@@ -420,7 +420,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
     return (
         <Container>
             {loading || loadingIn ? (
-                <div className="loaderParent">
+                <div className="loaderWindow">
                     <div className="loader"></div>
                 </div>
             ) : (
@@ -444,7 +444,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                                                 <td>
                                                     <Line/>
                                                 </td>
-                                                <th colSpan={2}>
+                                                <th colSpan={v?.child?.length}>
                                                     <Article>
                                                         <div>{v?.title}</div>
                                                         <div className="flex">
@@ -506,11 +506,24 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                                                                             height={"50px"}
                                                                         />
                                                                     </td>
+                                                                    <td>
+                                                                        <InputWrapper
+                                                                            type="text"
+                                                                            name="Процент"
+                                                                            defaultValue={row[v]?.Процент}
+                                                                            onChange={(e) =>
+                                                                                handleInputChange(v, e.target.value, index, "Процент")
+                                                                            }
+                                                                            placeholder="Процент"
+                                                                            height={"50px"}
+                                                                        />
+                                                                    </td>
                                                                 </>
                                                             ) : (
                                                                 <>
                                                                     <td>{row[v]?.Лимит}</td>
                                                                     <td>{row[v]?.Балл}</td>
+                                                                    <td>{row[v]?.Процент}</td>
                                                                 </>
                                                             )}
                                                         </>
