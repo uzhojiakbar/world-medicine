@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import Button from "../../../components/Generic/Button/Button";
 import IconPlus from "../../../assets/svg/IconPlus";
@@ -9,13 +9,15 @@ import MainTable from "./Table";
 
 import {saveAs} from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
-import Server, {useGetDrugs} from "../../../utils/server/server";
+import Server, {useGetDrugs, useUploadDrugs, useUploadManager} from "../../../utils/server/server";
 import Filter from "./filter/Filter";
 import UsloviyaProductTable from "./usloviyaProductTable.jsx";
 import Info from "./Info/Info.jsx";
 import {useQueryClient} from "@tanstack/react-query";
 import AddLpu from "../LPU/AddLPUModal.jsx";
 import AddMedicine from "./Modal.jsx";
+import {message} from "antd";
+import {formatPhoneNumberForBackend} from "../../../utils/phoneFormatterForBackend.js";
 
 
 const exportToExcel = (data) => {
@@ -322,6 +324,148 @@ function Preparat() {
         }, 500);
     };
 
+    const HiddenInput = styled.input`
+        display: none;
+    `;
+
+    const [jsonData, setJsonData] = useState([]);
+
+    const fileInputRef = useRef(null);
+    const handleButtonClick = () => {
+        fileInputRef.current.click();
+    };
+    const processExcelData = (rawData) => {
+        if (!rawData || rawData.length < 2) {
+            console.error("❌ Xatolik: Excel fayli bo‘sh yoki noto‘g‘ri formatda!");
+            return [];
+        }
+
+        const headers = rawData[0]; // Birinchi qator - sarlavhalar
+        const dataRows = rawData.slice(2); // Qolgan qatorlar - ma'lumotlar
+
+        console.log("dataRows",dataRows)
+        const formattedData = [];
+
+
+        for (const row of dataRows) {
+            const [
+                id,name,inn,cip,quantity,prescription,volume,type,
+                suLimit,suBall,sbPercentage,
+                sbLimit,sbBall,suPercentage,
+                gzLimit,gzBall,gzPercentage,
+                kbLimit,kbBall,kbPercentage,
+            ] = row;
+
+            console.log("INN",inn)
+            // ❗ **Validatsiya (bo‘sh maydon yoki noto‘g‘ri format)** ❗
+            if (
+                !name || !inn || !cip ||
+                !quantity || !prescription || !volume ||
+                !type || !suLimit || !suBall ||
+                !sbPercentage || !sbLimit || !sbBall ||
+                !suPercentage || !gzLimit || !gzBall ||
+                !gzPercentage || !kbLimit || !kbBall ||
+                !kbPercentage
+            ) {
+                console.error(`❌ ERROR: ${name || translate("user")} ${translate("information_is_not_full")} `);
+                message.error(`ERROR: ${name || translate("user")} ${translate("information_is_not_full")} `);
+                return []; //  Ma’lumot noto‘g‘ri bo‘lsa, bo‘sh array qaytariladi
+            }
+            formattedData.push({
+                "name":name,
+                "nameUzCyrillic": name,
+                "nameUzLatin": name,
+                "nameRussian": name,
+                "inn": inn.split(","),
+                "cip": cip,
+                "quantity": quantity,
+                "prescription":prescription,
+                "volume": volume,
+                "type": type,
+                "suPercentage": 0,
+                "suLimit": suLimit,
+                "suBall": suBall,
+                "sbPercentage": sbPercentage,
+                "sbLimit": sbLimit,
+                "sbBall": sbBall,
+                "gzPercentage": gzPercentage,
+                "gzLimit": gzLimit,
+                "gzBall":gzBall,
+                "kbPercentage": kbPercentage,
+                "kbLimit": kbLimit,
+                "kbBall": kbBall,
+                "status": "ACTIVE"
+            });
+        }
+
+        console.log("✅ Excel ma’lumotlari formatlandi:", formattedData);
+        return formattedData;
+    };
+    const handleFileChange = (event) => {
+        console.log(1)
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: "array"});
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+
+                let rawData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+                rawData = rawData.filter(row => row.some(cell => cell !== null && cell !== ""));
+                console.log("📥 Raw Excel Data (Cleaned):", rawData);
+                const formattedJson = processExcelData(rawData);
+                setJsonData(formattedJson);
+                console.log("📤 Converted JSON:", formattedJson);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+    };
+
+    const CancelUpload = () => {
+        setJsonData([]); // JSON ma'lumotlarini tozalaydi
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""; // Fayl inputini tozalaydi
+            fileInputRef.current.files = []; // Fayl inputini tozalaydi
+        }
+        console.log("🚫 Yuklash bekor qilindi!");
+        message.warning(translate("Отменено"));
+    };
+
+    //
+    const mutationUpload = useUploadDrugs();
+    const SendDatas = async () => {
+        if (!jsonData?.length) {
+            message.error("❌" + translate("no_information_found"));
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await mutationUpload.mutateAsync({
+                requestData: jsonData, onSuccess: (data) => {
+                    console.log(data)
+                    if (data?.includes("partially failed")) {
+                        message.warning(translate("препората_создан_частичноy"));
+                        CancelUpload()
+                    } else {
+                        message.success(translate("препората_created"));
+                        CancelUpload()
+                    }
+                }, onError: (error) => {
+                    console.log(error)
+                    setLoading(false);
+                    message.error(translate("create-manager-error"));
+                }, // Har bir elementni serverga jo‘natamiz
+            })
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <Container>
             <Filter/>
@@ -357,6 +501,32 @@ function Preparat() {
                     <Button onClick={() => setAdd(1)} icon={<IconPlus/>}>
                         {translate("Добавление_препората")}
                     </Button>
+                    {
+                        jsonData?.length ?
+                            <div className={"buttons"}>
+                                <Button
+                                    onClick={CancelUpload}
+                                >
+                                    {translate("Отмена")}
+                                </Button>
+                                <Button
+                                    icon={<IconPlus/>} onClick={SendDatas}
+                                >
+                                    {translate("send-data-to-server")}
+                                </Button>
+                            </div>
+                            : <div className="buttons">
+                                <HiddenInput
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept=".xlsx"
+                                    onChange={handleFileChange}
+                                />
+                                <Button icon={<IconPlus/>} onClick={handleButtonClick}>
+                                    {translate("Загрузить_базу_medicine")}
+                                </Button>
+                            </div>
+                    }
                     <Clear onClick={() => exportToExcel(data)}>
                         <svg
                             width="24"

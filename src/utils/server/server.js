@@ -1849,6 +1849,28 @@ export const useUploadManager = () => {
 };
 // NOTE ADD MedAgent
 
+export const useUploadDrugs = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (medagentdata) => {
+            const response = await Instance.post(
+                "/v1/db/medicine/add-bulk",
+                medagentdata?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            queryClient.invalidateQueries(["Drugs"]);
+
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            queryClient.invalidateQueries(["Drugs"]);
+            variables.onError(error);
+        },
+    });
+};
+
 export const useUploadMedAgents = () => {
     const queryClient = useQueryClient();
 
@@ -2434,10 +2456,10 @@ export const useGetMnns = () => {
         queryKey: ["Districts"],
         queryFn: async () => {
             try {
-                    const data = await Instance.get(
-                        `/v1/db/mnn/list`
-                    );
-                    return data?.data;
+                const data = await Instance.get(
+                    `/v1/db/mnn/list`
+                );
+                return data?.data;
             } catch (error) {
                 console.error("Error fetching data", error);
                 return []
@@ -2455,7 +2477,7 @@ export const useAddDrugs = () => {
             console.log("medicineDara", medicineDara);
             const response = await Instance.post(
                 "v1/db/medicine",
-                medicineDara?.requestData
+                {...medicineDara?.requestData, "status": "ACTIVE",}
             );
             return response.data;
         },

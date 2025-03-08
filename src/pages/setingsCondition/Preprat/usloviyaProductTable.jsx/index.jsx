@@ -330,7 +330,7 @@ const UsloviyaProductTable = ({data, data2, loading = true, title = ""}) => {
     const [changeRow, setChangeRow] = useState([]);
     data = editedRow;
     const itemsPerPage = 10;
-    const totalPages = Math.ceil(tbody?.length / itemsPerPage);
+    const totalPages = Math.ceil(data2?.tbody?.length / itemsPerPage);
     const {translate} = useLanguage();
 
     console.log("DATA2", data2)
