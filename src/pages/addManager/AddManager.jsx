@@ -131,15 +131,14 @@ const AddMeneger = () => {
 
             mutation.mutate({
                 requestData: requestData, onSuccess: () => {
-                    message.success(translate("Manager qo'shildi!"));
+                    message.success(translate(manager_added));
                     setTimeout(() => {
                         setLoading(false);
-
                         document.location.reload();
                     }, 500);
                 }, onError: () => {
                     setLoading(false);
-                    message.error(translate("Manager registratsiya qilishda xatolik"));
+                    message.error(translate("manager_added_error"));
                 },
             });
             console.log("mutation.status", mutation.status);

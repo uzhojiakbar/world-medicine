@@ -339,5 +339,7 @@
   "phone_incorrect_format": "Номер телефона указан в неправильном формате.",
   "minimal_password_length": "Пароль должен содержать не менее 6 символов.",
   "district_added": "Район добавлен",
-  "district_added_error": "Ошибка добавления района"
+  "district_added_error": "Ошибка добавления района",
+  "manager_added": "менеджер добавлен",
+  "manager_added_error": "Ошибка добавления менеджера"
 }

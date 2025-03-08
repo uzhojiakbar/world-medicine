@@ -111,8 +111,7 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                         </td>
                         <td>
                             {translate("Создан")}{" "}
-                            {DatFormatter(row?.dateOfBirth || "2025-05-25")}
-                        </td>
+                            {DatFormatter(row?.dateOfCreation?.split("T")[0] || "0000-12-31")}                        </td>
                         <td>
                             <div className="progressKPI">{row?.progress} %?</div>
                         </td>

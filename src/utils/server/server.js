@@ -2105,6 +2105,8 @@ export const useGetSalesData = ({
 };
 
 export const useDeleteUser = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (DeleteUser) => {
             console.log("DeleteUser", DeleteUser);
@@ -2113,10 +2115,18 @@ export const useDeleteUser = () => {
             );
             return response.data;
         },
-        onSuccess: (data, variables) => {
+        onSuccess: async (data, variables) => {
+
+            queryClient.invalidateQueries(["GetDoctorsFilter"]);
+            queryClient.invalidateQueries(["getAdmins"]);
+            queryClient.invalidateQueries(["GetMedAgents"]);
             variables.onSuccess();
         },
         onError: (error, variables) => {
+
+            queryClient.invalidateQueries(["GetDoctorsFilter"]);
+            queryClient.invalidateQueries(["getAdmins"]);
+            queryClient.invalidateQueries(["GetMedAgents"]);
             variables.onError();
         },
     });
