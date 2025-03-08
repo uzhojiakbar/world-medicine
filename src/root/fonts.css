@@ -77,11 +77,11 @@ body {
 
 ::-webkit-scrollbar {
     width:  7px;
-    height: 70px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(59, 130, 246, 0.4);
     margin-right: 2px;
     padding: 4px;
 }
