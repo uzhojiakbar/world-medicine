@@ -1,9 +1,17 @@
 import React, {useCallback, useMemo, useState} from "react";
-import {DeleteBtn, ModalBodyHeader, ModalBodySection, ModalContainer, ModalHeader} from "../../../root/Modal.js";
+import {
+    DeleteBtn,
+    ModalBodyHeader,
+    ModalBodySection,
+    ModalContainer,
+    ModalHeader, SelectedMNNstyle,
+    SelectedMNNstyleContainer
+} from "../../../root/Modal.js";
 import {MiniTitleSmall, Title} from "../../../root/style.js";
 import CloseIcon from "../../../assets/svg/closeIcon.jsx";
 import {useLanguage} from "../../../context/LanguageContext.jsx";
 import {
+    useAddDrugs,
     useAddWorkplace,
     useGetDistricts,
     useGetDoctorsFilter,
@@ -24,46 +32,16 @@ import {medicalInstitutionType} from "../../../utils/medicalInstitutionType.js";
 import {message} from "antd";
 import {formatPhoneNumberForBackend} from "../../../utils/phoneFormatterForBackend.js";
 import {useQueryClient} from "@tanstack/react-query";
+import {typePreparationForSelect, volumePreparationForSelect} from "../../../utils/Generics.js";
 
 const AddMedicine = ({open, setOpen}) => {
     const {translate, language} = useLanguage();
-    const [formData, setFormData] = useState({
-        region: 0, district: 0,
-    })
-
+    const [formData, setFormData] = useState({})
     const [selectedMNNs, setSelectedMNNs] = useState([])
-
-
     const [loading, setLoading] = useState(0);
-
-    console.log(formData)
-    const mutation = useAddWorkplace()
-
-    const {data: Regions, isLoading: isLoadingRegions} = useGetRegions();
-    const {data: Districts, isLoading: isLoadingDistrict} = useGetDistricts(formData?.region || null);
-    const {data: doctors, isLoading: isLoadingDoctors} = useGetDoctorsFilter({
-        regionId: formData?.region || null, districtId: formData?.district || null,
-    });
+    const mutation = useAddDrugs()
     const {data: mnnsDb, isLoading: isLoadingMnns} = useGetMnns();
-
-
-    // const translateRegions = transformRegionsForSelect(Regions, language)
-    // const translateDIstricts = transformDistrictsForSelect(Districts, language)
-    // const translateInsitution = TransformInsitutation(medicalInstitutionType, language, translate)
     const transformMnns = TransformMnns(mnnsDb)
-
-
-    const doctorOptions = useMemo(() => doctors?.map((manager) => ({
-        value: `${manager.firstName} ${manager.lastName}`,
-        label: `${manager.firstName} ${manager.lastName}`,
-        id: manager.userId,
-    })) || [], [doctors, formData]);
-    const handleSelectChange = (name, value) => {
-        console.log(name, value);
-        setFormData({
-            ...formData, [name]: value,
-        })
-    };
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -77,75 +55,38 @@ const AddMedicine = ({open, setOpen}) => {
 
     const handleRefresh = () => {
         setLoading(1);
-        queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
+        queryClient.invalidateQueries(["Drugs"]); // Ma'lumotlarni qayta yuklash
         setTimeout(() => {
             setLoading(0);
         }, 100);
     };
 
     const SendData = () => {
+        const requestData = {
+            ...formData,
+            inn: selectedMNNs.map(v => v?.value)
+        };
 
-        if (!formData?.district) {
-            console.error(translate("Районы_не_выбраны"));
-            message.warning(translate("Районы_не_выбраны"));
-            return;
-        }
-        if (!formData?.medicalInstitutionType) {
-            console.error(translate("Форма_учреждения_не_выбраны"));
-            message.warning(translate("Форма_учреждения_не_выбраны"));
-            return;
-        }
+        const requiredFields = [
+            "nameUzLatin", "nameRussian", "name", "prescription", "type", "volume",
+            "cip", "quantity", "suBall", "suLimit", "suPercentage", "sbPercentage", "sbLimit",
+            "sbBall", "gzBall", "gzLimit", "gzPercentage", "kbPercentage", "kbLimit", "kbBall", "inn"
+        ];
 
-        if (!formData?.name) {
-            console.error(translate("Введите_название_организации"));
-            message.warning(translate("Введите_название_организации"));
-            return;
-        }
-        if (!formData?.address) {
-            console.error(translate("Введите_Адресс"));
-            message.warning(translate("Введите_Адресс"));
-            return;
-        }
-        if (!formData?.address) {
-            console.error(translate("Введите_Адресс"));
-            message.warning(translate("Введите_Адресс"));
-            return;
-        }
-        if (!formData?.phone) {
-            console.error(translate("Введите_номер_телефона"));
-            message.warning(translate("Введите_номер_телефона"));
-            return;
-        }
-        if (!formData?.email) {
-            console.error(translate("Введите_email"));
-            message.warning(translate("Введите_email"));
-            return;
-        }
+        const missingFields = requiredFields.filter((field) => {
+            const value = requestData[field];
+            return value === undefined || value === null || value === '' ||
+                (Array.isArray(value) && value.length === 0);
+        });
 
-        const requiredFields = [];
-
-        const missingFields = requiredFields.filter((field) => !formData[field]);
         if (missingFields.length > 0) {
-            message.error(translate("fill_req_error"));
+            console.log("Majburiy maydonlar bo'sh yoki noto'g'ri:", missingFields);
+            message.warning(translate("requeired_data") + ": " + missingFields.join(", "));
         } else {
             setLoading(true);
-            const requestData = {
-                "name": formData?.name,
-                "address": formData?.address,
-                "phone": `998${formData?.phone}`,
-                "email": formData?.email,
-                "medicalInstitutionType": formData?.medicalInstitutionType,
-                "chiefDoctorId": formData?.chiefDoctorId,
-                "districtId": formData?.district,
-            }
-
-            console.log("mutation.status", mutation.status);
-
-            console.log(requestData)
-
             mutation.mutate({
                 requestData: requestData, onSuccess: () => {
-                    message.success(translate("lpu_created"));
+                    message.success(translate("medicine_added"));
                     setTimeout(() => {
                         setLoading(false);
                         handleRefresh()
@@ -153,11 +94,12 @@ const AddMedicine = ({open, setOpen}) => {
                     }, 500);
                 }, onError: () => {
                     setLoading(false);
-                    message.error(translate("lpu_created_error"));
+                    handleRefresh()
+                    message.error(translate("medicine_added_error"));
                 },
             });
         }
-    };
+    }
 
     const handelMNNSChange = useCallback(
         (selected) => {
@@ -180,11 +122,9 @@ const AddMedicine = ({open, setOpen}) => {
     );
 
 
-    console.log('SELECTED', selectedMNNs)
-    console.log('transformMnns', transformMnns)
-
     return <ModalContainer
         w={"1000px"}
+
         title={<ModalHeader>
             <Title>{translate("Добавление_препората")}</Title>
             <div onClick={() => setOpen(false)} className="closeIcon">
@@ -197,7 +137,7 @@ const AddMedicine = ({open, setOpen}) => {
         footer={[]}
         centered
     >
-        {isLoadingRegions || loading || isLoadingDoctors || isLoadingDistrict ? (<div className="loaderParent">
+        {loading || isLoadingMnns ? (<div className="loaderWindow">
             <div className="loader"></div>
         </div>) : ""}
         <ModalBodyHeader m={"20px"}>
@@ -266,29 +206,252 @@ const AddMedicine = ({open, setOpen}) => {
                     selectedOptions={"id"}
                 />
             </ModalBodySection>
-            <ModalBodySection>
+            <SelectedMNNstyleContainer>
                 {
                     selectedMNNs?.length > 0 ? <>
-                    {
-                        selectedMNNs?.map((mNn) =>  <div>  {mNn?.value}</div>)
-                    }
+                        {
+                            selectedMNNs?.map((mNn) => <SelectedMNNstyle
+                                onClick={() => setSelectedMNNs((prev) => prev.filter((item) => item.id !== mNn.id))}
+                            >
+                                <div className={"text"}>
+                                    {mNn?.value}
+                                </div>
+                                <div
+                                >
+                                    <svg className={"closeIcon"} width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M9.0303 7.96965C8.73741 7.67676 8.26253 7.67676 7.96964 7.96965C7.67675 8.26255 7.67675 8.73742 7.96964 9.03031L9.93932 11L7.96966 12.9697C7.67677 13.2625 7.67677 13.7374 7.96966 14.0303C8.26255 14.3232 8.73743 14.3232 9.03032 14.0303L11 12.0607L12.9696 14.0303C13.2625 14.3232 13.7374 14.3232 14.0303 14.0303C14.3232 13.7374 14.3232 13.2625 14.0303 12.9696L12.0606 11L14.0303 9.03033C14.3232 8.73744 14.3232 8.26257 14.0303 7.96968C13.7374 7.67678 13.2625 7.67678 12.9696 7.96968L11 9.93933L9.0303 7.96965Z"
+                                            fill="#1C274C"/>
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                              d="M11 0.25C5.06294 0.25 0.25 5.06294 0.25 11C0.25 16.9371 5.06294 21.75 11 21.75C16.9371 21.75 21.75 16.9371 21.75 11C21.75 5.06294 16.9371 0.25 11 0.25ZM1.75 11C1.75 5.89137 5.89137 1.75 11 1.75C16.1086 1.75 20.25 5.89137 20.25 11C20.25 16.1086 16.1086 20.25 11 20.25C5.89137 20.25 1.75 16.1086 1.75 11Z"
+                                              fill="#1C274C"/>
+                                    </svg>
+                                </div>
+                            </SelectedMNNstyle>)
+                        }
                     </> : null
                 }
+            </SelectedMNNstyleContainer>
+        </ModalBodyHeader>
+
+        <ModalBodyHeader gridC={2}>
+            <ModalBodySection>
+                <MiniTitleSmall
+                    gap={"5px"}
+                    jc={"flex-start"}
+                >
+                    {translate("type_medicine")}
+                </MiniTitleSmall>
+                <div className={"flexForSelectAndInput"}>
+                    <Input2
+                        type="number"
+                        name="prescription"
+                        value={formData?.prescription}
+                        onChange={handleChange}
+                        placeholder={translate("0")}
+                    />
+                    <PrimarySelect
+                        options={volumePreparationForSelect(translate)}
+                        onlyOption={1}
+                        onValueChange={(value) =>
+                            setFormData((prev) => ({...prev, volume: value.label}))
+                        }
+                        selectedOptions={"id"}
+                        selectedOptionId={1}
+                    />
+                </div>
+            </ModalBodySection>
+            <ModalBodySection>
+                <MiniTitleSmall
+                    gap={"5px"}
+                    jc={"flex-start"}
+                >
+                    {translate("type")}
+                </MiniTitleSmall>
+                <PrimarySelect
+                    options={typePreparationForSelect(translate)}
+                    onlyOption={1}
+                    onValueChange={(value) =>
+                        setFormData((prev) => ({...prev, type: value.label}))
+                    }
+                    selectedOptions={"id"}
+                    selectedOptionId={1}
+                />
             </ModalBodySection>
         </ModalBodyHeader>
 
-        <ModalBodyHeader gridC={1}>
+        <ModalBodyHeader gridC={2}>
             <ModalBodySection>
                 <MiniTitleSmall
-                    mgn={"0 auto"}
+                    gap={"5px"}
+                    jc={"flex-start"}
                 >
-                    {translate("adding_lpu")}
+                    {translate("sum")}
                 </MiniTitleSmall>
+                <Input2
+                    type="number"
+                    name="cip"
+                    value={formData?.cip}
+                    onChange={handleChange}
+                    placeholder={translate("enter_sum")}
+                />
+            </ModalBodySection>
+            <ModalBodySection>
+                <MiniTitleSmall
+                    gap={"5px"}
+                    jc={"flex-start"}
+                >
+                    {translate("Количество")}
+                </MiniTitleSmall>
+                <Input2
+                    type="number"
+                    name="quantity"
+                    value={formData?.quantity}
+                    onChange={handleChange}
+                    placeholder={translate("700")}
+                />
+            </ModalBodySection>
+        </ModalBodyHeader>
+
+
+        <ModalBodyHeader gridC={1} gap={"10px"}>
+            <MiniTitleSmall
+                gap={"5px"}
+                jc={"flex-start"}
+            >
+                {translate("СУ")}
+            </MiniTitleSmall>
+            <div className={"cugzInputs"}>
+                <Input2
+                    type="number"
+                    name="suBall"
+                    value={formData?.suBall}
+                    onChange={handleChange}
+                    placeholder={translate("Балл")}
+                />
+                <Input2
+                    type="number"
+                    name="suLimit"
+                    value={formData?.suLimit}
+                    onChange={handleChange}
+                    placeholder={translate("Лимит")}
+                />
+                <Input2
+                    type="number"
+                    name="suPercentage"
+                    value={formData?.suPercentage}
+                    onChange={handleChange}
+                    placeholder={translate("Процент")}
+                />
+            </div>
+        </ModalBodyHeader>
+
+        <ModalBodyHeader gridC={1} gap={"10px"}>
+            <MiniTitleSmall
+                gap={"5px"}
+                jc={"flex-start"}
+            >
+                {translate("СБ")}
+            </MiniTitleSmall>
+            <div className={"cugzInputs"}>
+                <Input2
+                    type="number"
+                    name="sbBall"
+                    value={formData?.sbBall}
+                    onChange={handleChange}
+                    placeholder={translate("Балл")}
+                />
+                <Input2
+                    type="number"
+                    name="sbLimit"
+                    value={formData?.sbLimit}
+                    onChange={handleChange}
+                    placeholder={translate("Лимит")}
+                />
+                <Input2
+                    type="number"
+                    name="sbPercentage"
+                    value={formData?.sbPercentage}
+                    onChange={handleChange}
+                    placeholder={translate("Процент")}
+                />
+            </div>
+        </ModalBodyHeader>
+
+        <ModalBodyHeader gridC={1} gap={"10px"}>
+            <MiniTitleSmall
+                gap={"5px"}
+                jc={"flex-start"}
+            >
+                {translate("ГЗ")}
+            </MiniTitleSmall>
+            <div className={"cugzInputs"}>
+                <Input2
+                    type="number"
+                    name="gzBall"
+                    value={formData?.gzBall}
+                    onChange={handleChange}
+                    placeholder={translate("Балл")}
+                />
+                <Input2
+                    type="number"
+                    name="gzLimit"
+                    value={formData?.gzLimit}
+                    onChange={handleChange}
+                    placeholder={translate("Лимит")}
+                />
+                <Input2
+                    type="number"
+                    name="gzPercentage"
+                    value={formData?.gzPercentage}
+                    onChange={handleChange}
+                    placeholder={translate("Процент")}
+                />
+            </div>
+        </ModalBodyHeader>
+
+
+        <ModalBodyHeader gridC={1} gap={"10px"}>
+            <MiniTitleSmall
+                gap={"5px"}
+                jc={"flex-start"}
+            >
+                {translate("КВ")}
+            </MiniTitleSmall>
+            <div className={"cugzInputs"}>
+                <Input2
+                    type="number"
+                    name="kbBall"
+                    value={formData?.kbBall}
+                    onChange={handleChange}
+                    placeholder={translate("Балл")}
+                />
+                <Input2
+                    type="number"
+                    name="kbLimit"
+                    value={formData?.kbLimit}
+                    onChange={handleChange}
+                    placeholder={translate("Лимит")}
+                />
+                <Input2
+                    type="number"
+                    name="kbPercentage"
+                    value={formData?.kbPercentage}
+                    onChange={handleChange}
+                    placeholder={translate("Процент")}
+                />
+            </div>
+        </ModalBodyHeader>
+
+
+        <ModalBodyHeader gridC={1}>
+            <ModalBodySection>
                 <DeleteBtn
                     bgcolor={"#216BF4"}
                     onClick={SendData}
                 >
-                    {translate("add_lpu")}
+                    {translate("Добавить_препорат")}
                 </DeleteBtn>
             </ModalBodySection>
         </ModalBodyHeader>

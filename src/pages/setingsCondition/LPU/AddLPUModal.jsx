@@ -161,7 +161,7 @@ const AddLpu = ({open, setOpen}) => {
         footer={[]}
         centered
     >
-        {isLoadingRegions || loading || isLoadingDoctors || isLoadingDistrict ? (<div className="loaderParent">
+        {isLoadingRegions || loading || isLoadingDoctors || isLoadingDistrict ? (<div className="loaderWindow">
             <div className="loader"></div>
         </div>) : ""}
         <ModalBodyHeader m={"20px"}>

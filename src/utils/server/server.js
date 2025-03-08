@@ -2448,4 +2448,24 @@ export const useGetMnns = () => {
     });
 };
 
+
+export const useAddDrugs = () => {
+    return useMutation({
+        mutationFn: async (medicineDara) => {
+            console.log("medicineDara", medicineDara);
+            const response = await Instance.post(
+                "v1/db/medicine",
+                medicineDara?.requestData
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            variables.onSuccess();
+        },
+        onError: (error, variables) => {
+            variables.onError();
+        },
+    });
+};
+
 export default Server;

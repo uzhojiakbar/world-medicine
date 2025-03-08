@@ -5,8 +5,7 @@ import { m } from "framer-motion";
 
 export const ModalContainer = styled(Modal)`
     width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
-    max-height:${({maxheight})=>maxheight?maxheight:"90vh"} !important;
-    min-height: ${({minHeight})=>minHeight?minHeight:"fit-content"};
+    max-height:${({maxheight})=>maxheight?maxheight:"95vh"} !important;
     max-width: 1200px !important;
     overflow: auto;
     border-radius: ${({BorderRadius})=>BorderRadius?BorderRadius:"30px"};
@@ -46,12 +45,17 @@ export const ModalBody = styled.div`
 
 export const ModalBodyHeader = styled.div`
     display: grid;
-    gap: 20px 10px;
+    gap: ${({gap}) => gap?gap:"20px 10px"};
     
     margin-top: ${({ m }) => m ? m : "10px"};
     margin-bottom: ${({ mb }) => mb ? mb : "0"};
     grid-template-columns: repeat(${({ gridC }) => gridC ? gridC : 2}, 1fr);
-    
+
+    .cugzInputs{
+        display: grid;    
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
     @media (max-width: 1440px) {
         grid-template-columns: repeat(${({ gridC }) => gridC ? gridC : 1}, 1fr);        
     }
@@ -63,6 +67,15 @@ export const ModalBodySection = styled.div`
   justify-content: center;
   gap: 10px;
   height: ${({height}) => (height ? `${height}` : "103px")};
+    
+    
+    .flexForSelectAndInput{
+        display: grid;
+        gap: 5px;
+        
+        grid-template-columns: 5fr 2fr;
+    }
+    
 `;
 
 export const ModalSectionFull = styled.div`
@@ -167,5 +180,40 @@ export const ContainerInner = styled.div`
         padding: 20px;
         width: 100%;
         height: 100%;
+    }
+`
+
+
+export const SelectedMNNstyleContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+`
+
+export const SelectedMNNstyle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #216BF433;
+    height: fit-content;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    
+    .text{
+        font-family: "Vela Sans GX ExtraBold";
+        font-weight: 900;
+        text-transform: capitalize;
+    }
+    
+    transition: .2s;
+    
+    &:hover {
+        color: white;
+        background-color: #FB3748;
+        .closeIcon path{
+            fill: white;
+        }
     }
 `
