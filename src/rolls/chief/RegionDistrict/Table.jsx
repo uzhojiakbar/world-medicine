@@ -91,36 +91,50 @@ const RegionTable = ({loading, regions = [], currentPage, setCurrentPage}) => {
                                 onDoubleClick={() => copyToClipboard(item?.districtId)}
                                 key={index}
                             >
-                                <div className={"flexp"}>
-                            <span>
-                                {item?.region?.[
-                                    `name${
-                                        language === "ru"
-                                            ? "Russian"
-                                            : language === "uz"
-                                                ? "UzLatin"
-                                                : ""
-                                    }`
-                                    ] || translate("NONE")}
-                            </span>
-                                    <div
-                                        onClick={() => copyToClipboard(item?.districtId)}
-                                        className={"flexcenter copyID pointer"}
-                                    >
-                                        <span>ID: {item?.districtId}</span>
-                                        <Copy/>
+                                <div className={"bigcontatindistrictandregion"}>
+                                    <div className={"flexp"}>
+                                        <div>
+                                            {item?.region?.[
+                                                `name${
+                                                    language === "ru"
+                                                        ? "Russian"
+                                                        : language === "uz"
+                                                            ? "UzLatin"
+                                                            : ""
+                                                }`
+                                                ] || translate("NONE")}
+                                        </div>
+                                        <div
+                                            onClick={() => copyToClipboard(item?.region?.id)}
+                                            className={"flexcenter copyID pointer"}
+                                        >
+                                            <span>ID: {item?.region?.id}</span>
+                                            <Copy/>
+                                        </div>
+
+
                                     </div>
-                                </div>
-                                <div>
-                                    {item?.[
-                                        `name${
-                                            language === "ru"
-                                                ? "Russian"
-                                                : language === "uz"
-                                                    ? "UzLatin"
-                                                    : ""
-                                        }`
-                                        ] || translate("NONE")}
+                                    {/* */}
+                                    <div className={"flexp2"}>
+                                        <div>
+                                            {item?.[
+                                                `name${
+                                                    language === "ru"
+                                                        ? "Russian"
+                                                        : language === "uz"
+                                                            ? "UzLatin"
+                                                            : ""
+                                                }`
+                                                ] || translate("NONE")}
+                                        </div>
+                                        <div
+                                            onClick={() => copyToClipboard(item?.districtId)}
+                                            className={"flexcenter copyID pointer"}
+                                        >
+                                            <span>ID: {item?.districtId}</span>
+                                            <Copy/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="button">
 

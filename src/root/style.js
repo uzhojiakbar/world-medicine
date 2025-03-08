@@ -135,7 +135,8 @@ export const MiniTitleSmall = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: ${({ gap }) => (gap ? gap : "0")};
+  justify-content: ${({jc})=>jc?jc:"space-between"};
   margin: ${({mgn})=>mgn?mgn:"0"};
   
 

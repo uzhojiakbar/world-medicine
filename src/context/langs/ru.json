@@ -341,5 +341,11 @@
   "district_added": "Район добавлен",
   "district_added_error": "Ошибка добавления района",
   "manager_added": "менеджер добавлен",
-  "manager_added_error": "Ошибка добавления менеджера"
+  "manager_added_error": "Ошибка добавления менеджера",
+  "medicine_name_translations": "Название препората на разных языках",
+  "placeholder_ru": "на русском языке",
+  "placeholder_eng": "на английском языке",
+  "placeholder_uz": "на узбекском языке",
+  "List_of_inns": "Список МНН",
+  "select_mnn": "Выберите МНН"
 }

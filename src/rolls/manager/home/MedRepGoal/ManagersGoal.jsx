@@ -53,6 +53,7 @@ const MedRepGoal = () => {
     const [editValue, setEditValue] = useState("");
     const [loading, setLoading] = useState(false);
     const [currentAxvot, setCurrentAxvot] = useState([]);
+
     const [currentDrugs, setCurrentDrugs] = useState([]);
 
 

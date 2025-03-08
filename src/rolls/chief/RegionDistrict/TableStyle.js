@@ -15,7 +15,7 @@ const Details = styled.div`
     display: flex;
     flex-direction: column;
     user-select: none;
-    gap: 10px;
+    gap: 20px;
 
     padding: 17px 20px;
     background-color: #f7f8fc;
@@ -32,6 +32,18 @@ const Details = styled.div`
         font-weight: 600;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .flexp2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .bigcontatindistrictandregion{
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
     }
 
     > div {

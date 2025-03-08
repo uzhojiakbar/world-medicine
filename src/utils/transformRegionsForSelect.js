@@ -59,6 +59,18 @@ export const TransformInsitutation = (data = [], lang,translate = () => {}) => {
     })
 }
 
+export const TransformMnns = (data = [], lang,translate = () => {}) => {
+    return data.map((v) => {
+        return {
+            id: v.id,
+            value: v?.name,
+            label: v?.name,
+            key: v?.name,
+        }
+    })
+}
+
+
 
 
 

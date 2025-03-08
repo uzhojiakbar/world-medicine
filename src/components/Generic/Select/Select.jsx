@@ -101,7 +101,6 @@ const PrimarySelect = ({
                 ref={ref}
                 defaultValue={selectedOptionId || undefined}
                 onChange={handleValueChange}
-                displayEmpty
                 input={<OutlinedInput/>}
                 disabled={disabled}
                 onClick={onClick}
@@ -125,9 +124,7 @@ const PrimarySelect = ({
                             {option.value}
                         </MenuItem>
                     ))
-                ) : (
-                    <MenuItem value="">Пусто</MenuItem>
-                )}
+                ) : <div></div>}
             </Select>
         </StyledFormControl>
     );

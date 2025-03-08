@@ -1706,6 +1706,21 @@ export const useRegisterManager = () => {
     });
 };
 
+// <ModalBodyHeader gridC={1}>
+//   <ModalBodySection>
+//     <MiniTitleSmall
+//         mgn={"0 auto"}
+//     >
+//       {translate("adding_lpu")}
+//     </MiniTitleSmall>
+//     <DeleteBtn
+//         bgcolor={"#216BF4"}
+//         onClick={SendData}
+//     >
+//       {translate("add_lpu")}
+//     </DeleteBtn>
+//   </ModalBodySection>
+// </ModalBodyHeader>
 export const useRegisterFieldForce = () => {
     const queryClient = useQueryClient();
 
@@ -2410,6 +2425,26 @@ export const useAddDistrict = () => {
         onError: (error, variables) => {
             variables.onError(error);
         },
+    });
+};
+
+
+export const useGetMnns = () => {
+    return useQuery({
+        queryKey: ["Districts"],
+        queryFn: async () => {
+            try {
+                    const data = await Instance.get(
+                        `/v1/db/mnn/list`
+                    );
+                    return data?.data;
+            } catch (error) {
+                console.error("Error fetching data", error);
+                return []
+                throw error; // xatolikni qaytarish
+            }
+        },
+        staleTime: 1000 * 60 * 10,
     });
 };
 
