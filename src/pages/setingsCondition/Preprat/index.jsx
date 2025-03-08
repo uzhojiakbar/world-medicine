@@ -384,6 +384,31 @@ function Preparat() {
                 title={translate("Наименование_товара")}
                 loading={loading || loadingDrugs}
                 data={data}
+                data2={{
+                    thead: [
+                        "Препарат",
+                        "CIP",
+                        "Не более",
+                        "Рецептурник",
+                        {
+                            title: "СУ",
+                            child: ["Лимит", "Балл", "Процент"],
+                        },
+                        {
+                            title: "СБ",
+                            child: ["Лимит", "Балл", "Процент"],
+                        },
+                        {
+                            title: "ГЗ",
+                            child: ["Лимит", "Балл", "Процент"],
+                        },
+                        {
+                            title: "КВ",
+                            child: ["Лимит", "Балл", "Процент"],
+                        },
+                    ],
+                    tbody: dataDrugs
+                }}
             />
         </Container>
     );

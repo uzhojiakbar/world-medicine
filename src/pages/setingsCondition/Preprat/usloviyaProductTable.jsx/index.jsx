@@ -61,9 +61,11 @@ import RightArrow from "../../../../assets/svg/RightArrow.jsx";
 import styled from "styled-components";
 // import ModalManager from "./Modal.jsx";
 import {useLanguage} from "../../../../context/LanguageContext.jsx";
-import Server, {useDeleteDrug} from "../../../../utils/server/server.js";
+import Server, {useAddDrugs, useDeleteDrug} from "../../../../utils/server/server.js";
 import {isArray} from "chart.js/helpers";
 import {Input, message} from "antd";
+import Input2 from "../../../../components/Generic/Input/Input2.jsx";
+import {useQueryClient} from "@tanstack/react-query";
 
 const Container = styled.div`
     position: relative;
@@ -318,7 +320,7 @@ const InputWrapper = styled(Input)`
     }
 `;
 
-const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
+const UsloviyaProductTable = ({data, data2, loading = true, title = ""}) => {
     let {thead, tbody} = data;
     const [editId, setEditId] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
@@ -331,36 +333,100 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
     const totalPages = Math.ceil(tbody?.length / itemsPerPage);
     const {translate} = useLanguage();
 
+    console.log("DATA2", data2)
+    // {
+    //     "id": 6,
+    //     "name": "Ibuprofen",
+    //     "nameUzCyrillic": "Ибупрофен",
+    //     "nameUzLatin": "Ibuprofen",
+    //     "nameRussian": "Ибупрофен",
+    //     "imageUrl": "string",
+    //     "inn": [
+    //     "Ibuprofen"
+    // ],
+    //     "cip": 15000,
+    //     "quantity": 400,
+    //     "prescription": 45,
+    //     "volume": "MG",
+    //     "type": "TABLETS",
+    //     "suPercentage": 12,
+    //     "suLimit": 14,
+    //     "suBall": 10,
+    //     "sbPercentage": 14,
+    //     "sbLimit": 16,
+    //     "sbBall": 9,
+    //     "gzPercentage": 10,
+    //     "gzLimit": 12,
+    //     "gzBall": 7,
+    //     "kbPercentage": 9.5,
+    //     "kbLimit": 11,
+    //     "kbBall": 5
+    // }
     const handleEditClick = (row) => {
         console.log("EDIT:", row);
         setEditId(row.id);
         setChangeRow(row); // Tahrirlanayotgan qatorni o'zgarish uchun saqlaymiz
     };
-    const handleInputChange = (name, value, ind, subKey) => {
-        setChangeRow((prevRow) => {
-            const updatedRow = {...prevRow};
-            updatedRow[name] = value;
+    const handleInputChange = (name, value, ind, subKey, row) => {
+        // setChangeRow((prevRow) => {
+        //     const updatedRow = {...prevRow};
+        //
+        //     if (subKey) {
+        //         let newValue = value;
+        //         updatedRow[name] = {
+        //             ...(prevRow[name] || {}),
+        //             [subKey]: value,
+        //         };
+        //     } else {
+        //         updatedRow[name] = value;
+        //     }
+        //
+        //     return updatedRow;
+        // });
 
-            return updatedRow;
-        });
+        console.log(changeRow)
+
+        console.log(name, value, ind, subKey, row);
     };
+
+    const mutation = useAddDrugs()
 
     useEffect(() => {
         console.log("Yangilangan changeRow:", changeRow);
     }, [changeRow]);
 
     const handleCancel = () => {
-        setEditId(null);
+        setChangeRow({});
     };
 
+
+    const queryClient = useQueryClient();
+
+    const handleRefresh = () => {
+        setLoadingIn(1);
+        queryClient.invalidateQueries(["Drugs"]); // Ma'lumotlarni qayta yuklash
+        setTimeout(() => {
+            setLoadingIn(0);
+        }, 100);
+    };
     const handleSave = () => {
         console.log("Updated row:", changeRow);
 
-        setEditedRow((prevRows) =>
-            prevRows.map((row) => (row.id === changeRow.id ? changeRow : row))
-        );
+        mutation.mutate({
+            requestData: changeRow, onSuccess: () => {
+                message.success(translate("medicine_edited"));
+                setTimeout(() => {
+                    setLoadingIn(false);
+                    handleRefresh()
+                }, 500);
+            }, onError: () => {
+                setLoadingIn(false);
+                handleRefresh()
+                message.error(translate("medicine_edited_error"));
+            },
+        });
 
-        setEditId(null);
+        setChangeRow({});
     };
 
     const handleDelete = (id, name) => {
@@ -394,6 +460,17 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
     useEffect(() => {
         setEditedRow([...tbody]);
     }, [tbody]);
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        console.log(name, value)
+        setChangeRow({
+            ...changeRow, [name]: value,
+        })
+
+        console.log("CHANGEROW", changeRow);
+    };
+
     return (
         <Container>
             {loading || loadingIn ? (
@@ -443,187 +520,504 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                             </thead>
 
                             <tbody>
-                            {editedRow?.length > 0 ? (
-                                editedRow?.map((row, index) => {
-                                    return (
-                                        <tr onDoubleClick={() => handleEditClick(row)}
-                                            key={row.id}>
-                                            {Object.keys(row)?.map((v, i) => {
-                                                if (v === "id") return null; // id ni chiqarish shart emas
-
-                                                if (typeof row[v] === "object" && row[v] !== null) {
-                                                    return (
-                                                        <>
-                                                            <td>
-                                                                <Line/>
-                                                            </td>
-                                                            {editId === row.id ? (
-                                                                <>
-                                                                    <td>
-                                                                        <InputWrapper
-                                                                            type="number"
-                                                                            name="Лимит"
-                                                                            defaultValue={row[v]?.Лимит}
-                                                                            onChange={(e) =>
-                                                                                handleInputChange(v, e.target.value, index, "Лимит")
-                                                                            }
-                                                                            placeholder="Лимит"
-                                                                            height={"50px"}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <InputWrapper
-                                                                            type="number"
-                                                                            name="Балл"
-                                                                            defaultValue={row[v]?.Балл}
-                                                                            onChange={(e) =>
-                                                                                handleInputChange(v, e.target.value, index, "Балл")
-                                                                            }
-                                                                            placeholder="Балл"
-                                                                            height={"50px"}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <InputWrapper
-                                                                            type="number"
-                                                                            name="Процент"
-                                                                            defaultValue={row[v]?.Процент}
-                                                                            onChange={(e) =>
-                                                                                handleInputChange(v, e.target.value, index, "Процент")
-                                                                            }
-                                                                            placeholder="Процент"
-                                                                            height={"50px"}
-                                                                        />
-                                                                    </td>
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <td>{row[v]?.Лимит}</td>
-                                                                    <td>{row[v]?.Балл}</td>
-                                                                    <td>{row[v]?.Процент}</td>
-                                                                </>
-                                                            )}
-                                                        </>
-                                                    );
-                                                } else {
-                                                    return editId !== row.id ? (
-                                                        <td key={v} className={i === 1 ? "idfixed" : ""}>
-                                                            {row[v]}
-                                                        </td>
-                                                    ) : (
+                            {
+                                data2?.tbody?.length ?
+                                    data2.tbody?.map((v, i) => {
+                                        if (v.id === changeRow.id) {
+                                            return <tr key={i} onDoubleClick={() => handleEditClick(v)}>
+                                                <td>
+                                                    <Input2
+                                                        type="text"
+                                                        name="name"
+                                                        deffvalue={changeRow?.name}
+                                                        onChange={handleChange}
+                                                        placeholder={changeRow?.name}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <Input2
+                                                        type="number"
+                                                        name="cip"
+                                                        deffvalue={changeRow?.cip}
+                                                        onChange={handleChange}
+                                                        placeholder={changeRow?.cip}
+                                                    />
+                                                </td>
+                                                <td>-?%</td>
+                                                <td>
+                                                    <Input2
+                                                        type="number"
+                                                        name="prescription"
+                                                        deffvalue={changeRow?.prescription}
+                                                        onChange={handleChange}
+                                                        placeholder={changeRow?.prescription}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <Line/>
+                                                </td>
+                                                <>
+                                                    <>
                                                         <td>
-                                                            <InputWrapper
-                                                                type="text"
-                                                                name={v}
-                                                                defaultValue={row[v]}
-                                                                onChange={(e) => handleInputChange(v, e.target.value, index)}
-                                                                placeholder={v}
-                                                                height={"50px"}
+                                                            <Input2
+                                                                type="number"
+                                                                name="suLimit"
+                                                                deffvalue={changeRow?.suLimit}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.suLimit}
                                                             />
                                                         </td>
-                                                    );
-                                                }
-                                            })}
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="suBall"
+                                                                deffvalue={changeRow?.suBall}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.suBall}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="suPercentage"
+                                                                deffvalue={changeRow?.suPercentage}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.suPercentage}
+                                                            />
+                                                        </td>
+                                                    </>
+                                                </>
+                                                <td>
+                                                    <Line/>
+                                                </td>
+                                                <>
+                                                    <>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="sbLimit"
+                                                                deffvalue={changeRow?.sbLimit}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.sbLimit}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="sbBall"
+                                                                deffvalue={changeRow?.sbBall}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.sbBall}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="sbPercentage"
+                                                                deffvalue={changeRow?.sbPercentage}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.sbPercentage}
+                                                            />
+                                                        </td>
+                                                    </>
+                                                </>
+                                                <td>
+                                                    <Line/>
+                                                </td>
+                                                <>
+                                                    <>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="gzLimit"
+                                                                deffvalue={changeRow?.gzLimit}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.gzLimit}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="gzBall"
+                                                                deffvalue={changeRow?.gzBall}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.gzBall}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="gzPercentage"
+                                                                deffvalue={changeRow?.gzPercentage}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.gzPercentage}
+                                                            />
+                                                        </td>
+                                                    </>
+                                                </>
+                                                <td>
+                                                    <Line/>
+                                                </td>
+                                                <>
+                                                    <>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="kbLimit"
+                                                                deffvalue={changeRow?.kbLimit}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.kbLimit}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="kbBall"
+                                                                deffvalue={changeRow?.kbBall}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.kbBall}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Input2
+                                                                type="number"
+                                                                name="kbPercentage"
+                                                                deffvalue={changeRow?.kbPercentage}
+                                                                onChange={handleChange}
+                                                                placeholder={changeRow?.kbPercentage}
+                                                            />
+                                                        </td>
+                                                    </>
+                                                </>
+                                                <td>
+                                                    <Line/>
+                                                </td>
+
+                                                <div className="buttons">
+                                                    <button
+                                                        style={{background: "transparent"}}
+                                                        className="Viewbutton margin10"
+                                                        onClick={handleSave}
+                                                    >
+                                                        <i className="fa-solid fa-floppy-disk colorBlue"></i>
+                                                    </button>
+                                                    <button
+                                                        style={{background: "transparent"}}
+                                                        className="Viewbutton margin10 colorBlue"
+                                                        onClick={handleCancel}
+                                                    >
+                                                        <i className="fa-solid fa-close colorRed"></i>
+                                                    </button>
+                                                </div>
+                                            </tr>
+                                        }
+                                        return <tr key={i} onDoubleClick={() => handleEditClick(v)}>
+                                            <td>{v?.name}</td>
+                                            <td>{v?.cip}</td>
+                                            <td>-?%</td>
+                                            <td>{v?.prescription}</td>
                                             <td>
                                                 <Line/>
                                             </td>
-                                            <td className="buttons">
-                                                {editId === row.id ? (
-                                                    <div className="buttons">
-                                                        <button
-                                                            style={{background: "transparent"}}
-                                                            className="Viewbutton margin10"
-                                                            onClick={handleSave}
+                                            <>
+                                                <>
+                                                    <td>{v?.suLimit}</td>
+                                                    <td>{v?.suBall}</td>
+                                                    <td>{v?.suPercentage}</td>
+                                                </>
+                                            </>
+                                            <td>
+                                                <Line/>
+                                            </td>
+                                            <>
+                                                <>
+                                                    <td>{v?.sbLimit}</td>
+                                                    <td>{v?.sbBall}</td>
+                                                    <td>{v?.sbPercentage}</td>
+                                                </>
+                                            </>
+                                            <td>
+                                                <Line/>
+                                            </td>
+                                            <>
+                                                <>
+                                                    <td>{v?.gzLimit}</td>
+                                                    <td>{v?.gzBall}</td>
+                                                    <td>{v?.gzPercentage}</td>
+                                                </>
+                                            </>
+                                            <td>
+                                                <Line/>
+                                            </td>
+                                            <>
+                                                <>
+                                                    <td>{v?.kbLimit}</td>
+                                                    <td>{v?.kbBall}</td>
+                                                    <td>{v?.kbPercentage}</td>
+                                                </>
+                                            </>
+                                            <td>
+                                                <Line/>
+                                            </td>
+
+                                            <td className={"buttons"}>
+                                                <>
+                                                    <button
+                                                        style={{
+                                                            background: "transparent",
+                                                            padding: "0",
+                                                        }}
+                                                        className="Viewbutton"
+                                                        onClick={() => handleEditClick(v)}
+                                                    >
+                                                        <svg
+                                                            width="24"
+                                                            height="24"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
                                                         >
-                                                            <i className="fa-solid fa-floppy-disk colorBlue"></i>
-                                                        </button>
-                                                        <button
-                                                            style={{background: "transparent"}}
-                                                            className="Viewbutton margin10 colorBlue"
-                                                            onClick={handleCancel}
+                                                            <path
+                                                                opacity="0.5"
+                                                                d="M20.8487 8.71306C22.3844 7.17735 22.3844 4.68748 20.8487 3.15178C19.313 1.61607 16.8231 1.61607 15.2874 3.15178L14.4004 4.03882C14.4125 4.0755 14.4251 4.11268 14.4382 4.15035C14.7633 5.0875 15.3768 6.31601 16.5308 7.47002C17.6848 8.62403 18.9133 9.23749 19.8505 9.56262C19.888 9.57563 19.925 9.58817 19.9615 9.60026L20.8487 8.71306Z"
+                                                                fill="#216BF4"
+                                                            />
+                                                            <path
+                                                                d="M14.4386 4L14.4004 4.03819C14.4125 4.07487 14.4251 4.11206 14.4382 4.14973C14.7633 5.08687 15.3768 6.31538 16.5308 7.4694C17.6848 8.62341 18.9133 9.23686 19.8505 9.56199C19.8876 9.57489 19.9243 9.58733 19.9606 9.59933L11.4001 18.1598C10.823 18.7369 10.5343 19.0255 10.2162 19.2737C9.84082 19.5665 9.43469 19.8175 9.00498 20.0223C8.6407 20.1959 8.25351 20.3249 7.47918 20.583L3.39584 21.9442C3.01478 22.0712 2.59466 21.972 2.31063 21.688C2.0266 21.4039 1.92743 20.9838 2.05445 20.6028L3.41556 16.5194C3.67368 15.7451 3.80273 15.3579 3.97634 14.9936C4.18114 14.5639 4.43213 14.1578 4.7249 13.7824C4.97307 13.4643 5.26165 13.1757 5.83874 12.5986L14.4386 4Z"
+                                                                fill="#216BF4"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        style={{
+                                                            background: "transparent",
+                                                            padding: "0",
+                                                        }}
+                                                        className="Viewbutton"
+                                                        onClick={() => handleDelete(v.id)}
+                                                    >
+                                                        <svg
+                                                            width="24"
+                                                            height="24"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
                                                         >
-                                                            <i className="fa-solid fa-close colorRed"></i>
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <>
-                                                        <button
-                                                            style={{
-                                                                background: "transparent",
-                                                                padding: "0",
-                                                            }}
-                                                            className="Viewbutton"
-                                                            onClick={() => handleEditClick(row)}
-                                                        >
-                                                            <svg
-                                                                width="24"
-                                                                height="24"
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                                <path
-                                                                    opacity="0.5"
-                                                                    d="M20.8487 8.71306C22.3844 7.17735 22.3844 4.68748 20.8487 3.15178C19.313 1.61607 16.8231 1.61607 15.2874 3.15178L14.4004 4.03882C14.4125 4.0755 14.4251 4.11268 14.4382 4.15035C14.7633 5.0875 15.3768 6.31601 16.5308 7.47002C17.6848 8.62403 18.9133 9.23749 19.8505 9.56262C19.888 9.57563 19.925 9.58817 19.9615 9.60026L20.8487 8.71306Z"
-                                                                    fill="#216BF4"
-                                                                />
-                                                                <path
-                                                                    d="M14.4386 4L14.4004 4.03819C14.4125 4.07487 14.4251 4.11206 14.4382 4.14973C14.7633 5.08687 15.3768 6.31538 16.5308 7.4694C17.6848 8.62341 18.9133 9.23686 19.8505 9.56199C19.8876 9.57489 19.9243 9.58733 19.9606 9.59933L11.4001 18.1598C10.823 18.7369 10.5343 19.0255 10.2162 19.2737C9.84082 19.5665 9.43469 19.8175 9.00498 20.0223C8.6407 20.1959 8.25351 20.3249 7.47918 20.583L3.39584 21.9442C3.01478 22.0712 2.59466 21.972 2.31063 21.688C2.0266 21.4039 1.92743 20.9838 2.05445 20.6028L3.41556 16.5194C3.67368 15.7451 3.80273 15.3579 3.97634 14.9936C4.18114 14.5639 4.43213 14.1578 4.7249 13.7824C4.97307 13.4643 5.26165 13.1757 5.83874 12.5986L14.4386 4Z"
-                                                                    fill="#216BF4"
-                                                                />
-                                                            </svg>
-                                                        </button>
-                                                        <button
-                                                            style={{
-                                                                background: "transparent",
-                                                                padding: "0",
-                                                            }}
-                                                            className="Viewbutton"
-                                                            onClick={() => handleDelete(row.id)}
-                                                        >
-                                                            <svg
-                                                                width="24"
-                                                                height="24"
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                                <path
-                                                                    d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z"
-                                                                    fill="#FB3748"
-                                                                />
-                                                                <path
-                                                                    fill-rule="evenodd"
-                                                                    clip-rule="evenodd"
-                                                                    d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z"
-                                                                    fill="#FB3748"
-                                                                />
-                                                                <path
-                                                                    fill-rule="evenodd"
-                                                                    clip-rule="evenodd"
-                                                                    d="M14.5747 11.4815C14.9868 11.5249 15.2875 11.9118 15.2463 12.3456L14.7463 17.6088C14.7051 18.0426 14.3376 18.3592 13.9254 18.3158C13.5133 18.2724 13.2126 17.8855 13.2538 17.4517L13.7538 12.1885C13.795 11.7547 14.1625 11.4381 14.5747 11.4815Z"
-                                                                    fill="#FB3748"
-                                                                />
-                                                                <path
-                                                                    opacity="0.5"
-                                                                    d="M11.5956 22.0006H12.4044C15.1871 22.0006 16.5785 22.0006 17.4831 21.1147C18.3878 20.2288 18.4803 18.7756 18.6654 15.8691L18.9321 11.6812C19.0326 10.1042 19.0828 9.31573 18.6289 8.81607C18.1751 8.31641 17.4087 8.31641 15.876 8.31641H8.12405C6.59127 8.31641 5.82488 8.31641 5.37105 8.81607C4.91722 9.31573 4.96744 10.1042 5.06788 11.6812L5.33459 15.8691C5.5197 18.7756 5.61225 20.2288 6.51689 21.1147C7.42153 22.0006 8.81289 22.0006 11.5956 22.0006Z"
-                                                                    fill="#FB3748"
-                                                                />
-                                                            </svg>
-                                                        </button>
-                                                    </>
-                                                )}
+                                                            <path
+                                                                d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z"
+                                                                fill="#FB3748"
+                                                            />
+                                                            <path
+                                                                fill-rule="evenodd"
+                                                                clip-rule="evenodd"
+                                                                d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z"
+                                                                fill="#FB3748"
+                                                            />
+                                                            <path
+                                                                fill-rule="evenodd"
+                                                                clip-rule="evenodd"
+                                                                d="M14.5747 11.4815C14.9868 11.5249 15.2875 11.9118 15.2463 12.3456L14.7463 17.6088C14.7051 18.0426 14.3376 18.3592 13.9254 18.3158C13.5133 18.2724 13.2126 17.8855 13.2538 17.4517L13.7538 12.1885C13.795 11.7547 14.1625 11.4381 14.5747 11.4815Z"
+                                                                fill="#FB3748"
+                                                            />
+                                                            <path
+                                                                opacity="0.5"
+                                                                d="M11.5956 22.0006H12.4044C15.1871 22.0006 16.5785 22.0006 17.4831 21.1147C18.3878 20.2288 18.4803 18.7756 18.6654 15.8691L18.9321 11.6812C19.0326 10.1042 19.0828 9.31573 18.6289 8.81607C18.1751 8.31641 17.4087 8.31641 15.876 8.31641H8.12405C6.59127 8.31641 5.82488 8.31641 5.37105 8.81607C4.91722 9.31573 4.96744 10.1042 5.06788 11.6812L5.33459 15.8691C5.5197 18.7756 5.61225 20.2288 6.51689 21.1147C7.42153 22.0006 8.81289 22.0006 11.5956 22.0006Z"
+                                                                fill="#FB3748"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </>
                                             </td>
                                         </tr>
-                                    );
-                                })
-                            ) : (
-                                <tr>
-                                    <td className="empty" colSpan="15" style={{textAlign: "center"}}>
-                                        {loading ? "Loading..." : translate("notInformation")}
-                                    </td>
-                                </tr>
-                            )}
+                                    })
+                                    :
+                                    <tr>
+                                        <td className="empty" colSpan="50" style={{textAlign: "center"}}>
+                                            {loading ? "Loading..." : translate("notInformation")}
+                                        </td>
+                                    </tr>
+                            }
+                            {/*{editedRow?.length > 0 ? (*/}
+                            {/*    editedRow?.map((row, index) => {*/}
+                            {/*        return (*/}
+                            {/*            <tr onDoubleClick={() => handleEditClick(row)}*/}
+                            {/*                key={row.id}>*/}
+                            {/*                {Object.keys(row)?.map((v, i) => {*/}
+                            {/*                    if (v === "id") return null; // id ni chiqarish shart emas*/}
+
+                            {/*                    if (typeof row[v] === "object" && row[v] !== null) {*/}
+                            {/*                        return (*/}
+                            {/*                            <>*/}
+                            {/*                                <td>*/}
+                            {/*                                    <Line/>*/}
+                            {/*                                </td>*/}
+                            {/*                                {editId === row.id ? (*/}
+                            {/*                                    <>*/}
+                            {/*                                        <td>*/}
+                            {/*                                            <InputWrapper*/}
+                            {/*                                                type="number"*/}
+                            {/*                                                name="Лимит"*/}
+                            {/*                                                defaultValue={row[v]?.Лимит}*/}
+                            {/*                                                onChange={(e) =>*/}
+                            {/*                                                    handleInputChange(v, e.target.value, index, "Лимит")*/}
+                            {/*                                                }*/}
+                            {/*                                                placeholder="Лимит"*/}
+                            {/*                                                height={"50px"}*/}
+                            {/*                                            />*/}
+                            {/*                                        </td>*/}
+                            {/*                                        <td>*/}
+                            {/*                                            <InputWrapper*/}
+                            {/*                                                type="number"*/}
+                            {/*                                                name="Балл"*/}
+                            {/*                                                defaultValue={row[v]?.Балл}*/}
+                            {/*                                                onChange={(e) =>*/}
+                            {/*                                                    handleInputChange(v, e.target.value, index, "Балл")*/}
+                            {/*                                                }*/}
+                            {/*                                                placeholder="Балл"*/}
+                            {/*                                                height={"50px"}*/}
+                            {/*                                            />*/}
+                            {/*                                        </td>*/}
+                            {/*                                        <td>*/}
+                            {/*                                            <InputWrapper*/}
+                            {/*                                                type="number"*/}
+                            {/*                                                name="Процент"*/}
+                            {/*                                                defaultValue={row[v]?.Процент}*/}
+                            {/*                                                onChange={(e) =>*/}
+                            {/*                                                    handleInputChange(v, e.target.value, index, "Процент")*/}
+                            {/*                                                }*/}
+                            {/*                                                placeholder="Процент"*/}
+                            {/*                                                height={"50px"}*/}
+                            {/*                                            />*/}
+                            {/*                                        </td>*/}
+                            {/*                                    </>*/}
+                            {/*                                ) : (*/}
+                            {/*                                    <>*/}
+                            {/*                                        <td>{row[v]?.Лимит}</td>*/}
+                            {/*                                        <td>{row[v]?.Балл}</td>*/}
+                            {/*                                        <td>{row[v]?.Процент}</td>*/}
+                            {/*                                    </>*/}
+                            {/*                                )}*/}
+                            {/*                            </>*/}
+                            {/*                        );*/}
+                            {/*                    } else {*/}
+                            {/*                        return editId !== row.id ? (*/}
+                            {/*                            <td key={v} className={i === 1 ? "idfixed" : ""}>*/}
+                            {/*                                {row[v]}*/}
+                            {/*                            </td>*/}
+                            {/*                        ) : (*/}
+                            {/*                            <td>12*/}
+                            {/*                                <InputWrapper*/}
+                            {/*                                    type="text"*/}
+                            {/*                                    name={v}*/}
+                            {/*                                    defaultValue={row[v]}*/}
+                            {/*                                    onChange={(e) => handleInputChange(v, e.target.value, index, row)}*/}
+                            {/*                                    placeholder={v}*/}
+                            {/*                                    height={"50px"}*/}
+                            {/*                                />*/}
+                            {/*                            </td>*/}
+                            {/*                        );*/}
+                            {/*                    }*/}
+                            {/*                })}*/}
+                            {/*                <td>*/}
+                            {/*                    <Line/>*/}
+                            {/*                </td>*/}
+                            {/*                <td className="buttons">*/}
+                            {/*                    {editId === row.id ? (*/}
+                            {/*                        <div className="buttons">*/}
+                            {/*                            <button*/}
+                            {/*                                style={{background: "transparent"}}*/}
+                            {/*                                className="Viewbutton margin10"*/}
+                            {/*                                onClick={handleSave}*/}
+                            {/*                            >*/}
+                            {/*                                <i className="fa-solid fa-floppy-disk colorBlue"></i>*/}
+                            {/*                            </button>*/}
+                            {/*                            <button*/}
+                            {/*                                style={{background: "transparent"}}*/}
+                            {/*                                className="Viewbutton margin10 colorBlue"*/}
+                            {/*                                onClick={handleCancel}*/}
+                            {/*                            >*/}
+                            {/*                                <i className="fa-solid fa-close colorRed"></i>*/}
+                            {/*                            </button>*/}
+                            {/*                        </div>*/}
+                            {/*                    ) : (*/}
+                            {/*                        <>*/}
+                            {/*                            <button*/}
+                            {/*                                style={{*/}
+                            {/*                                    background: "transparent",*/}
+                            {/*                                    padding: "0",*/}
+                            {/*                                }}*/}
+                            {/*                                className="Viewbutton"*/}
+                            {/*                                onClick={() => handleEditClick(row)}*/}
+                            {/*                            >*/}
+                            {/*                                <svg*/}
+                            {/*                                    width="24"*/}
+                            {/*                                    height="24"*/}
+                            {/*                                    viewBox="0 0 24 24"*/}
+                            {/*                                    fill="none"*/}
+                            {/*                                    xmlns="http://www.w3.org/2000/svg"*/}
+                            {/*                                >*/}
+                            {/*                                    <path*/}
+                            {/*                                        opacity="0.5"*/}
+                            {/*                                        d="M20.8487 8.71306C22.3844 7.17735 22.3844 4.68748 20.8487 3.15178C19.313 1.61607 16.8231 1.61607 15.2874 3.15178L14.4004 4.03882C14.4125 4.0755 14.4251 4.11268 14.4382 4.15035C14.7633 5.0875 15.3768 6.31601 16.5308 7.47002C17.6848 8.62403 18.9133 9.23749 19.8505 9.56262C19.888 9.57563 19.925 9.58817 19.9615 9.60026L20.8487 8.71306Z"*/}
+                            {/*                                        fill="#216BF4"*/}
+                            {/*                                    />*/}
+                            {/*                                    <path*/}
+                            {/*                                        d="M14.4386 4L14.4004 4.03819C14.4125 4.07487 14.4251 4.11206 14.4382 4.14973C14.7633 5.08687 15.3768 6.31538 16.5308 7.4694C17.6848 8.62341 18.9133 9.23686 19.8505 9.56199C19.8876 9.57489 19.9243 9.58733 19.9606 9.59933L11.4001 18.1598C10.823 18.7369 10.5343 19.0255 10.2162 19.2737C9.84082 19.5665 9.43469 19.8175 9.00498 20.0223C8.6407 20.1959 8.25351 20.3249 7.47918 20.583L3.39584 21.9442C3.01478 22.0712 2.59466 21.972 2.31063 21.688C2.0266 21.4039 1.92743 20.9838 2.05445 20.6028L3.41556 16.5194C3.67368 15.7451 3.80273 15.3579 3.97634 14.9936C4.18114 14.5639 4.43213 14.1578 4.7249 13.7824C4.97307 13.4643 5.26165 13.1757 5.83874 12.5986L14.4386 4Z"*/}
+                            {/*                                        fill="#216BF4"*/}
+                            {/*                                    />*/}
+                            {/*                                </svg>*/}
+                            {/*                            </button>*/}
+                            {/*                            <button*/}
+                            {/*                                style={{*/}
+                            {/*                                    background: "transparent",*/}
+                            {/*                                    padding: "0",*/}
+                            {/*                                }}*/}
+                            {/*                                className="Viewbutton"*/}
+                            {/*                                onClick={() => handleDelete(row.id)}*/}
+                            {/*                            >*/}
+                            {/*                                <svg*/}
+                            {/*                                    width="24"*/}
+                            {/*                                    height="24"*/}
+                            {/*                                    viewBox="0 0 24 24"*/}
+                            {/*                                    fill="none"*/}
+                            {/*                                    xmlns="http://www.w3.org/2000/svg"*/}
+                            {/*                                >*/}
+                            {/*                                    <path*/}
+                            {/*                                        d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z"*/}
+                            {/*                                        fill="#FB3748"*/}
+                            {/*                                    />*/}
+                            {/*                                    <path*/}
+                            {/*                                        fill-rule="evenodd"*/}
+                            {/*                                        clip-rule="evenodd"*/}
+                            {/*                                        d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z"*/}
+                            {/*                                        fill="#FB3748"*/}
+                            {/*                                    />*/}
+                            {/*                                    <path*/}
+                            {/*                                        fill-rule="evenodd"*/}
+                            {/*                                        clip-rule="evenodd"*/}
+                            {/*                                        d="M14.5747 11.4815C14.9868 11.5249 15.2875 11.9118 15.2463 12.3456L14.7463 17.6088C14.7051 18.0426 14.3376 18.3592 13.9254 18.3158C13.5133 18.2724 13.2126 17.8855 13.2538 17.4517L13.7538 12.1885C13.795 11.7547 14.1625 11.4381 14.5747 11.4815Z"*/}
+                            {/*                                        fill="#FB3748"*/}
+                            {/*                                    />*/}
+                            {/*                                    <path*/}
+                            {/*                                        opacity="0.5"*/}
+                            {/*                                        d="M11.5956 22.0006H12.4044C15.1871 22.0006 16.5785 22.0006 17.4831 21.1147C18.3878 20.2288 18.4803 18.7756 18.6654 15.8691L18.9321 11.6812C19.0326 10.1042 19.0828 9.31573 18.6289 8.81607C18.1751 8.31641 17.4087 8.31641 15.876 8.31641H8.12405C6.59127 8.31641 5.82488 8.31641 5.37105 8.81607C4.91722 9.31573 4.96744 10.1042 5.06788 11.6812L5.33459 15.8691C5.5197 18.7756 5.61225 20.2288 6.51689 21.1147C7.42153 22.0006 8.81289 22.0006 11.5956 22.0006Z"*/}
+                            {/*                                        fill="#FB3748"*/}
+                            {/*                                    />*/}
+                            {/*                                </svg>*/}
+                            {/*                            </button>*/}
+                            {/*                        </>*/}
+                            {/*                    )}*/}
+                            {/*                </td>*/}
+                            {/*            </tr>*/}
+                            {/*        );*/}
+                            {/*    })*/}
+                            {/*) : (*/}
+                            {/*    <tr>*/}
+                            {/*        <td className="empty" colSpan="15" style={{textAlign: "center"}}>*/}
+                            {/*            {loading ? "Loading..." : translate("notInformation")}*/}
+                            {/*        </td>*/}
+                            {/*    </tr>*/}
+                            {/*)}*/}
                             </tbody>
 
                         </table>

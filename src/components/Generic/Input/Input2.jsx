@@ -10,7 +10,8 @@ const Input2 = ({
                     onChange = () => {
                     },
                     bgColor,
-                    className = ""
+                    className = "",
+                    deffvalue
                 }) => {
     return (
         <InputWrapper
@@ -18,6 +19,7 @@ const Input2 = ({
             className={className}
             maxLength={maxLength}
             type={type}
+            value={deffvalue}
             disabled={disabled}
             onChange={(e) => onChange(e)}
             placeholder={placeholder || ""}
