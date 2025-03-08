@@ -330,6 +330,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
     const itemsPerPage = 10;
     const totalPages = Math.ceil(tbody?.length / itemsPerPage);
     const {translate} = useLanguage();
+
     const handleEditClick = (row) => {
         console.log("EDIT:", row);
         setEditId(row.id);
@@ -337,39 +338,16 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
     };
     const handleInputChange = (name, value, ind, subKey) => {
         setChangeRow((prevRow) => {
-            const updatedRow = { ...prevRow };
-
-            if (subKey) {
-                let newValue = value;
-
-                // Agar "Балл" o'zgarsa, unga bog‘liq "Лимит" ham yangilansin
-                if (subKey == "Балл") {
-                    let limitValue = value * 2; // O'zgarish qoidasi (Misol uchun)
-                    updatedRow[name] = {
-                        ...(prevRow[name] || {}),
-                        [subKey]: value,
-                        "Лимит": limitValue,
-                    };
-                } else {
-                    updatedRow[name] = {
-                        ...(prevRow[name] || {}),
-                        [subKey]: value,
-                    };
-                }
-            } else {
-                updatedRow[name] = value;
-            }
+            const updatedRow = {...prevRow};
+            updatedRow[name] = value;
 
             return updatedRow;
         });
     };
 
-// O‘zgarishlarni tekshirish uchun
     useEffect(() => {
         console.log("Yangilangan changeRow:", changeRow);
     }, [changeRow]);
-
-
 
     const handleCancel = () => {
         setEditId(null);
@@ -384,7 +362,6 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
 
         setEditId(null);
     };
-
 
     const handleDelete = (id, name) => {
         deleteDrug.mutate(id, {
@@ -484,7 +461,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                                                                 <>
                                                                     <td>
                                                                         <InputWrapper
-                                                                            type="text"
+                                                                            type="number"
                                                                             name="Лимит"
                                                                             defaultValue={row[v]?.Лимит}
                                                                             onChange={(e) =>
@@ -496,7 +473,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                                                                     </td>
                                                                     <td>
                                                                         <InputWrapper
-                                                                            type="text"
+                                                                            type="number"
                                                                             name="Балл"
                                                                             defaultValue={row[v]?.Балл}
                                                                             onChange={(e) =>
@@ -508,7 +485,7 @@ const UsloviyaProductTable = ({data, loading = true, title = ""}) => {
                                                                     </td>
                                                                     <td>
                                                                         <InputWrapper
-                                                                            type="text"
+                                                                            type="number"
                                                                             name="Процент"
                                                                             defaultValue={row[v]?.Процент}
                                                                             onChange={(e) =>

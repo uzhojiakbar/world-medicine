@@ -76,18 +76,21 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
+    width:  7px;
+    height: 70px;
 }
 
 ::-webkit-scrollbar-track {
     background: transparent;
     margin-right: 2px;
+    padding: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
     background: #3b82f6;
     border-radius: 50px;
+    padding: 4px;
+
     /* text-transform: ; */
     margin-right: 2px;
 }
