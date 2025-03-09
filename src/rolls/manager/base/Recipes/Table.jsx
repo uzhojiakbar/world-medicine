@@ -54,7 +54,7 @@ const Table = ({title = "", filter = {}}) => {
     return (
         <Container>
             {isMainLoading || isLoadingRecepies ? (
-                <div className="loaderParent">
+                <div className="loaderWindow">
                     <div class="loader"></div>
                 </div>
             ) : (
