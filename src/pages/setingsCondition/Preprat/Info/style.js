@@ -89,7 +89,7 @@ export const Details = styled.div`
   flex-direction: column;
   gap: 10px;
 
-  padding: 17px 20px;
+  padding: ${({padding}) => padding?padding:"17px 20px"};
   border-radius: 10px;
   background-color: #f7f8fc;
   color: #000;

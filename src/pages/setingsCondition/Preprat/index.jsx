@@ -9,7 +9,7 @@ import MainTable from "./Table";
 
 import {saveAs} from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
-import Server, {useGetDrugs, useUploadDrugs, useUploadManager} from "../../../utils/server/server";
+import Server, {useGetConditions, useGetDrugs, useUploadDrugs, useUploadManager} from "../../../utils/server/server";
 import Filter from "./filter/Filter";
 import UsloviyaProductTable from "./usloviyaProductTable.jsx";
 import Info from "./Info/Info.jsx";
@@ -146,6 +146,7 @@ function Preparat() {
         ],
     });
 
+    console.log()
     const [loading, setLoading] = useState(0);
     const [add, setAdd] = useState(0);
 
@@ -189,18 +190,6 @@ function Preparat() {
         }
     }, [dataDrugs]);
 
-    const Container1 = styled.div`
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        @media (max-width: 768px) {
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            gap: 15px;
-        }
-    `;
     const TitleContainer = styled.div`
         display: flex;
         justify-content: space-between;
@@ -276,10 +265,6 @@ function Preparat() {
     `;
 
     const {translate} = useLanguage();
-
-    console.log("data", data)
-    console.log("data", data)
-
 
     const queryClient = useQueryClient();
 
@@ -469,7 +454,7 @@ function Preparat() {
     return (
         <Container>
             <Filter/>
-            <Info/>
+            <Info loading={loading} setLoading={setLoading} />
             <AddMedicine open={add} setOpen={setAdd}/>
 
             <TitleContainer>

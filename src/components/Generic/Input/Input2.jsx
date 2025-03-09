@@ -11,16 +11,22 @@ const Input2 = ({
                     },
                     bgColor,
                     className = "",
-                    deffvalue
+                    deffvalue,
+                    deffvalue2,
+    height,
+    mini=false
                 }) => {
     return (
         <InputWrapper
+            mini={mini}
             name={name}
             className={className}
             maxLength={maxLength}
             type={type}
             value={deffvalue}
+            defaultValue={deffvalue2}
             disabled={disabled}
+            height={height}
             onChange={(e) => onChange(e)}
             placeholder={placeholder || ""}
             bgColor={bgColor}

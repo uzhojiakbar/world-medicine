@@ -12,7 +12,9 @@ export const InputWrapper = styled(Input)`
 
     
 
-    width: 100%;
+    width: ${({mini})=>mini?"120px":"100%"};
+    height: ${({height}) => (height ? height : "60px")};
+    
     font-size: 16px;
     font-family: "Vela Sans GX";
 

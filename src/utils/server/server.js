@@ -2490,4 +2490,45 @@ export const useAddDrugs = () => {
     });
 };
 
+
+export const useGetConditions = () => {
+    return useQuery({
+        queryKey: [
+            "useGetConditons"
+        ],
+        queryFn: async () => {
+            try {
+                const {data} = await Instance.get("/v1/db/conditions");
+                return data[0];
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
+export const useUpdateCondition = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(
+        {
+            mutationFn: async (uptWkData) => {
+                console.log("asdasdasd", uptWkData)
+                const {data} = await Instance.put(`v1/db/conditions/${uptWkData?.requestData?.id}`, uptWkData?.requestData);
+                return data;
+            },
+            onSuccess: (data, variables) => {
+                variables.onSuccess();
+                queryClient.invalidateQueries(["useGetConditons"]);
+            },
+            onError: (error, variables) => {
+                variables.onError();
+                console.error("Xatolik yuz berdi:", error);
+            },
+        });
+};
+
+
 export default Server;
