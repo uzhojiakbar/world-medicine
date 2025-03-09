@@ -180,6 +180,12 @@ const ModalMedAgent = ({user, isOpen, onClose}) => {
                     </ModalInnerSection>
                 </ModalBodySection>
                 <ModalBodySection>
+                    <MiniTitleSmall>{translate("data_register")}</MiniTitleSmall>
+                    <ModalInnerSection>
+                        <EditableInput initialValue={user?.dateOfCreation?.split("T")[0]} isInput={0} inputType="text"/>
+                    </ModalInnerSection>
+                </ModalBodySection>
+                <ModalBodySection>
                     <MiniTitleSmall>{translate("Контакты_врача")}</MiniTitleSmall>
                     <ModalInnerSection>
                         <EditableInput

@@ -159,7 +159,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                     <ModalBodySection>
                         <MiniTitleSmall>{translate("data_register")}</MiniTitleSmall>
                         <ModalInnerSection>
-                            <EditableInput initialValue={user?.dateOfBirth} isInput={0} inputType="text"/>
+                            <EditableInput initialValue={user?.dateOfCreation?.split("T")[0]} isInput={0} inputType="text"/>
                         </ModalInnerSection>
                     </ModalBodySection>
                     <ModalBodySection>
@@ -174,6 +174,12 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                                 className={"select-middle-border maxwidth"}
                                 onValueChange={(value) => console.log("workplace", value)}
                             />
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
+                        <MiniTitleSmall>{translate("Дата_рождения")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput initialValue={user?.dateOfBirth} isInput={0} inputType="text"/>
                         </ModalInnerSection>
                     </ModalBodySection>
                     <ModalBodySection>

@@ -71,10 +71,9 @@ const MedRepGoal = () => {
     } = useGetMedAgents({districtId: selectedDistrict?.districtId || null});
 
 
-
     const [allDistricts, setAllDistricts] = useState([]);
 
-    console.log("123123123123",Districts)
+    console.log("123123123123", Districts)
 
     const {data: goal, isLoading: isLoadingGoal} = useGetManagerGoalId(
         profileInfo?.userId
@@ -269,7 +268,7 @@ const MedRepGoal = () => {
         const requestData = {
             createdAt: new Date().toISOString().split("T")[0],
             startDate: date.startDate,
-            endDate: date.endDate === "Invalid Date"?null:date.endDate            ,
+            endDate: date.endDate === "Invalid Date" ? null : date.endDate,
             medAgentId: specialist.id,
             managerId: profileInfo.userId,
             managerGoalId: goal?.goalId || 0,
@@ -299,8 +298,14 @@ const MedRepGoal = () => {
             onError: (error) => {
                 setLoading(false);
                 console.log("error", error);
-
-                message.error(translate("Ошибка_добавления_цели_для_представителю"));
+                if (
+                    error?.response?.data?.error.includes("Agent has already assigned")
+                ) {
+                    message.error(translate("представителю_уже_назначил_контракт"));
+                    console.log(1);
+                } else {
+                    message.error(translate("Ошибка_добавления_цели_для_представителю"));
+                }
             },
         });
         return requestData;
