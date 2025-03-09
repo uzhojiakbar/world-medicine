@@ -1749,7 +1749,7 @@ export const useAddWorkplace = () => {
         mutationFn: async (wkData) => {
             console.log("wkData", wkData);
             const response = await Instance.post(
-                "/v1/db/workplaces/create",
+                "/v1/db/workplaces/add",
                 wkData?.requestData
             );
             return response.data;

@@ -93,11 +93,6 @@ const AddLpu = ({open, setOpen}) => {
             message.warning(translate("Введите_Адресс"));
             return;
         }
-        if (!formData?.address) {
-            console.error(translate("Введите_Адресс"));
-            message.warning(translate("Введите_Адресс"));
-            return;
-        }
         if (!formData?.phone) {
             console.error(translate("Введите_номер_телефона"));
             message.warning(translate("Введите_номер_телефона"));
