@@ -33,7 +33,15 @@ const ModalAddRegion = ({
     const [loading, setLoading] = useState(0);
 
 
-    const onClose = () => setOpen(false);
+    const onClose = () => {
+        setFormData({
+            name: "",
+            nameUzLatin: "",
+            nameRussian: "",
+            nameUzCyrillic: ""
+        })
+        setOpen(false)
+    };
 
     const [formData, setFormData] = useState({
         name: "",
@@ -78,6 +86,7 @@ const ModalAddRegion = ({
                 message.success(translate("region_added"));
                 setTimeout(() => {
                     setLoading(false);
+
                     onClose()
                 }, 500);
             },
@@ -113,7 +122,7 @@ const ModalAddRegion = ({
                 {translate("add_region_title")}
             </MiniTitleSmall>
         </ModalBodyHeader>
-        <ModalBodyHeader  m={"20px"} mb={"20px"}>
+        <ModalBodyHeader m={"20px"} mb={"20px"}>
             <ModalBodySection height={"fit-content"}>
                 <MiniTitleSmall>
                 <span>
@@ -124,6 +133,7 @@ const ModalAddRegion = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Toshkent"}
+                    value2={formData.nameUzLatin}
                     onChange={(value) => changeInput(value, "nameUzLatin")}
                 />
             </ModalBodySection>
@@ -137,6 +147,8 @@ const ModalAddRegion = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Тошкент"}
+                    value2={formData.nameUzCyrillic}
+
                     onChange={(value) => changeInput(value, "nameUzCyrillic")}
                 />
             </ModalBodySection>
@@ -149,6 +161,8 @@ const ModalAddRegion = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Ташкент"}
+                    value2={formData.nameRussian}
+
                     onChange={(value) => changeInput(value, "nameRussian")}
                 />
             </ModalBodySection>
@@ -161,18 +175,20 @@ const ModalAddRegion = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Tashkent"}
+                    value2={formData.name}
+
                     onChange={(value) => changeInput(value, "name")}
                 />
             </ModalBodySection>
 
         </ModalBodyHeader>
         <ModalBodyHeader gridC={1}>
-                <DeleteBtn
-                    bgcolor={"#216BF4"}
-                    onClick={AddRegion}
-                >
-                    {translate("adding_region")}
-                </DeleteBtn>
+            <DeleteBtn
+                bgcolor={"#216BF4"}
+                onClick={AddRegion}
+            >
+                {translate("adding_region")}
+            </DeleteBtn>
         </ModalBodyHeader>
     </ModalContainer>;
 };

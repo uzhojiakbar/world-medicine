@@ -7,13 +7,14 @@ const Input = ({
                    maxLength = 256,
                    type,
                    value = "",
+                   value2,
                    height,
                    onChange = () => {
                    },
                    className,
                    bgColor,
                    ref,
-    required=false,
+                   required = false,
                    borderRadius
                }) => {
     return (
@@ -27,6 +28,7 @@ const Input = ({
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder || ""}
             defaultValue={value}
+            value={value2}
             height={height}
             bgColor={bgColor}
             borderRadius={borderRadius}

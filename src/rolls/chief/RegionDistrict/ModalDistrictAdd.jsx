@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
     DeleteBtn,
     ModalBodyHeader,
@@ -35,7 +35,10 @@ const ModalAddDistrict = ({
     const {translate,language} = useLanguage();
     const [loading, setLoading] = useState(0);
 
-    const onClose = () => setOpen(false);
+
+
+
+
 
     const [formData, setFormData] = useState({
         name: "",
@@ -44,6 +47,17 @@ const ModalAddDistrict = ({
         nameUzCyrillic: "",
         regionId: 0
     });
+
+    const onClose = () => {
+        setFormData({
+            name: "",
+            nameUzLatin: "",
+            nameRussian: "",
+            nameUzCyrillic: "",
+            regionId: 0
+        })
+        setOpen(false)
+    };
     const changeInput = (value, name) => {
         setFormData(prevState => ({
             ...prevState,
@@ -128,6 +142,7 @@ const ModalAddDistrict = ({
                     borderRadius={"30px"}
                     options={regionsTranslate}
                     selectedType={"id"}
+                    selectedOptionId={formData?.regionId}
                     onlyOption={1}
                     onValueChange={(value)=>changeInput(value?.id,"regionId")}
                 />
@@ -145,6 +160,7 @@ const ModalAddDistrict = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Toshkent"}
+                    value2={formData.nameUzLatin}
                     onChange={(value) => changeInput(value, "nameUzLatin")}
                 />
             </ModalBodySection>
@@ -158,6 +174,8 @@ const ModalAddDistrict = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Тошкент"}
+                    value2={formData.nameUzCyrillic}
+
                     onChange={(value) => changeInput(value, "nameUzCyrillic")}
                 />
             </ModalBodySection>
@@ -170,6 +188,8 @@ const ModalAddDistrict = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Ташкент"}
+                    value2={formData.nameRussian}
+
                     onChange={(value) => changeInput(value, "nameRussian")}
                 />
             </ModalBodySection>
@@ -182,6 +202,8 @@ const ModalAddDistrict = ({
                 <Input
                     borderRadius={"40px"}
                     placeholder={"Tashkent"}
+                    value2={formData.name}
+
                     onChange={(value) => changeInput(value, "name")}
                 />
             </ModalBodySection>
