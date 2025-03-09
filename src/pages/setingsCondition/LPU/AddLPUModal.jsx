@@ -98,11 +98,6 @@ const AddLpu = ({open, setOpen}) => {
             message.warning(translate("Введите_номер_телефона"));
             return;
         }
-        if (!formData?.email) {
-            console.error(translate("Введите_email"));
-            message.warning(translate("Введите_email"));
-            return;
-        }
 
         const requiredFields = [];
 
@@ -115,9 +110,9 @@ const AddLpu = ({open, setOpen}) => {
                 "name": formData?.name,
                 "address": formData?.address,
                 "phone": `998${formData?.phone}`,
-                "email": formData?.email,
+                "email": formData?.email || null,
                 "medicalInstitutionType": formData?.medicalInstitutionType,
-                "chiefDoctorId": formData?.chiefDoctorId,
+                "chiefDoctorId": formData?.chiefDoctorId || null,
                 "districtId": formData?.district,
             }
 

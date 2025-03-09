@@ -48,7 +48,8 @@ export const transformDrugsForSelect = (drugs = [], lang = "eng") => {
 };
 
 
-export const TransformInsitutation = (data = [], lang,translate = () => {}) => {
+export const TransformInsitutation = (data = [], lang, translate = () => {
+}) => {
     return data.map((v) => {
         return {
             id: v.id,
@@ -59,7 +60,8 @@ export const TransformInsitutation = (data = [], lang,translate = () => {}) => {
     })
 }
 
-export const TransformMnns = (data = [], lang,translate = () => {}) => {
+export const TransformMnns = (data = [], lang, translate = () => {
+}) => {
     return data.map((v) => {
         return {
             id: v.id,
@@ -71,8 +73,20 @@ export const TransformMnns = (data = [], lang,translate = () => {}) => {
 }
 
 
-
-
+export const TransFormUsersForSelect = (data = [], lang, translate = () => {
+}) => {
+    return data.map((v) => {
+        return {
+            id: v?.userId,
+            value: v?.firstName + v?.lastName,
+            label: v?.userId,
+            key: v?.userId,
+            dto:{
+                ...v
+            }
+        }
+    })
+}
 
 
 // {language === "en" ? row?.districtName?.name : ""}

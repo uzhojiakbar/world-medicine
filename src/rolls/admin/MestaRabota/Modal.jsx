@@ -15,19 +15,23 @@ import ProfilePic1 from "../../../assets/img/profile/profile2.svg";
 import CloseIcon from "../../../assets/svg/closeIcon.jsx";
 import GenericAnalitikaTable from "../../manager/analiktika/GenericTable.jsx";
 import {useGetDoctorsFilter, useGetProfileInfo, useUpdateWorkplace} from "../../../utils/server/server.js";
+import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
+import {TransFormUsersForSelect} from "../../../utils/transformRegionsForSelect.js";
 
 const ModalEditLpu = ({setData, data: wk = 0}) => {
     const {translate} = useLanguage();
     if (!wk) {
         return null;
     }
+
+
     const mutation = useUpdateWorkplace();
     const [isLoading, setIsLoading] = useState(0);
     const [uptData, setUptData] = useState({
         name: wk.name,
         phone: wk.phone,
         email: wk.email,
-        firstname: "",
+        chiefDoctorId: "",
     });
     const handleUpdate = () => {
         setIsLoading(true);
@@ -43,7 +47,7 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
                         districtId: wk?.regionDistrictDTO?.districtId,
                         phone: uptData?.phone,
                         email: uptData?.email,
-                        chiefDoctorId: wk?.userDTO?.creatorId,
+                        chiefDoctorId: uptData?.chiefDoctorId,
                     }
                 },
                 onSuccess: () => {
@@ -82,8 +86,15 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
     }
     useEffect(() => {
         handleUpdate()
-        console.log("1111111111111111111")
     },[uptData])
+
+    const {data: doctors} = useGetDoctorsFilter({
+        districtId: wk?.regionDistrictDTO?.districtId
+    })
+
+    const translateDoctors = TransFormUsersForSelect(doctors);
+    console.log("wk",wk)
+    console.log("doctors",translateDoctors)
     return  <ModalContainer
         title={
             <ModalHeader>
@@ -134,12 +145,13 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
             <ModalBodySection>
                 <MiniTitleSmall>{translate("Глав_Врач")}</MiniTitleSmall>
                 <ModalInnerSection>
-                    <EditableInput
-                        initialValue={wk?.userDTO?.firstName + " " + wk?.userDTO?.lastName}
-                        value={wk?.userDTO?.firstName + " " + wk?.userDTO?.lastName}
-                        onSave={e => {
-                            setUptData({...uptData, firstname: e})
-                        }}
+                    <PrimarySelect
+                        def={""}
+                        options={translateDoctors}
+                        onlyOption={1}
+                        selectedOptionId={wk?.chiefDoctorIds}
+                        selectedType={"id"}
+                        onValueChange={(value) => setUptData({...uptData, chiefDoctorId: value?.id})}
                     />
                 </ModalInnerSection>
             </ModalBodySection>

@@ -93,7 +93,7 @@ const Table = ({
                         <thead>
                         <tr>
                             <th className="idfixed">{translate("ID")}</th>
-                            <th>{translate("Ф_Врача")}</th>
+                            <th>{translate("Workplace")}</th>
                             <th>{translate("Форма учреждения")}</th>
                             <th>{translate("Регион")}</th>
                             <th>{translate("Район")}</th>
