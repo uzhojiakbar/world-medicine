@@ -51,7 +51,7 @@ const CreateMedAgent = () => {
 
     // States
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState(translate("Рецепты"));
+    const [activeTab, setActiveTab] = useState("RECIPE");
     const [currentDistrict, setCurrentDistrict] = useState(null);
     const [doctor, setDoctor] = useState(null);
     const [date, setDate] = useState({startDate: "", endDate: ""});
@@ -169,7 +169,7 @@ const CreateMedAgent = () => {
 
         const requestData = {
             "doctorId": doctor.id,
-            "startDate": date.startDate === "Invalid Date" ? new Date().toISOString().split('T')[0] : data?.startDate,
+            "startDate": date.startDate === "Invalid Date" ? new Date().toISOString().split('T')[0] : date?.startDate,
             "endDate": date.endDate === "Invalid Date" ? null : date.endDate,
             "managerId": profileInfo.userId,
             "contractType": activeTab,
@@ -185,7 +185,7 @@ const CreateMedAgent = () => {
                 message.success(translate("Добавлена_контракт_для_Доктор"));
                 setTimeout(() => {
                     setLoading(false);
-                    // document.location.reload();
+                    document.location.reload();
                 }, 500);
             },
             onError: (err) => {
@@ -206,130 +206,146 @@ const CreateMedAgent = () => {
     }
 
 
-        const titles = [
-            translate("Рецепты"),
-            translate("СУ"),
-            translate("СБ"),
-            translate("ГЗ"),
-            translate("Кабинет_вакцинации"),
-        ];
-        return (
-            <Container>
-                {(loading ||
-                    IsLoadingProfileInfo || isLoadingDistricts || isDistrictLoading
-                ) && (
-                    <div className="loaderParent">
-                        <div className="loader"></div>
-                    </div>
-                )}
-                <Wrapper>
-                    <Title className="titlee">{translate("Создание_договора")}</Title>
-                    <ButtonWrapper>
-                        {titles.map((tab) => (
-                            <Item
-                                key={tab}
-                                active={activeTab === tab ? "true" : ""}
-                                onClick={() => setActiveTab(tab)}
-                            >
-                                {tab}
-                            </Item>
-                        ))}
-                    </ButtonWrapper>
-                    <InfoWrapper>
-                        <InfoContainer>
+    const titles = [
+            {
+                name: translate("Рецепты"),
+                key: "RECIPE",
+            },
+            {
+                name: translate("СУ"),
+                key: "SU",
+            }, {
+                name: translate("СБ"),
+                key: "SB",
+            }, {
+                name: translate("ГЗ"),
+                key:
+                    "KZ",
+            },
+            {
+                name: translate("GZ"),
+                key:
+                    "GZ",
+            }
+        ]
+    ;
+    return (
+        <Container>
+            {(loading ||
+                IsLoadingProfileInfo || isLoadingDistricts || isDistrictLoading
+            ) && (
+                <div className="loaderParent">
+                    <div className="loader"></div>
+                </div>
+            )}
+            <Wrapper>
+                <Title className="titlee">{translate("Создание_договора")}</Title>
+                <ButtonWrapper>
+                    {titles.map(({name:tab,key},i) => (
+                        <Item
+                            key={i}
+                            active={activeTab === key ? "true" : ""}
+                            onClick={() => setActiveTab(key)}
+                        >
+                            {tab}
+                        </Item>
+                    ))}
+                </ButtonWrapper>
+                <InfoWrapper>
+                    <InfoContainer>
+                        <DirectionFlexGap gap="10px">
+                            <MiniTitleSmall>{translate("Район")}</MiniTitleSmall>
+                            <PrimarySelect
+                                def={translate("Выберите_Район")}
+                                options={regionsTranslate}
+                                onValueChange={handleChangeRegion}
+                                onlyOption
+                            />
+                        </DirectionFlexGap>
+                        <SectionInner gap="10px">
+                            <IconWrapper>
+                                <Man/>
+                            </IconWrapper>
+                            <EditableSelect
+                                options={doctorOptions}
+                                placeholder={translate("Выберите_врача")}
+                                def={translate("Выберите_врача")}
+                                onClick={() => !currentDistrict && message.error(translate("Сначала_выберите_Район"))}
+                                disabled={!currentDistrict}
+                                onValueChange={setDoctor}
+                                initialValue={doctor}
+                            />
+                        </SectionInner>
+                        <DirectionFlexGap gap="10px">
+                            <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
+                            <DateRangePicker onlyFuture={1} onDateChange={handleDateChange}/>
+                        </DirectionFlexGap> <DirectionFlexGap gap="10px">
+                        <MiniTitleSmall>{translate("Цель")}</MiniTitleSmall>
+                        <InfoTitleInner>
+                            <div> {translate("Шаг")}</div>
+                            <span> {translate("1.740.000")}</span>
+                        </InfoTitleInner>
+
+                    </DirectionFlexGap>
+                    </InfoContainer>
+                    <InfoContainer>
+                        <RightItemMenu>
                             <DirectionFlexGap gap="10px">
-                                <MiniTitleSmall>{translate("Район")}</MiniTitleSmall>
+                                <MiniTitleSmall>{translate("Препараты")}</MiniTitleSmall>
                                 <PrimarySelect
-                                    def={translate("Выберите_Район")}
-                                    options={regionsTranslate}
-                                    onValueChange={handleChangeRegion}
+                                    def={translate("Выберите_препарат")}
+                                    options={drugsTranslate}
+                                    onValueChange={handleDrugSelect}
                                     onlyOption
                                 />
                             </DirectionFlexGap>
-                            <SectionInner gap="10px">
-                                <IconWrapper>
-                                    <Man/>
-                                </IconWrapper>
-                                <EditableSelect
-                                    options={doctorOptions}
-                                    placeholder={translate("Выберите_врача")}
-                                    def={translate("Выберите_врача")}
-                                    onClick={() => !currentDistrict && message.error(translate("Сначала_выберите_Район"))}
-                                    disabled={!currentDistrict}
-                                    onValueChange={setDoctor}
-                                    initialValue={doctor}
-                                />
-                            </SectionInner>
-                            <DirectionFlexGap gap="10px">
-                                <MiniTitleSmall>{translate("Период_выполнения")}</MiniTitleSmall>
-                                <DateRangePicker onlyFuture={1} onDateChange={handleDateChange}/>
-                            </DirectionFlexGap> <DirectionFlexGap gap="10px">
-                            <MiniTitleSmall>{translate("Цель")}</MiniTitleSmall>
-                            <InfoTitleInner>
-                                <div> {translate("Шаг")}</div>
-                                <span> {translate("1.740.000")}</span>
-                            </InfoTitleInner>
+                            {selectedDrugs.map((v) => (
+                                <ItemContainer
+                                    onDoubleClick={() => handleEditInitDrug(v.id, v.quote)}
+                                    key={v.id}>
+                                    <Child>
+                                        <EditIconCon onClick={() => handleDeleteDrug(v.id)}>
+                                            <DeleteIcon/>
+                                        </EditIconCon>
+                                        <span>{translate(v.fieldName)}</span>
+                                    </Child>
+                                    <Child>
+                                        {editingDrugId === v.id ? (
+                                            <>
+                                                <Input
+                                                    height={"40px"}
+                                                    type="number"
+                                                    value={editValue}
+                                                    onChange={setEditValue}
+                                                    placeholder={translate("quote")}
+                                                />
+                                                <EditIconCon onClick={() => handleEditSaveDrug(v.id)}>
+                                                    <SaveIcon/>
+                                                </EditIconCon>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span className={v.quote == 0 ? "red" : ""}>{v.quote}</span>
+                                                <EditIconCon
+                                                    onClick={() => handleEditInitDrug(v.id, v.quote)}
+                                                >
+                                                    <EditIcon red={v.quote == 0}/>
+                                                </EditIconCon>
+                                            </>
+                                        )}
+                                    </Child>
+                                </ItemContainer>
+                            ))}
 
-                        </DirectionFlexGap>
-                        </InfoContainer>
-                        <InfoContainer>
-                            <RightItemMenu>
-                                <DirectionFlexGap gap="10px">
-                                    <MiniTitleSmall>{translate("Препараты")}</MiniTitleSmall>
-                                    <PrimarySelect
-                                        def={translate("Выберите_препарат")}
-                                        options={drugsTranslate}
-                                        onValueChange={handleDrugSelect}
-                                        onlyOption
-                                    />
-                                </DirectionFlexGap>
-                                {selectedDrugs.map((v) => (
-                                    <ItemContainer
-                                        onDoubleClick={() => handleEditInitDrug(v.id, v.quote)}
-                                        key={v.id}>
-                                        <Child>
-                                            <EditIconCon onClick={() => handleDeleteDrug(v.id)}>
-                                                <DeleteIcon/>
-                                            </EditIconCon>
-                                            <span>{translate(v.fieldName)}</span>
-                                        </Child>
-                                        <Child>
-                                            {editingDrugId === v.id ? (
-                                                <>
-                                                    <Input
-                                                        height={"40px"}
-                                                        type="number"
-                                                        value={editValue}
-                                                        onChange={setEditValue}
-                                                        placeholder={translate("quote")}
-                                                    />
-                                                    <EditIconCon onClick={() => handleEditSaveDrug(v.id)}>
-                                                        <SaveIcon/>
-                                                    </EditIconCon>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <span className={v.quote == 0 ? "red" : ""}>{v.quote}</span>
-                                                    <EditIconCon
-                                                        onClick={() => handleEditInitDrug(v.id, v.quote)}
-                                                    >
-                                                        <EditIcon red={v.quote == 0}/>
-                                                    </EditIconCon>
-                                                </>
-                                            )}
-                                        </Child>
-                                    </ItemContainer>
-                                ))}
+                        </RightItemMenu>
+                    </InfoContainer>
+                </InfoWrapper>
+                <Button
+                    onClick={prepareRequestData}
+                    w={"100%"} icon={<IconPlus/>}>{translate("Создать_договор")}</Button>
+            </Wrapper>
+        </Container>
+    );
+};
 
-                            </RightItemMenu>
-                        </InfoContainer>
-                    </InfoWrapper>
-                    <Button
-                        onClick={prepareRequestData}
-                        w={"100%"} icon={<IconPlus/>}>{translate("Создать_договор")}</Button>
-                </Wrapper>
-            </Container>
-        );
-    };
-
-    export default CreateMedAgent;
+export default CreateMedAgent;
