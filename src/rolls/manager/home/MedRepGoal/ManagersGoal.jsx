@@ -293,7 +293,7 @@ const MedRepGoal = () => {
                 message.success(translate("Добавлена_цель_для_представителю"));
                 setTimeout(() => {
                     setLoading(false);
-                    // document.location.reload();
+                    document.location.reload();
                 }, 500);
             },
             onError: (error) => {

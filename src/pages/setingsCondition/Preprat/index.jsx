@@ -453,7 +453,7 @@ function Preparat() {
 
     return (
         <Container>
-            <Filter/>
+            {/*<Filter/>*/}
             <Info loading={loading} setLoading={setLoading} />
             <AddMedicine open={add} setOpen={setAdd}/>
 

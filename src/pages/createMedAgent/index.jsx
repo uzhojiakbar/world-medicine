@@ -59,7 +59,7 @@ const CreateMedAgent = () => {
     const [editingDrugId, setEditingDrugId] = useState(null);
     const [editValue, setEditValue] = useState("");
 
-
+    console.log(activeTab)
     // from Backend
     const {data: profileInfo, isLoading: IsLoadingProfileInfo} =
         useGetProfileInfo();
@@ -172,6 +172,7 @@ const CreateMedAgent = () => {
             "startDate": date.startDate === "Invalid Date" ? new Date().toISOString().split('T')[0] : data?.startDate,
             "endDate": date.endDate === "Invalid Date" ? null : date.endDate,
             "managerId": profileInfo.userId,
+            "contractType": activeTab,
             "medicinesWithQuantities": selectedDrugs.map((drug) => ({
                 medicineId: drug.id,
                 quote: parseInt(drug.quote),
