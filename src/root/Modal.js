@@ -6,6 +6,7 @@ import { m } from "framer-motion";
 export const ModalContainer = styled(Modal)`
     width: ${({ w }) => (w ? `${w} !important ` : "70vw !important")};
     max-height:${({maxheight})=>maxheight?maxheight:"95vh"} !important;
+    height: ${({height})=>height?height:"fit-content"} !important;
     max-width: 1200px !important;
     overflow: auto;
     border-radius: ${({BorderRadius})=>BorderRadius?BorderRadius:"30px"};
@@ -13,6 +14,7 @@ export const ModalContainer = styled(Modal)`
     .ant-modal-close {
         display: none !important;
     }
+    
 `;
 
 export const ModalNotificationCon = styled(Modal)`

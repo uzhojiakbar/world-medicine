@@ -90,10 +90,7 @@ const ModalAddRegion = ({
     };
 
     return <ModalContainer
-        w={"1000px"}
         BorderRadius={"40px"}
-        minHeight={"40vh"}
-        maxheight={"55vh"}
         title={
             <ModalHeader>
                 <Title>{translate("add_region")}</Title>
@@ -116,7 +113,7 @@ const ModalAddRegion = ({
                 {translate("add_region_title")}
             </MiniTitleSmall>
         </ModalBodyHeader>
-        <ModalBodyHeader m={"20px"} mb={"20px"}>
+        <ModalBodyHeader  m={"20px"} mb={"20px"}>
             <ModalBodySection height={"fit-content"}>
                 <MiniTitleSmall>
                 <span>
@@ -170,14 +167,12 @@ const ModalAddRegion = ({
 
         </ModalBodyHeader>
         <ModalBodyHeader gridC={1}>
-            <ModalBodySection>
                 <DeleteBtn
                     bgcolor={"#216BF4"}
                     onClick={AddRegion}
                 >
                     {translate("adding_region")}
                 </DeleteBtn>
-            </ModalBodySection>
         </ModalBodyHeader>
     </ModalContainer>;
 };
