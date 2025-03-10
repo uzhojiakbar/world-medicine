@@ -34,7 +34,6 @@ const Table = ({
     const {data: wk, isLoading: loadingWk} = useGetWorkplacesById(editId)
     const queryClient = useQueryClient();
 
-
     const itemsPerPage = 10;
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
@@ -77,7 +76,6 @@ const Table = ({
         });
         queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
     };
-
 
     return (
         <Container>

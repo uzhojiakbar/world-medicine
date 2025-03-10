@@ -152,8 +152,6 @@ function Lpu() {
     const [loading, setLoading] = useState(false);
     const [add, setAdd] = useState(0);
 
-
-
     const queryClient = useQueryClient();
 
     const handleRefresh = () => {

@@ -24,7 +24,6 @@ const AddLpu = ({open, setOpen}) => {
 
     const [loading, setLoading] = useState(0);
 
-    console.log(formData)
     const mutation = useAddWorkplace()
 
     const {data: Regions, isLoading: isLoadingRegions} = useGetRegions();
@@ -36,14 +35,11 @@ const AddLpu = ({open, setOpen}) => {
     const translateRegions = transformRegionsForSelect(Regions, language)
     const translateDIstricts = transformDistrictsForSelect(Districts, language)
     const translateInsitution = TransformInsitutation(medicalInstitutionType, language, translate)
-
-
     const doctorOptions = useMemo(() => doctors?.map((manager) => ({
         value: `${manager.firstName} ${manager.lastName}`,
         label: `${manager.firstName} ${manager.lastName}`,
         id: manager.userId,
     })) || [], [doctors, formData]);
-
 
     const handleSelectChange = (name, value) => {
         console.log(name, value);
@@ -125,6 +121,7 @@ const AddLpu = ({open, setOpen}) => {
                     message.success(translate("lpu_created"));
                     setTimeout(() => {
                         setLoading(false);
+                        setFormData({})
                         handleRefresh()
                         setOpen(false)
                     }, 500);
@@ -135,8 +132,6 @@ const AddLpu = ({open, setOpen}) => {
             });
         }
     };
-
-
     return <ModalContainer
         w={"1000px"}
         title={<ModalHeader>
@@ -164,8 +159,10 @@ const AddLpu = ({open, setOpen}) => {
                     def={translate("Область")}
                     options={translateRegions}
                     onlyOption={1}
+
                     onValueChange={(value) => handleSelectChange("region", value.id)}
                     selectedType={"id"}
+                    selectedOptionId={-5}
                 />
             </ModalBodySection> <ModalBodySection>
             <MiniTitleSmall>{translate("Район")}</MiniTitleSmall>
@@ -175,6 +172,8 @@ const AddLpu = ({open, setOpen}) => {
                 onlyOption={1}
                 onValueChange={(value) => handleSelectChange("district", value?.districtId)}
                 selectedType={"districtId"}
+                selectedOptionId={-5}
+
             />
         </ModalBodySection>
             <ModalBodySection>
@@ -185,6 +184,8 @@ const AddLpu = ({open, setOpen}) => {
                     onlyOption={1}
                     onValueChange={(value) => handleSelectChange("medicalInstitutionType", value?.key)}
                     selectedType={"id"}
+                    selectedOptionId={-5}
+
                 />
             </ModalBodySection>
             <ModalBodySection>
@@ -195,6 +196,8 @@ const AddLpu = ({open, setOpen}) => {
                     onlyOption={1}
                     onValueChange={(value) => handleSelectChange("chiefDoctorId", value?.id)}
                     selectedType={"id"}
+                    selectedOptionId={-5}
+
                 />
             </ModalBodySection>
 
@@ -203,7 +206,7 @@ const AddLpu = ({open, setOpen}) => {
                 <Input2
                     type="text"
                     name="name"
-                    value={formData?.address}
+                    deffvalue={formData?.name}
                     onChange={handleChange}
                     placeholder={translate("Название_организации")}
                 />
@@ -213,7 +216,7 @@ const AddLpu = ({open, setOpen}) => {
                 <Input2
                     type="text"
                     name="address"
-                    value={formData?.address}
+                    deffvalue={formData?.address}
                     onChange={handleChange}
                     placeholder={translate("address_template")}
                 />
@@ -230,7 +233,7 @@ const AddLpu = ({open, setOpen}) => {
                     <Input2
                         type="number"
                         name="phone"
-                        value={formData?.phone}
+                        deffvalue={formData?.phone}
                         onChange={handleChange}
                         placeholder={translate("900000000")}
                     />
@@ -244,7 +247,7 @@ const AddLpu = ({open, setOpen}) => {
                 <Input2
                     type="email"
                     name="email"
-                    value={formData?.email}
+                    deffvalue={formData?.email}
                     onChange={handleChange}
                     placeholder={translate("email_temp")}
                 />

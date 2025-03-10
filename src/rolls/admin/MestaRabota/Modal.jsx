@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
+    DeleteBtn,
     ModalBodyHeader,
     ModalBodySection,
     ModalContainer,
@@ -15,6 +16,7 @@ import ProfilePic1 from "../../../assets/img/profile/profile2.svg";
 import CloseIcon from "../../../assets/svg/closeIcon.jsx";
 import GenericAnalitikaTable from "../../manager/analiktika/GenericTable.jsx";
 import {
+    useDeleteWorkplace,
     useGetDoctorsFilter,
     useGetProfileInfo,
     useGetWorkplaceOne,
@@ -24,6 +26,7 @@ import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
 import {TransformInsitutation, TransFormUsersForSelect} from "../../../utils/transformRegionsForSelect.js";
 import {message} from "antd";
 import {medicalInstitutionType} from "../../../utils/medicalInstitutionType.js";
+import {useQueryClient} from "@tanstack/react-query";
 
 const ModalEditLpu = ({setData, data: tempwk = 0}) => {
     const {translate, language} = useLanguage();
@@ -140,6 +143,37 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
 
     const translateInsitution = TransformInsitutation(medicalInstitutionType, language, translate)
 
+    const deleteLpu = useDeleteWorkplace();
+
+    const queryClient = useQueryClient();
+
+    const handleRefresh = () => {
+        setIsLoading(1);
+        queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
+        setTimeout(() => {
+            setIsLoading(0);
+        }, 100);
+    };
+
+    const handleDelete = (id) => {
+        setIsLoading(1)
+        deleteLpu.mutate(id, {
+            onError: (error) => {
+                console.error(translate("workplace_delete_err"), error);
+                message.error(translate("workplace_delete_err"));
+                handleRefresh()
+                onClose()
+                setIsLoading(0)
+            }, onSuccess: () => {
+                message.success(translate("workplace_deleted"));
+                onClose()
+                handleRefresh()
+                setIsLoading(0)
+            },
+        });
+    };
+
+
 
     return <ModalContainer
         title={
@@ -227,13 +261,26 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
                     />
                 </ModalInnerSection>
             </ModalBodySection>
-
         </ModalBodyHeader>
         <GenericAnalitikaTable
             data={
                 {thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"], tbody: []}
             }
         />
+        <ModalBodyHeader gridC={1}>
+            <ModalBodySection>
+                <MiniTitleSmall
+                    mgn={"0 auto"}
+                >{translate("delete_wk")}</MiniTitleSmall>
+                <DeleteBtn
+                    onClick={()=>handleDelete(tempwk?.id)}
+                >
+                    {translate("in_delete_wk")}
+                </DeleteBtn>
+            </ModalBodySection>
+        </ModalBodyHeader>
+
+
     </ModalContainer>;
 };
 
