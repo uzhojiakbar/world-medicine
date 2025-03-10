@@ -1365,6 +1365,7 @@ export const useUpdateWorkplace = () => {
             onSuccess: (data, variables) => {
                 variables.onSuccess();
                 queryClient.invalidateQueries(["getWorkplacec", variables.id]);
+                queryClient.invalidateQueries(["workplace", variables.id]);
             },
             onError: (error) => {
                 console.error("Xatolik yuz berdi:", error);
@@ -1394,16 +1395,36 @@ export const useDeleteWorkplace = () => {
 export const useGetWorkplaceById = () => {
     return useMutation(async (lpuId) => {
         try {
-            const {data} = await Instance.get(
-                `/v1/db/workplaces/${lpuId}`
-            );
-
-            console.log("DAATA", data);
-            return data;
+            if (lpuId) {
+                const {data} = await Instance.get(
+                    `/v1/db/workplaces/${lpuId}`
+                );
+                return data;
+            }
         } catch (error) {
             console.error("Error fetching districts data", error);
             throw error;
         }
+    });
+};
+
+export const useGetWorkplaceOne = (id) => {
+
+    return useQuery({
+        queryKey: ["workplace", id || null],
+        queryFn: async () => {
+            try {
+                if (id) {
+                    const url = `/v1/db/workplaces/${id}`; // Ap
+                    const {data} = await Instance.get(url);
+                    return data;
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
     });
 };
 

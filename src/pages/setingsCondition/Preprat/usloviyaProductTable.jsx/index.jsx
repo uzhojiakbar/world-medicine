@@ -526,6 +526,9 @@ const UsloviyaProductTable = ({data, data2, loading = true, title = ""}) => {
                                         if (v.id === changeRow.id) {
                                             return <tr key={i} onDoubleClick={() => handleEditClick(v)}>
                                                 <td>
+                                                    {v?.id}
+                                                </td>
+                                                <td>
                                                     <Input2
                                                         type="text"
                                                         name="name"
@@ -712,6 +715,9 @@ const UsloviyaProductTable = ({data, data2, loading = true, title = ""}) => {
                                             </tr>
                                         }
                                         return <tr key={i} onDoubleClick={() => handleEditClick(v)}>
+                                            <td>
+                                                {v?.id}
+                                            </td>
                                             <td>{v?.name}</td>
                                             <td>{v?.cip}</td>
                                             <td>-?%</td>

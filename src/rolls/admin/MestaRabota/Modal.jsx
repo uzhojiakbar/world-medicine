@@ -14,71 +14,78 @@ import {useLanguage} from "../../../context/LanguageContext.jsx";
 import ProfilePic1 from "../../../assets/img/profile/profile2.svg";
 import CloseIcon from "../../../assets/svg/closeIcon.jsx";
 import GenericAnalitikaTable from "../../manager/analiktika/GenericTable.jsx";
-import {useGetDoctorsFilter, useGetProfileInfo, useUpdateWorkplace} from "../../../utils/server/server.js";
+import {
+    useGetDoctorsFilter,
+    useGetProfileInfo,
+    useGetWorkplaceOne,
+    useUpdateWorkplace
+} from "../../../utils/server/server.js";
 import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
 import {TransFormUsersForSelect} from "../../../utils/transformRegionsForSelect.js";
+import {message} from "antd";
 
-const ModalEditLpu = ({setData, data: wk = 0}) => {
+const ModalEditLpu = ({setData, data: tempwk = 0}) => {
     const {translate} = useLanguage();
-    if (!wk) {
+    if (!tempwk?.id) {
         return null;
     }
 
+    const {data: wk, isLoading: isLoadingWKK} = useGetWorkplaceOne(tempwk?.id || null)
 
     const mutation = useUpdateWorkplace();
     const [isLoading, setIsLoading] = useState(0);
     const [uptData, setUptData] = useState({
-        name: wk.name,
-        phone: wk.phone,
-        email: wk.email,
+        name: wk?.name,
+        phone: wk?.phone,
+        email: wk?.email,
         chiefDoctorId: "",
     });
     const handleUpdate = () => {
-        setIsLoading(true);
-        mutation.mutate(
-            {
-                requestData: {
-                    id: wk.id,
-                    uptData: {
-                        name: uptData?.name,
-                        address: wk?.address,
-                        description: wk?.description,
-                        medicalInstitutionType: wk?.medicalInstitutionType,
-                        districtId: wk?.regionDistrictDTO?.districtId,
-                        phone: uptData?.phone,
-                        email: uptData?.email,
-                        chiefDoctorId: uptData?.chiefDoctorId,
-                    }
-                },
-                onSuccess: () => {
-                    setIsLoading(0);
-                    console.log("updated workplace",{
-                        name: uptData?.name,
-                        address: wk?.address,
-                        description: wk?.description,
-                        medicalInstitutionType: wk?.medicalInstitutionType,
-                        districtId: wk?.regionDistrictDTO?.districtId,
-                        phone: uptData?.phone,
-                        email: uptData?.email,
-                        chiefDoctorId: wk?.userDTO?.creatorId,
-                    });
-                },
-                onError: () => {
-                    setIsLoading(0);
-                    console.log(" error updated workplace",{
-                        name: uptData?.name,
-                        address: wk?.address,
-                        description: wk?.description,
-                        medicalInstitutionType: wk?.medicalInstitutionType,
-                        districtId: wk?.regionDistrictDTO?.districtId,
-                        phone: uptData?.phone,
-                        email: uptData?.email,
-                        chiefDoctorId: wk?.userDTO?.creatorId,
-                    });
-                }
-            }
-        )
-        setIsLoading(0)
+        console.log("uptData", uptData);
+        // setIsLoading(true);
+        // mutation.mutate(
+        //     {
+        //         requestData: {
+        //             id: wk.id,
+        //             uptData: {
+        //                 name: uptData?.name,
+        //                 address: wk?.address,
+        //                 description: wk?.description,
+        //                 medicalInstitutionType: wk?.medicalInstitutionType,
+        //                 districtId: wk?.regionDistrictDTO?.districtId,
+        //                 phone: uptData?.phone,
+        //                 email: uptData?.email,
+        //                 chiefDoctorId: uptData?.chiefDoctorId,
+        //             }
+        //         },
+        //         onSuccess: () => {
+        //             setIsLoading(0);
+        //             console.log("updated workplace",{
+        //                 name: uptData?.name,
+        //                 address: wk?.address,
+        //                 description: wk?.description,
+        //                 medicalInstitutionType: wk?.medicalInstitutionType,
+        //                 districtId: wk?.regionDistrictDTO?.districtId,
+        //                 phone: uptData?.phone,
+        //                 email: uptData?.email,
+        //                 chiefDoctorId: wk?.userDTO?.creatorId,
+        //             });
+        //         },
+        //         onError: () => {
+        //             setIsLoading(0);
+        //             console.log(" error updated workplace",{
+        //                 name: uptData?.name,
+        //                 address: wk?.address,
+        //                 description: wk?.description,
+        //                 medicalInstitutionType: wk?.medicalInstitutionType,
+        //                 districtId: wk?.regionDistrictDTO?.districtId,
+        //                 phone: uptData?.phone,
+        //                 email: uptData?.email,
+        //                 chiefDoctorId: wk?.userDTO?.creatorId,
+        //             });
+        //         }
+        //     }
+        // )
     }
 
     const onClose = () => {
@@ -86,16 +93,50 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
     }
     useEffect(() => {
         handleUpdate()
-    },[uptData])
+    }, [uptData])
 
     const {data: doctors} = useGetDoctorsFilter({
         districtId: wk?.regionDistrictDTO?.districtId
     })
 
     const translateDoctors = TransFormUsersForSelect(doctors);
-    console.log("wk",wk)
-    console.log("doctors",translateDoctors)
-    return  <ModalContainer
+
+    const onUpdate = ({name = "", value = ""}, text = 1) => {
+
+        if (text) {
+            setIsLoading(1)
+            mutation.mutate(
+                {
+                    requestData: {
+                        id: wk?.id || tempwk?.id,
+                        uptData: {
+                            id: tempwk?.id || null,
+                            name: wk?.name || null,
+                            address: wk?.address || null,
+                            description: wk?.description || null,
+                            phone: wk?.phone || null,
+                            email: wk?.email || null,
+                            medicalInstitutionType: wk?.medicalInstitutionType || null,
+                            chiefDoctorId: wk?.userDTO?.userId || null,
+                            districtId: wk?.regionDistrictDTO?.districtId || null,
+                            [name]: value
+                        }
+                    },
+                    onSuccess: () => {
+                        message.success(translate("updated"));
+                        setIsLoading(0);
+                    },
+                    onError: () => {
+                        message.success(translate("error"));
+                        setIsLoading(0);
+                    }
+                }
+            )
+        }
+
+    }
+
+    return <ModalContainer
         title={
             <ModalHeader>
                 <Title>{translate("Workplace")}</Title>
@@ -110,22 +151,20 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
         footer={[]}
         centered
     >
-        {isLoading ? (<div className="loaderParent">
+        {isLoading || isLoadingWKK ? (<div className="loaderWindow">
             <div className="loader"></div>
         </div>) : ""}
         <ModalBodyHeader m={"20px"}>
-            <MiniTitleSmall>{translate(wk.medicalInstitutionType)}</MiniTitleSmall>
+            <MiniTitleSmall>{translate(wk?.medicalInstitutionType)}</MiniTitleSmall>
         </ModalBodyHeader>
         <ModalBodyHeader mb={"40px"} m={"20px"}>
             <ModalBodySection>
                 <MiniTitleSmall>{translate("Адресс")}</MiniTitleSmall>
                 <ModalInnerSection>
                     <EditableInput
-                        initialValue={wk?.address}
-                        value={wk.name}
-                        onSave={e => {
-                            setUptData({...uptData, name: e})
-                        }}
+                        initialValue={wk?.name}
+                        value={wk?.name}
+                        onSave={e => onUpdate({name: "name", value: e})}
                     />
                 </ModalInnerSection>
             </ModalBodySection>
@@ -135,10 +174,11 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
                     <EditableInput
                         isPhoneNumber={true}
                         initialValue={wk?.phone || ""}
-                        value={wk.name}
+                        value={wk?.phone}
                         onSave={e =>
-                            setUptData({...uptData, phone: e})
+                            onUpdate({name: "phone", value: e})
                         }
+
                     />
                 </ModalInnerSection>
             </ModalBodySection>
@@ -149,9 +189,9 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
                         def={""}
                         options={translateDoctors}
                         onlyOption={1}
-                        selectedOptionId={wk?.chiefDoctorIds}
+                        selectedOptionId={wk?.userDTO?.userId}
                         selectedType={"id"}
-                        onValueChange={(value) => setUptData({...uptData, chiefDoctorId: value?.id})}
+                        onValueChange={(value) => onUpdate({name: "chiefDoctorId", value: value?.id})}
                     />
                 </ModalInnerSection>
             </ModalBodySection>
@@ -161,9 +201,8 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
                     <EditableInput
                         initialValue={wk?.email}
                         value={wk?.email}
-                        onSave={e => {
-                            setUptData({...uptData, email: e})
-                        }}
+                        onSave={e => onUpdate({name: "email", value: e})}
+
                     />
                 </ModalInnerSection>
             </ModalBodySection>
@@ -178,7 +217,6 @@ const ModalEditLpu = ({setData, data: wk = 0}) => {
 };
 
 export default ModalEditLpu;
-
 
 
 // const {data: info, isLoading} = useGetProfileInfo();

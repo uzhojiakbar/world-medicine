@@ -35,11 +35,6 @@ const ModalAddDistrict = ({
     const {translate,language} = useLanguage();
     const [loading, setLoading] = useState(0);
 
-
-
-
-
-
     const [formData, setFormData] = useState({
         name: "",
         nameUzLatin: "",

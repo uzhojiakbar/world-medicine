@@ -76,6 +76,7 @@ function Preparat() {
     const {data: dataDrugs, isLoading: loadingDrugs} = useGetDrugs();
     const [data, setData] = useState({
         thead: [
+            "ID",
             "Препарат",
             "CIP",
             "Не более",
@@ -328,20 +329,20 @@ function Preparat() {
         const headers = rawData[0]; // Birinchi qator - sarlavhalar
         const dataRows = rawData.slice(2); // Qolgan qatorlar - ma'lumotlar
 
-        console.log("dataRows",dataRows)
+        console.log("dataRows", dataRows)
         const formattedData = [];
 
 
         for (const row of dataRows) {
             const [
-                id,name,inn,cip,quantity,prescription,volume,type,
-                suLimit,suBall,sbPercentage,
-                sbLimit,sbBall,suPercentage,
-                gzLimit,gzBall,gzPercentage,
-                kbLimit,kbBall,kbPercentage,
+                id, name, inn, cip, quantity, prescription, volume, type,
+                suLimit, suBall, sbPercentage,
+                sbLimit, sbBall, suPercentage,
+                gzLimit, gzBall, gzPercentage,
+                kbLimit, kbBall, kbPercentage,
             ] = row;
 
-            console.log("INN",inn)
+            console.log("INN", inn)
             // ❗ **Validatsiya (bo‘sh maydon yoki noto‘g‘ri format)** ❗
             if (
                 !name || !inn || !cip ||
@@ -357,14 +358,14 @@ function Preparat() {
                 return []; //  Ma’lumot noto‘g‘ri bo‘lsa, bo‘sh array qaytariladi
             }
             formattedData.push({
-                "name":name,
+                "name": name,
                 "nameUzCyrillic": name,
                 "nameUzLatin": name,
                 "nameRussian": name,
                 "inn": inn.split(","),
                 "cip": cip,
                 "quantity": quantity,
-                "prescription":prescription,
+                "prescription": prescription,
                 "volume": volume,
                 "type": type,
                 "suPercentage": 0,
@@ -375,7 +376,7 @@ function Preparat() {
                 "sbBall": sbBall,
                 "gzPercentage": gzPercentage,
                 "gzLimit": gzLimit,
-                "gzBall":gzBall,
+                "gzBall": gzBall,
                 "kbPercentage": kbPercentage,
                 "kbLimit": kbLimit,
                 "kbBall": kbBall,
@@ -454,7 +455,7 @@ function Preparat() {
     return (
         <Container>
             {/*<Filter/>*/}
-            <Info loading={loading} setLoading={setLoading} />
+            <Info loading={loading} setLoading={setLoading}/>
             <AddMedicine open={add} setOpen={setAdd}/>
 
             <TitleContainer>
