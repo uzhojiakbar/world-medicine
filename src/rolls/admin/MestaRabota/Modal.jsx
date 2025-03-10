@@ -29,10 +29,11 @@ import {medicalInstitutionType} from "../../../utils/medicalInstitutionType.js";
 import {useQueryClient} from "@tanstack/react-query";
 
 const ModalEditLpu = ({setData, data: tempwk = 0}) => {
-    const {translate, language} = useLanguage();
     if (!tempwk?.id) {
         return null;
     }
+
+    const {translate, language} = useLanguage();
 
     const {data: wk, isLoading: isLoadingWKK} = useGetWorkplaceOne(tempwk?.id || null)
     const {data: wkstat, isLoading: isLoadingWKStat} = useGetWorkplaceStats(tempwk?.id || null)
@@ -174,7 +175,46 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
         });
     };
 
+    const [wkStatData, setWkStatData] = useState([]);
 
+    useEffect(() => {
+        if (!wkstat) return; // Agar wkstat yo'q bo'lsa, hech narsa qilmaymiz
+
+        // Asosiy obyektni qo‘shamiz
+        setWkStatData([
+            {
+                name: "Всего",
+                allDoctors: wkstat?.allDoctors,
+                doctorsInFact: wkstat?.doctorsInFact,
+                writtenRecipes: wkstat?.writtenRecipes,
+            }
+        ]);
+        // setWkStatData(prevData => [
+        //     ...prevData,
+        //     ...wkstat.fieldList.map(v => ({
+        //         name: translate(v?.field),
+        //         allDoctors: v?.allDoctors,
+        //         doctorsInFact: v?.doctorsInFact,
+        //         writtenRecipes: v?.writtenRecipes,
+        //     }))
+        // ]);
+        // Agar fieldList mavjud bo‘lsa, keyin uni qo‘shamiz
+        if (Array.isArray(wkstat?.fieldList)) {
+            wkstat.fieldList.map(v => (
+                setWkStatData(prevData => [
+                    ...prevData,
+                    {
+                        name: translate(v?.field),
+                        allDoctors: v?.allDoctors,
+                        doctorsInFact: v?.doctorsInFact,
+                        writtenRecipes: v?.writtenRecipes,
+                    }
+                ])
+            ))
+        }
+    }, [wkstat])
+
+    console.log("wkStatData",wkStatData)
     return <ModalContainer
         title={
             <ModalHeader>
@@ -248,9 +288,6 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
             <ModalBodySection>
                 <MiniTitleSmall>{translate("Глав_Врач")}</MiniTitleSmall>
                 <ModalInnerSection>
-                    {
-                        console.log("TYPE",)
-                    }
                     <PrimarySelect
                         def={""}
                         options={translateInsitution}
@@ -266,22 +303,7 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
             data={
                 {
                     thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"],
-                    tbody: [
-                        {
-                            name: "Всего",
-                            allDoctors: wkstat?.allDoctors,
-                            doctorsInFact: wkstat?.doctorsInFact,
-                            writtenRecipes: wkstat?.writtenRecipes,
-                        },
-                        ...wkstat?.fieldList?.map((v)=>{
-                            return {
-                                name: translate(v?.field),
-                                allDoctors: v?.allDoctors,
-                                doctorsInFact: v?.doctorsInFact,
-                                writtenRecipes: v?.writtenRecipes,
-                            }
-                        })
-                    ]
+                    tbody: wkStatData
                 }
             }
         />
