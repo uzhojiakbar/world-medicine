@@ -361,6 +361,7 @@ const AnalitikaChiefPage = () => {
                 </ChartContainer>
                 <ChartContainer>
                     <OxvatChart
+                        data11={dashboardData?.dashboardDoctorsCoverage}
                         title={"salom"}
                     />
                 </ChartContainer>

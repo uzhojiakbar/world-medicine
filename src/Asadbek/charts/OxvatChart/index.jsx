@@ -34,15 +34,47 @@ const OxvatChart = ({
                                 "doctorsNumber": 8,
                                 "doctorsWithContract": 2,
                                 "month": "MARCH"
-                            },
-                            {
-                                "doctorsNumber": 10,
-                                "doctorsWithContract": 2,
-                                "month": "APRIL"
                             }
                         ], title = ""
                     }) => {
 
+
+    // function transformData(data) {
+    //     const monthMap = {
+    //         "JANUARY": "01", "FEBRUARY": "02", "MARCH": "03", "APRIL": "04",
+    //         "MAY": "05", "JUNE": "06", "JULY": "07", "AUGUST": "08",
+    //         "SEPTEMBER": "09", "OCTOBER": "10", "NOVEMBER": "11", "DECEMBER": "12"
+    //     };
+    //
+    //     if (data.length === 0) return [];
+    //
+    //     let year = new Date().getFullYear();
+    //     let firstMonthNum = monthMap[data[0].month.toUpperCase()];
+    //     let monthOrder = Object.keys(monthMap).slice(Object.keys(monthMap)?.indexOf(data[0]?.month?.toUpperCase()))?.concat(
+    //         Object.keys(monthMap).slice(0, Object.keys(monthMap).indexOf(data[0]?.month?.toUpperCase()))
+    //     );
+    //
+    //     let fullYearData = monthOrder.slice(0, 12).map((month, index) => {
+    //         let monthNum = monthMap[month];
+    //         return {
+    //             id: index + 1,
+    //             startData: `${year}-${monthNum}-01`,
+    //             endtData: `${year}-${monthNum}-01`,
+    //             number1: 0,
+    //             number2: 0
+    //         };
+    //     });
+    //
+    //     data.forEach(item => {
+    //         let monthIndex = fullYearData.findIndex(entry => entry.startData.includes(monthMap[item.month.toUpperCase()]));
+    //         if (monthIndex !== -1) {
+    //             fullYearData[monthIndex].number1 = item?.doctorsNumber;
+    //             fullYearData[monthIndex].number2 = item?.doctorsWithContract;
+    //         }
+    //     });
+    //
+    //     return fullYearData;
+    // }
 
     function transformData(data) {
         const monthMap = {
@@ -54,17 +86,23 @@ const OxvatChart = ({
         if (data.length === 0) return [];
 
         let year = new Date().getFullYear();
-        let firstMonthNum = monthMap[data[0].month.toUpperCase()];
-        let monthOrder = Object.keys(monthMap).slice(Object.keys(monthMap)?.indexOf(data[0]?.month?.toUpperCase()))?.concat(
-            Object.keys(monthMap).slice(0, Object.keys(monthMap).indexOf(data[0]?.month?.toUpperCase()))
-        );
+        let firstMonthIndex = Object.keys(monthMap).indexOf(data[0].month.toUpperCase());
+        let monthOrder = Object.keys(monthMap).slice(firstMonthIndex - 11).concat(
+            Object.keys(monthMap).slice(0, firstMonthIndex + 1)
+        ).slice(-12);
 
-        let fullYearData = monthOrder.slice(0, 12).map((month, index) => {
+        let fullYearData = monthOrder.map((month, index) => {
             let monthNum = monthMap[month];
+            let adjustedYear = year;
+
+            if (firstMonthIndex - 11 + index < 0) {
+                adjustedYear -= 1;
+            }
+
             return {
                 id: index + 1,
-                startData: `${year}-${monthNum}-01`,
-                endtData: `${year}-${monthNum}-01`,
+                startData: `${adjustedYear}-${monthNum}-01`,
+                endtData: `${adjustedYear}-${monthNum}-01`,
                 number1: 0,
                 number2: 0
             };
@@ -73,15 +111,17 @@ const OxvatChart = ({
         data.forEach(item => {
             let monthIndex = fullYearData.findIndex(entry => entry.startData.includes(monthMap[item.month.toUpperCase()]));
             if (monthIndex !== -1) {
-                fullYearData[monthIndex].number1 = item?.doctorsNumber;
-                fullYearData[monthIndex].number2 = item?.doctorsWithContract;
+                fullYearData[monthIndex].number1 = item.doctorsWithContract;
+                fullYearData[monthIndex].number2 = item.doctorsNumber;
             }
         });
 
         return fullYearData;
     }
 
-    const rawData = transformData(data11).reverse();
+    const rawData = transformData(data11)
+
+
 
     console.log(rawData)
 
