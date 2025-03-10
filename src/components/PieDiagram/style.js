@@ -8,11 +8,6 @@ const PieContainer = styled.div`
   width: 100%;
   max-width: 100% !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
   background-color: white;
 
   ${media.mobileL} {
@@ -26,15 +21,14 @@ const PieContainer = styled.div`
   border-radius: 12px;
   text-align: center;
   font-family: Arial, sans-serif;
-  padding: 10px;
-
-  width: 100%;
-  height: 100%;
+  padding: 20px;
+  padding-bottom: 60px;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-evenly;
+  gap: 70px;
 `;
 
 const Container = styled.div`

@@ -8,8 +8,6 @@ import { useGetDrugs } from "../../../utils/server/server";
 import AnalitikaChiefPage from "./analiktika";
 
 const ChiefAnaliktika = () => {
-  const { data: dataDrugs, isLoading: loadingDrugs } = useGetDrugs();
-
   const nav = useNavigate();
 
   const { translate } = useLanguage(); // Tarjima funksiyasi

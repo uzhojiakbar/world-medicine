@@ -1,51 +1,97 @@
-import React, { useState } from "react";
-import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from "chart.js";
+import React, {useState} from "react";
+import {Bar} from "react-chartjs-2";
+import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend} from "chart.js";
 import styled from "styled-components";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const CardContainer = styled.div`
-  background-color: var(--bg-color);
-  border-radius: 12px;
-  padding: 20px;
-  width: 100%;
+    background-color: var(--bg-color);
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
 `;
 
 const TitleText = styled.h2`
-  font-size: 24px;
-  font-weight: 600;
-  color: #1e1e1e;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e1e1e;
 `;
 
 const CHartBar = styled.div`
-  height: 300px;
-  min-width: 100%;
-  max-width: 100%;
+    height: 300px;
+    min-width: 100%;
+    max-width: 100%;
 `;
 
-const OxvatChart = () => {
-    const [rawData, setRawData] = useState([
-        { id: 2, startData: "2024-01-01", endtData: "2024-01-01", number1: 9, number2: 19 },
-        { id: 1, startData: "2024-02-01", endtData: "2024-02-01", number1: 10, number2: 17 },
-        { id: 3, startData: "2024-03-01", endtData: "2024-03-01", number1: 7, number2: 12 },
-        { id: 4, startData: "2024-04-01", endtData: "2024-04-01", number1: 10, number2: 14 },
-        { id: 5, startData: "2024-05-01", endtData: "2024-05-01", number1: 4, number2: 10 },
-        { id: 6, startData: "2024-06-01", endtData: "2024-06-01", number1: 9, number2: 19 },
-        { id: 6, startData: "2024-06-01", endtData: "2024-06-01", number1: 7, number2: 14 },
-        { id: 6, startData: "2024-06-01", endtData: "2024-06-01", number1: 11, number2: 18 },
-        { id: 6, startData: "2024-06-01", endtData: "2024-06-01", number1: 10, number2: 16 },
-        { id: 6, startData: "2024-06-01", endtData: "2024-06-01", number1: 12, number2: 20 },
+const OxvatChart = ({
+                        data11 = [
+                            {
+                                "doctorsNumber": 8,
+                                "doctorsWithContract": 2,
+                                "month": "MARCH"
+                            },
+                            {
+                                "doctorsNumber": 10,
+                                "doctorsWithContract": 2,
+                                "month": "APRIL"
+                            }
+                        ], title = ""
+                    }) => {
 
-    ]);
+
+    function transformData(data) {
+        const monthMap = {
+            "JANUARY": "01", "FEBRUARY": "02", "MARCH": "03", "APRIL": "04",
+            "MAY": "05", "JUNE": "06", "JULY": "07", "AUGUST": "08",
+            "SEPTEMBER": "09", "OCTOBER": "10", "NOVEMBER": "11", "DECEMBER": "12"
+        };
+
+        if (data.length === 0) return [];
+
+        let year = new Date().getFullYear();
+        let firstMonthNum = monthMap[data[0].month.toUpperCase()];
+        let monthOrder = Object.keys(monthMap).slice(Object.keys(monthMap)?.indexOf(data[0]?.month?.toUpperCase()))?.concat(
+            Object.keys(monthMap).slice(0, Object.keys(monthMap).indexOf(data[0]?.month?.toUpperCase()))
+        );
+
+        let fullYearData = monthOrder.slice(0, 12).map((month, index) => {
+            let monthNum = monthMap[month];
+            return {
+                id: index + 1,
+                startData: `${year}-${monthNum}-01`,
+                endtData: `${year}-${monthNum}-01`,
+                number1: 0,
+                number2: 0
+            };
+        });
+
+        data.forEach(item => {
+            let monthIndex = fullYearData.findIndex(entry => entry.startData.includes(monthMap[item.month.toUpperCase()]));
+            if (monthIndex !== -1) {
+                fullYearData[monthIndex].number1 = item?.doctorsNumber;
+                fullYearData[monthIndex].number2 = item?.doctorsWithContract;
+            }
+        });
+
+        return fullYearData;
+    }
+
+    const rawData = transformData(data11).reverse();
+
+    console.log(rawData)
+
     const months = rawData.map(item =>
-        new Date(item.startData).toLocaleString("default", { month: "short" })
+        new Date(item.startData).toLocaleString("default", {month: "short"})
     );
 
-    const doctors = rawData.map(item => item.number1); // **Shifokorlar soni**
-    const sales = rawData.map(item => item.number2); // **Savdo soni (foiz ta’sir qilishi uchun kamaytirildi)**
-    const percentages = rawData.map(item => ((item.number1 * 100) / item.number2).toFixed(0) + "%");
-
+    const doctors = rawData.map(item => item.number2 > 0 ? item.number2 : ""); // **Shifokorlar soni**
+    const sales = rawData.map(item => item.number1 > 0 ? item.number1 : ""); // **Savdo soni (foiz ta’sir qilishi uchun kamaytirildi)**
+    const percentages = rawData.map(item => (((item?.number1 || 0 * 100) / item?.number2 || 0).toFixed(0)) + "%");
 
 
     // 📌 Grafik balandligi to‘g‘ri bo‘lishi uchun `displaySales` dan foydalanamiz
@@ -57,14 +103,14 @@ const OxvatChart = () => {
             {
                 label: "Врачи",
                 data: doctors,
-                backgroundColor: "#0A2A66",
-                borderRadius: 4,
+                backgroundColor: "#073790",
+                borderRadius: 10,
             },
             {
                 label: "Продажи",
                 data: displaySales, // 📌 Faqat grafik balandligini o‘zgartiramiz
-                backgroundColor: "#A0B6F9",
-                borderRadius: 4,
+                backgroundColor: "#C8D3FE",
+                borderRadius: 10,
             },
         ],
     };
@@ -96,7 +142,7 @@ const OxvatChart = () => {
             legend: {
                 position: "bottom",
                 labels: {
-                    font: { size: 16 },
+                    font: {size: 16},
                     color: "#333",
                     usePointStyle: true,
                     pointStyle: "circle",
@@ -108,7 +154,7 @@ const OxvatChart = () => {
         scales: {
             x: {
                 stacked: true,
-                grid: { display: false },
+                grid: {display: false},
                 ticks: {
                     font: (context) => {
                         let width = context.chart.width;
@@ -117,13 +163,13 @@ const OxvatChart = () => {
                         };
                     },
                 },
-                border: { display: false },
+                border: {display: false},
             },
             y: {
                 stacked: true,
-                grid: { display: false },
-                ticks: { display: false },
-                border: { display: false },
+                grid: {display: false},
+                ticks: {display: false},
+                border: {display: false},
             },
         },
     };
@@ -140,7 +186,7 @@ const OxvatChart = () => {
             let boxHeight = chartWidth > 1024 ? 20 : chartWidth > 768 ? 18 : 18;
             let borderRadius = chartWidth > 1024 ? 8 : 6;
 
-            ctx.font = `bold ${fontSize}px Arial`;
+            ctx.font = `bold ${20}px Arial`;
 
             chart.data.datasets.forEach((dataset, datasetIndex) => {
                 const meta = chart.getDatasetMeta(datasetIndex);
@@ -188,9 +234,10 @@ const OxvatChart = () => {
 
     return (
         <CardContainer>
-            <TitleText>Stacked Bar Chart</TitleText>
+            <TitleText>{title}</TitleText>
             <CHartBar>
-                <Bar data={data} options={options} plugins={[customLabelsPlugin]} style={{ maxWidth: "100%", minWidth: "100%", maxHeight: "300px", minHeight: "300px" }} />
+                <Bar data={data} options={options} plugins={[customLabelsPlugin]}
+                     style={{maxWidth: "100%", minWidth: "100%", maxHeight: "300px", minHeight: "300px"}}/>
             </CHartBar>
         </CardContainer>
     );

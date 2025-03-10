@@ -111,20 +111,19 @@ const ChartContainer = styled.div`
 const AppointmentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
   gap: ${({ gap }) => (gap ? gap : "10px")};
   flex: 1;
 `;
 
 const Child = styled.div`
-  display: flex;
+    display: flex;
+    gap: 40px;
+    padding: 20px 0;
+    width: 100%;
 
-  gap: 20px;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 `;
 
 const Item = styled.div`

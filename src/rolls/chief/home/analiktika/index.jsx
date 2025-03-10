@@ -30,13 +30,12 @@ import TableRegions from "./TableRegions.jsx";
 import {motion} from "framer-motion";
 import TableRegions2 from "./TableRegions2.jsx";
 import TableSpec from "./TableSpec.jsx";
+import OxvatChart from "../../../../Asadbek/charts/OxvatChart/index.jsx";
 
 const AnalitikaChiefPage = () => {
     const {translate, language} = useLanguage();
     const [region, setRegion] = useState(null);
     const [district, setDistrict] = useState(null);
-    console.log(region)
-
     const {data: dashboardData, isLoading: isLoadingDashboard} = useGetDashboard({
         regionId: region || null,
         districtId: district || null,
@@ -325,7 +324,7 @@ const AnalitikaChiefPage = () => {
                     </AppointmentWrapper>
                 </ChartContainer>
                 <ChartContainer>
-                    <AppointmentWrapper gap={"20px"}>
+                    <AppointmentWrapper gap={"0px"}>
                         <Child>
                             <PieDiagram
                                 item={["Рецепт", "СБ", "СУ", "ГЭ"]}
@@ -359,6 +358,11 @@ const AnalitikaChiefPage = () => {
                         {/*  <ChartBar title={"Активность врачей"} active={active} />*/}
                         {/*</Child>*/}
                     </AppointmentWrapper>
+                </ChartContainer>
+                <ChartContainer>
+                    <OxvatChart
+                        title={"salom"}
+                    />
                 </ChartContainer>
             </AllChartContainer>
         </Container>
