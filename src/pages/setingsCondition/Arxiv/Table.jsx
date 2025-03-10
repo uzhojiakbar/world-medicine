@@ -9,7 +9,7 @@ import RightArrow from "../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal";
 import { useLanguage } from "../../../context/LanguageContext";
-import Server from "../../../utils/server/server";
+import Server, {useGetAllContract} from "../../../utils/server/server";
 
 import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
@@ -30,6 +30,8 @@ const Table = ({ title = "" }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [data, setData] = useState([]);
 
+  const {data: contracts,isLoading: isLoadingContracts} = useGetAllContract(0)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,6 +46,7 @@ const Table = ({ title = "" }) => {
     fetchData();
   }, []);
   console.log(data);
+  console.log("contracts", contracts);
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data?.length / itemsPerPage);

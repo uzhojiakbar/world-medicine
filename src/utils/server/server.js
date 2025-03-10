@@ -1047,6 +1047,25 @@ export const useGetContract = (page, status = "PENDING_REVIEW") => {
     });
 };
 
+export const useGetAllContract = (page=0) => {
+    return useQuery({
+        queryKey: ["ContractsAll", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
+        queryFn: async () => {
+            try {
+                const data = await Instance.get(
+                    `/v1/db/contracts?page=${page}&size=10`
+                );
+
+                return {...data?.data};
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error; // xatolikni qaytarish
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
 export const useGetWorkPlaces = (page) => {
     return useQuery({
         queryKey: ["newConnecting", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan

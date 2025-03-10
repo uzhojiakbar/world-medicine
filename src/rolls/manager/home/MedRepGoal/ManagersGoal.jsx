@@ -73,17 +73,9 @@ const MedRepGoal = () => {
 
     const [allDistricts, setAllDistricts] = useState([]);
 
-    console.log("123123123123", Districts)
-
     const {data: goal, isLoading: isLoadingGoal} = useGetManagerGoalId(
         profileInfo?.userId
     );
-
-    console.log("goal12:", goal);
-    console.log("drugs:", drugs);
-    console.log("selectedDistrict:", selectedDistrict);
-    console.log("managers", managers)
-    console.log("asdasd", fieldnamesManager())
 
     const filetnames = fieldnamesManager()
 
@@ -217,30 +209,34 @@ const MedRepGoal = () => {
         if (!specialist?.id) {
             console.error(translate("представитель_не_найден"));
             message.warning(translate("представитель_не_найден"));
-            setLoading(0);
-
+            setTimeout(() => {
+                setLoading(0);
+            }, 300)
             return;
         }
         if (!date?.startDate) {
             message.warning(translate("Дата_начала_или_окончания_не_указана"));
             console.log(translate("Дата_начала_или_окончания_не_указана"));
-            setLoading(0);
-
+            setTimeout(() => {
+                setLoading(0);
+            }, 300)
             return;
         }
         if (!selectedDistrict?.districtId) {
             console.error(translate("Пожалуйста_выберите_один_из_районов"));
             message.warning(translate("Пожалуйста_выберите_один_из_районов"));
-            setLoading(0);
-
+            setTimeout(() => {
+                setLoading(0);
+            }, 300)
             return;
         }
 
         if (!selectedSpecializations.length || !selectedDrugs.length) {
             console.error(translate("Информация_неполная"));
             message.warning(translate("Информация_неполная"));
-            setLoading(0);
-
+            setTimeout(() => {
+                setLoading(0);
+            }, 300)
             return;
         }
         // if (!selectedDrugs.length) {
@@ -250,18 +246,22 @@ const MedRepGoal = () => {
         //
         //   return;
         // }
+        // setLoading
 
 
         if (!profileInfo?.userId) {
-            console.error("Admin ID topilmadi");
-            setLoading(0);
-
+            message.error(translate("Admin ID topilmadi"));
+            setTimeout(() => {
+                setLoading(0);
+            }, 300)
             return;
         }
         if (!goal?.goalId) {
             console.error("Цель_для_менеджера_уже_поставлена");
-            setLoading(0);
-
+            message.error(translate("представителю_уже_назначил_контракт"));
+            setTimeout(() => {
+                setLoading(0);
+            }, 300)
             return;
         }
 
@@ -303,8 +303,14 @@ const MedRepGoal = () => {
                 ) {
                     message.error(translate("представителю_уже_назначил_контракт"));
                     console.log(1);
+                    setTimeout(() => {
+                        setLoading(0);
+                    }, 300)
                 } else {
                     message.error(translate("Ошибка_добавления_цели_для_представителю"));
+                    setTimeout(() => {
+                        setLoading(0);
+                    }, 300)
                 }
             },
         });
@@ -316,7 +322,7 @@ const MedRepGoal = () => {
             {(loading ||
                 isLoadingRegions ||
                 isLoadingManagers ||
-                isLoadingDrugs ||
+                isLoadingDrugs || isLoadingGoal ||
                 IsLoadingProfileInfo) && (
                 <div className="loaderParent">
                     <div className="loader"></div>
