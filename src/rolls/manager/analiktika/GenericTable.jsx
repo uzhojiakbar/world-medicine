@@ -142,8 +142,8 @@ const GenericAnalitikaTable = ({ title = "", data = {} }) => {
                 {Object.keys(data?.thead).length > 0 &&
                   Object.values(data?.thead).map((v, i) => {
                     if (i >= 1)
-                      return <th style={{ textAlign: "center" }}>{v}</th>;
-                    return <th style={{ textAlign: "left" }}>{v}</th>;
+                      return <th style={{ textAlign: "center" }}>{translate(v)}</th>;
+                    return <th style={{ textAlign: "left" }}>{translate(v)}</th>;
                   })}
               </tr>
             </thead>
@@ -151,14 +151,18 @@ const GenericAnalitikaTable = ({ title = "", data = {} }) => {
               {data?.tbody.length > 0 ? (
                 data?.tbody.map((row) => (
                   <tr key={row?.id}>
-                    {Object.keys(data?.thead).map((v, i) => {
-                      if (i >= 1)
-                        return (
-                          <td style={{ textAlign: "center" }}>{row[v]}</td>
-                        );
-                      else
-                        return <td style={{ textAlign: "left" }}>{row[v]}</td>;
-                    })}
+                    {/*{Object.keys(data?.thead).map((v, i) => {*/}
+                    {/*  if (i >= 1)*/}
+                    {/*    return (*/}
+                    {/*      <td style={{ textAlign: "center" }}>{row[v]}</td>*/}
+                    {/*    );*/}
+                    {/*  else*/}
+                    {/*    return <td style={{ textAlign: "left" }}>{row[v]}</td>;*/}
+                    {/*})}*/}
+                    <td style={{ textAlign: "left" }}>{row?.name}</td>
+                    <td style={{ textAlign: "center" }}>{row?.allDoctors}</td>
+                    <td style={{ textAlign: "center" }}>{row?.doctorsInFact}</td>
+                    <td style={{ textAlign: "center" }}>{row?.writtenRecipes}</td>
                   </tr>
                 ))
               ) : (

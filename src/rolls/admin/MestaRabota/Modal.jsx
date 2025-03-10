@@ -19,7 +19,7 @@ import {
     useDeleteWorkplace,
     useGetDoctorsFilter,
     useGetProfileInfo,
-    useGetWorkplaceOne,
+    useGetWorkplaceOne, useGetWorkplaceStats,
     useUpdateWorkplace
 } from "../../../utils/server/server.js";
 import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
@@ -35,6 +35,7 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
     }
 
     const {data: wk, isLoading: isLoadingWKK} = useGetWorkplaceOne(tempwk?.id || null)
+    const {data: wkstat, isLoading: isLoadingWKStat} = useGetWorkplaceStats(tempwk?.id || null)
 
     const mutation = useUpdateWorkplace();
     const [isLoading, setIsLoading] = useState(0);
@@ -174,7 +175,6 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
     };
 
 
-
     return <ModalContainer
         title={
             <ModalHeader>
@@ -190,13 +190,13 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
         footer={[]}
         centered
     >
-        {isLoading || isLoadingWKK ? (<div className="loaderWindow">
+        {isLoading || isLoadingWKK || isLoadingWKStat ? (<div className="loaderWindow">
             <div className="loader"></div>
         </div>) : ""}
         {/*<ModalBodyHeader m={"20px"}>*/}
         {/*    <MiniTitleSmall>{translate(wk?.medicalInstitutionType)}</MiniTitleSmall>*/}
         {/*</ModalBodyHeader>*/}
-        <ModalBodyHeader mb={"40px"} m={"20px"}>
+        <ModalBodyHeader mb={"20px"} m={"20px"}>
             <ModalBodySection>
                 <MiniTitleSmall>{translate("Адресс")}</MiniTitleSmall>
                 <ModalInnerSection>
@@ -249,7 +249,7 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
                 <MiniTitleSmall>{translate("Глав_Врач")}</MiniTitleSmall>
                 <ModalInnerSection>
                     {
-                        console.log("TYPE", )
+                        console.log("TYPE",)
                     }
                     <PrimarySelect
                         def={""}
@@ -264,7 +264,25 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
         </ModalBodyHeader>
         <GenericAnalitikaTable
             data={
-                {thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"], tbody: []}
+                {
+                    thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"],
+                    tbody: [
+                        {
+                            name: "Всего",
+                            allDoctors: wkstat?.allDoctors,
+                            doctorsInFact: wkstat?.doctorsInFact,
+                            writtenRecipes: wkstat?.writtenRecipes,
+                        },
+                        ...wkstat?.fieldList?.map((v)=>{
+                            return {
+                                name: translate(v?.field),
+                                allDoctors: v?.allDoctors,
+                                doctorsInFact: v?.doctorsInFact,
+                                writtenRecipes: v?.writtenRecipes,
+                            }
+                        })
+                    ]
+                }
             }
         />
         <ModalBodyHeader gridC={1}>
@@ -273,7 +291,7 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
                     mgn={"0 auto"}
                 >{translate("delete_wk")}</MiniTitleSmall>
                 <DeleteBtn
-                    onClick={()=>handleDelete(tempwk?.id)}
+                    onClick={() => handleDelete(tempwk?.id)}
                 >
                     {translate("in_delete_wk")}
                 </DeleteBtn>

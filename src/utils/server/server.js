@@ -1409,13 +1409,32 @@ export const useGetWorkplaceById = () => {
 };
 
 export const useGetWorkplaceOne = (id) => {
-
     return useQuery({
         queryKey: ["workplace", id || null],
         queryFn: async () => {
             try {
                 if (id) {
                     const url = `/v1/db/workplaces/${id}`; // Ap
+                    const {data} = await Instance.get(url);
+                    return data;
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
+
+export const useGetWorkplaceStats = (id) => {
+    return useQuery({
+        queryKey: ["workplacesStat", id || null],
+        queryFn: async () => {
+            try {
+                if (id) {
+                    const url = `/v1/db/workplaces/statistics/${id}`; // Ap
                     const {data} = await Instance.get(url);
                     return data;
                 }
