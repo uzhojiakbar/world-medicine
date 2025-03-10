@@ -27,10 +27,7 @@ import {
 } from "../../../utils/transformRegionsForSelect.js";
 import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
 import Input2 from "../../../components/Generic/Input/Input2.jsx";
-import {useForm} from "antd/es/form/Form.js";
-import {medicalInstitutionType} from "../../../utils/medicalInstitutionType.js";
 import {message} from "antd";
-import {formatPhoneNumberForBackend} from "../../../utils/phoneFormatterForBackend.js";
 import {useQueryClient} from "@tanstack/react-query";
 import {typePreparationForSelect, volumePreparationForSelect} from "../../../utils/Generics.js";
 

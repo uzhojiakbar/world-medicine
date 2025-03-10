@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 const Table = ({
-                   data = [], loading = true, refresh = () => {
+                   data = [], loading = true,setLoading = () => {}, refresh = () => {
     }
                }) => {
     const [openModalId, setOpenModalId] = useState(false);
@@ -62,15 +62,17 @@ const Table = ({
         setSelectedWk(await row)
     }
     const handleDelete = (id) => {
+        setLoading(1)
         deleteLpu.mutate(id, {
             onError: (error) => {
                 console.error(translate("workplace_delete_err"), error);
                 message.error(translate("workplace_delete_err"));
                 refresh()
+                setLoading(0)
             }, onSuccess: () => {
                 message.success(translate("workplace_deleted"));
                 refresh()
-
+                setLoading(0)
             },
         });
         queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
@@ -103,7 +105,7 @@ const Table = ({
                         <tbody>
                         {currentData.length > 0 ? (
                             currentData.map((row) => (
-                                <tr key={row?.id}>
+                                <tr style={{"user-select":"none","cursor":"pointer"}} onDoubleClick={()=> handleEditClick(row)} key={row?.id}>
                                     <td className="idfixed">
                                         <span>
                                             {

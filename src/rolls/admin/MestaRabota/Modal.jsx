@@ -21,11 +21,12 @@ import {
     useUpdateWorkplace
 } from "../../../utils/server/server.js";
 import PrimarySelect from "../../../components/Generic/Select/Select.jsx";
-import {TransFormUsersForSelect} from "../../../utils/transformRegionsForSelect.js";
+import {TransformInsitutation, TransFormUsersForSelect} from "../../../utils/transformRegionsForSelect.js";
 import {message} from "antd";
+import {medicalInstitutionType} from "../../../utils/medicalInstitutionType.js";
 
 const ModalEditLpu = ({setData, data: tempwk = 0}) => {
-    const {translate} = useLanguage();
+    const {translate, language} = useLanguage();
     if (!tempwk?.id) {
         return null;
     }
@@ -136,6 +137,10 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
 
     }
 
+
+    const translateInsitution = TransformInsitutation(medicalInstitutionType, language, translate)
+
+
     return <ModalContainer
         title={
             <ModalHeader>
@@ -154,9 +159,9 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
         {isLoading || isLoadingWKK ? (<div className="loaderWindow">
             <div className="loader"></div>
         </div>) : ""}
-        <ModalBodyHeader m={"20px"}>
-            <MiniTitleSmall>{translate(wk?.medicalInstitutionType)}</MiniTitleSmall>
-        </ModalBodyHeader>
+        {/*<ModalBodyHeader m={"20px"}>*/}
+        {/*    <MiniTitleSmall>{translate(wk?.medicalInstitutionType)}</MiniTitleSmall>*/}
+        {/*</ModalBodyHeader>*/}
         <ModalBodyHeader mb={"40px"} m={"20px"}>
             <ModalBodySection>
                 <MiniTitleSmall>{translate("Адресс")}</MiniTitleSmall>
@@ -206,13 +211,29 @@ const ModalEditLpu = ({setData, data: tempwk = 0}) => {
                     />
                 </ModalInnerSection>
             </ModalBodySection>
+            <ModalBodySection>
+                <MiniTitleSmall>{translate("Глав_Врач")}</MiniTitleSmall>
+                <ModalInnerSection>
+                    {
+                        console.log("TYPE", )
+                    }
+                    <PrimarySelect
+                        def={""}
+                        options={translateInsitution}
+                        onlyOption={1}
+                        selectedOptionId={() => translateInsitution.filter((v) => v.key === wk?.medicalInstitutionType)[0]?.id}
+                        selectedType={"id"}
+                        onValueChange={(value) => onUpdate({name: "medicalInstitutionType", value: value?.key})}
+                    />
+                </ModalInnerSection>
+            </ModalBodySection>
+
         </ModalBodyHeader>
-        {/*<GenericAnalitikaTable*/}
-        {/*    data={*/}
-        {/*        {thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"], tbody: []}*/}
-        {/*    }*/}
-        {/*    title={"asdasd"}*/}
-        {/*/>*/}
+        <GenericAnalitikaTable
+            data={
+                {thead: ["Специальность", "Врачи по базе", "Врачи по факту", "Выписано (Уп)"], tbody: []}
+            }
+        />
     </ModalContainer>;
 };
 

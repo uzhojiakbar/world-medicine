@@ -265,6 +265,7 @@ function Lpu() {
                 </TitleContainer>
             </Container1>
             <MainTable
+                setLoading={setLoading}
                 refresh={handleRefresh}
                 loading={isloadingWorkplaces || loading || isLoadingDistricts || isLoadingRegions}
                 data={workplaces}
