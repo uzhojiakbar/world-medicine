@@ -325,10 +325,7 @@ const AnalitikaChiefPage = () => {
                 </ChartContainer>
                 <ChartContainer>
                     <AppointmentWrapper gap={"0px"}>
-
-
                         <Child>
-
                             <Child>
                                 <PieDiagram
                                     item={["Рецепт", "СБ", "СУ", "ГЭ"]}
@@ -338,9 +335,7 @@ const AnalitikaChiefPage = () => {
                                 <ChartBar title={"Активность врачей"} active={active}/>
                             </Child>
                         </Child>
-                        {/*<Child>*/}
-                        {/*  /!*<HorizontalChart title={"Продажа препаратов по регионам"} />*!/*/}
-                        {/*</Child>*/}
+
                     </AppointmentWrapper>
                 </ChartContainer>
                 <ChartContainer>
@@ -352,6 +347,13 @@ const AnalitikaChiefPage = () => {
         </Container>
     );
 };
+
+{/*<Child>*/
+}
+{/*  /!*<HorizontalChart title={"Продажа препаратов по регионам"} />*!/*/
+}
+{/*</Child>*/
+}
 
 {/*<Child>*/
 }
