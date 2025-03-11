@@ -325,37 +325,38 @@ const AnalitikaChiefPage = () => {
                 </ChartContainer>
                 <ChartContainer>
                     <AppointmentWrapper gap={"0px"}>
+                        {/*<Child>*/}
+                        {/*    <PieDiagram*/}
+                        {/*        item={["Рецепт", "СБ", "СУ", "ГЭ"]}*/}
+                        {/*        bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}*/}
+                        {/*        title={translate("Инвестиции_по_упаковкам")}*/}
+                        {/*    />*/}
+                        {/*    <PieDiagram*/}
+                        {/*        item={["Рецепт", "СБ", "СУ", "ГЭ"]}*/}
+                        {/*        bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}*/}
+                        {/*        title={translate("Инвестиции_по_сумме")}*/}
+                        {/*    />*/}
+                        {/*</Child>*/}
+
                         <Child>
-                            <PieDiagram
-                                item={["Рецепт", "СБ", "СУ", "ГЭ"]}
-                                bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                                title={translate("Инвестиции_по_упаковкам")}
-                            />
-                            <PieDiagram
-                                item={["Рецепт", "СБ", "СУ", "ГЭ"]}
-                                bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
-                                title={translate("Инвестиции_по_сумме")}
-                            />
-                        </Child>
-                        <Child>
-                            <Child>
-                                <SalesChart
-                                    title={"Статистика выполнение задач"}
-                                    active={active}
-                                    seles={["Выполнено", "Квота"]}
-                                />
-                            </Child>
+                            {/*<Child>*/}
+                            {/*    <SalesChart*/}
+                            {/*        title={"Статистика выполнение задач"}*/}
+                            {/*        active={active}*/}
+                            {/*        seles={["Выполнено", "Квота"]}*/}
+                            {/*    />*/}
+                            {/*</Child>*/}
                             <Child>
                                 <PieDiagram
                                     item={["Рецепт", "СБ", "СУ", "ГЭ"]}
                                     bgColor={["#001EB9", "#FF5B99", "#C4D9FF", "#35FF50"]}
                                     title={translate("Рецептов_в_месяц")}
                                 />
+                          <ChartBar title={"Активность врачей"} active={active} />
                             </Child>
                         </Child>
                         {/*<Child>*/}
-                        {/*  <HorizontalChart title={"Продажа препаратов по регионам"} />*/}
-                        {/*  <ChartBar title={"Активность врачей"} active={active} />*/}
+                        {/*  /!*<HorizontalChart title={"Продажа препаратов по регионам"} />*!/*/}
                         {/*</Child>*/}
                     </AppointmentWrapper>
                 </ChartContainer>
