@@ -393,4 +393,5 @@ const AnalitikaChiefPage = () => {
 }
 {/*</Child>*/
 }
+
 export default AnalitikaChiefPage;

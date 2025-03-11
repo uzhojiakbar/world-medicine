@@ -471,6 +471,10 @@ const UsloviyaProductTable = ({data, data2, loading = true, title = ""}) => {
         console.log("CHANGEROW", changeRow);
     };
 
+    const currentData = data2?.tbody?.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
     return (
         <Container>
             {loading || loadingIn ? (
@@ -522,7 +526,7 @@ const UsloviyaProductTable = ({data, data2, loading = true, title = ""}) => {
                             <tbody>
                             {
                                 data2?.tbody?.length ?
-                                    data2.tbody?.map((v, i) => {
+                                    currentData?.map((v, i) => {
                                         if (v.id === changeRow.id) {
                                             return <tr key={i} onDoubleClick={() => handleEditClick(v)}>
                                                 <td>
