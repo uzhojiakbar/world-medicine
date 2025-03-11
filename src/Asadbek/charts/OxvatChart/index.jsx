@@ -31,8 +31,8 @@ const CHartBar = styled.div`
 const OxvatChart = ({
                         data11 = [
                             {
-                                "doctorsNumber": 8,
-                                "doctorsWithContract": 2,
+                                "doctorsNumber": 10,
+                                "doctorsWithContract": 49,
                                 "month": "MARCH"
                             }
                         ], title = ""

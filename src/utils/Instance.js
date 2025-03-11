@@ -6,8 +6,8 @@ import Cookies from "js-cookie";
 const url = "/api";
 
 const Instance = axios.create({
-  baseURL: "https://falcon.enterinfinit.uz:8082/api", // O'zingizning backend URL
-  // baseURL: "http://192.168.23.109:8080/api", // O'zingizning backend URL
+  // baseURL: "https://falcon.enterinfinit.uz:8082/api", // O'zingizning backend URL
+  baseURL: "http://192.168.31.63:8080/api", // O'zingizning backend URL
 
   timeout: 5000, // Maksimal kutish vaqti (10 soniya)
 });
