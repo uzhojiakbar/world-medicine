@@ -71,7 +71,7 @@ const Table = ({title = "", data = [], isLoading = false}) => {
 
     const currentData = data.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     return (<Container>
-        {(isLoading || isUserLoading) && (<div className="loaderParent">
+        {(isLoading || isUserLoading) && (<div className="loaderWindow">
             <div className="loader"></div>
         </div>)}
 

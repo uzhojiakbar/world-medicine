@@ -11,6 +11,7 @@ import SettingsMedAgent from "../SettingsMedAgent/SettingsMedAgent";
 import DisabledPage from "../../../../components/DisabledPage/index.jsx";
 import ReNewConnect from "../../../../pages/NewContract/index2.jsx";
 import SettingsFieldForce from "../SettingsFieldForce/SettingsAdmin.jsx";
+import Cookies from "js-cookie";
 
 const BaseControl = () => {
     const {translate} = useLanguage();
@@ -39,7 +40,7 @@ const BaseControl = () => {
         <Wrapper
 
         >
-            <div style={{"display":"flex",flexDirection: "column",gap: "20px"}}  className="relative">
+            <div style={{"display": "flex", flexDirection: "column", gap: "20px"}} className="relative">
                 <FilterAnaliktika/>
                 <NewContract
                     title={translate("Новые_подкл_договора")}
@@ -47,7 +48,7 @@ const BaseControl = () => {
                     loading={false}
                 />
             </div>
-            <div style={{"display":"flex",flexDirection: "column",gap: "20px"}} className="relative">
+            <div style={{"display": "flex", flexDirection: "column", gap: "20px"}} className="relative">
                 <ReNewConnect
                     title={translate("Пересмотренные_договора")}
                     data={posts || []}
@@ -56,7 +57,11 @@ const BaseControl = () => {
             </div>
             <SettingsMenager/>
             <SettingsMedAgent/>
-            <SettingsFieldForce/>
+            {
+                Cookies.get("role") !== "ADMIN" ?
+                    <SettingsFieldForce/>
+                    : ""
+            }
         </Wrapper>
     );
 };

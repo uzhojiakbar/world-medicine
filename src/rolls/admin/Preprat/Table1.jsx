@@ -95,6 +95,7 @@ const Table = ({ data = [],
                 <th>{translate("СУ")}</th>
                 <th>{translate("СБ")}</th>
                 <th>{translate("ГЗ")}</th>
+                <th>{translate("КВ")}</th>
               </tr>
             </thead>
             <tbody>

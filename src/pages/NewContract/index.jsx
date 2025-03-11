@@ -80,7 +80,7 @@ const NewConnect = ({title = ""}) => {
     console.log(currentData);
 
     return (<Container>
-            {isLoading || isMainLoading ? (<div className="loaderParent">
+            {isLoading || isMainLoading ? (<div className="loaderWindow">
                     <div className="loader"></div>
                 </div>) : ("")}
             <WhiteWrapper>

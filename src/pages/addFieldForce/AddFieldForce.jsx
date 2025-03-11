@@ -108,7 +108,7 @@ const AddFieldForce = () => {
     };
 
     const SendData = () => {
-        const requiredFields = ["firstName", "lastName", "mail", "temporaryPassword", "district", "birthDate", "phone",];
+        const requiredFields = ["firstName", "lastName", "temporaryPassword", "district", "birthDate", "phone",];
 
         const missingFields = requiredFields.filter((field) => !formData[field]);
 
@@ -297,9 +297,6 @@ const AddFieldForce = () => {
                             accept=".xlsx"
                             onChange={handleFileChange}
                         />
-                        <Button icon={<IconPlus/>} onClick={handleButtonClick}>
-                            {translate("Загрузить_базу")}
-                        </Button>
                     </div>
             }
         </Title>

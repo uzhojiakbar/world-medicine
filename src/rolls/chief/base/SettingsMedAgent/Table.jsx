@@ -81,7 +81,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
   return (
     <Container>
       {isLoading && (
-        <div className="loaderParent">
+        <div className="loaderWindow">
           <div className="loader"></div>
         </div>
       )}

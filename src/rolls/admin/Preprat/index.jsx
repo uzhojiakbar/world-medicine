@@ -9,7 +9,7 @@ import MainTable from "./Table1";
 
 import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
 import * as XLSX from "xlsx";
-import Server from "../../../utils/server/server";
+import Server, {useGetDrugs} from "../../../utils/server/server";
 import Filter from "./filter/Filter";
 
 const exportToExcel = (data) => {
@@ -29,30 +29,49 @@ const exportToExcel = (data) => {
 };
 
 function AdminPreparat() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      "Препарат": "Амлипин таблетки",
-      "Объём": "5/10 мг",
-      "В упаковке": "30 шт",
-      "Цена_препарата": "12000 Сум",
-      "Стандартный Балл": "7",
-      "СУ": "XX", "СБ": "XX",
-      "ГЗ": "XX"
-    },
-    {
-      id: 2,
-      "Препарат": "Амлипин таблетки",
-      "Объём": "5/10 мг",
-      "В упаковке": "30 шт",
-      "Цена_препарата": "12000 Сум",
-      "Стандартный Балл": "7",
-      "СУ": "XX", "СБ": "XX",
-      "ГЗ": "XX"
-    }
-  ]);
+  // const [data, setData] = useState(
+  // [
+  //   {
+  //     id: 1,
+  //     "Препарат": "Амлипин таблетки",
+  //     "Объём": "5/10 мг",
+  //     "В упаковке": "30 шт",
+  //     "Цена_препарата": "12000 Сум",
+  //     "Стандартный Балл": "7",
+  //     "СУ": "XX", "СБ": "XX",
+  //     "ГЗ": "XX"
+  //   },
+  //   {
+  //     id: 2,
+  //     "Препарат": "Амлипин таблетки",
+  //     "Объём": "5/10 мг",
+  //     "В упаковке": "30 шт",
+  //     "Цена_препарата": "12000 Сум",
+  //     "Стандартный Балл": "7",
+  //     "СУ": "XX", "СБ": "XX",
+  //     "ГЗ": "XX"
+  //   }
+  // ]
+  // );
+  //
+  const {data,isLoading: isloadingdata} = useGetDrugs()
   const [loading, setLoading] = useState(true);
 
+  function transformData(inputData) {
+    return inputData?.map((item, index) => ({
+      id: index + 1,
+      "Препарат": item.name || "",
+      "Объём":  item.prescription + " " + translate(item.volume) || "",
+      "В упаковке": `${item.quantity || 0} шт`,
+      "Цена_препарата": `${item.cip || 0} Сум`, // Narx haqida ma'lumot yo'q
+      "Стандартный Балл": String(item.suBall || ""),
+      "СУ": String(item.suPercentage ?? "XX"),
+      "СБ": String(item.sbPercentage ?? "XX"),
+      "ГЗ": String(item.gzPercentage ?? "XX"),
+      "Г2": String(item.kbPercentage ?? "XX")
+
+    }));
+  }
   // const fetchData = async () => {
   //   setLoading(true);
   //   try {
@@ -203,7 +222,7 @@ function AdminPreparat() {
         title={translate("Наименование_товара")}
         loading={false}
         setLoading={setLoading}
-        data={data}
+        data={transformData(data)}
       />
     </>
   );

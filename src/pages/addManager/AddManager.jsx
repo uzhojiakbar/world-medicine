@@ -131,10 +131,10 @@ const AddMeneger = () => {
 
             mutation.mutate({
                 requestData: requestData, onSuccess: () => {
-                    message.success(translate(manager_added));
+                    message.success(translate("manager_added"));
                     setTimeout(() => {
                         setLoading(false);
-                        document.location.reload();
+                        // document.location.reload();
                     }, 500);
                 }, onError: () => {
                     setLoading(false);
@@ -394,8 +394,6 @@ const AddMeneger = () => {
                 </InputWraper>
             </Section>
         </FormWrapper>
-
-
         <Button
             mw={"1000px"}
             w={"100%"}

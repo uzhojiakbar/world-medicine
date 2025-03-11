@@ -88,7 +88,7 @@ const ReNewConnect = ({title = ""}) => {
     return (
         <Container>
             {isLoading || isMainLoading ? (
-                <div className="loaderParent">
+                <div className="loaderWindow">
                     <div className="loader"></div>
                 </div>
             ) : (

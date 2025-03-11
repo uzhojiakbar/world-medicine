@@ -19,7 +19,6 @@ const SettingsMenager = ({ id }) => {
 
   const [selectedViloyat, setSelectedViloyat] = useState("");
   const [selectedTuman, setSelectedTuman] = useState("");
-  const [selectedMestaRabot, setSelectedMestaRabot] = useState("");
   const [nameSurname, setNameSurname] = useState("");
   const [checked, setChecked] = useState(false);
   // from Backend
