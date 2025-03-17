@@ -2130,6 +2130,7 @@ export const useGetManagerGoalId = (id) => {
                 return data;
             } catch (error) {
                 console.error("Error fetching doctors:", error);
+                return {}
                 throw error; // Continue throwing the error to handle it in the component
             }
         },
@@ -2282,6 +2283,7 @@ export const useGetRecepiesFilter = ({
                 return data;
             } catch (error) {
                 console.error("Error fetching data", error);
+                return {}
                 throw error;
             }
         },

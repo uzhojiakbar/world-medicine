@@ -204,7 +204,7 @@ const MedRepGoal = () => {
     );
 
     const prepareRequestData = (adminId = "asdasd") => {
-        setLoading(1);
+        setLoading(true);
 
         if (!specialist?.id) {
             console.error(translate("представитель_не_найден"));

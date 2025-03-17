@@ -231,24 +231,33 @@ const ManagersGoal = () => {
     console.log(districts);
 
     const prepareRequestData = () => {
+        setLoading(1)
         if (!region) {
             console.error(translate("Регион_не_выбран"));
             message.warning(translate("Регион_не_выбран"));
+            setLoading(false);
+
             return;
         }
         if (!specialist?.id) {
             console.error(translate("менеджера_не_найден"));
             message.warning(translate("менеджера_не_найден"));
+            setLoading(false);
+
             return;
         }
         if (!date?.startDate) {
             message.warning(translate("Дата_начала_или_окончания_не_указана"));
             console.log(translate("Дата_начала_или_окончания_не_указана"));
+            setLoading(false);
+
             return;
         }
-        if (!selectedSpecializations.length || !selectedDrugs.length || !selectedDistrict.length) {
+        if (!selectedSpecializations.length && !selectedDrugs.length && !selectedDistrict.length) {
             console.error(translate("Информация_неполная"));
             message.warning(translate("Информация_неполная"));
+            setLoading(false);
+
             return;
         }
         // if () {
@@ -265,6 +274,8 @@ const ManagersGoal = () => {
         if (!profileInfo?.userId) {
             console.error(translate("Ошибка_поиска_АДМИНА"));
             message.warning(translate("Ошибка_поиска_АДМИНА"));
+            setLoading(false);
+
             return;
         }
 
