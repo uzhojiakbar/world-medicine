@@ -163,7 +163,7 @@ const ManagerHome = () => {
                 </motion.div>
 
                 <Wrap>
-                    {managerGoal.fieldGoalQuantities ? <motion.div
+                    {managerGoal.fieldGoalQuantities.length > 0 ? <motion.div
                         initial={{opacity: 0, x: -30}}
                         animate={{opacity: 1, x: 0}}
                         transition={{duration: 0.5}}
@@ -183,12 +183,13 @@ const ManagerHome = () => {
                             })}
                         </InfoWrapper>
                     </motion.div> : ""}
-                    {managerGoal.medicineGoalQuantities ?  <motion.div
+                    {managerGoal.medicineGoalQuantities.length > 0 ?  <motion.div
                         initial={{opacity: 0, x: 30}}
                         animate={{opacity: 1, x: 0}}
                         transition={{duration: 0.5}}
                         style={{width: "100%", height: "100%"}}
                     >
+                        {console.log("111",managerGoal.medicineGoalQuantities)}
                         <InfoWrapper>
                             <TitleSmall size={"18px"}>
                                 {" "}
