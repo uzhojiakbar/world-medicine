@@ -389,5 +389,8 @@
   "updated": "Успешно обновлено",
   "medicine_added_error": "ошибка при добавлении препарат",
   "delete_wk": "Удаление ЛПУ",
-  "in_delete_wk": "Удалить ЛПУ"
+  "in_delete_wk": "Удалить ЛПУ",
+  "no_contract_doctor": "У этого врача нет контракта.",
+  "OutOfContractDoctor": "Прописано вне пакета",
+  "contract_doctor_paket": "Подключенный пакет"
 }

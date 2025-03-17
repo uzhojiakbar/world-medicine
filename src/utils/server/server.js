@@ -1765,21 +1765,6 @@ export const useRegisterManager = () => {
     });
 };
 
-// <ModalBodyHeader gridC={1}>
-//   <ModalBodySection>
-//     <MiniTitleSmall
-//         mgn={"0 auto"}
-//     >
-//       {translate("adding_lpu")}
-//     </MiniTitleSmall>
-//     <DeleteBtn
-//         bgcolor={"#216BF4"}
-//         onClick={SendData}
-//     >
-//       {translate("add_lpu")}
-//     </DeleteBtn>
-//   </ModalBodySection>
-// </ModalBodyHeader>
 export const useRegisterFieldForce = () => {
     const queryClient = useQueryClient();
 
@@ -2589,6 +2574,29 @@ export const useUpdateCondition = () => {
                 console.error("Xatolik yuz berdi:", error);
             },
         });
+};
+
+
+
+export const useGetDoctorContract = (doctorId) => {
+    return useQuery({
+        queryKey: ["getDoctorContract", doctorId], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
+        queryFn: async () => {
+            try {
+                if(doctorId){
+                    const data = await Instance.get(
+                        `v1/med-agent/doctor/contract/doctor-id/${doctorId}`
+                    );
+                    return data?.data;
+                }
+
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error; // xatolikni qaytarish
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
 };
 
 

@@ -14,7 +14,7 @@ import {useLanguage} from "../../../../context/LanguageContext.jsx";
 import ProfilePic1 from "../../../../assets/img/profile/profile2.svg";
 import {
     useDeleteUser,
-    useGetDistricts,
+    useGetDistricts, useGetDoctorContract,
     useGetRegions,
     useGetUserInfo,
     useGetWorkplaces,
@@ -31,6 +31,7 @@ import {
 } from "../../../../utils/transformRegionsForSelect.js";
 import {ResetPassword, Section} from "@/pages/profile/admin/style.js";
 import {message} from "antd";
+import {Highlight, InfoWrapper, Item, TitleSmall} from "../../../manager/style.js";
 
 const ModalDoctor = ({user, isOpen, onClose}) => {
     if (!user) return null; // yoki biror fallback UI chiqarish
@@ -49,6 +50,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
         )
     ;
     const {data: districts, isLoading: isDistrictsLoading} = useGetDistricts(district?.regionId);
+    const {data: doctorContract, isLoading: isLoadingDoctorContract} = useGetDoctorContract(user?.userId);
     const {data: workplaces, isLoading: isWorkplacesLoading} = useGetWorkplaces({
         regionId: district?.regionId || null,
         districtId: district?.districtId || null,
@@ -60,6 +62,8 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
 
     const mutation = useResetPasswordWithoutOldPassword();
     const mutationDel = useDeleteUser();
+
+    console.log("doctorContract", doctorContract)
 
     const ResetPasswordFunc = () => {
         setLoading(1);
@@ -183,19 +187,6 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         </ModalInnerSection>
                     </ModalBodySection>
                     <ModalBodySection>
-                        <MiniTitleSmall>{translate("Контакты_врача")}</MiniTitleSmall>
-                        <ModalInnerSection>
-                            <EditableInput
-                                isPhoneNumber={true}
-                                initialValue={user?.number || ""}
-                                value={user?.number}
-                                onSave={e =>
-                                    console.log(e)
-                                }
-                            />
-                        </ModalInnerSection>
-                    </ModalBodySection>
-                    <ModalBodySection>
                         <MiniTitleSmall>{translate("Место_работы")}</MiniTitleSmall>
                         <ModalInnerSection gap={"2px"}>
                             <PrimarySelect
@@ -210,17 +201,33 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         </ModalInnerSection>
                     </ModalBodySection>
                     <ModalBodySection>
+                        <MiniTitleSmall>{translate("Контакты_врача")}</MiniTitleSmall>
+                        <ModalInnerSection>
+                            <EditableInput
+                                isPhoneNumber={true}
+                                initialValue={user?.number || ""}
+                                value={user?.number}
+                                onSave={e =>
+                                    console.log(e)
+                                }
+                            />
+                        </ModalInnerSection>
+                    </ModalBodySection>
+                    <ModalBodySection>
                         <MiniTitleSmall>{translate("Логин")}</MiniTitleSmall>
                         <ModalInnerSection>
                             <EditableInput initialValue={`${user?.number}`} isInput={0} inputType="text"/>
                         </ModalInnerSection>
                     </ModalBodySection>
-                    <ModalBodySection>
-                        <MiniTitleSmall>{translate("Почта")}</MiniTitleSmall>
-                        <ModalInnerSection>
-                            <EditableInput initialValue={user?.email} isInput={0} inputType="text"/>
-                        </ModalInnerSection>
-                    </ModalBodySection>
+                    {
+                        user?.email ? <ModalBodySection>
+                                <MiniTitleSmall>{translate("Почта")}</MiniTitleSmall>
+                                <ModalInnerSection>
+                                    <EditableInput initialValue={user?.email} isInput={0} inputType="text"/>
+                                </ModalInnerSection>
+                            </ModalBodySection>
+                            : ""
+                    }
                     <ModalBodySection>
                         <MiniTitleSmall>{translate("Специализация")}</MiniTitleSmall>
                         <ModalInnerSection>
@@ -253,6 +260,63 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                     </ModalBodySection>
                 </ModalBodyHeader>
 
+                {
+                    doctorContract ?
+                        <ModalBodyHeader gridC={2}>
+                            {
+                                doctorContract?.contractedMedicineWithQuantity?.length > 0 ?
+                                    <InfoWrapper>
+                                        <TitleSmall size={"18px"}>
+                                            {translate("contract_doctor_paket")}
+                                        </TitleSmall>
+                                        {doctorContract?.contractedMedicineWithQuantity?.map((v) => {
+                                            const percentage = (v?.contractMedicineAmount?.amount || 0 / v?.quote || 0) * 100;
+
+                                            return <Item className="itemInner">
+                                                <Highlight foiz={`${percentage.toFixed(2)}%`}/>
+                                                <TitleSmall
+                                                    size={"12px"}>{translate(v?.medicine?.name)}</TitleSmall>
+                                                <TitleSmall
+                                                    size={"12px"}>{v?.contractMedicineAmount?.amount || 0} из {v?.quote || 0}</TitleSmall>
+                                            </Item>
+                                        })}
+                                    </InfoWrapper>
+                                    :
+                                    ""
+                            }
+                            {
+                                doctorContract?.outOfContractMedicineAmount?.length > 0 ?
+                                    <InfoWrapper>
+                                        <TitleSmall size={"18px"}>
+                                            {translate("OutOfContractDoctor")}
+                                        </TitleSmall>
+                                        {doctorContract?.outOfContractMedicineAmount?.map((v) => {
+                                            // const percentage = (v?.contractMedicineAmount?.amount || 0 / v?.quote || 0) * 100;
+                                            const percentage = 0 * 100;
+
+                                            return <Item className="itemInner">
+                                                <Highlight foiz={`${percentage.toFixed(2)}%`}/>
+                                                <TitleSmall
+                                                    size={"12px"}>{translate(v?.medicine?.name)}</TitleSmall>
+                                                <TitleSmall
+                                                    size={"12px"}>{v?.amount || 0} </TitleSmall>
+                                            </Item>
+                                        })}
+                                    </InfoWrapper>
+                                    :
+                                    ""
+                            }
+                        </ModalBodyHeader>
+                        :
+                        <ModalBodyHeader>
+                            <TitleSmall size={"18px"}>
+                                {translate("no_contract_doctor")}
+                                {/*{translate("Заключение договоров")}*/}
+                            </TitleSmall>
+                        </ModalBodyHeader>
+                }
+
+
                 <ModalBodyHeader gridC={1}>
                     <ModalBodySection>
                         <MiniTitleSmall
@@ -265,6 +329,8 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         </DeleteBtn>
                     </ModalBodySection>
                 </ModalBodyHeader>
+
+
             </ModalContainer>
     );
 };
