@@ -57,31 +57,13 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
     }
   };
 
-  const fetchDistrictName = async (districtId) => {
-    if (districtInfo[districtId]) return;
-    try {
-      const response = await Instance.get(
-        `/v1/auth/district?districtId=${districtId}`
-      );
-      setDistrictInfo((prev) => ({ ...prev, [districtId]: response.data }));
-    } catch (error) {
-      console.error("Error fetching district data", error);
-    }
-  };
-
-  useEffect(() => {
-    data.forEach((row) => {
-      if (row.districtId && !districtInfo[row.districtId]) {
-        fetchDistrictName(row.districtId);
-      }
-    });
-  }, [data]);
 
   const currentData = data.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
 
+  console.log(currentData);
   return (
     <Container>
       {isLoading && (
@@ -120,15 +102,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                       </span>
                     </td>
                     <td>
-                      {language === "en"
-                        ? districtInfo[row.districtId]?.name
-                        : ""}
-                      {language === "ru"
-                        ? districtInfo[row.districtId]?.nameRussian
-                        : ""}
-                      {language === "uz"
-                        ? districtInfo[row.districtId]?.nameUzLatin
-                        : ""}
+                      {row?.regionDistrictDTO?.[`regionName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}
                     </td>
                     <td>
                       {translate("Создан")}{" "}

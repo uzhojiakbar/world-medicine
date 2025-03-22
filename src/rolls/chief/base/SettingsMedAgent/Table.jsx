@@ -53,25 +53,6 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
     }
   };
 
-  const fetchDistrictName = async (districtId) => {
-    if (districtInfo[districtId]) return;
-    try {
-      const response = await Instance.get(
-        `/v1/auth/district?districtId=${districtId}`
-      );
-      setDistrictInfo((prev) => ({ ...prev, [districtId]: response.data }));
-    } catch (error) {
-      console.error("Error fetching district data", error);
-    }
-  };
-
-  useEffect(() => {
-    data.forEach((row) => {
-      if (row.districtId && !districtInfo[row.districtId]) {
-        fetchDistrictName(row.districtId);
-      }
-    });
-  }, [data]);
 
   const currentData = data.slice(
     currentPage * itemsPerPage,

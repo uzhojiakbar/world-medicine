@@ -64,20 +64,18 @@ export const ModalBodyHeader = styled.div`
 `;
 
 export const ModalBodySection = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  height: ${({height}) => (height ? `${height}` : "103px")};
-    
-    
-    .flexForSelectAndInput{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    height: ${({height}) => (height ? `${height}` : "103px")};
+
+    .flexForSelectAndInput {
         display: grid;
         gap: 5px;
-        
+
         grid-template-columns: 5fr 2fr;
     }
-    
 `;
 
 export const ModalSectionFull = styled.div`

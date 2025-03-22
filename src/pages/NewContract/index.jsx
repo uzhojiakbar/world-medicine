@@ -11,9 +11,11 @@ import RightArrow from "../../assets/svg/RightArrow";
 import CancelIcon from "../../assets/svg/CancelIcon";
 import ReceptIcon from "../../assets/svg/ReceptIcon";
 import {useLanguage} from "../../context/LanguageContext";
-import {useGetContract} from "../../utils/server/server";
+import {useGetContract, useGetDoctorContract, useGetUserInfo} from "../../utils/server/server";
 import Instance from "../../utils/Instance";
 import {useQueryClient} from "@tanstack/react-query";
+import ModalDoctor from "../../rolls/chief/base/BaseDoctor/Modal.jsx";
+import RequestDagavorModal from "../../components/RequestDagavorModal/RequestDagavorModal.jsx";
 
 const Container = styled.div`
     position: relative;
@@ -25,7 +27,11 @@ const NewConnect = ({title = ""}) => {
     const [currentPage, setCurrentPage] = useState(0);
     const {data, isLoading} = useGetContract(currentPage);
 
-    console.log("DAAATA",data)
+
+    const [activeModal, setActiveModal] = useState(null);
+    const [modalOpen, setOpenModal] = useState(false);
+    const {data: contract, isLoading: isContractLoading} = useGetDoctorContract(activeModal ?? "");
+
     const [isMainLoading, setMainLoading] = useState(false);
 
     const queryClient = useQueryClient(); // Initialize queryClient
@@ -77,83 +83,107 @@ const NewConnect = ({title = ""}) => {
         }
     };
 
-    console.log(currentData);
+
+
+    // MODAL
+
+
+    const closeModal = () => {
+        console.log("closeModal")
+        setOpenModal(false);
+        setTimeout(() => {
+            setActiveModal(null);
+        }, 100)
+    };
 
     return (<Container>
-            {isLoading || isMainLoading ? (<div className="loaderWindow">
-                    <div className="loader"></div>
-                </div>) : ("")}
-            <WhiteWrapper>
-                <TitleSmall>{title}</TitleSmall>
-                <ResponsiveTableAdmin>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>№</th>
-                            <th className="idfixed">{translate("Fullname_doctor")}</th>
-                            <th>{translate("Регион")}</th>
-                            <th>{translate("phone_number")}</th>
-                            <th>{translate("pod_dogovor")}</th>
-                            <th>{translate("Разрешение")}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {currentData?.length > 0 ? (currentData?.map((row, index) => (<tr key={row?.id || index}>
-                                    <td>№{index + 1}</td>
-                                    <td className="idfixed">
-                                        {row?.user?.firstName + " " + " " + row?.user?.lastName}
-                                    </td>
-                                    <td>
-                                        {/* VILOYAT */}
-                                        {row?.regionDistrictDTO?.[`regionName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}, {" "}
-                                        {row?.regionDistrictDTO?.[`districtName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}
-                                    </td>
+        {isLoading || isMainLoading || isContractLoading ? (<div className="loaderWindow">
+            <div className="loader"></div>
+        </div>) : ("")}
 
-                                    <td>{formatPhoneNumber(row?.user?.number)}</td>
-                                    <td> {row?.id ? `${translate("Договоры")} №${row?.id}` : translate("NONE")} </td>
+        <RequestDagavorModal isOpen={!!modalOpen} onClose={closeModal} contract={contract}/>
 
-                                    <td className="buttons">
-                                        <button
-                                            disabled={isLoading || isMainLoading}
-                                            onClick={() => onPrinyat(row?.id, `${translate("Договоры")} №${row?.id}`)}
-                                        >
-                                            <ReceptIcon/>
-                                            {translate("accept")}
-                                        </button>
-                                        <button
-                                            onClick={() => onOtk(row?.id, `${translate("Договоры")} №${row?.id}`)}
-                                        >
-                                            <CancelIcon/>
-                                            {translate("reject")}
-                                        </button>
-                                    </td>
-                                </tr>))) : (<tr>
-                                <td
-                                    className="empty"
-                                    colSpan="7"
-                                    style={{textAlign: "center"}}
-                                >
-                                    {translate("notInformation")}
-                                </td>
-                            </tr>)}
-                        </tbody>
-                    </table>
-                </ResponsiveTableAdmin>
+        <WhiteWrapper>
+            <TitleSmall>{title}</TitleSmall>
+            <ResponsiveTableAdmin>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th className="idfixed">{translate("Fullname_doctor")}</th>
+                        <th>{translate("Регион")}</th>
+                        <th>{translate("phone_number")}</th>
+                        <th>{translate("pod_dogovor")}</th>
+                        <th>{translate("Разрешение")}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {currentData?.length > 0 ? (currentData?.map((row, index) => (<tr
 
-                <PaginationButtonsWrapper>
-                    <button onClick={handlePrevious} disabled={currentPage === 0}>
-                        <LeftArrow/>
-                    </button>
-                    <span>
+                        style={{
+                            "cursor": "pointer",
+                            "user-select": "none",
+                        }}
+                        onDoubleClick={()=>{
+                            setActiveModal(row?.doctorId);
+                            setOpenModal(true);
+                        }}
+                        key={row?.id || index}>
+                        <td>№{index + 1}</td>
+                        <td className="idfixed">
+                            {row?.user?.firstName + " " + " " + row?.user?.lastName}
+                        </td>
+                        <td>
+                            {/* VILOYAT */}
+                            {row?.regionDistrictDTO?.[`regionName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}, {" "}
+                            {row?.regionDistrictDTO?.[`districtName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}
+                        </td>
+
+                        <td>{formatPhoneNumber(row?.user?.number)}</td>
+                        <td> {row?.id ? `${translate("Договоры")} №${row?.id}` : translate("NONE")} </td>
+
+                        <td className="buttons">
+                            <button
+                                disabled={isLoading || isMainLoading}
+                                onClick={() => onPrinyat(row?.id, `${translate("Договоры")} №${row?.id}`)}
+                            >
+                                <ReceptIcon/>
+                                {translate("accept")}
+                            </button>
+                            <button
+                                onClick={() => onOtk(row?.id, `${translate("Договоры")} №${row?.id}`)}
+                            >
+                                <CancelIcon/>
+                                {translate("reject")}
+                            </button>
+                        </td>
+                    </tr>))) : (<tr>
+                        <td
+                            className="empty"
+                            colSpan="7"
+                            style={{textAlign: "center"}}
+                        >
+                            {translate("notInformation")}
+                        </td>
+                    </tr>)}
+                    </tbody>
+                </table>
+            </ResponsiveTableAdmin>
+
+            <PaginationButtonsWrapper>
+                <button onClick={handlePrevious} disabled={currentPage === 0}>
+                    <LeftArrow/>
+                </button>
+                <span>
             {currentPage + 1} {translate("from")} {""}
-                        {totalPages}
+                    {totalPages}
           </span>
-                    <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
-                        <RightArrow/>
-                    </button>
-                </PaginationButtonsWrapper>
-            </WhiteWrapper>
-        </Container>);
+                <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
+                    <RightArrow/>
+                </button>
+            </PaginationButtonsWrapper>
+        </WhiteWrapper>
+    </Container>);
 };
 
 export default NewConnect;

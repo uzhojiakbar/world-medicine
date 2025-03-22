@@ -392,5 +392,6 @@
   "in_delete_wk": "Удалить ЛПУ",
   "no_contract_doctor": "У этого врача нет контракта.",
   "OutOfContractDoctor": "Прописано вне пакета",
-  "contract_doctor_paket": "Подключенный пакет"
+  "contract_doctor_paket": "Подключенный пакет",
+  "request_contract": "Запрос на договор"
 }

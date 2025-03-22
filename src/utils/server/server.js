@@ -970,8 +970,8 @@ const fetchDistrict = async (districtId) => {
             const response = await Instance.get(
                 `/v1/auth/district?districtId=${districtId}`
             );
+            return response?.data; // Region nomini qaytaradi
         }
-        return response?.data; // Region nomini qaytaradi
     } catch (error) {
         console.error("Error fetching region data", error);
         return null;
@@ -1047,7 +1047,7 @@ export const useGetContract = (page, status = "PENDING_REVIEW") => {
     });
 };
 
-export const useGetAllContract = (page=0) => {
+export const useGetAllContract = (page = 0) => {
     return useQuery({
         queryKey: ["ContractsAll", page], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
         queryFn: async () => {
@@ -2577,13 +2577,12 @@ export const useUpdateCondition = () => {
 };
 
 
-
-export const useGetDoctorContract = (doctorId) => {
+export const useGetDoctorContract = (doctorId=false) => {
     return useQuery({
-        queryKey: ["getDoctorContract", doctorId], // 'page' qiymatini kuzatish uchun 'queryKey' dinamik qilingan
+        queryKey: ["getDoctorContract", doctorId],
         queryFn: async () => {
             try {
-                if(doctorId){
+                if (doctorId) {
                     const data = await Instance.get(
                         `v1/med-agent/doctor/contract/doctor-id/${doctorId}`
                     );
@@ -2592,7 +2591,7 @@ export const useGetDoctorContract = (doctorId) => {
 
             } catch (error) {
                 console.error("Error fetching data", error);
-                throw error; // xatolikni qaytarish
+                throw error;
             }
         },
         staleTime: 1000 * 60 * 10,

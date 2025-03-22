@@ -52,25 +52,6 @@ const Table = ({title = "", data = [], isLoading = false}) => {
         }
     };
 
-    const fetchDistrictName = async (districtId) => {
-        if (districtInfo[districtId]) return;
-        try {
-            const response = await Instance.get(
-                `/v1/auth/district?districtId=${districtId}`
-            );
-            setDistrictInfo((prev) => ({...prev, [districtId]: response.data}));
-        } catch (error) {
-            console.error("Error fetching district data", error);
-        }
-    };
-
-    useEffect(() => {
-        data.forEach((row) => {
-            if (row.districtId && !districtInfo[row.districtId]) {
-                fetchDistrictName(row.districtId);
-            }
-        });
-    }, [data]);
 
     const currentData = data.slice(
         currentPage * itemsPerPage,
@@ -111,17 +92,6 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                           {row?.middleName ?? ""}
                       </span>
                                     </td>
-                                    {/* <td>
-                      {language === "en"
-                        ? districtInfo[row.districtId]?.name
-                        : ""}
-                      {language === "ru"
-                        ? districtInfo[row.districtId]?.nameRussian
-                        : ""}
-                      {language === "uz"
-                        ? districtInfo[row.districtId]?.nameUzLatin
-                        : ""}
-                    </td> */}
                                     <td>
                                         {translate("Создан")}{" "}
                                         {DatFormatter(row?.dateOfCreation?.split("T")[0] || "0000-12-31")}                                    </td>
