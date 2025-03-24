@@ -83,7 +83,8 @@ const Login = () => {
             Cookies.set("refresh_token", user?.refresh_token);
 
             setLoading(false);
-            setSucces("2");
+            nav("/");
+            document.location.reload();
         };
 
         const onError = (error) => {
