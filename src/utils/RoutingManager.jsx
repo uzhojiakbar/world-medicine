@@ -57,7 +57,7 @@ export const RoutingManager = [
     },
     {
         id: 2,
-        title: "Цель мед. представителю",
+        title: "Цель_мед_представителю",
         path: "goal-med-rep",
         element: (
             <MainContainer>

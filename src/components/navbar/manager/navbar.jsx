@@ -20,7 +20,7 @@ import {
     navbarData,
     NavbarDataAdmin,
     NavbarDataManager,
-    NavbarDataSuperAdmin,
+    NavbarDataSuperAdmin, QuickMenuAdmin,
 } from "../../../utils/navbar";
 
 import useCustomNavigate from "../../../hooks/useCustomNavigate";
@@ -102,6 +102,12 @@ const ManagerNavbar = () => {
 
     return (
         <NavBigContainer>
+            <Dropdown
+                overlayStyle={{zIndex: "999999999"}}
+                menu={{items: QuickMenuAdmin()}}
+                trigger={["contextMenu"]}
+            >
+
             <NavContainer>
                 <motion.div
                     initial={{scale: 0.8, opacity: 0}}
@@ -173,6 +179,8 @@ const ManagerNavbar = () => {
                     </BurgerMenu>
                 </Dropdown>
             </NavContainer>
+            </Dropdown>
+
         </NavBigContainer>
     );
 };

@@ -173,6 +173,8 @@ export const QuickMenuAdmin = () => {
 
 
         //   ----------------------  FF
+
+        role === "ADMIN" ?
         [
             {
                 key: 1,
@@ -221,6 +223,35 @@ export const QuickMenuAdmin = () => {
             ),
         },
         ]
+
+            :
+            [
+                {
+                    key: 1,
+                    label: (
+                        <Link style={{display: "flex", gap: "5px"}} to={`/create-doctor`}>
+                            <IconPlus color={"black"}/> {translate("Добавить_врача")}
+                        </Link>
+                    ),
+                },
+                {
+                    key: 2,
+                    label: (
+                        <Link style={{display: "flex", gap: "5px"}} to={`/doctor-create-contract`}>
+                            <IconPlus color={"black"}/> {translate("Создание_договора")}
+                        </Link>
+                    ),
+                },
+                {
+                key: 3,
+                label: (
+                    <Link style={{display: "flex", gap: "5px"}} to={`/goal-med-rep`}>
+                        <IconPlus color={"black"}/> {translate("Цель_мед_представителю")}
+                    </Link>
+                ),
+            },
+            ]
+
 };
 
 
