@@ -81,7 +81,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
           <table>
             <thead>
               <tr>
-                <th className="idfixed">{translate("Fullname_doctor")}</th>
+                <th className="idfixed">{translate("Fullname")}</th>
                 <th>{translate("Зона_отвественности")}</th>
                 <th>{translate("Дата_назначения")}</th>
                 <th>{translate("Открыть")}</th>

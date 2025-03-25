@@ -183,7 +183,7 @@ const CreateDogovorMain = () => {
             setOpen(true);
           }}
         >
-          {translate("Создать договор")}
+          {translate("Создать_договор")}
         </Button>
       </Wrapper>
     </Container>

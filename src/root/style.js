@@ -147,6 +147,25 @@ export const MiniTitleSmall = styled.div`
   }
 `;
 
+
+export const TitleBlue = styled.div`
+  border-radius: 10px;
+  border: 1px solid #FAFAFA;
+  background: #216BF4;
+  
+  padding: 10px 20px;
+
+  color: #FFF;
+  font-family: "Vela Sans GX", sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  
+  width: fit-content;
+  cursor: pointer;
+`
+
 export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;

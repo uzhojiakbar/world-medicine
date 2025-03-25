@@ -64,7 +64,7 @@ const SettingsFieldForce = ({id}) => {
     return (
         <MainWrapperGap id={id || "administration"}>
             <Title>
-                <span>{translate("admin")}</span>
+                <span>{translate("field_force")}</span>
                 <Button onClick={() => nav("../create-admin")} icon={<IconPlus/>}>
                     {translate("Добавить_admin")}
                 </Button>
@@ -99,7 +99,7 @@ const SettingsFieldForce = ({id}) => {
             </FilterCardsWrapper>
 
 
-            <Table title={translate("admin")} data={MedAgents || []}
+            <Table data={MedAgents || []}
                    isLoading={isLoading || isLoadingRegions || isLoadingDistricts || IsLoadingProfileInfo}/>
         </MainWrapperGap>
     );

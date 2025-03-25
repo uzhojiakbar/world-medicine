@@ -87,7 +87,7 @@ const SettingsMenager = ({ id }) => {
         </div>
       </FilterCardsWrapper>
 
-      <Table title="Менеджеры" data={Managers || []} isLoading={isLoading || isLoadingRegions || isLoadingDistricts || IsLoadingProfileInfo} />
+      <Table data={Managers || []} isLoading={isLoading || isLoadingRegions || isLoadingDistricts || IsLoadingProfileInfo} />
     </MainWrapperGap>
   );
 };

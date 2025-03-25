@@ -77,7 +77,7 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
             <thead>
               <tr>
                 <th>№</th>
-                <th className="idfixed">{translate("Fullname_doctor")}</th>
+                <th className="idfixed">{translate("Fullname")}</th>
                 <th>{translate("Дата_создания")}</th>
                 <th>{translate("Редактировать")}</th>
               </tr>

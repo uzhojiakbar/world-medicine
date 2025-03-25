@@ -89,7 +89,7 @@ const SettingsMedAgent = ({ id }) => {
       </FilterCardsWrapper>
 
 
-      <Table title={translate("Мед_представители")} data={MedAgents || []} isLoading={isLoading || isLoadingRegions || isLoadingDistricts || IsLoadingProfileInfo} />
+      <Table data={MedAgents || []} isLoading={isLoading || isLoadingRegions || isLoadingDistricts || IsLoadingProfileInfo} />
     </MainWrapperGap>
   );
 };

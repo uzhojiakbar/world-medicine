@@ -219,7 +219,6 @@ const BaseDoctor = ({FilterHide, title}) => {
             }
 
             <Table
-                title="Врачи"
                 isLoading={isLoadingDoctors}
                 data={filteredDoctors}
             />

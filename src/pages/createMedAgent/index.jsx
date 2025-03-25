@@ -208,24 +208,24 @@ const CreateMedAgent = () => {
 
     const titles = [
             {
-                name: translate("Рецепты"),
+                name: translate("RECIPE"),
                 key: "RECIPE",
             },
             {
-                name: translate("СУ"),
+                name: translate("SU"),
                 key: "SU",
             }, {
-                name: translate("СБ"),
+                name: translate("SB"),
                 key: "SB",
             }, {
-                name: translate("ГЗ"),
-                key:
-                    "KZ",
-            },
-            {
                 name: translate("GZ"),
                 key:
                     "GZ",
+            },
+            {
+                name: translate("КВ"),
+                key:
+                    "KZ",
             }
         ]
     ;
