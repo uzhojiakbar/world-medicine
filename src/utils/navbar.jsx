@@ -17,6 +17,7 @@ import {RoutingManager} from "./RoutingManager";
 import {RoutingChief} from "./RoutingChief";
 import {RoutingAdmin} from "./RoutingAdmin";
 import IconPlus from "../assets/svg/IconPlus.jsx";
+import Cookies from "js-cookie";
 
 export const navbarData = () => {
     return [
@@ -101,6 +102,129 @@ export const NavbarBurgerMenu = () => {
 };
 
 export const QuickMenuAdmin = () => {
+    const {translate} = useLanguage();
+
+    const role = Cookies.get("role");
+    return    role === "SUPERADMIN" || role === "CHIEF" ?
+        // ---------------------- ADMIN
+        [
+        {
+            key: 1,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/create-doctor`}>
+                    <IconPlus color={"black"}/> {translate("Добавить_врача")}
+                </Link>
+            ),
+        },
+        {
+            key: 2,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/create-manager`}>
+                    <IconPlus color={"black"}/> {translate("Добавить_менеджера")}
+                </Link>
+            ),
+        }, {
+            key: 3,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/create-med-agent`}>
+                    <IconPlus color={"black"}/> {translate("Добавить_мед_представителя")}
+                </Link>
+            ),
+        }, {
+            key: 4,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/create-admin`}>
+                    <IconPlus color={"black"}/> {translate("add_addmin")}
+                </Link>
+            ),
+        },
+        {
+            key: 5,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/nastroyka-usloviya`}>
+                    <IconPlus color={"black"}/> {translate("Добавить_препарат")}
+                </Link>
+            ),
+        },
+        {
+            key: 6,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/nastroyka-usloviya/lpu`}>
+                    <IconPlus color={"black"}/> {translate("Добавить_лпу")}
+                </Link>
+            ),
+        },
+        {
+            key: 7,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/nastroyka-usloviya/regions`}>
+                    <IconPlus color={"black"}/> {translate("Добавить_region_district")}
+                </Link>
+            ),
+        },{
+            key: 8,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/managers-goal`}>
+                    <IconPlus color={"black"}/> {translate("Цель_менеджеру")}
+                </Link>
+            ),
+        },
+    ] :
+
+
+        //   ----------------------  FF
+        [
+            {
+                key: 1,
+                label: (
+                    <Link style={{display: "flex", gap: "5px"}} to={`/create-doctor`}>
+                        <IconPlus color={"black"}/> {translate("Добавить_врача")}
+                    </Link>
+                ),
+            },
+            {
+                key: 2,
+                label: (
+                    <Link style={{display: "flex", gap: "5px"}} to={`/create-manager`}>
+                        <IconPlus color={"black"}/> {translate("Добавить_менеджера")}
+                    </Link>
+                ),
+            }, {
+            key: 3,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/create-med-agent`}>
+                    <IconPlus color={"black"}/> {translate("Добавить_мед_представителя")}
+                </Link>
+            ),
+        },
+            {
+                key: 6,
+                label: (
+                    <Link style={{display: "flex", gap: "5px"}} to={`/nastroyka-usloviya/lpu`}>
+                        <IconPlus color={"black"}/> {translate("Добавить_лпу")}
+                    </Link>
+                ),
+            },
+            {
+                key: 7,
+                label: (
+                    <Link style={{display: "flex", gap: "5px"}} to={`/nastroyka-usloviya/regions`}>
+                        <IconPlus color={"black"}/> {translate("Добавить_region_district")}
+                    </Link>
+                ),
+            },{
+            key: 8,
+            label: (
+                <Link style={{display: "flex", gap: "5px"}} to={`/managers-goal`}>
+                    <IconPlus color={"black"}/> {translate("Цель_менеджеру")}
+                </Link>
+            ),
+        },
+        ]
+};
+
+
+export const QuickMenuManager = () => {
     const {translate} = useLanguage();
     return [
         {

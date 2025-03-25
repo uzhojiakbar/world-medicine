@@ -21,6 +21,9 @@ import AdminArxiv from "../rolls/admin/AdminArxiv/Arxiv";
 import AdminPreparat from "../rolls/admin/Preprat";
 import AdminMestaRabota from "../rolls/admin/MestaRabota";
 import ExcelUploader from "../components/FileUploader.jsx";
+import Lpu from "../pages/setingsCondition/LPU/index.jsx";
+import RegionDistrict from "../rolls/chief/RegionDistrict/RegionDistrict.jsx";
+import AddDoctor from "../pages/addDoctor/AddDoctor.jsx";
 
 export const RoutingAdmin = [
     {
@@ -121,6 +124,8 @@ export const RoutingAdmin = [
                 <Route path="" element={<AdminArxiv/>}/>
                 <Route path="Preparad" element={<AdminPreparat/>}/>
                 <Route path="Mestrabotaya" element={<AdminMestaRabota/>}/>
+                <Route path="lpu" element={<Lpu/>}/>
+                <Route path="regions" element={<RegionDistrict/>}/>
             </>
         ),
         visible: true,
@@ -171,11 +176,11 @@ export const RoutingAdmin = [
     // },
     {
         id: 10,
-        title: "Цель мед. представителю",
-        path: "pupose-med-agent",
+        title: "Добавить_менеджера",
+        path: "create-doctor",
         element: (
             <MainContainer>
-                <CreateMedAgent/>
+                <AddDoctor/>
             </MainContainer>
         ),
         child: [],

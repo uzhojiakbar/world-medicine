@@ -197,7 +197,7 @@ const Pagination = () => {
                     icon: <RegionsIcon/>,
                 },
             ]
-            : Cookies.get("role") === "MANAGER"
+            : Cookies.get("role") === "Manager"
                 ? [
                     {
                         id: 0,
@@ -216,6 +216,17 @@ const Pagination = () => {
                         name: translate("Места работы"),
                         path: "Mestrabotaya",
                         icon: <MestarabotayaIcon/>,
+                    },
+                    {
+                        id: 3,
+                        name: translate("ЛПУ"),
+                        path: "lpu",
+                        icon: <LpuIcon/>,
+                    }, {
+                        id: 4,
+                        name: translate("Регионы_районы"),
+                        path: "regions",
+                        icon: <RegionsIcon/>,
                     },
                 ]
                 : [];
