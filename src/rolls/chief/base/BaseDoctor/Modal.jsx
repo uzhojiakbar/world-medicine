@@ -318,16 +318,24 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
 
 
                 <ModalBodyHeader gridC={1}>
-                    <ModalBodySection>
-                        <MiniTitleSmall
-                            mgn={"0 auto"}
-                        >{translate("deleted_doctor")}</MiniTitleSmall>
+                    <ModalBodySection
+                        fd={"row"}
+                    >
+                        {/*<MiniTitleSmall*/}
+                        {/*    mgn={"0 auto"}*/}
+                        {/*>{translate("deleted_doctor")}</MiniTitleSmall>*/}
+                        <DeleteBtn
+                            onClick={DeleteUser}
+                        >
+                            {translate("delete_doctor")}
+                        </DeleteBtn>
                         <DeleteBtn
                             onClick={DeleteUser}
                         >
                             {translate("delete_doctor")}
                         </DeleteBtn>
                     </ModalBodySection>
+
                 </ModalBodyHeader>
 
 

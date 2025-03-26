@@ -65,7 +65,7 @@ export const ModalBodyHeader = styled.div`
 
 export const ModalBodySection = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: ${({fd})=>fd?fd:"column"};
     justify-content: center;
     gap: 10px;
     height: ${({height}) => (height ? `${height}` : "103px")};

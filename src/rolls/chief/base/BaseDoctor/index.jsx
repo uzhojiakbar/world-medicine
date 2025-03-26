@@ -152,7 +152,7 @@ const BaseDoctor = ({FilterHide, title}) => {
                     {
                         !FilterHide ?
                             <Button
-                                onClick={clearFilters}
+                                onClick={()=>document.location.reload()}
                             >
                                 {translate("Очистить фильтр")}
                             </Button>
