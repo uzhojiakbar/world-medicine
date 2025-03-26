@@ -2011,8 +2011,23 @@ export const useGetDoctors = (filters = {}) => {
             const url = `/v1/user/doctors${hasFilters ? "?" + queryParameters : ""}`; // Append the query string to the URL
             try {
                 const {data} = await Instance.get(url);
-                return data;
-            } catch (error) {
+                console.log("DOCTORSS", data);
+                const allData = await Promise.all(
+                    data.map(async (v) => {
+                        try {
+                            const contract = await Instance.get(
+                                `v1/med-agent/doctor/contract/doctor-id/${v.userId}`
+                            );
+                            return {...v, contract: contract.data}; // Ma'lumotlarni to‘g‘ri formatda qaytaramiz
+                        }catch (e) {
+                            return {...v, contract: {}}
+                        }
+                    })
+                );
+
+                return allData;
+            }
+            catch (error) {
                 console.error("Error fetching doctors:", error);
                 throw error; // Continue throwing the error to handle it in the component
             }

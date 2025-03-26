@@ -215,6 +215,23 @@ export const ResponsiveTableAdmin = styled.table`
             }
         }
     }
+    
+    .green td{
+        background-color: #1FC16B;
+        color: white;
+        .progressKPI {
+            color: black;
+        }
+    }
+
+
+    .green:hover td {
+        background-color: #1FC16B;
+        .progressKPI {
+            color: black;
+        }
+        opacity: 0.85 !important;
+    }
 
     @media (max-width: 768px) {
         th,

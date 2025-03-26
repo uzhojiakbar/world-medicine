@@ -34,7 +34,7 @@ import {message} from "antd";
 import {Highlight, InfoWrapper, Item, TitleSmall} from "../../../manager/style.js";
 
 const ModalDoctor = ({user, isOpen, onClose}) => {
-    if (!user) return null; // yoki biror fallback UI chiqarish
+    if (!user) return null;
 
 
     const [loading, setLoading] = useState(false)

@@ -52,7 +52,6 @@ const Table = ({title = "", data = [], isLoading = false}) => {
     };
 
 
-
     const currentData = data.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     return (<Container>
         {(isLoading || isUserLoading) && (<div className="loaderWindow">
@@ -77,55 +76,67 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {currentData.length > 0 ? (currentData.map((row, index) => (<tr key={row?.userId}>
-                        <td className="idfixed">
-                            <span>№{row?.id || index + 1}</span>
-                            <span>
-
-                      {row?.lastName ?? " "} {row?.firstName ?? ""}{" "}
-                                {row?.middleName ?? ""}
-                      </span>
-                        </td>
-                        <td>
-                            {row?.regionDistrictDTO?.[`regionName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}, {" "}
-                            {row?.workPlaceDTO?.name}, {" "}
-
-
-                        </td>
-                        <td>
-                            {translate("Создан")}{" "}
-                            {DatFormatter(row?.dateOfCreation?.split("T")[0] || "0000-12-31")}                        </td>
-                        <td>
-                            <div className="progressKPI">{row?.progress} %?</div>
-                        </td>
-                        <td>
-                            <button
-                                onClick={() => {
-                                    setActiveModal(row?.userId);
-                                    setOpenModal(true);
-                                }}
-                                className="Viewbutton"
-                            >
-
-                                <svg
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
+                    {currentData.length > 0 ? (currentData.map((row, index) => (
+                        <tr
+                            onDoubleClick={() => {
+                                setActiveModal(row?.userId);
+                                setOpenModal(true);
+                            }}
+                            style={
+                                {
+                                    userSelect: "none",
+                                    cursor: "pointer",
+                                }
+                            }
+                            className={row?.contract?.id ? "green" : ""}
+                            key={row?.userId}
+                        >
+                            <td className="idfixed">
+                                <span>№{row?.id || index + 1}</span>
+                                <span>
+                                    {row?.lastName ?? " "} {" "}
+                                    {row?.firstName ?? ""} {" "}
+                                    {row?.middleName ?? ""}
+                            </span>
+                            </td>
+                            <td>
+                                {row?.regionDistrictDTO?.[`regionName${language === "ru" ? "Russian" : language === "uz" ? "UzLatin" : ""}`] || translate("NONE")}, {" "}
+                                {row?.workPlaceDTO?.name}, {" "}
+                            </td>
+                            <td>
+                                {translate("Создан")}{" "}
+                                {DatFormatter(row?.dateOfCreation?.split("T")[0] || "0000-12-31")}                        </td>
+                            <td>
+                                <div className="progressKPI">{row?.progress} %?</div>
+                            </td>
+                            <td>
+                                <button
+                                    onClick={() => {
+                                        setActiveModal(row?.userId);
+                                        setOpenModal(true);
+                                    }}
+                                    className="Viewbutton"
                                 >
-                                    <path
-                                        opacity="0.5"
-                                        d="M2 12C2 13.6 2.4 14.2 3.3 15.3C5 17.5 7.8 20 12 20C16.2 20 19 17.5 20.7 15.3C21.6 14.2 22 13.6 22 12C22 10.4 21.6 9.8 20.7 8.7C19 6.5 16.2 4 12 4C7.8 4 5 6.5 3.3 8.7C2.4 9.8 2 10.4 2 12Z"
-                                        fill="#343434"
-                                    />
-                                    <path
-                                        d="M8.25 12C8.25 9.9 9.9 8.25 12 8.25C14.1 8.25 15.75 9.9 15.75 12C15.75 14.1 14.1 15.75 12 15.75C9.9 15.75 8.25 14.1 8.25 12ZM9.75 12C9.75 10.8 10.8 9.75 12 9.75C13.2 9.75 14.25 10.8 14.25 12C14.25 13.2 13.2 14.25 12 14.25C10.8 14.25 9.75 13.2 9.75 12Z"
-                                        fill="#343434"
-                                    />
-                                </svg>
-                            </button>
-                        </td>
-                    </tr>))) : (<tr>
+
+                                    <svg
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+                                        <path
+                                            opacity="0.5"
+                                            d="M2 12C2 13.6 2.4 14.2 3.3 15.3C5 17.5 7.8 20 12 20C16.2 20 19 17.5 20.7 15.3C21.6 14.2 22 13.6 22 12C22 10.4 21.6 9.8 20.7 8.7C19 6.5 16.2 4 12 4C7.8 4 5 6.5 3.3 8.7C2.4 9.8 2 10.4 2 12Z"
+                                            fill="#343434"
+                                        />
+                                        <path
+                                            d="M8.25 12C8.25 9.9 9.9 8.25 12 8.25C14.1 8.25 15.75 9.9 15.75 12C15.75 14.1 14.1 15.75 12 15.75C9.9 15.75 8.25 14.1 8.25 12ZM9.75 12C9.75 10.8 10.8 9.75 12 9.75C13.2 9.75 14.25 10.8 14.25 12C14.25 13.2 13.2 14.25 12 14.25C10.8 14.25 9.75 13.2 9.75 12Z"
+                                            fill="#343434"
+                                        />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>))) : (<tr>
                         <td
                             className="empty"
                             colSpan="6"
