@@ -33,23 +33,17 @@ const InfoWrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   height: 100%;
-  background-color: white;
+  background-color: ${({bg})=>bg?bg:"white"};
   border-radius: 10px;
   cursor: pointer;
-  
-  
   min-height: 177px;
-
-  &:hover {
-    opacity: 0.7;
-  }
 `;
 
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 17px 20px;
-  background-color: #f7f8fc;
+  background-color: ${({bg})=>bg?bg:"#f7f8fc"};
   border-radius: 10px;
   position: relative;
 `;

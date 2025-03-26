@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import {Button, Modal} from "antd";
 import styled from "styled-components";
 import ProfilePic1 from "../assets/img/profile/profile2.svg";
 import { m } from "framer-motion";
@@ -78,6 +78,19 @@ export const ModalBodySection = styled.div`
     }
 `;
 
+export const ModalButtons = styled.div`
+    
+    cursor: pointer;
+    display: flex;
+    gap: ${({gap})=>gap?gap:"10px"};
+    align-items: center;
+    justify-content: center;
+    
+    width: fit-content;
+    margin: 0 auto;
+    // height: ${({height}) => (height ? `${height}` : "103px")};
+`
+
 export const ModalSectionFull = styled.div`
   display: flex;
   flex-direction: column;
@@ -125,6 +138,7 @@ export const DeleteBtn = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
+    gap: 10px;
 
 
     width: fit-content;
@@ -153,6 +167,7 @@ export const DeleteBtn = styled.div`
         font-size: 12px;
     }
 `;
+
 
 export const ContainerInner = styled.div`
     display: flex;
