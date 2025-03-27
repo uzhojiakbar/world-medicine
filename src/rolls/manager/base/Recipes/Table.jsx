@@ -24,6 +24,8 @@ const Table = ({title = "", filter = {}}) => {
     const {data: data, isLoading: isLoadingRecepies} = useGetRecepiesFilter({...filter, page: currentPage});
     const [isMainLoading, setMainLoading] = useState(false);
     const queryClient = useQueryClient(); // Initialize queryClient
+    // queryClient.invalidateQueries(["getWorkplacec"]); // Ma'lumotlarni qayta yuklash
+
 
     const [loading, setLoading] = useState(0);
     const [openModalId, setOpenModalId] = useState({});
