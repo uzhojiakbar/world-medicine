@@ -42,7 +42,6 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
 
     const [loading, setLoading] = useState(false)
 
-    console.log("user", user)
     const {translate, language} = useLanguage();
 
     const {data: district, isLoading: isDistrictLoading} = useGetDistrcitById(
@@ -70,7 +69,6 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
     const mutation = useResetPasswordWithoutOldPassword();
     const mutationDel = useDeleteUser();
 
-    console.log("doctorContract", doctorContract)
 
     const ResetPasswordFunc = () => {
         setLoading(1);
@@ -124,6 +122,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
         setEditContract(!editContract);
     }
 
+    console.log("doctorContract",doctorContract)
     return (
         (!user || isDistrictLoading || isRegionLoading || isDistrictsLoading || isWorkplacesLoading) ?
             <div className="loaderParent">
@@ -441,7 +440,7 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                                         className={"btn"}
                                         onClick={handleEditContract}
                                     >
-                                        Сохранить
+                                    {translate("save")}
                                     </DeleteBtn>
                                     : <DeleteBtn
                                         bgcolor="#F7F8FC"
@@ -478,7 +477,6 @@ const ModalDoctor = ({user, isOpen, onClose}) => {
                         </DeleteBtn>
                     </ModalButtons>
                 </ModalBodyHeader>
-
 
             </ModalContainer>
     );
