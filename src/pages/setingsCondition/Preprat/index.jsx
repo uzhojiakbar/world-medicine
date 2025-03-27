@@ -18,6 +18,7 @@ import AddLpu from "../LPU/AddLPUModal.jsx";
 import AddMedicine from "./Modal.jsx";
 import {message} from "antd";
 import {formatPhoneNumberForBackend} from "../../../utils/phoneFormatterForBackend.js";
+import AddMnn from "./AddMnn.jsx";
 
 
 const exportToExcel = (data) => {
@@ -150,6 +151,7 @@ function Preparat() {
     console.log()
     const [loading, setLoading] = useState(0);
     const [add, setAdd] = useState(0);
+    const [addMnn, setAddMnn] = useState(0);
 
     useEffect(() => {
         if (!loadingDrugs) {
@@ -187,7 +189,6 @@ function Preparat() {
             }));
 
             console.log("formatted", formattedTbody);
-            console.log("data", data);
         }
     }, [dataDrugs]);
 
@@ -457,6 +458,7 @@ function Preparat() {
             {/*<Filter/>*/}
             <Info loading={loading} setLoading={setLoading}/>
             <AddMedicine open={add} setOpen={setAdd}/>
+            <AddMnn open={addMnn} setOpen={setAddMnn}/>
 
             <TitleContainer>
                 <Title>{translate("Условия_на_продукты")}</Title>
@@ -483,6 +485,9 @@ function Preparat() {
                         </svg>
                         {translate("Обновить_базу")}
                     </Text>
+                    <Button onClick={() => setAddMnn(1)} icon={<IconPlus/>}>
+                        {translate("Добавить_МНН")}
+                    </Button>
 
                     <Button onClick={() => setAdd(1)} icon={<IconPlus/>}>
                         {translate("Добавление_препората")}

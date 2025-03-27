@@ -150,7 +150,7 @@ export const DeleteBtn = styled.div`
     line-height: 21px;
     font-weight: 600;
     color: ${({ color }) => (color ? color : "white")};
-    border-radius: 50px;
+    border-radius: ${({ BorderRadius }) => (BorderRadius ? BorderRadius : "50px")};
     margin-top: ${({ mt }) => mt ? mt : "0 auto"};
     margin: ${({ mt }) => mt ? mt : "0 auto"};
     cursor: pointer;
@@ -202,6 +202,8 @@ export const ContainerInner = styled.div`
 export const SelectedMNNstyleContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3,1fr);
+    max-height: 400px;
+    overflow-y: auto;
     gap: 10px;
 `
 

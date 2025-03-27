@@ -82,7 +82,11 @@ const Login = () => {
             Cookies.set("access_token", user?.access_token);
             Cookies.set("refresh_token", user?.refresh_token);
 
+
+
             setLoading(false);
+
+
             nav("/");
             document.location.reload();
         };

@@ -13,6 +13,7 @@ const Input2 = ({
                     className = "",
                     deffvalue,
                     deffvalue2,
+    style,
     height,
     mini=false
                 }) => {
@@ -30,6 +31,7 @@ const Input2 = ({
             onChange={(e) => onChange(e)}
             placeholder={placeholder || ""}
             bgColor={bgColor}
+            style={style}
         />
     );
 };

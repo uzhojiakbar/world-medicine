@@ -2515,7 +2515,7 @@ export const useAddDistrict = () => {
 
 export const useGetMnns = () => {
     return useQuery({
-        queryKey: ["Districts"],
+        queryKey: ["MNNS"],
         queryFn: async () => {
             try {
                 const data = await Instance.get(
@@ -2613,6 +2613,54 @@ export const useGetDoctorContract = (doctorId=false) => {
         staleTime: 1000 * 60 * 10,
     });
 };
+
+
+export const useDeleteMnn = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (MnnData) => {
+            console.log("MnnData", MnnData);
+            const response = await Instance.delete(
+                `v1/db/mnn/delete/${MnnData?.MnnData}`
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            queryClient.invalidateQueries(["MNNS"]);
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+
+
+export const useAddMnn = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (MnnData) => {
+            const response = await Instance.post(
+                `/v1/db/mnn/add`,
+                {
+                    name: MnnData?.name
+                }
+            );
+            return response.data;
+        },
+        onSuccess: (data, variables) => {
+            queryClient.invalidateQueries(["MNNS"]);
+            variables.onSuccess(data);
+        },
+        onError: (error, variables) => {
+            variables.onError(error);
+        },
+    });
+};
+
+
 
 
 export default Server;

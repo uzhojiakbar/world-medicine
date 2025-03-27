@@ -177,7 +177,7 @@ const Pagination = () => {
         },
         {
             id: 2,
-            name: translate("Места работы"),
+            name: translate("Места_работы"),
             path: "Mestrabotaya",
             icon: <MestarabotayaIcon />,
         },
