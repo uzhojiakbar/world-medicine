@@ -2280,6 +2280,7 @@ export const useGetRecepiesFilter = ({
                         size
                     },
                 });
+
                 return data;
             } catch (error) {
                 console.error("Error fetching data", error);
