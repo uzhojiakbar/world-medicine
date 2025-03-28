@@ -3,22 +3,22 @@ import { Container, FilterSection, FilterInput } from "./style.js";
 import { TitleSmall } from "../../../../root/style.js";
 import Input from "../../../../components/Generic/Input/Input.jsx";
 import PrimarySelect from "../../../../components/Generic/Select/Select.jsx";
-import { useGetDistricts, useGetRegions } from "../../../../utils/server/server.js";
+import {
+  useGetDistricts,
+  useGetRegions,
+} from "../../../../utils/server/server.js";
 import { useLanguage } from "../../../../context/LanguageContext.jsx";
 import FieldnamesManager from "../../../../utils/fieldnamesManager.js";
 
 const Filter = () => {
   const { translate, language } = useLanguage();
 
-
   const [selectedViloyat, setSelectedViloyat] = useState("");
   const [selectedTuman, setSelectedTuman] = useState("");
   const [nameSurname, setNameSurname] = useState("");
   const [selectedSpecialization, setSelectedSpecialization] = useState("");
 
-
   const specializations = FieldnamesManager();
-
 
   const { data: regions, isLoading: isLoadingRegions } = useGetRegions();
   const { data: districts, isLoading: isLoadingDistricts } =
@@ -27,7 +27,6 @@ const Filter = () => {
   useEffect(() => {
     setSelectedTuman(""); // Reset tuman when viloyat changes
   }, [selectedViloyat]);
-
 
   const getOptions = (items, language) => {
     console.log(items);
@@ -66,10 +65,7 @@ const Filter = () => {
           onValueChange={(value) => setSelectedTuman(value.id)}
           onlyOption={1}
         />
-        <PrimarySelect
-          def={translate("ЛПУ")}
-          options={[]}
-        />
+        <PrimarySelect def={translate("ЛПУ")} options={[]} />
         <PrimarySelect
           def="Специальность"
           options={specializations}
