@@ -1545,7 +1545,19 @@ export const useGetManagers = ({
                         nameQuery,
                     },
                 });
-                return data;
+                const allData = await Promise.all(
+                    data.map(async (v) => {
+                        try {
+                            const contract = await Instance.get(
+                                `v1/admin/manager/goal/manager-id/${v.userId}`
+                            );
+                            return {...v, contract: contract.data}; // Ma'lumotlarni to‘g‘ri formatda qaytaramiz
+                        }catch (e) {
+                            return {...v, contract: {}}
+                        }
+                    })
+                );
+                return allData;
             } catch (error) {
                 console.error("Error fetching data", error);
                 throw error;
@@ -1586,8 +1598,19 @@ export const useGetMedAgents = ({
                         districtId
                     },
                 });
-                return data;
-            } catch (error) {
+                const allData = await Promise.all(
+                    data.map(async (v) => {
+                        try {
+                            const contract = await Instance.get(
+                                `/v1/med-agent/goal/agent-id/${v.userId}`
+                            );
+                            return {...v, contract: contract.data}; // Ma'lumotlarni to‘g‘ri formatda qaytaramiz
+                        }catch (e) {
+                            return {...v, contract: {}}
+                        }
+                    })
+                );
+                return allData;            } catch (error) {
                 console.error("Error fetching data", error);
                 throw error;
             }

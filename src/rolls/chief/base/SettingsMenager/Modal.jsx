@@ -59,8 +59,6 @@ const ModalManager = ({user, isOpen, onClose}) => {
     const regionsTranslate = transformRegionsForSelect(regions, language);
     const districtsTranslae = transformDistrictsForSelect(districts, language);
     const WorkplacesTranslate = transformWorkplacesForSelect(workplaces, language);
-
-
     const mutation = useResetPasswordWithoutOldPassword();
     const mutationDel = useDeleteUser();
 
@@ -104,27 +102,36 @@ const ModalManager = ({user, isOpen, onClose}) => {
     console.log("user", user,);
     console.log("workplaces", workplaces,);
 
-    const StatToArr = [{
-        id: 1, title: translate("base_doctor"), value: 0 || null,
-    }, {
-        id: 2, title: translate("Кол_Рецептов_Всего"), value: 0 || null,
-    }, {
-        id: 3, title: translate("Кол_Рецептов_Новых"), value: 0 || null,
-    }, {
-        id: 4, title: translate("Всего_работающих"), value: 0 || null,
-    },
+    const StatToArr = [
+        {
+            id: 1, title: translate("base_doctor"), value: 0 || null,
+        },
+        {
+            id: 2, title: translate("Кол_Рецептов_Всего"), value: 0 || null,
+        },
+        {
+            id: 3, title: translate("Кол_Рецептов_Новых"), value: 0 || null,
+        },
+        {
+            id: 4, title: translate("Всего_работающих"), value: 0 || null,
+        },
         {
             id: 5, title: translate("Кол_препоратов_Всего"), value: 0 || null,
-        }, {
+        },
+        {
             id: 6, title: translate("Кол_препоратов_Новых"), value: 0 || null,
-        }, {
+        },
+        {
             id: 7, title: translate("Кол_препоратов_месяц"), value: 0 || null,
-        }, {
+        },
+        {
             id: 8, title: translate("Охват_Районов"), value: 0 || null,
-        }, {
+        },
+        {
             id: 9, title: translate("Охват_ЛПУ"), value: 0 || null,
         },
     ];
+
     return (
         (!user || isDistrictLoading || isRegionLoading || isDistrictsLoading || isWorkplacesLoading) ?
             <div className="loaderParent">

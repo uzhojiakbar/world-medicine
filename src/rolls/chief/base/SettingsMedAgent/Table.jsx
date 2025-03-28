@@ -25,6 +25,9 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
   const { translate, language } = useLanguage();
 
   const itemsPerPage = 10;
+
+  console.log("MedAgents",data)
+
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const [activeModal, setActiveModal] = useState(null);
@@ -85,7 +88,19 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
             <tbody>
               {currentData.length > 0 ? (
                 currentData.map((row, index) => (
-                  <tr key={row?.userId}>
+                  <tr
+                      onDoubleClick={() => {
+                        setActiveModal(row?.userId);
+                        setOpenModal(true);
+                      }}
+                      style={
+                        {
+                          userSelect: "none",
+                          cursor: "pointer",
+                        }
+                      }
+                      className={row?.contract?.id ? "green" : ""}
+                      key={row?.userId}>
                     <td>№{row?.id || index + 1}</td>
                     <td className="idfixed">
                       <span>

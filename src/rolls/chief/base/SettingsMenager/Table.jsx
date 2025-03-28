@@ -90,8 +90,23 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
             <tbody>
               {currentData.length > 0 ? (
                 currentData.map((row, index) => (
-                  <tr key={row?.userId}>
+                  <tr
+                      onDoubleClick={() => {
+                        setActiveModal(row?.userId);
+                        setOpenModal(true);
+                      }}
+                      style={
+                        {
+                          userSelect: "none",
+                          cursor: "pointer",
+                        }
+                      }
+                      className={row?.contract?.goalId ? "green" : ""}
+                      key={row?.userId}>
                     <td className="idfixed">
+                      {
+                        console.log(index,row)
+                      }
                       <span>
                         №{row?.id || index + 1}
                       </span>
@@ -144,7 +159,8 @@ const Table = ({ title = "", data = [], isLoading = false }) => {
                   >
                     {translate("notInformation")}
                   </td>
-                </tr>
+                </tr
+                    >
               )}
             </tbody>
           </table>
