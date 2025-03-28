@@ -1552,7 +1552,7 @@ export const useGetManagers = ({
                                 `v1/admin/manager/goal/manager-id/${v.userId}`
                             );
                             return {...v, contract: contract.data}; // Ma'lumotlarni to‘g‘ri formatda qaytaramiz
-                        }catch (e) {
+                        } catch (e) {
                             return {...v, contract: {}}
                         }
                     })
@@ -1605,12 +1605,13 @@ export const useGetMedAgents = ({
                                 `/v1/med-agent/goal/agent-id/${v.userId}`
                             );
                             return {...v, contract: contract.data}; // Ma'lumotlarni to‘g‘ri formatda qaytaramiz
-                        }catch (e) {
+                        } catch (e) {
                             return {...v, contract: {}}
                         }
                     })
                 );
-                return allData;            } catch (error) {
+                return allData;
+            } catch (error) {
                 console.error("Error fetching data", error);
                 throw error;
             }
@@ -2042,15 +2043,14 @@ export const useGetDoctors = (filters = {}) => {
                                 `v1/med-agent/doctor/contract/doctor-id/${v.userId}`
                             );
                             return {...v, contract: contract.data}; // Ma'lumotlarni to‘g‘ri formatda qaytaramiz
-                        }catch (e) {
+                        } catch (e) {
                             return {...v, contract: {}}
                         }
                     })
                 );
 
                 return allData;
-            }
-            catch (error) {
+            } catch (error) {
                 console.error("Error fetching doctors:", error);
                 throw error; // Continue throwing the error to handle it in the component
             }
@@ -2616,7 +2616,7 @@ export const useUpdateCondition = () => {
 };
 
 
-export const useGetDoctorContract = (doctorId=false) => {
+export const useGetDoctorContract = (doctorId = false) => {
     return useQuery({
         queryKey: ["getDoctorContract", doctorId],
         queryFn: async () => {
@@ -2625,7 +2625,12 @@ export const useGetDoctorContract = (doctorId=false) => {
                     const data = await Instance.get(
                         `v1/med-agent/doctor/contract/doctor-id/${doctorId}`
                     );
-                    return data?.data;
+
+
+                    return {
+                        ...data?.data,
+                        outOfContractMedicineAmount: []
+                    };
                 }
 
             } catch (error) {
@@ -2682,8 +2687,6 @@ export const useAddMnn = () => {
         },
     });
 };
-
-
 
 
 export default Server;

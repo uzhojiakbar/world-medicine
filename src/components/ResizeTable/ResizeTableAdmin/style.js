@@ -36,7 +36,6 @@ export const ResponsiveTableAdmin = styled.table`
         height: 100%;
         border: none;
         background-color: #f7f8fc; /* Jadval uyalarining default foni */
-
       
         > button {
             border: none;
@@ -61,7 +60,6 @@ export const ResponsiveTableAdmin = styled.table`
             border-top-right-radius: 15px !important;
             border-bottom-right-radius: 15px !important;
         }
-
     }
 
     .empty {
