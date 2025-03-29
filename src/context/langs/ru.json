@@ -285,8 +285,15 @@
   "adding_lpu": "Добавление ЛПУ",
   "email_temp": "example@mail.ru",
   "База_врачей": "База врачей",
-  "deleted_doctor": "Удаление врача",
-  "delete_doctor": "Удалить врача",
+  "deleted_doctor": "Врач удален",
+  "delete_doctor": "Удаление врача",
+  "deleted_manager": "Менеджер удален",
+  "delete_manager": "Удаление менеджера",
+  "deleted_med-agent": "Мед-агент удален",
+  "delete_med-agent": "Удаление мед-агента",
+  "deleted_field-force": "Field-Force удален",
+  "delete_field-force": "Удаление Field-Force",
+  "entity_contacts": "Контакты",
   "Connected_doctors_all": "Подключенных врачей (за весь период)",
   "Connected_contracts_all": "Подключенных договоров (за весь период)",
   "Connected_doctors_month": "Подключенных врачей (за текущий месяц)",
@@ -407,5 +414,7 @@
   "Написать_МНН": "Написать МНН",
   "Напишите_название_MNN": "Напишите название MNN",
   "mnn_search": "Введите название MNN и поиск станет проще",
-  "manager_goal_not_exists": "Цель менеджера не существует"
+  "manager_goal_not_exists": "Цель менеджера не существует",
+  "ff_added": "Field-Force добавлена",
+  "ff_add_error": "Ошибка при регистрации Field-Force"
 }

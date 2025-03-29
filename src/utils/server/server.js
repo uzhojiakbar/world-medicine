@@ -1909,19 +1909,21 @@ export const useRegisterFieldForce = () => {
     return useMutation({
         mutationFn: async (managerData) => {
             console.log("managerData", managerData);
+            const param = managerData?.requestData?.regions.map(region => `regionIds=${region.id}`).join('&');
             const response = await Instance.post(
-                "/v1/user/register-admin",
-                managerData?.requestData
+                `/v1/user/register-fieldforce?${param}`,
+                managerData?.requestData?.data
             );
             await queryClient.invalidateQueries(["getAdmins"]);
 
-            return response.data;
+            console.log(param)
+            return response?.data;
         },
         onSuccess: (data, variables) => {
-            variables.onSuccess();
+            variables.onSuccess(data);
         },
         onError: (error, variables) => {
-            variables.onError();
+            variables.onError(error);
         },
     });
 };

@@ -84,7 +84,19 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                         <tbody>
                         {currentData.length > 0 ? (
                             currentData.map((row, index) => (
-                                <tr key={row?.userId}>
+                                <tr
+
+                                    onDoubleClick={() => {
+                                        setActiveModal(row?.userId);
+                                        setOpenModal(true);
+                                    }}
+                                    style={
+                                        {
+                                            userSelect: "none",
+                                            cursor: "pointer",
+                                        }
+                                    }
+                                    key={row?.userId}>
                                     <td>№{row?.id || index + 1}</td>
                                     <td className="idfixed">
                       <span>

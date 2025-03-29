@@ -121,8 +121,8 @@ export const RoutingAdmin = [
         ),
         child: (
             <>
-                <Route path="" element={<AdminArxiv/>}/>
-                <Route path="Preparad" element={<AdminPreparat/>}/>
+                <Route path="" element={<Arxiv/>}/>
+                <Route path="Preparad" element={<Preparat/>}/>
                 <Route path="Mestrabotaya" element={<AdminMestaRabota/>}/>
                 <Route path="lpu" element={<Lpu/>}/>
                 <Route path="regions" element={<RegionDistrict/>}/>

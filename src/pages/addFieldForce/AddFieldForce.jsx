@@ -23,6 +23,9 @@ import {message} from "antd";
 import * as XLSX from "xlsx";
 import styled from "styled-components";
 import {useQueryClient} from "@tanstack/react-query";
+import {SelectedMNNstyle, SelectedMNNstyleContainer} from "../../root/Modal.js";
+import {motion} from "framer-motion";
+import DeleteIconBig from "../../assets/svg/DeleteIconBig.jsx";
 
 const AddFieldForce = () => {
     const {translate, language} = useLanguage();
@@ -30,6 +33,7 @@ const AddFieldForce = () => {
     const {data: Regions, isLoading} = useGetRegions();
     const [loading, setLoading] = useState(false);
     const regionsTranslate = transformRegionsForSelect(Regions, language);
+    const [ regions,setRegions ] = useState([]);
 
     const mutation = useRegisterFieldForce();
     // const queryClient = useQueryClient();
@@ -92,11 +96,14 @@ const AddFieldForce = () => {
         });
 
         if (name === "region") {
-            const selectedRegion = regionsTranslate.find((region) => region.id === value.id);
+            const selectedRegion = regionsTranslate.find((region) => region.id === value.id);if (!regions.some(region => region.id === selectedRegion?.id)) {
+                setRegions([...regions, selectedRegion]);
+            }
 
-            setTuman(selectedRegion ? selectedRegion.districts : []);
+            // setTuman(selectedRegion ? selectedRegion.districts : []);
         }
     };
+
     const handleCHangeName = (name, value) => {
         setFormData({
             ...formData, [name]: value,
@@ -108,13 +115,19 @@ const AddFieldForce = () => {
     };
 
     const SendData = () => {
-        const requiredFields = ["firstName", "lastName", "temporaryPassword", "district", "birthDate", "phone",];
+        const requiredFields = ["firstName", "lastName", "temporaryPassword",  "phone"];
 
         const missingFields = requiredFields.filter((field) => !formData[field]);
 
+
+
         if (missingFields.length > 0) {
             message.error(translate("fill_req_error"));
-        } else {
+        }
+        else if(regions.length < 1){
+            message.error(translate("Регион_не_выбран")); // Bu ruschada xabar
+        }
+        else {
             setLoading(true);
             const requestData = {
                 firstName: formData.firstName,
@@ -123,27 +136,30 @@ const AddFieldForce = () => {
                 email: formData.mail,
                 password: formData.temporaryPassword,
                 workPlaceId: 1,
-                districtId: formData.district,
                 birthDate: formData.birthDate,
                 fieldName: "NEUROLOGIST",
                 position: "string",
                 gender: "MALE",
-                role: "CHIEF", ...formatPhoneNumberForBackend(formData?.phone),
+                role: "FIELDFORCE",
+                ...formatPhoneNumberForBackend(formData?.phone),
             };
 
             console.log("mutation.status", mutation.status);
 
             mutation.mutate({
-                requestData: requestData, onSuccess: () => {
-                    message.success(translate("Manager qo'shildi!"));
+                requestData: {
+                    data: requestData,
+                    regions,
+                }, onSuccess: () => {
+                    message.success(translate("ff_added"));
                     setTimeout(() => {
                         setLoading(false);
 
-                        document.location.reload();
+                        // document.location.reload();
                     }, 500);
                 }, onError: () => {
                     setLoading(false);
-                    message.error(translate("Manager registratsiya qilishda xatolik"));
+                    message.error(translate("ff_add_error"));
                 },
             });
             console.log("mutation.status", mutation.status);
@@ -270,7 +286,15 @@ const AddFieldForce = () => {
         }
     };
 
-    return (<Wrapper>
+
+    const removeRegionById = (id) => {
+        const updatedRegions = regions.filter(region => region.id !== id);
+        setRegions(updatedRegions);
+    };
+
+
+    return (
+        <Wrapper>
         {isLoading || loading ? (<div className="loaderParent">
             <div className="loader"></div>
         </div>) : null}
@@ -300,6 +324,7 @@ const AddFieldForce = () => {
                     </div>
             }
         </Title>
+
         <FormWrapper onSubmit={handleSubmit}>
             <MiniTitleSmall>{formDataLabels.komu}</MiniTitleSmall>
             <Section now={"true"}>
@@ -344,13 +369,38 @@ const AddFieldForce = () => {
                     onlyOption={1}
                     onValueChange={(value) => handleSelectChange("region", value)}
                 />
-                <PrimarySelect
-                    def={formDataLabels.district}
-                    options={tuman}
-                    onlyOption={1}
-                    onValueChange={(value) => handleSelectChange("district", value)}
-                />
+                {/*<PrimarySelect*/}
+                {/*    def={formDataLabels.district}*/}
+                {/*    options={tuman}*/}
+                {/*    onlyOption={1}*/}
+                {/*    onValueChange={(value) => handleSelectChange("district", value)}*/}
+                {/*/>*/}
             </Section>
+
+            <SelectedMNNstyleContainer>
+                {regions?.length > 0 && (
+                    <>
+                        {regions.map((region) =>
+                                (
+                                    <motion.div
+                                        key={region.id}
+                                        initial={{opacity: 0, scale: 0.1}}
+                                        animate={{opacity: 1, scale: 1}}
+                                        exit={{opacity: 0, scale: 0.8}}
+                                        transition={{duration: 0.3}}
+                                    >
+                                        <SelectedMNNstyle onClick={() => removeRegionById(region?.id)}>
+                                            <div className="text">{region?.value}</div>
+                                            <div className={"closeIcon"}>
+                                                <DeleteIconBig/>
+                                            </div>
+                                        </SelectedMNNstyle>
+                                    </motion.div>
+                                )
+                        )}
+                    </>
+                )}
+            </SelectedMNNstyleContainer>
 
             <MiniTitleSmall>{formDataLabels.contactData}</MiniTitleSmall>
             <Section>
@@ -369,6 +419,7 @@ const AddFieldForce = () => {
                     placeholder={translate("998901234567")}
                 />
             </Section>
+
             <MiniTitleSmall>{formDataLabels.temporaryPassword}</MiniTitleSmall>
             <Section>
                 <InputWraper>
@@ -395,6 +446,7 @@ const AddFieldForce = () => {
                 </InputWraper>
             </Section>
         </FormWrapper>
+
         <Button
             mw={"1000px"}
             w={"100%"}

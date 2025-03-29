@@ -51,14 +51,6 @@ const AddMnn = ({open, setOpen}) => {
         })
     };
 
-    const handelAdd = (e) => {
-        const {name, value} = e.target;
-        console.log(name, value)
-        setFormData({
-            ...formData, [name]: value,
-        })
-    };
-
     const queryClient = useQueryClient();
 
     const handleRefresh = () => {
@@ -68,47 +60,6 @@ const AddMnn = ({open, setOpen}) => {
             setLoading(0);
         }, 100);
     };
-
-    const SendData = () => {
-        const requestData = {
-            ...formData,
-            inn: selectedMNNs.map(v => v?.value)
-        };
-
-        const requiredFields = [
-            "nameUzLatin", "nameRussian", "name", "prescription", "type", "volume",
-            "cip", "quantity", "suBall", "suLimit", "suPercentage", "sbPercentage", "sbLimit",
-            "sbBall", "gzBall", "gzLimit", "gzPercentage", "kbPercentage", "kbLimit", "kbBall", "inn"
-        ];
-
-        const missingFields = requiredFields.filter((field) => {
-            const value = requestData[field];
-            return value === undefined || value === null || value === '' ||
-                (Array.isArray(value) && value.length === 0);
-        });
-
-        if (missingFields.length > 0) {
-            console.log("Majburiy maydonlar bo'sh yoki noto'g'ri:", missingFields);
-            message.warning(translate("requeired_data") + ": " + missingFields.join(", "));
-        } else {
-            setLoading(true);
-            mutation.mutate({
-                requestData: requestData, onSuccess: () => {
-                    message.success(translate("medicine_added"));
-                    setTimeout(() => {
-                        setLoading(false);
-                        handleRefresh()
-                        setOpen(false)
-                    }, 500);
-                }, onError: () => {
-                    setLoading(false);
-                    handleRefresh()
-                    message.error(translate("medicine_added_error"));
-                },
-            });
-        }
-    }
-
 
     // --------------- DELETE MNN ------------------
 
@@ -219,9 +170,9 @@ const AddMnn = ({open, setOpen}) => {
                                         exit={{opacity: 0, scale: 0.8}}
                                         transition={{duration: 0.3}}
                                     >
-                                        <SelectedMNNstyle onClick={() => DeleteMnn(mNn?.id)}>
+                                        <SelectedMNNstyle >
                                             <div className="text">{mNn?.name}</div>
-                                            <div className={"closeIcon"}>
+                                            <div onClick={() => DeleteMnn(mNn?.id)} className={"closeIcon"}>
                                                 <DeleteIconBig/>
                                             </div>
                                         </SelectedMNNstyle>

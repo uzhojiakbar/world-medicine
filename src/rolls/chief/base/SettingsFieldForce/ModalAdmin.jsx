@@ -180,7 +180,7 @@ const ModalAdmin = ({user, isOpen, onClose}) => {
                     </ModalInnerSection>
                 </ModalBodySection>
                 <ModalBodySection>
-                    <MiniTitleSmall>{translate("Контакты_врача")}</MiniTitleSmall>
+                    <MiniTitleSmall>{translate("entity_contacts")}</MiniTitleSmall>
                     <ModalInnerSection>
                         <EditableInput
                             isPhoneNumber={true}
@@ -220,11 +220,11 @@ const ModalAdmin = ({user, isOpen, onClose}) => {
                 <ModalBodySection>
                     <MiniTitleSmall
                         mgn={"0 auto"}
-                    >{translate("deleted_doctor")}</MiniTitleSmall>
+                    >{translate("deleted_field-force")}</MiniTitleSmall>
                     <DeleteBtn
                         onClick={DeleteUser}
                     >
-                        {translate("delete_doctor")}
+                        {translate("delete_field-force")}
                     </DeleteBtn>
                 </ModalBodySection>
             </ModalBodyHeader>

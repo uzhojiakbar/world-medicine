@@ -66,7 +66,7 @@ const SettingsFieldForce = ({id}) => {
             <Title>
                 <span>{translate("field_force")}</span>
                 <Button onClick={() => nav("../create-admin")} icon={<IconPlus/>}>
-                    {translate("Добавить_admin")}
+                    {translate("add_addmin")}
                 </Button>
             </Title>
 
