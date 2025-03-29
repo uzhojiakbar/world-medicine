@@ -189,14 +189,18 @@ const CreateMedAgent = () => {
                 }, 500);
             },
             onError: (err) => {
-                console.log("erre", err);
+                console.log("error", err);
                 setLoading(false);
                 if (
                     err?.response?.data?.error.includes("Doctor had already assigned")
                 ) {
                     message.error(translate("Доктор_уже_назначил_контракт"));
-                    console.log(1);
-                } else {
+                } else  if (
+                    err?.response?.data?.error.includes("Manager Goal Doesn't exists")
+                ) {
+                    message.error(translate("manager_goal_not_exists"));
+                }
+                else {
                     message.error(translate("Ошибка_добавления_контракт_для_Доктор"));
                 }
             },

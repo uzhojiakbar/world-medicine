@@ -1056,7 +1056,121 @@ export const useGetAllContract = (page = 0) => {
                     `/v1/db/contracts?page=${page}&size=10`
                 );
 
-                return {...data?.data};
+                const Finishdata = {...data?.data}
+
+                const content = Finishdata?.content?.map((v) => {
+                    const medicines = v?.medicinesWithQuantities || [];
+                    const contractType = v.contractType;
+
+                    const updatedMedicines = medicines.map((curr) => {
+                        const medicine = curr?.medicine || {};
+
+                        // ContractType ga mos keladigan kalitlar
+                        const keysToKeep = [];
+                        if (contractType?.toLowerCase() === "kz") {
+                            keysToKeep.push("kbBall", "kbPercentage", "kbLimit");
+                        } else if (contractType?.toLowerCase() === "recipe") {
+                            keysToKeep.push("prescription");
+                        } else {
+                            keysToKeep.push(
+                                `${contractType?.toLowerCase()}Ball`,
+                                `${contractType?.toLowerCase()}Percentage`,
+                                `${contractType?.toLowerCase()}Limit`
+                            );
+                        }
+
+                        // Medicine obyektidagi faqat contractType ga mos qiymatlarni qoldirish
+                        const updatedMedicine = { ...medicine };
+
+                        Object.keys(updatedMedicine).forEach((key) => {
+                            if (
+                                key.endsWith("Ball") ||
+                                key.endsWith("Percentage") ||
+                                key.endsWith("Limit") ||
+                                key === "prescription"
+                            ) {
+                                if (!keysToKeep.includes(key)) {
+                                    updatedMedicine[key] = 0; // Qolgan qiymatlarni 0 qilish
+                                }
+                            }
+                        });
+
+                        return {
+                            ...curr,
+                            medicine: updatedMedicine, // Yangilangan medicine obyektini qo'shish
+                        };
+                    });
+
+                    const totalBall = medicines.reduce((sum, curr) => {
+                        const medicine = curr?.medicine || {};
+                        if (`${contractType}`?.toLowerCase() === "kz") {
+                            return sum + (medicine[`kbBall`] || 0);
+                        } else if (`${contractType}`?.toLowerCase() === "recipe") {
+                            return sum + (medicine[`prescription`] || 0);
+                        } else {
+                            return sum + (medicine[`${`${contractType}`?.toLowerCase()}Ball`] || 0);
+                        }
+                    }, 0);
+
+                    const firstMedicine = medicines[0]?.medicine || {};
+                    const remainingCount = medicines.length - 1;
+                    const formatName = (name) =>
+                        remainingCount > 0 ? `${name} + ${remainingCount} ta` : name;
+
+                    return {
+                        id: v?.id,
+                        doctorId: v?.doctorId,
+                        createdAt: v?.createdAt,
+                        startDate: v?.startDate,
+                        managerId: v?.managerId,
+                        contractType: v?.contractType,
+                        amout: medicines.reduce(
+                            (sum, curr) => sum + (curr?.contractMedicineAmount?.amount || 0),
+                            0
+                        ),
+                        quote: medicines.reduce((sum, curr) => sum + (curr.quote || 0), 0),
+                        name: formatName(firstMedicine.name || ""),
+                        nameUzCyrillic: formatName(firstMedicine.nameUzCyrillic || ""),
+                        nameUzLatin: formatName(firstMedicine.nameUzLatin || ""),
+                        nameRussian: formatName(firstMedicine.nameRussian || ""),
+                        su: 0,
+                        sb: 0,
+                        gz: 0,
+                        kz: 0,
+                        medicinesWithQuantities: updatedMedicines, // Yangilangan medicinesWithQuantities
+                        doctor: v?.user,
+                        prescription: 0,
+                        [`${contractType}`.toLowerCase()]: totalBall,
+                    };
+                });
+
+
+                // content:
+                // [
+                //     {
+                //         id: 21,
+                //         doctorId: 'bc494497-80a8-4b44-82e3-6679ef1b5356',
+                //         createdAt: '2025-03-22',
+                //         startDate: '2025-03-22',
+                //         managerId: 'ca4fa6c0-0b76-4ea9-a59f-f6ab250f9ee7',
+                //         contractType: 'KZ',
+                //         amout: 0,
+                //         quote: 5,
+                //         name: 'ULSEPAN LYOF.POWD.FOR INJ. + 4 ta',
+                //         nameUzCyrillic: 'ULSEPAN LYOF.POWD.FOR INJ. + 4 ta',
+                //         nameUzLatin: 'ULSEPAN LYOF.POWD.FOR INJ. + 4 ta',
+                //         nameRussian: 'ULSEPAN LYOF.POWD.FOR INJ. + 4 ta',
+                //         su: 0,
+                //         sb: 0,
+                //         gz: 0,
+                //         kz: 246,
+                //         prescription: 0
+                //     },
+                // ]
+                return {
+                    ...Finishdata,
+                    content: content,
+                };
             } catch (error) {
                 console.error("Error fetching data", error);
                 throw error; // xatolikni qaytarish
@@ -2687,6 +2801,34 @@ export const useAddMnn = () => {
         },
     });
 };
+
+
+export const useGetArxivContracts = (doctorId = false) => {
+    return useQuery({
+        queryKey: ["getDoctorContract", doctorId],
+        queryFn: async () => {
+            try {
+                if (doctorId) {
+                    const data = await Instance.get(
+                        `v1/med-agent/doctor/contract/doctor-id/${doctorId}`
+                    );
+
+
+                    return {
+                        ...data?.data,
+                        outOfContractMedicineAmount: []
+                    };
+                }
+
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+
 
 
 export default Server;

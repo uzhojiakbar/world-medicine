@@ -9,10 +9,9 @@ import RightArrow from "../../../assets/svg/RightArrow";
 import styled from "styled-components";
 import ModalManager from "./Modal";
 import { useLanguage } from "../../../context/LanguageContext";
-import Server, {useGetAllContract} from "../../../utils/server/server";
-
-import { saveAs } from "file-saver"; // file-saver kutubxonasini o'rnating
-import * as XLSX from "xlsx";
+import {useGetAllContract} from "../../../utils/server/server";
+import ModalDoctor from "../../../rolls/chief/base/BaseDoctor/Modal.jsx";
+import ModalContract from "./Modal";
 
 const Container = styled.div`
   position: relative;
@@ -23,33 +22,15 @@ const Container = styled.div`
 
 
 
-const Table = ({ title = "" }) => {
+const Table = ({ title = "",currentPage,setCurrentPage = () => {} }) => {
   const [loading, setLoading] = useState(0);
-  const [openModalId, setOpenModalId] = useState(false);
+  const [openContract, setOpenContract] = useState({});
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [data, setData] = useState([]);
+  const {data: contracts,isLoading: isLoadingContracts} = useGetAllContract(currentPage)
 
-  const {data: contracts,isLoading: isLoadingContracts} = useGetAllContract(0)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await Server.getDogovor();
-        setData(data || []); // olingan ma'lumotni saqlaymiz
-      } catch (err) {
-        // setError("Error fetching posts.");
-        return;
-      }
-    };
-
-    fetchData();
-  }, []);
-  console.log(data);
   console.log("contracts", contracts);
 
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(data?.length / itemsPerPage);
+  const totalPages = Math.ceil(contracts?.totalElements / 10) || 0;
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
@@ -63,16 +44,27 @@ const Table = ({ title = "" }) => {
     }
   };
 
-  const currentData = data.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  const [activeModal, setActiveModal] = useState(null);
+  const [modalOpen, setOpenModal] = useState(false);
 
-  const { translate } = useLanguage();
+  const currentData = contracts?.content;
+
+  const {translate, language} = useLanguage();
+
+  const closeModal = () => {
+    console.log("closeModal")
+    setOpenModal(false);
+    setOpenContract({})
+    setTimeout(() => {
+      setActiveModal(null);
+    }, 100)
+  };
+
+
 
   return (
     <Container>
-      {loading ? (
+      {loading || isLoadingContracts ? (
         <div className="loaderParent">
           <div class="loader"></div>
         </div>
@@ -80,13 +72,14 @@ const Table = ({ title = "" }) => {
         ""
       )}
 
-      <ModalManager id={openModalId} setId={setOpenModalId} />
+      <ModalContract isOpen={!!modalOpen} onClose={closeModal} contract={openContract}/>
 
       <WhiteWrapper>
         <ResponsiveTableAdmin>
           <table>
             <thead>
               <tr>
+                <th>{translate("ID")}</th>
                 <th className="idfixed">{translate("Препарат")}</th>
                 <th>{translate("квота")}</th>
                 <th>{translate("Выписано")}</th>
@@ -99,20 +92,45 @@ const Table = ({ title = "" }) => {
               </tr>
             </thead>
             <tbody>
-              {currentData.length > 0 ? (
-                currentData.map((row) => (
-                  <tr key={row?.id}>
-                    <td className="idfixed"> №{row?.No} {row?.Препарат}</td>
-                    <td>{row?.Квота}</td>
-                    <td>{row?.Выписано}</td>
-                    <td>{row?.Рецептурник}</td>
-                    <td>{row?.СУ}</td>
-                    <td>{row?.СБ}</td>
-                    <td>{row?.ГЗ}</td>
-                    <td>{row?.КВ}</td>
+              {currentData?.length > 0 ? (
+                currentData?.map((row) => (
+                  <tr
+                      onDoubleClick={() => {
+                        setActiveModal(row?.id);
+                        setOpenModal(true);
+                        setOpenContract(row || {})
+                      }}
+                      style={
+                        {
+                          userSelect: "none",
+                          cursor: "pointer",
+                        }
+                      }
+                      key={row?.id}>
+                    <td>№{row?.id}</td>
+                    <td className="idfixed">
+                    <span>
+                       {" "}
+                      {
+                        language == "ru" ? row?.["nameRussian"]
+                            : language == "uz" ? row?.["nameUzLatin"] : row?.["name"]
+                      }
+                    </span>
+                    </td>
+                    <td>{row?.quote}</td>
+                    <td>{row?.amout}</td>
+                    <td>{(row?.recipe || row?.prescription) ? (row?.recipe || row?.prescription) : "-"}</td>
+                    <td>{row?.su ? row?.su : "-"}</td>
+                    <td>{row?.sb ? row?.sb : "-"}</td>
+                    <td>{row?.gz ? row?.gz : "-"}</td>
+                    <td>{row?.kz ? row?.kz : "-"}</td>
                     <td>
                       <button
-                        onClick={() => setOpenModalId(row.id)}
+                        onClick={() => {
+                          setActiveModal(row?.id);
+                          setOpenContract(row || {})
+                          setOpenModal(true);
+                        }}
                         className="Viewbutton"
                       >
                         <svg
