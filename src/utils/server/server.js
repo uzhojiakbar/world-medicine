@@ -1753,7 +1753,7 @@ export const useGetAdmins = ({
         ],
         queryFn: async () => {
             try {
-                const {data} = await Instance.get("/v1/user/admins", {
+                const {data} = await Instance.get("/v1/user/field-forces", {
                     params: {
                         creatorId,
                         regionId,
@@ -1806,6 +1806,54 @@ export const useGetDoctorsFilter = ({
             } catch (error) {
                 console.error("Error fetching data", error);
                 throw error;
+            }
+        },
+        staleTime: 1000 * 60 * 10,
+    });
+};
+export const useGetDoctorsData = ({
+                                        creatorId,
+                                        countryId,
+                                        regionId,
+                                        workplaceId,
+                                        nameQuery,
+                                        districtId
+                                    }) => {
+    return useQuery({
+        queryKey: [
+            "GetDoctorsFilter",
+            creatorId,
+            countryId,
+            regionId,
+            workplaceId,
+            nameQuery,
+            districtId
+        ],
+        queryFn: async () => {
+            try {
+                const {data} = await Instance.get("/v1/user/doctor-data", {
+                    params: {
+                        creatorId,
+                        countryId,
+                        regionId,
+                        workplaceId,
+                        nameQuery,
+                        districtId
+                    },
+                });
+                return data || {
+                    "allDoctors": 0,
+                    "doctorsInFact": 0,
+                    "newDoctors": 0
+                };
+            } catch (error) {
+                console.error("Error fetching data", error);
+                throw error;
+                return {
+                    "allDoctors": 0,
+                    "doctorsInFact": 0,
+                    "newDoctors": 0
+                }
             }
         },
         staleTime: 1000 * 60 * 10,

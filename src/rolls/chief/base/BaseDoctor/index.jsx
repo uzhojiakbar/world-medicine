@@ -9,7 +9,7 @@ import {Viloyatlar, Tumanlar, MestaRabot} from "../../../../mock/data";
 import {useNavigate} from "react-router-dom";
 import {
     useGetDistricts,
-    useGetDoctors,
+    useGetDoctors, useGetDoctorsData,
     useGetRegions,
 } from "../../../../utils/server/server";
 import FieldnamesManager from "../../../../utils/fieldnamesManager";
@@ -60,8 +60,13 @@ const BaseDoctor = ({FilterHide, title}) => {
         districtId: selectedTuman ? selectedTuman : null,
         nameQuery: nameSurname || null,
     });
+    const {data: doctorsData, isLoading: isLoadingDoctorsData} = useGetDoctorsData({
+        regionId: selectedViloyat,
+        districtId: selectedTuman ? selectedTuman : null
+    });
 
     console.log("doctors",doctors)
+    console.log("doctorsData",doctorsData)
 
 
     const [filteredDoctors, setFilteredDoctors] = useState();
@@ -96,34 +101,7 @@ const BaseDoctor = ({FilterHide, title}) => {
         () => transformDistrictsForSelect(districts, language),
         [districts, translate]
     );
-
-    const getOptions = (items, language) => {
-        console.log(items);
-
-        return items?.map((item) => ({
-            id: item.id,
-            value: item["name"], // Using template literals to dynamically access properties based on language
-        }));
-    };
-    const getOptionsDistricts = (items, language) => {
-        console.log(items);
-
-        return items?.map((item) => ({
-            id: item?.districtId,
-            value: item["name"], // Using template literals to dynamically access properties based on language
-        }));
-    };
-
     const handleDateChange = useCallback((dates) => setDate(dates), []);
-
-    const clearFilters = () => {
-        if (nameSurnameRef.current) nameSurnameRef.current.value = "";
-        if (viloyatRef.current) viloyatRef.current.clear();
-        if (tumanRef.current) tumanRef.current.clear();
-        if (specializationRef.current) specializationRef.current.clear();
-        if (mestaRabotRef.current) mestaRabotRef.current.clear();
-        if (datePickerRef.current) datePickerRef.current.clear();
-    };
 
     return (
         <BaseDoctorCon  >
@@ -136,15 +114,15 @@ const BaseDoctor = ({FilterHide, title}) => {
                         <div className="section1">
                             <TitleSpan>{translate("База_врачей")}</TitleSpan>
                             <InformationTitleSpan>
-                                {translate("Всего")} {information.all} вр
+                                {translate("Всего")} {doctorsData?.allDoctors || 0} вр
                             </InformationTitleSpan>
                             <Line/>
                             <InformationTitleSpan>
-                                {translate("По_факту")} {information.fact} вр
+                                {translate("По_факту")} {doctorsData?.doctorsInFact || 0} вр
                             </InformationTitleSpan>
                             <Line/>
                             <InformationTitleSpan>
-                                {translate("Новых")} {information.new} вр
+                                {translate("Новых")} {doctorsData?.newDoctors || 0 } вр
                             </InformationTitleSpan>
                         </div>
                 }

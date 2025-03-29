@@ -12,6 +12,7 @@ import {useGetDistrictById, useGetUserInfo} from "../../../../utils/server/serve
 import Instance from "../../../../utils/Instance";
 import {DatFormatter} from "../../../../utils/DatFormatter";
 import ModalFieldForce from "./ModalAdmin.jsx";
+import ModalFF from "./ModalAdmin.jsx";
 
 const Container = styled.div`
     position: relative;
@@ -66,7 +67,7 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                 </div>
             )}
 
-            <ModalFieldForce isOpen={!!modalOpen} onClose={closeModal} user={user}/>
+            <ModalFF isOpen={!!modalOpen} onClose={closeModal} user={user}/>
             {/* {activeModal === 5 && <Modal5  />} */}
 
             <WhiteWrapper>
@@ -87,7 +88,7 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                                 <tr
 
                                     onDoubleClick={() => {
-                                        setActiveModal(row?.userId);
+                                        setActiveModal(row?.userDTO?.userId);
                                         setOpenModal(true);
                                     }}
                                     style={
@@ -97,23 +98,23 @@ const Table = ({title = "", data = [], isLoading = false}) => {
                                         }
                                     }
                                     key={row?.userId}>
-                                    <td>№{row?.id || index + 1}</td>
+                                    <td>№{row?.userDTO?.id || index + 1}</td>
                                     <td className="idfixed">
                       <span>
-                        {row?.lastName ?? " "} {row?.firstName ?? ""}{" "}
-                          {row?.middleName ?? ""}
+                        {row?.userDTO?.lastName ?? " "} {row?.userDTO?.firstName ?? ""}{" "}
+                          {row?.userDTO?.middleName ?? ""}
                       </span>
                                     </td>
                                     <td>
                                         {translate("Создан")}{" "}
-                                        {DatFormatter(row?.dateOfCreation?.split("T")[0] || "0000-12-31")}                                    </td>
+                                        {DatFormatter(row?.userDTO?.dateOfCreation?.split("T")[0] || "0000-12-31")}                                    </td>
                                     {/* <td colSpan={2}>
                       <div className="progressKPI">{row?.progress}</div>
                     </td> */}
                                     <td>
                                         <button
                                             onClick={() => {
-                                                setActiveModal(row?.userId);
+                                                setActiveModal(row?.userDTO?.userId);
                                                 setOpenModal(true);
                                             }} className="Viewbutton viewButtonSmall"
                                         >

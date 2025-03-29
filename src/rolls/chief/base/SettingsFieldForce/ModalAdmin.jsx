@@ -33,7 +33,7 @@ import {ResetPassword, Section} from "@/pages/profile/admin/style.js";
 import {message} from "antd";
 import {Card, GridContainer, KvotaCard, KvotaContainer, PageContainer, SubTitle} from "../SettingsMedAgent/Style.js";
 
-const ModalAdmin = ({user, isOpen, onClose}) => {
+const ModalFF = ({user, isOpen, onClose}) => {
     console.log("user", user);
     if (!user) return null; // yoki biror fallback UI chiqarish
 
@@ -231,7 +231,7 @@ const ModalAdmin = ({user, isOpen, onClose}) => {
         </ModalContainer>);
 };
 
-export default ModalAdmin;
+export default ModalFF;
 
 
 // import React, { useState } from "react";
